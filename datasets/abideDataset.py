@@ -86,6 +86,12 @@ class ABIDEDataset(InMemoryDataset):
                 data = self.pre_transform(data)
             data_list.append(data)
 
+        print(f"{adj_folder}: loaded {len(data_list)} / {len(adj_files)} adj files")
+        assert len(data_list) == len(adj_files), (
+            f"{len(adj_files) - len(data_list)} subjects in {adj_folder} have no "
+            f"matching file in {nf_folder}"
+        )
+
         return data_list
 
     def process(self):

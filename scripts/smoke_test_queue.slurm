@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH --job-name=agcl-smoke
-#SBATCH --partition=gpu-l40s
+#SBATCH --job-name=agcl-smoke-queue
+#SBATCH --partition=gpu-l40s,gpu-h100
 #SBATCH --exclude=node07
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=8
@@ -13,7 +13,4 @@ set -euo pipefail
 
 cd /users/3171356m/A-GCL
 
-echo "=== nvidia-smi ==="
-nvidia-smi
-
-/users/3171356m/A-GCL/.venv/bin/python agcl_ABIDE.py --path data --name ABIDE --epochs 1 --eval_interval 1 --batch_size 32
+/users/3171356m/A-GCL/.venv/bin/python agcl_ABIDE_queue.py --path data --name ABIDE --epochs 2 --eval_interval 2 --batch_size 32

@@ -80,9 +80,12 @@ def run(args):
 
 
     my_transforms = Compose([set_tu_dataset_y_shape]) 
-    dataset = ABIDEDataset(args.path, args.name, transform=my_transforms)   
+    dataset = ABIDEDataset(args.path, args.name, transform=my_transforms)
 
     dataset.data.y = dataset.data.y.squeeze()
+
+    logging.info("N = %d (ASD = %d, NC = %d)", len(dataset),
+                 int((dataset.data.y == 1).sum()), int((dataset.data.y == 0).sum()))
 
     memory_bank = MemoryBank_Q(max_length=args.max_length, feature_dim=args.emb_dim, device=device)
 
@@ -204,7 +207,7 @@ def run(args):
                 memory_bank.push(new_features, 1)
 
             cr_loss = calc_regloss(x, x_aug, memory_bank.memory)
-            view_loss = model.calc_loss(x, x_aug) + (args.reg_lambda * reg) + args.cr_lambda * cr_loss
+            view_loss = model.calc_loss(x, x_aug) - (args.reg_lambda * reg) + args.cr_lambda * cr_loss
             view_loss_all += view_loss.item() * batch.num_graphs
             reg_all += reg.item()
             # gradient ascent formulation
@@ -237,8 +240,8 @@ def run(args):
             model_optimizer.step()
 
 
-        fin_model_loss = model_loss_all / len(dataloader)
-        fin_view_loss = view_loss_all / len(dataloader)
+        fin_model_loss = model_loss_all / (len(dataloader) * args.batch_size)
+        fin_view_loss = view_loss_all / (len(dataloader) * args.batch_size)
         fin_reg = reg_all / len(dataloader)
 
         logging.info('Epoch {}, Model Loss {}, View Loss {}, Reg {}'.format(epoch, fin_model_loss, fin_view_loss, fin_reg))

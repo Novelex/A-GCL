@@ -1,0 +1,9 @@
+=== nvidia-smi -q ECC section ===
+    ECC Errors
+        Volatile
+            SRAM Correctable                           : 0
+            SRAM Uncorrectable Parity                  : 0
+            SRAM Uncorrectable SEC-DED                 : 0
+            DRAM Correctable                           : 0
+cuda available: True
+device name: NVIDIA L40S
