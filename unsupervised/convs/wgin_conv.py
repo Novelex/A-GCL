@@ -3,7 +3,7 @@ from typing import Callable, Union
 import torch
 from torch import Tensor
 from torch_geometric.nn.conv import MessagePassing
-from torch_geometric.typing import OptPairTensor, Adj, Size
+from torch_geometric.typing import OptPairTensor, Adj, Size, OptTensor
 import torch.nn.functional as F
 
 from unsupervised.convs.inits import reset
@@ -34,7 +34,7 @@ class WGINConv(MessagePassing):
 		if isinstance(x, Tensor):
 			x: OptPairTensor = (x, x)
 
-		# propagate_type: (x: OptPairTensor)
+		# propagate_type: (x: OptPairTensor, edge_weight: OptTensor)
 		out = self.propagate(edge_index, x=x, edge_weight=edge_weight, size=size)
 
 		x_r = x[1]

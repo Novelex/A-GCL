@@ -17,7 +17,7 @@ from unsupervised.encoder import TUEncoder
 from unsupervised.learning import GInfoMinMax
 from unsupervised.view_learner import ViewLearner
 from unsupervised.utils import initialize_node_features, set_tu_dataset_y_shape
-from scipy import interp
+from numpy import interp
 
 
 def calc_regloss(z, aug, memory, temperature: float = 0.1, pos_only: bool = False):
@@ -144,6 +144,12 @@ def run(args):
     valid_spe_std_curve = []
     test_spe_std_curve = []
     train_spe_std_curve = []
+    valid_auc_curve = []
+    test_auc_curve = []
+    train_auc_curve = []
+    valid_auc_std_curve = []
+    test_auc_std_curve = []
+    train_auc_std_curve = []
 
 
     for epoch in range(1, args.epochs + 1):
@@ -198,7 +204,7 @@ def run(args):
                 memory_bank.push(new_features, 1)
 
             cr_loss = calc_regloss(x, x_aug, memory_bank.memory)
-            view_loss = model.calc_loss(x, x_aug) - (args.reg_lambda * reg) + args.cr_lambda * cr_loss
+            view_loss = model.calc_loss(x, x_aug) + (args.reg_lambda * reg) + args.cr_lambda * cr_loss
             view_loss_all += view_loss.item() * batch.num_graphs
             reg_all += reg.item()
             # gradient ascent formulation
@@ -224,7 +230,7 @@ def run(args):
             x_aug, _ = model(batch.batch, batch.x, batch.edge_index, None, batch_aug_edge_weight)
             cr_loss = calc_regloss(x, x_aug, memory_bank.memory)
 
-            model_loss = model.calc_loss(x, x_aug) - args.cr_lambda * cr_loss
+            model_loss = model.calc_loss(x, x_aug) + args.cr_lambda * cr_loss
             model_loss_all += model_loss.item() * batch.num_graphs
             # standard gradient descent formulation
             model_loss.backward()
@@ -269,6 +275,12 @@ def run(args):
             logging.info(
                 "Metric: spe Train_std: {} Val_std: {} Test_std: {}".format(train_score[7], val_score[7], test_score[7]))
 
+            logging.info(
+                "Metric: auc Train_mean: {} Val_mean: {} Test_mean: {}".format(train_score[8], val_score[8], test_score[8]))
+
+            logging.info(
+                "Metric: auc Train_std: {} Val_std: {} Test_std: {}".format(train_score[9], val_score[9], test_score[9]))
+
 
         train_f1_curve.append(train_score[2])
         valid_f1_curve.append(val_score[2])
@@ -290,7 +302,14 @@ def run(args):
         train_spe_std_curve.append(train_score[7])
         valid_spe_std_curve.append(val_score[7])
         test_spe_std_curve.append(test_score[7])
-    
+
+        train_auc_curve.append(train_score[8])
+        valid_auc_curve.append(val_score[8])
+        test_auc_curve.append(test_score[8])
+        train_auc_std_curve.append(train_score[9])
+        valid_auc_std_curve.append(val_score[9])
+        test_auc_std_curve.append(test_score[9])
+
 
         train_curve.append(train_score[0])
         valid_curve.append(val_score[0])
@@ -318,18 +337,24 @@ def run(args):
     best_spe_valid_epoch = np.argmax(np.array(valid_spe_curve))
     best_spe_test_epoch = np.argmax(np.array(test_spe_curve))
 
+    best_auc_train_epoch = np.nanargmax(np.array(train_auc_curve))
+    best_auc_valid_epoch = np.nanargmax(np.array(valid_auc_curve))
+    best_auc_test_epoch = np.nanargmax(np.array(test_auc_curve))
 
     logging.info('FinishedTraining!')
     logging.info('BestEpoch: {}'.format(best_val_epoch))
-    logging.info('BestTrainScore: acc_mean: {} acc_std: {} f1_mean: {} f1_std: {} sen_mean: {} sen_std: {} spe_mean: {} spe_std: {}'.format(best_train, train_std_curve[best_train_epoch], 
-                        train_f1_curve[best_f1_train_epoch], train_f1_std_curve[best_f1_train_epoch], train_sen_curve[best_sen_train_epoch], train_sen_std_curve[best_sen_train_epoch], 
-                                train_spe_curve[best_spe_train_epoch], train_spe_std_curve[best_spe_train_epoch]))
-    logging.info('BestValidationScore: acc_mean: {} acc_std: {} f1_mean: {} f1_std: {} sen_mean: {} sen_std: {} spe_mean: {} spe_std: {}'.format(valid_curve[best_val_epoch], valid_std_curve[best_val_epoch],
+    logging.info('BestTrainScore: acc_mean: {} acc_std: {} f1_mean: {} f1_std: {} sen_mean: {} sen_std: {} spe_mean: {} spe_std: {} auc_mean: {} auc_std: {}'.format(best_train, train_std_curve[best_train_epoch],
+                        train_f1_curve[best_f1_train_epoch], train_f1_std_curve[best_f1_train_epoch], train_sen_curve[best_sen_train_epoch], train_sen_std_curve[best_sen_train_epoch],
+                                train_spe_curve[best_spe_train_epoch], train_spe_std_curve[best_spe_train_epoch],
+                                train_auc_curve[best_auc_train_epoch], train_auc_std_curve[best_auc_train_epoch]))
+    logging.info('BestValidationScore: acc_mean: {} acc_std: {} f1_mean: {} f1_std: {} sen_mean: {} sen_std: {} spe_mean: {} spe_std: {} auc_mean: {} auc_std: {}'.format(valid_curve[best_val_epoch], valid_std_curve[best_val_epoch],
                         valid_f1_curve[best_f1_valid_epoch], valid_f1_std_curve[best_f1_valid_epoch], valid_sen_curve[best_sen_valid_epoch], valid_sen_std_curve[best_sen_valid_epoch],
-                                valid_spe_curve[best_spe_valid_epoch], valid_spe_std_curve[best_spe_valid_epoch]))
-    logging.info('BestTestScore: acc_mean: {} acc_std: {} f1_mean: {} f1_std: {} sen_mean: {} sen_std: {} spe_mean: {} spe_std: {}'.format(test_curve[best_test_epoch], test_std_curve[best_test_epoch],
+                                valid_spe_curve[best_spe_valid_epoch], valid_spe_std_curve[best_spe_valid_epoch],
+                                valid_auc_curve[best_auc_valid_epoch], valid_auc_std_curve[best_auc_valid_epoch]))
+    logging.info('BestTestScore: acc_mean: {} acc_std: {} f1_mean: {} f1_std: {} sen_mean: {} sen_std: {} spe_mean: {} spe_std: {} auc_mean: {} auc_std: {}'.format(test_curve[best_test_epoch], test_std_curve[best_test_epoch],
                         test_f1_curve[best_f1_test_epoch], test_f1_std_curve[best_f1_test_epoch], test_sen_curve[best_sen_test_epoch], test_sen_std_curve[best_sen_test_epoch],
-                                test_spe_curve[best_spe_test_epoch], test_spe_std_curve[best_spe_test_epoch]))
+                                test_spe_curve[best_spe_test_epoch], test_spe_std_curve[best_spe_test_epoch],
+                                test_auc_curve[best_auc_test_epoch], test_auc_std_curve[best_auc_test_epoch]))
 
     return valid_curve[best_val_epoch]
 

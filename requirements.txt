@@ -1,0 +1,19 @@
+# Core numerical / data stack
+numpy==1.26.4
+scipy==1.17.1
+pandas==2.3.3
+scikit-learn==1.9.0
+matplotlib==3.11.1
+seaborn==0.13.2
+
+# Deep learning stack (versions match the working grastiacl conda env, CUDA 12.1)
+torch==2.5.0
+torch_geometric==2.6.1
+torch_scatter==2.1.2
+torch_sparse==0.6.18
+
+# torch_scatter / torch_sparse do not have plain PyPI wheels for every
+# torch/CUDA/Python combo. Install torch first, then install these two
+# from the matching PyG wheel index, e.g.:
+#   pip install torch==2.5.0 --index-url https://download.pytorch.org/whl/cu121
+#   pip install torch_scatter torch_sparse -f https://data.pyg.org/whl/torch-2.5.0+cu121.html

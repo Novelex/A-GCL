@@ -95,7 +95,7 @@ class TUEncoder(torch.nn.Module):
 
 				if x is None:
 					x = torch.ones((batch.shape[0], 1)).to(device)
-				x, _ = self.forward(batch, x, edge_index, edge_weight)
+				x, _ = self.forward(batch, x, edge_index, None, edge_weight)
 
 				ret.append(x.cpu().numpy())
 				if is_rand_label:

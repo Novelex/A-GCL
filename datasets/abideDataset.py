@@ -40,87 +40,60 @@ class ABIDEDataset(InMemoryDataset):
         # Download to `self.raw_dir`.
         return
 
+    def _load_class(self, adj_folder, nf_folder, label):
+        path_adj = osp.join(self.raw_dir, adj_folder)
+        path_nf = osp.join(self.raw_dir, nf_folder)
+
+        adj_files = os.listdir(path_adj)
+
+        data_list = []
+        for file in adj_files:
+            nf_file = file.replace('_adj.mat', '_nf.mat')
+            if not osp.isfile(osp.join(path_nf, nf_file)):
+                continue
+
+            nf = sio.loadmat(osp.join(path_nf, nf_file))
+            x = nf['norm_matrix']
+            x = np.nan_to_num(x)
+            x = torch.Tensor(x)
+            # paper Sec. 2.1: node features min-max normalized to [0, 1]
+            # across all 3 channels
+            x_min, x_max = x.min(), x.max()
+            if x_max > x_min:
+                x = (x - x_min) / (x_max - x_min)
+
+            adj = sio.loadmat(osp.join(path_adj, file))
+            edge_index = adj['cropped_matrix']
+
+            edge_index = np.nan_to_num(edge_index)
+            edge_index_temp = sp.coo_matrix(edge_index)
+            edge_weight = torch.Tensor(edge_index_temp.data)
+            # paper Sec. 2.1: edge weights normalized to [-1, 1] by
+            # dividing by the max absolute value
+            edge_weight_max = edge_weight.abs().max()
+            if edge_weight_max > 0:
+                edge_weight = edge_weight / edge_weight_max
+
+            edge_index = torch.Tensor(edge_index)
+            edge_index = edge_index.nonzero(as_tuple=False).t().contiguous()
+
+            data = Data(x=x, edge_index=edge_index, edge_weight=edge_weight,
+                        y=label)
+
+            if self.pre_filter is not None and not self.pre_filter(data):
+                continue
+            if self.pre_transform is not None:
+                data = self.pre_transform(data)
+            data_list.append(data)
+
+        return data_list
+
     def process(self):
-        path1 = osp.join(self.raw_dir, 'ASD_ADJ')
-        path1_nf = osp.join(self.raw_dir, 'ASD_NF')
-
-        files = os.listdir(path1)  
-        files_nf_ASD = os.listdir(path1_nf)
-
-        data_list_ASD = []
-        for file in files:  
-            if 'positive' in file:
-                
-                digit_filter = filter(str.isdigit, file)
-                digit_list = list(digit_filter)
-                digit_str = "".join(digit_list[:-3])
-
-                for file_nf in files_nf_ASD:
-                    if digit_str in file_nf:
-                        nf = sio.loadmat(osp.join(path1_nf, file_nf))  
-                        x = nf['alff_value_cache']
-                        x = np.nan_to_num(x)
-                        x = torch.Tensor(x)
-
-                adj = sio.loadmat(osp.join(path1, file))
-                edge_index = adj['corr_each_sub']
-
-                edge_index = np.nan_to_num(edge_index)
-                edge_index_temp = sp.coo_matrix(edge_index)
-                edge_weight = torch.Tensor(edge_index_temp.data)
-
-                edge_index = torch.Tensor(edge_index)  
-                edge_index = edge_index.nonzero(as_tuple=False).t().contiguous()
-                num_nodes = int(edge_index.max()) + 1
-
-                data = Data(x=x, edge_index=edge_index, edge_weight=edge_weight,
-                            y=0)
-
-                if self.pre_filter is not None and not self.pre_filter(data):
-                    continue
-                if self.pre_transform is not None:
-                    data = self.pre_transform(data)
-                data_list_ASD.append(data)
-      
-        path2 = osp.join(self.raw_dir, 'HC_ADJ')
-        path2_nf = osp.join(self.raw_dir, 'HC_NF')
-
-        files = os.listdir(path2)  
-        files_nf_TC = os.listdir(path2_nf)
-
-        data_list_TC = []
-        for file in files: 
-            if 'positive' in file:
-                digit_filter = filter(str.isdigit, file)
-                digit_list = list(digit_filter)
-                digit_str = "".join(digit_list[:-3])
-                for file_nf in files_nf_TC:
-                    if digit_str in file_nf:
-                        nf = sio.loadmat(osp.join(path2_nf, file_nf)) 
-                        x = nf['alff_value_cache']
-                        x = np.nan_to_num(x)
-                        x = torch.Tensor(x)
-                adj = sio.loadmat(osp.join(path2, file))  
-                edge_index = adj['corr_each_sub']
-                edge_index = np.nan_to_num(edge_index)
-                edge_index_temp = sp.coo_matrix(edge_index)
-                edge_weight = torch.Tensor(edge_index_temp.data)
-
-                edge_index = torch.Tensor(edge_index) 
-                edge_index = edge_index.nonzero(as_tuple=False).t().contiguous()
-                num_nodes = int(edge_index.max()) + 1
-
-                data = Data(x=x, edge_index=edge_index, edge_weight=edge_weight, 
-                            y=1)
-
-                if self.pre_filter is not None and not self.pre_filter(data):
-                    continue
-                if self.pre_transform is not None:
-                    data = self.pre_transform(data)
-                data_list_TC.append(data)
+        data_list_ASD = self._load_class('ASD_ADJ', 'ASD_NF', label=1)
+        data_list_TC = self._load_class('NC_ADJ', 'NC_NF', label=0)
 
         data_list = data_list_ASD + data_list_TC
-        
+
         torch.save(self.collate(data_list),
                 osp.join(self.processed_dir, 'data.pt'))
 

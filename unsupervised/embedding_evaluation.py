@@ -17,10 +17,10 @@ import seaborn as sns
 from mpl_toolkits.mplot3d import Axes3D
 from sklearn import decomposition
 
-from scipy import interp
+from numpy import interp
 
 import torch.nn.functional as F
-from sklearn.metrics import precision_recall_curve, average_precision_score,roc_curve, auc, precision_score, recall_score, f1_score, confusion_matrix, accuracy_score
+from sklearn.metrics import precision_recall_curve, average_precision_score,roc_curve, auc, precision_score, recall_score, f1_score, confusion_matrix, accuracy_score, roc_auc_score
 import time
 
 def get_emb_y(loader, encoder, device, dtype='numpy', is_rand_label=False):
@@ -177,14 +177,13 @@ class EmbeddingEvaluation():
 
 	def embedding_evaluation(self, encoder, train_loader, valid_loader, test_loader, flag):
 		encoder.eval()
-		if flag:
-			val_start = time.time()
+		val_start = time.time()
 		train_emb, train_y = get_emb_y(train_loader, encoder, self.device, is_rand_label=self.is_rand_label)
 		val_emb, val_y = get_emb_y(valid_loader, encoder, self.device, is_rand_label=self.is_rand_label)
 		test_emb, test_y = get_emb_y(test_loader, encoder, self.device, is_rand_label=self.is_rand_label)
+		val_end = time.time()
+		running_time = val_end-val_start
 		if flag:
-			val_end = time.time()
-			running_time = val_end-val_start
 			print('validation time cost : %.5f sec' %running_time)
 
 		if 'classification' in self.task_type:
@@ -220,10 +219,24 @@ class EmbeddingEvaluation():
 		val_f1_score = f1_score(val_y, val_raw)
 		test_f1_score = f1_score(test_y, test_raw)
 
+		if hasattr(self.classifier, 'decision_function'):
+			train_dec = self.classifier.decision_function(train_emb)
+			val_dec = self.classifier.decision_function(val_emb)
+			test_dec = self.classifier.decision_function(test_emb)
+			try:
+				train_auc = roc_auc_score(np.ravel(train_y), train_dec)
+				val_auc = roc_auc_score(np.ravel(val_y), val_dec)
+				test_auc = roc_auc_score(np.ravel(test_y), test_dec)
+			except ValueError:
+				train_auc = val_auc = test_auc = float('nan')
+		else:
+			train_auc = val_auc = test_auc = float('nan')
 
-		return train_score, val_score, test_score, train_f1_score, val_f1_score, test_f1_score, train_sen_score, val_sen_score, test_sen_score, train_spe_score, val_spe_score, test_spe_score, running_time																			
+		return (train_score, val_score, test_score, train_f1_score, val_f1_score, test_f1_score,
+				train_sen_score, val_sen_score, test_sen_score, train_spe_score, val_spe_score, test_spe_score,
+				train_auc, val_auc, test_auc, running_time)
 
-	def kf_embedding_evaluation(self, encoder, dataset, folds=10, batch_size=128, flag=False):
+	def kf_embedding_evaluation(self, encoder, dataset, folds=5, batch_size=128, flag=False):
 		kf_train = []
 		kf_val = []
 		kf_test = []
@@ -236,12 +249,13 @@ class EmbeddingEvaluation():
 		kf_train_spe = []
 		kf_val_spe = []
 		kf_test_spe = []
+		kf_train_auc = []
+		kf_val_auc = []
+		kf_test_auc = []
 		running_times = []
 		
 		kf = KFold(n_splits=folds, shuffle=True, random_state=None)
 		for k_id, (train_val_index, test_index) in enumerate(kf.split(dataset)):
-			test_id.append(test_index)
-
 			test_dataset = [dataset[int(i)] for i in list(test_index)]
 			train_index, val_index = train_test_split(train_val_index, test_size=0.2, random_state=None)
 
@@ -253,14 +267,20 @@ class EmbeddingEvaluation():
 			test_loader = DataLoader(test_dataset, batch_size=batch_size)
 
 			# embedding_evaluation -> get_emb_y -> encoder.get_embeddings -> forward
-			train_score, val_score, test_score, train_f1, val_f1, test_f1, train_sen, val_sen, test_sen, train_spe, val_spe, test_spe, fpr, tpr, running_time= self.embedding_evaluation(encoder, 
-	
+			(train_score, val_score, test_score,
+			 train_f1, val_f1, test_f1,
+			 train_sen, val_sen, test_sen,
+			 train_spe, val_spe, test_spe,
+			 train_auc, val_auc, test_auc,
+			 running_time) = self.embedding_evaluation(
+				encoder, train_loader, valid_loader, test_loader, flag)
+
 			running_times.append(running_time)
-	
+
 			kf_train_f1.append(train_f1)
 			kf_val_f1.append(val_f1)
 			kf_test_f1.append(test_f1)
-	
+
 			kf_train_spe.append(train_spe)
 			kf_val_spe.append(val_spe)
 			kf_test_spe.append(test_spe)
@@ -273,21 +293,28 @@ class EmbeddingEvaluation():
 			kf_val_sen.append(val_sen)
 			kf_test_sen.append(test_sen)
 
+			kf_train_auc.append(train_auc)
+			kf_val_auc.append(val_auc)
+			kf_test_auc.append(test_auc)
+
 		mean_time = np.array(running_times).mean()
 		print("mean validation time %.5f:\n"% mean_time)
 
 		kf_train_ms = [np.array(kf_train).mean(), np.array(kf_train).std(), np.array(kf_train_f1).mean(),
 						np.array(kf_train_f1).std(),
 						np.array(kf_train_sen).mean(), np.array(kf_train_sen).std(), np.array(kf_train_spe).mean(),
-						np.array(kf_train_spe).std()]
+						np.array(kf_train_spe).std(),
+						np.nanmean(kf_train_auc), np.nanstd(kf_train_auc)]
 		kf_val_ms = [np.array(kf_val).mean(), np.array(kf_val).std(), np.array(kf_val_f1).mean(),
 						np.array(kf_val_f1).std(),
 						np.array(kf_val_sen).mean(), np.array(kf_val_sen).std(), np.array(kf_val_spe).mean(),
-						np.array(kf_val_spe).std()]
+						np.array(kf_val_spe).std(),
+						np.nanmean(kf_val_auc), np.nanstd(kf_val_auc)]
 		kf_test_ms = [np.array(kf_test).mean(), np.array(kf_test).std(), np.array(kf_test_f1).mean(),
 						np.array(kf_test_f1).std(),
 						np.array(kf_test_sen).mean(), np.array(kf_test_sen).std(), np.array(kf_test_spe).mean(),
-						np.array(kf_test_spe).std()]
+						np.array(kf_test_spe).std(),
+						np.nanmean(kf_test_auc), np.nanstd(kf_test_auc)]
 
 		return kf_train_ms, kf_val_ms, kf_test_ms
 
