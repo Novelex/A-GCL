@@ -1,0 +1,62 @@
+data/ -- connecting via symlink with shared Space
+
+requirements
+scipy dependencies
+torch for cuds
+
+abideDataset and connection with data/raw
+
+==================== CRASHES =====================
+
+==================== aug13.pdf: 7 view-learner/memory-bank bugs =====================
+
+bug 1 -- augmented edge weight discarded E
+issue: the augmented view's edge_weight was set to the sigmoid mask alone (torch.sigmoid(gate_inputs)), never multiplied by the real edge_weight (E, the PCC correlation). the mask is always in (0,1), strictly positive, so every negative correlation in the real data (we measured down to about -0.5 on real subjects) got silently replaced by a positive number in the augmented view. this happened on both the view-learner's own forward pass and the model's forward pass, every single batch, for the entire 200-epoch run -- meaning the "augmented graph" the encoder contrasted against never carried real connectivity strength or sign, only a drop probability. this is likely the single most consequential bug of the seven, since it corrupts one whole side of every contrastive pair from epoch 1 onward.
+fix: aug_edge_weight = batch.edge_weight * edge_mask, applied identically in both the view-learner update half-step and the model update half-step, so the augmented graph now really is "the real graph with some edges dropped/attenuated," matching the paper's A-dot-B-dot-E construction (Eq. 1: G-tilde = (V, A-hadamard-B, X, E)).
+files: agcl_ABIDE.py, agcl_ABIDE_queue.py
+
+bug 2 -- asymmetric mask
+issue: because edge_index stores both directed entries (i,j) and (j,i) separately for what is supposed to be an undirected correlation graph, and the view learner built its edge embedding as concat([node_emb[src], node_emb[dst]]), the MLP saw a different input for each direction of the same edge -- [emb_i, emb_j] versus [emb_j, emb_i] -- and so produced two different, uncorrelated logits, which were then given two independent Gumbel-noise draws. the result: edge i->j could be kept while j->i was dropped in the same augmented graph, which isn't a valid undirected graph at all -- just directional noise injected into what should be one symmetric decision per node pair, every batch.
+fix: added compute_reverse_index() (maps each directed edge to the position of its reverse via a sort + searchsorted lookup, works regardless of edge ordering) and symmetrize_edge_logits() (averages a value with its reverse-edge counterpart). first pass just symmetrized the noisy post-sigmoid logits; refined afterward (see "noise sharing" below) to draw one shared noise value per pair instead of averaging two independent draws.
+files: unsupervised/view_learner.py, agcl_ABIDE.py, agcl_ABIDE_queue.py
+
+bug 3 -- StandardScaler outside GridSearchCV
+issue: self.classifier = make_pipeline(StandardScaler(), GridSearchCV(...)) fit the scaler once on the entire training set before GridSearchCV's own 5-fold inner cross-validation ran. that means every inner validation fold's mean/std were baked into the scaling used to evaluate that same fold -- a classic, well-known leakage pattern that can make the SVM's C-parameter search look more confident than it should, since the "held-out" fold was never really held out of the preprocessing.
+fix: wrapped StandardScaler and the classifier together inside one sklearn Pipeline (named steps 'scaler'/'clf'), then wrapped GridSearchCV around that whole pipeline instead of around the bare classifier. now each of the 5 inner folds fits and applies its own independent scaler. param grid key updated from 'C' to 'clf__C' to match the pipeline's step-prefixed naming.
+files: unsupervised/embedding_evaluation.py
+
+bug 4 -- regularizer computed from the wrong quantity (superseded, see "regularizer" section below)
+issue: reg (the edge-drop regularizer term) was computed from the sampled, Gumbel-noised mask (1 - batch_aug_edge_weight) rather than the deterministic keep-probability -- meaning the one number used to monitor whether the view learner is converging toward a sensible drop rate carried an extra, pointless layer of per-batch sampling noise on top of the real signal.
+fix (first pass): reg computed from mu = sigmoid(symmetrized edge_logits) instead of the sampled mask, removing the sampling noise. NOTE: this first-pass fix kept the old drop-probability convention (reg = mean(1-mu)); it was revisited and changed again afterward once the regularizer's sign/quantity was itself found to be wrong -- see the dedicated "regularizer: paper-literal R(mu)" entry below, which is the version actually in the code now.
+files: agcl_ABIDE.py, agcl_ABIDE_queue.py
+
+bug 5 -- memory queue push-before-loss
+issue: memory_bank.push() ran before cr_loss = calc_regloss(...) was computed, both in the view-learner half-step and (implicitly, since the object is shared) visible to the model half-step too. that means a batch's own 32 just-computed augmented embeddings were already sitting inside the 256-slot memory bank at the moment that same batch's anchors were scored against it -- so every subject was, for one step, compared against itself as if it were a "different" example.
+fix: reordered the batch loop so both the view-learner update and the model update read memory_bank.memory as it stood *before* this batch, and the push() call happens once, at the very end of the batch, after both optimizer.step() calls.
+files: agcl_ABIDE_queue.py
+
+bug 6 -- no same-subject exclusion across epochs
+issue: the memory bank is a persistent FIFO queue that is never cleared between epochs. with 956 subjects, batch_size=32, drop_last=True there are 29 batches/epoch; with max_length=256 the queue only holds about 8 batches' worth of subjects at once. a subject drawn near the *end* of one epoch's random shuffle can still have its embedding sitting in the queue when the *next* epoch's shuffle happens to draw that same subject again *early* -- in that narrow window, a subject's own stale embedding from the previous epoch counts as a negative against its own current embedding. (within a single epoch this cannot happen -- each subject appears in exactly one batch per epoch, and bug 5's fix means a batch is never compared against itself.)
+fix: added a stable, globally-unique subject_id (0..955) to every graph in datasets/abideDataset.py (assigned once, at process() time, after sorting filenames for determinism). MemoryBank_Q now tracks a parallel subject_ids tensor alongside the embeddings. calc_regloss builds a mask excluding any memory slot whose subject_id matches the current anchor's subject_id from that anchor's negative pool.
+files: datasets/abideDataset.py, agcl_ABIDE_queue.py
+
+bug 7 -- numerically unstable memory loss
+issue: log(exp(m_logits).sum(1)) computes exp() of up to 256 similarity scores and then takes the log of their sum -- if any similarity is large, exp() can overflow to inf before the log ever gets a chance to bring it back down, producing NaN losses with no warning.
+fix: replaced with torch.logsumexp(m_logits, dim=1), which computes the same mathematical quantity via the numerically-stable log-sum-exp trick (subtracting the max before exponentiating) instead of doing exp() then log() naively.
+files: agcl_ABIDE_queue.py
+
+==================== regularizer: paper-literal R(mu), and shared noise sampling =====================
+
+background: a GitHub reviewer checked the pushed commit (a550796) and flagged that the regularizer fix above (bug 4) still didn't match the paper. this reopened a debate this project already had once before (see the earlier reg_lambda sign investigation): the paper's Eq. defines R(mu) = mean(mu) -- the mean KEEP-probability -- and states it should be minimized to encourage dropping. the code's post-bug-4 version instead used mean(1-mu) (drop-probability). mathematically, "-lambda * mean(mu)" and "+lambda * mean(1-mu)" only differ by a constant and produce identical gradients -- so this wasn't really a different bug from the reg_lambda sign question already revisited earlier in the project, it was the same underlying tension resurfacing: the paper's literal equation describes an objective with nothing opposing the drop pressure (previously observed, empirically, to make Reg climb rather than converge), versus the AD-GCL-style "budget" reading that keeps Reg bounded and matches what the officially released code (and, presumably, the actual 80.65% result) does.
+decision: told explicitly to follow the paper. reg now equals mean(mu) directly (edge_keep_prob = mu, matching the paper's own R(mu) notation exactly), with the surrounding "- reg_lambda * reg" sign in view_loss left unchanged -- because ascending "Loss_c - lambda*mean(mu)" already pushes mu down (more dropping) with no sign flip needed, once you actually substitute R(mu)=mean(mu) into the formula instead of R=mean(1-mu). this is a real, deliberate policy reversal from the earlier "revert to budget-style" decision -- if Reg climbs steadily toward collapse over a full run (as it was observed to do the first time this convention was tried), that is now an accepted, documented consequence of choosing paper-fidelity over the AD-GCL budget reading, not a new bug.
+separately fixed: the symmetrize_edge_logits() approach for bug 2 achieved B_ij = B_ji by averaging two *independently drawn* Gumbel-noise samples (one per direction) -- correct for the final mask being symmetric, but not the same noise distribution as drawing one shared value per undirected pair. added sample_symmetric_logistic_noise(), which uses the same reverse-edge index to draw noise only for a canonical direction of each pair and broadcast it to both, so (i,j) and (j,i) now share one true noise draw rather than the average of two.
+files: unsupervised/view_learner.py, agcl_ABIDE.py, agcl_ABIDE_queue.py
+
+==================== deliberately left unfixed (conscious decisions, not misses) =====================
+
+- memory bank cold-start zero rows still count as negatives for the first ~8 batches until the queue fills once (max_length / batch_size)
+- KFold/train_test_split still use random_state=None -- fresh, non-reproducible, non-stratified splits every evaluation -- because the project decided to match the paper's own (also non-reproducible) evaluation protocol rather than substitute a stricter one
+- best-epoch selection still reads argmax directly off the test curve per metric, so BestTestScore mixes results from different epochs -- same "match the paper's protocol" decision as above
+- evaluation still uses the encoder's pooled representation (h), not the post-projection-head representation (z) -- standard SimCLR practice discards the projection head for downstream tasks; a GitHub reviewer disagrees, this is being treated as an open, testable design question rather than a bug
+- WGINConv's message-level ReLU, TUEncoder's node-wise F.normalize before pooling, and the two undocumented contrastive temperatures (0.2 batch loss, 0.1 memory loss) are all deviations from the paper's literal formulas, flagged as candidate ablations, not changed
+
