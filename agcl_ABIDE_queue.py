@@ -15,7 +15,7 @@ from datasets import TUEvaluator
 from unsupervised.embedding_evaluation import EmbeddingEvaluation, get_emb_y
 from unsupervised.encoder import TUEncoder
 from unsupervised.learning import GInfoMinMax
-from unsupervised.view_learner import ViewLearner, symmetrize_edge_logits
+from unsupervised.view_learner import ViewLearner, symmetrize_edge_logits, compute_reverse_index, sample_symmetric_logistic_noise
 from unsupervised.utils import initialize_node_features, set_tu_dataset_y_shape
 from numpy import interp
 
@@ -179,27 +179,26 @@ def run(args):
         
             x, _ = model(batch.batch, batch.x, batch.edge_index, None, batch.edge_weight)
             edge_logits = view_learner(batch.batch, batch.x, batch.edge_index, None, batch.edge_weight)
-            sym_logits = symmetrize_edge_logits(batch.edge_index, edge_logits)
+            rev_idx = compute_reverse_index(batch.edge_index)
+            sym_logits = symmetrize_edge_logits(batch.edge_index, edge_logits, rev_idx)
             mu = torch.sigmoid(sym_logits)
 
             temperature = 1.0
             bias = 0.0 + 0.0001  # If bias is 0, we run into problems
-            eps = (bias - (1 - bias)) * torch.rand(sym_logits.size()) + (1 - bias)
-            eps = eps.to(device)
-            gate_inputs = torch.log(eps) - torch.log(1 - eps)
-            gate_inputs = (gate_inputs + sym_logits) / temperature
-            gate_inputs = symmetrize_edge_logits(batch.edge_index, gate_inputs)
+            noise = sample_symmetric_logistic_noise(batch.edge_index, rev_idx, bias=bias, device=device)
+            gate_inputs = (noise + sym_logits) / temperature
             edge_mask = torch.sigmoid(gate_inputs)
             aug_edge_weight = batch.edge_weight * edge_mask
 
             x_aug, _ = model(batch.batch, batch.x, batch.edge_index, None, aug_edge_weight)
-            # regularization -- from the deterministic keep-probability mu, not the sampled mask
+            # regularization -- paper's R(mu) = mean(mu), the keep-probability,
+            # minimized (via the ascended -reg_lambda*reg term) to encourage dropping
             row, col = batch.edge_index
             edge_batch = batch.batch[row]
-            edge_drop_out_prob = 1 - mu
+            edge_keep_prob = mu
 
             uni, edge_batch_num = edge_batch.unique(return_counts=True)
-            sum_pe = scatter(edge_drop_out_prob, edge_batch, reduce="sum")
+            sum_pe = scatter(edge_keep_prob, edge_batch, reduce="sum")
             reg = []
             for b_id in range(args.batch_size):
                 if b_id in uni:
@@ -231,12 +230,10 @@ def run(args):
 
             with torch.no_grad():
                 edge_logits = view_learner(batch.batch, batch.x, batch.edge_index, None, batch.edge_weight)
-                sym_logits = symmetrize_edge_logits(batch.edge_index, edge_logits)
-                eps = (bias - (1 - bias)) * torch.rand(sym_logits.size()) + (1 - bias)
-                eps = eps.to(device)
-                gate_inputs = torch.log(eps) - torch.log(1 - eps)
-                gate_inputs = (gate_inputs + sym_logits) / temperature
-                gate_inputs = symmetrize_edge_logits(batch.edge_index, gate_inputs)
+                rev_idx = compute_reverse_index(batch.edge_index)
+                sym_logits = symmetrize_edge_logits(batch.edge_index, edge_logits, rev_idx)
+                noise = sample_symmetric_logistic_noise(batch.edge_index, rev_idx, bias=bias, device=device)
+                gate_inputs = (noise + sym_logits) / temperature
                 edge_mask = torch.sigmoid(gate_inputs)
             aug_edge_weight = batch.edge_weight * edge_mask
 
