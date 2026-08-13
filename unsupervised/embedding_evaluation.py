@@ -4,7 +4,7 @@ import torch
 from sklearn.model_selection import GridSearchCV, KFold
 from sklearn.model_selection import train_test_split
 from sklearn.multioutput import MultiOutputClassifier
-from sklearn.pipeline import make_pipeline
+from sklearn.pipeline import make_pipeline, Pipeline
 from sklearn.preprocessing import StandardScaler
 from torch_geometric.data import DataLoader
 
@@ -109,10 +109,12 @@ class EmbeddingEvaluation():
 
 	def ee_binary_classification(self, train_emb, train_y, val_emb, val_y, test_emb, test_y):
 		if self.param_search:
-			params_dict = {'C': [0.001, 0.01,0.1,1,10,100,1000]}
-			self.classifier = make_pipeline(StandardScaler(),
-			                                GridSearchCV(self.base_classifier, params_dict, cv=5, scoring=self.gscv_scoring_name, n_jobs=16, verbose=0)
-			                                )
+			# scaler must live INSIDE the searched pipeline, so each inner CV
+			# fold fits its own scaler -- fitting it outside leaks validation-
+			# fold statistics into the scaling used to score that fold.
+			inner_pipeline = Pipeline([('scaler', StandardScaler()), ('clf', self.base_classifier)])
+			params_dict = {'clf__C': [0.001, 0.01, 0.1, 1, 10, 100, 1000]}
+			self.classifier = GridSearchCV(inner_pipeline, params_dict, cv=5, scoring=self.gscv_scoring_name, n_jobs=16, verbose=0)
 		else:
 			self.classifier = make_pipeline(StandardScaler(), self.base_classifier)
 

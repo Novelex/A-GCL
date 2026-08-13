@@ -44,7 +44,7 @@ class ABIDEDataset(InMemoryDataset):
         path_adj = osp.join(self.raw_dir, adj_folder)
         path_nf = osp.join(self.raw_dir, nf_folder)
 
-        adj_files = os.listdir(path_adj)
+        adj_files = sorted(os.listdir(path_adj))
 
         data_list = []
         for file in adj_files:
@@ -99,6 +99,11 @@ class ABIDEDataset(InMemoryDataset):
         data_list_TC = self._load_class('NC_ADJ', 'NC_NF', label=0)
 
         data_list = data_list_ASD + data_list_TC
+
+        # stable, globally-unique per-subject id, used by the memory bank to
+        # exclude a subject's own (past-epoch) embedding from its own negatives
+        for i, data in enumerate(data_list):
+            data.subject_id = torch.tensor([i], dtype=torch.long)
 
         torch.save(self.collate(data_list),
                 osp.join(self.processed_dir, 'data.pt'))

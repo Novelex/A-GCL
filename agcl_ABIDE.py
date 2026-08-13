@@ -14,7 +14,7 @@ from datasets import TUEvaluator
 from unsupervised.embedding_evaluation import EmbeddingEvaluation, get_emb_y
 from unsupervised.encoder import TUEncoder
 from unsupervised.learning import GInfoMinMax
-from unsupervised.view_learner import ViewLearner
+from unsupervised.view_learner import ViewLearner, symmetrize_edge_logits
 from unsupervised.utils import initialize_node_features, set_tu_dataset_y_shape
 from numpy import interp
 
@@ -127,19 +127,24 @@ def run(args):
         
             x, _ = model(batch.batch, batch.x, batch.edge_index, None, batch.edge_weight)
             edge_logits = view_learner(batch.batch, batch.x, batch.edge_index, None, batch.edge_weight)
+            sym_logits = symmetrize_edge_logits(batch.edge_index, edge_logits)
+            mu = torch.sigmoid(sym_logits)
+
             temperature = 1.0
             bias = 0.0 + 0.0001  # If bias is 0, we run into problems
-            eps = (bias - (1 - bias)) * torch.rand(edge_logits.size()) + (1 - bias)
+            eps = (bias - (1 - bias)) * torch.rand(sym_logits.size()) + (1 - bias)
+            eps = eps.to(device)
             gate_inputs = torch.log(eps) - torch.log(1 - eps)
-            gate_inputs = gate_inputs.to(device)
-            gate_inputs = (gate_inputs + edge_logits) / temperature
-            batch_aug_edge_weight = torch.sigmoid(gate_inputs).squeeze()
+            gate_inputs = (gate_inputs + sym_logits) / temperature
+            gate_inputs = symmetrize_edge_logits(batch.edge_index, gate_inputs)
+            edge_mask = torch.sigmoid(gate_inputs)
+            aug_edge_weight = batch.edge_weight * edge_mask
 
-            x_aug, _ = model(batch.batch, batch.x, batch.edge_index, None, batch_aug_edge_weight)
-            # regularization
+            x_aug, _ = model(batch.batch, batch.x, batch.edge_index, None, aug_edge_weight)
+            # regularization -- from the deterministic keep-probability mu, not the sampled mask
             row, col = batch.edge_index
             edge_batch = batch.batch[row]
-            edge_drop_out_prob = 1 - batch_aug_edge_weight
+            edge_drop_out_prob = 1 - mu
 
             uni, edge_batch_num = edge_batch.unique(return_counts=True)
             sum_pe = scatter(edge_drop_out_prob, edge_batch, reduce="sum")
@@ -166,19 +171,21 @@ def run(args):
             model.train()
             view_learner.eval()
             model.zero_grad()
-            
+
             x, _ = model(batch.batch, batch.x, batch.edge_index, None, batch.edge_weight)
-            edge_logits = view_learner(batch.batch, batch.x, batch.edge_index, None, batch.edge_weight)
 
-            temperature = 1.0
-            bias = 0.0 + 0.0001  # If bias is 0, we run into problems
-            eps = (bias - (1 - bias)) * torch.rand(edge_logits.size()) + (1 - bias)
-            gate_inputs = torch.log(eps) - torch.log(1 - eps)
-            gate_inputs = gate_inputs.to(device)
-            gate_inputs = (gate_inputs + edge_logits) / temperature
-            batch_aug_edge_weight = torch.sigmoid(gate_inputs).squeeze().detach()
+            with torch.no_grad():
+                edge_logits = view_learner(batch.batch, batch.x, batch.edge_index, None, batch.edge_weight)
+                sym_logits = symmetrize_edge_logits(batch.edge_index, edge_logits)
+                eps = (bias - (1 - bias)) * torch.rand(sym_logits.size()) + (1 - bias)
+                eps = eps.to(device)
+                gate_inputs = torch.log(eps) - torch.log(1 - eps)
+                gate_inputs = (gate_inputs + sym_logits) / temperature
+                gate_inputs = symmetrize_edge_logits(batch.edge_index, gate_inputs)
+                edge_mask = torch.sigmoid(gate_inputs)
+            aug_edge_weight = batch.edge_weight * edge_mask
 
-            x_aug, _ = model(batch.batch, batch.x, batch.edge_index, None, batch_aug_edge_weight)
+            x_aug, _ = model(batch.batch, batch.x, batch.edge_index, None, aug_edge_weight)
 
             model_loss = model.calc_loss(x, x_aug)
             model_loss_all += model_loss.item() * batch.num_graphs

@@ -15,12 +15,12 @@ from datasets import TUEvaluator
 from unsupervised.embedding_evaluation import EmbeddingEvaluation, get_emb_y
 from unsupervised.encoder import TUEncoder
 from unsupervised.learning import GInfoMinMax
-from unsupervised.view_learner import ViewLearner
+from unsupervised.view_learner import ViewLearner, symmetrize_edge_logits
 from unsupervised.utils import initialize_node_features, set_tu_dataset_y_shape
 from numpy import interp
 
 
-def calc_regloss(z, aug, memory, temperature: float = 0.1, pos_only: bool = False):
+def calc_regloss(z, aug, memory, memory_subject_ids, anchor_subject_ids, temperature: float = 0.1, pos_only: bool = False):
 
 	device = z.device
 	b = z.size(0)
@@ -34,10 +34,13 @@ def calc_regloss(z, aug, memory, temperature: float = 0.1, pos_only: bool = Fals
 	pos_mask.fill_diagonal_(True)
 
 	m_logits = torch.einsum("if, jf -> ij", z, memory) / temperature
-	exp_logits = torch.exp(m_logits)
-	log_prob = logits if pos_only else logits - torch.log(exp_logits.sum(1, keepdim=True))
+	# a subject's own (earlier-epoch) embedding must not count as its own negative
+	same_subject = anchor_subject_ids.view(-1, 1) == memory_subject_ids.view(1, -1)
+	m_logits = m_logits.masked_fill(same_subject, float('-inf'))
+
+	log_prob = logits if pos_only else logits - torch.logsumexp(m_logits, dim=1, keepdim=True)
 	# compute mean of log-likelihood over positives
-	mean_log_prob_pos = (pos_mask * log_prob).sum(1) 
+	mean_log_prob_pos = (pos_mask * log_prob).sum(1)
 
 	loss = -mean_log_prob_pos.mean()
 
@@ -48,17 +51,23 @@ def calc_regloss(z, aug, memory, temperature: float = 0.1, pos_only: bool = Fals
 class MemoryBank_Q:
     def __init__(self, max_length, feature_dim, device):
         self.max_length = max_length
-        self.memory = torch.zeros((max_length, feature_dim), requires_grad=True).to(device)
+        self.memory = torch.zeros((max_length, feature_dim)).to(device)
+        self.subject_ids = torch.full((max_length,), -1, dtype=torch.long, device=device)
         self.current_index = 0
 
-    def push(self, features, batch_size):
+    def push(self, features, subject_ids, batch_size):
+        features = features.detach()
+        subject_ids = subject_ids.detach()
         if (self.current_index + batch_size) < self.max_length:
             self.memory.data[self.current_index: self.current_index + batch_size,:] = features
+            self.subject_ids[self.current_index: self.current_index + batch_size] = subject_ids
             self.current_index = (self.current_index + batch_size) % self.max_length
-        else: 
+        else:
             current_index = batch_size - (self.max_length - self.current_index)
             self.memory.data[self.current_index: ,:] = features[:self.max_length - self.current_index, :]
+            self.subject_ids[self.current_index:] = subject_ids[:self.max_length - self.current_index]
             self.memory.data[ :current_index, :] = features[self.max_length - self.current_index: , :]
+            self.subject_ids[:current_index] = subject_ids[self.max_length - self.current_index:]
             self.current_index = current_index
 
 
@@ -170,19 +179,24 @@ def run(args):
         
             x, _ = model(batch.batch, batch.x, batch.edge_index, None, batch.edge_weight)
             edge_logits = view_learner(batch.batch, batch.x, batch.edge_index, None, batch.edge_weight)
+            sym_logits = symmetrize_edge_logits(batch.edge_index, edge_logits)
+            mu = torch.sigmoid(sym_logits)
+
             temperature = 1.0
             bias = 0.0 + 0.0001  # If bias is 0, we run into problems
-            eps = (bias - (1 - bias)) * torch.rand(edge_logits.size()) + (1 - bias)
+            eps = (bias - (1 - bias)) * torch.rand(sym_logits.size()) + (1 - bias)
+            eps = eps.to(device)
             gate_inputs = torch.log(eps) - torch.log(1 - eps)
-            gate_inputs = gate_inputs.to(device)
-            gate_inputs = (gate_inputs + edge_logits) / temperature
-            batch_aug_edge_weight = torch.sigmoid(gate_inputs).squeeze()
+            gate_inputs = (gate_inputs + sym_logits) / temperature
+            gate_inputs = symmetrize_edge_logits(batch.edge_index, gate_inputs)
+            edge_mask = torch.sigmoid(gate_inputs)
+            aug_edge_weight = batch.edge_weight * edge_mask
 
-            x_aug, _ = model(batch.batch, batch.x, batch.edge_index, None, batch_aug_edge_weight)
-            # regularization
+            x_aug, _ = model(batch.batch, batch.x, batch.edge_index, None, aug_edge_weight)
+            # regularization -- from the deterministic keep-probability mu, not the sampled mask
             row, col = batch.edge_index
             edge_batch = batch.batch[row]
-            edge_drop_out_prob = 1 - batch_aug_edge_weight
+            edge_drop_out_prob = 1 - mu
 
             uni, edge_batch_num = edge_batch.unique(return_counts=True)
             sum_pe = scatter(edge_drop_out_prob, edge_batch, reduce="sum")
@@ -198,15 +212,9 @@ def run(args):
             reg = torch.stack(reg)
             reg = reg.mean()
 
-            if args.feature_type == 'instance':
-                new_features = x_aug
-                memory_bank.push(new_features, args.batch_size)
-            else:
-                new_features = x_aug.mean(dim=0)
-                new_features = new_features.unsqueeze(dim=0)
-                memory_bank.push(new_features, 1)
-
-            cr_loss = calc_regloss(x, x_aug, memory_bank.memory)
+            # memory bank read here uses the state from BEFORE this batch --
+            # enqueueing happens once, at the very end, after both updates
+            cr_loss = calc_regloss(x, x_aug, memory_bank.memory, memory_bank.subject_ids, batch.subject_id)
             view_loss = model.calc_loss(x, x_aug) - (args.reg_lambda * reg) + args.cr_lambda * cr_loss
             view_loss_all += view_loss.item() * batch.num_graphs
             reg_all += reg.item()
@@ -218,26 +226,35 @@ def run(args):
             model.train()
             view_learner.eval()
             model.zero_grad()
-            
+
             x, _ = model(batch.batch, batch.x, batch.edge_index, None, batch.edge_weight)
-            edge_logits = view_learner(batch.batch, batch.x, batch.edge_index, None, batch.edge_weight)
 
-            temperature = 1.0
-            bias = 0.0 + 0.0001  # If bias is 0, we run into problems
-            eps = (bias - (1 - bias)) * torch.rand(edge_logits.size()) + (1 - bias)
-            gate_inputs = torch.log(eps) - torch.log(1 - eps)
-            gate_inputs = gate_inputs.to(device)
-            gate_inputs = (gate_inputs + edge_logits) / temperature
-            batch_aug_edge_weight = torch.sigmoid(gate_inputs).squeeze().detach()
+            with torch.no_grad():
+                edge_logits = view_learner(batch.batch, batch.x, batch.edge_index, None, batch.edge_weight)
+                sym_logits = symmetrize_edge_logits(batch.edge_index, edge_logits)
+                eps = (bias - (1 - bias)) * torch.rand(sym_logits.size()) + (1 - bias)
+                eps = eps.to(device)
+                gate_inputs = torch.log(eps) - torch.log(1 - eps)
+                gate_inputs = (gate_inputs + sym_logits) / temperature
+                gate_inputs = symmetrize_edge_logits(batch.edge_index, gate_inputs)
+                edge_mask = torch.sigmoid(gate_inputs)
+            aug_edge_weight = batch.edge_weight * edge_mask
 
-            x_aug, _ = model(batch.batch, batch.x, batch.edge_index, None, batch_aug_edge_weight)
-            cr_loss = calc_regloss(x, x_aug, memory_bank.memory)
+            x_aug, _ = model(batch.batch, batch.x, batch.edge_index, None, aug_edge_weight)
+            cr_loss = calc_regloss(x, x_aug, memory_bank.memory, memory_bank.subject_ids, batch.subject_id)
 
             model_loss = model.calc_loss(x, x_aug) + args.cr_lambda * cr_loss
             model_loss_all += model_loss.item() * batch.num_graphs
             # standard gradient descent formulation
             model_loss.backward()
             model_optimizer.step()
+
+            # enqueue last, so this batch never appears as its own negative
+            if args.feature_type == 'instance':
+                memory_bank.push(x_aug.detach(), batch.subject_id, args.batch_size)
+            else:
+                memory_bank.push(x_aug.detach().mean(dim=0).unsqueeze(dim=0),
+                                  torch.tensor([-1], dtype=torch.long, device=device), 1)
 
 
         fin_model_loss = model_loss_all / (len(dataloader) * args.batch_size)

@@ -2,6 +2,27 @@ import torch
 from torch.nn import Sequential, Linear, ReLU
 
 
+def symmetrize_edge_logits(edge_index, values):
+	"""Average each directed edge (i,j) with its reverse (j,i) so that
+	values derived from them (keep-probability, sampled mask) are symmetric,
+	regardless of the order edges appear in edge_index."""
+	values = values.squeeze(-1) if values.dim() > 1 else values
+	src, dst = edge_index[0], edge_index[1]
+	num_nodes = int(edge_index.max()) + 1
+
+	key = src * num_nodes + dst
+	rev_key = dst * num_nodes + src
+
+	sorted_key, sort_idx = torch.sort(key)
+	pos = torch.searchsorted(sorted_key, rev_key).clamp(max=sorted_key.numel() - 1)
+	rev_idx = sort_idx[pos]
+
+	matched = key[rev_idx] == rev_key
+	sym_values = values.clone()
+	sym_values[matched] = (values[matched] + values[rev_idx[matched]]) / 2
+	return sym_values
+
+
 class ViewLearner(torch.nn.Module):
 	def __init__(self, encoder, mlp_edge_model_dim=64):
 		super(ViewLearner, self).__init__()
