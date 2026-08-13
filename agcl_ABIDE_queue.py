@@ -32,16 +32,12 @@ def str2bool(value):
 
 def calc_regloss(z, aug, memory, memory_subject_ids, anchor_subject_ids, temperature: float = 0.1, pos_only: bool = False):
 
-	device = z.device
-	b = z.size(0)
 	z = F.normalize(z, dim=-1)
 	aug = F.normalize(aug, dim=-1)
 	memory = F.normalize(memory, dim=-1)
 
+	# diagonal (i,i) is the positive pair: anchor i vs. its own augmented view
 	logits = torch.einsum("if, jf -> ij", z, aug) / temperature
-	# positive mask are matches i, j (i from aug1, j from aug2), where i == j and matches j, i
-	pos_mask = torch.zeros((b, b), dtype=torch.bool, device=device)
-	pos_mask.fill_diagonal_(True)
 
 	m_logits = torch.einsum("if, jf -> ij", z, memory) / temperature
 	# a subject's own (earlier-epoch) embedding must not count as its own negative
@@ -49,16 +45,21 @@ def calc_regloss(z, aug, memory, memory_subject_ids, anchor_subject_ids, tempera
 	has_negative = (~same_subject).any(dim=1)
 	if not bool(has_negative.any()):
 		return z.sum() * 0.0
-	m_logits = m_logits.masked_fill(same_subject, float('-inf'))
 
-	log_prob = logits if pos_only else logits - torch.logsumexp(m_logits, dim=1, keepdim=True)
-	# compute mean of log-likelihood over positives
-	mean_log_prob_pos = (pos_mask * log_prob).sum(1)
+	# filter to anchors with at least one valid negative BEFORE logsumexp,
+	# so an all-same-subject row never produces an all -inf denominator (and
+	# the +inf/NaN that follows from it) in the first place -- rather than
+	# computing it and discarding the result afterwards
+	positive_logits = logits.diagonal()[has_negative]
 
-	# anchors with zero valid negatives (all-same-subject row) get an
-	# all -inf denominator above -> +inf/NaN; exclude them from the mean
-	# entirely rather than letting one such anchor corrupt the whole batch
-	mean_log_prob_pos = mean_log_prob_pos[has_negative]
+	if pos_only:
+		mean_log_prob_pos = positive_logits
+	else:
+		valid_memory_logits = m_logits[has_negative]
+		valid_same_subject = same_subject[has_negative]
+		valid_memory_logits = valid_memory_logits.masked_fill(valid_same_subject, float('-inf'))
+		denominator = torch.logsumexp(valid_memory_logits, dim=1)
+		mean_log_prob_pos = positive_logits - denominator
 
 	loss = -mean_log_prob_pos.mean()
 
@@ -354,16 +355,20 @@ def run(args):
     model.load_state_dict(checkpoint['model_state_dict'])
     model.eval()
 
-    train_score, val_score, test_score = ee.kf_embedding_evaluation(
+    # fit_on_train_val=True means the returned "val_score" here is an
+    # in-sample score (validation was merged into the fit set) -- it is
+    # never held out at this point, so it must not be reported or labeled
+    # as a validation metric. Only FinalFitScore (train+val, in-sample) and
+    # FinalTestScore (the genuinely held-out 20%) are meaningful here.
+    fit_score, _, test_score = ee.kf_embedding_evaluation(
         model, dataset, fixed_splits, representation=args.eval_representation, include_test=True, fit_on_train_val=True)
 
     score_fmt = ('acc_mean: {} acc_std: {} f1_mean: {} f1_std: {} sen_mean: {} sen_std: {} '
                  'spe_mean: {} spe_std: {} auc_mean: {} auc_std: {}')
-    logging.info('FinalTrainScore (checkpoint epoch %d): ' + score_fmt, best_epoch, *train_score)
-    logging.info('FinalValidationScore (checkpoint epoch %d): ' + score_fmt, best_epoch, *val_score)
-    logging.info('FinalTestScore (checkpoint epoch %d, evaluated once): ' + score_fmt, best_epoch, *test_score)
+    logging.info('FinalFitScore (checkpoint epoch %d, train+val, in-sample): ' + score_fmt, best_epoch, *fit_score)
+    logging.info('FinalTestScore (checkpoint epoch %d, evaluated once, held out): ' + score_fmt, best_epoch, *test_score)
 
-    return val_score[0]
+    return best_val_accuracy
 
 
 def arg_parse():

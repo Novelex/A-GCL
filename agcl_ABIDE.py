@@ -264,16 +264,20 @@ def run(args):
     model.load_state_dict(checkpoint['model_state_dict'])
     model.eval()
 
-    train_score, val_score, test_score = ee.kf_embedding_evaluation(
+    # fit_on_train_val=True means the returned "val_score" here is an
+    # in-sample score (validation was merged into the fit set) -- it is
+    # never held out at this point, so it must not be reported or labeled
+    # as a validation metric. Only FinalFitScore (train+val, in-sample) and
+    # FinalTestScore (the genuinely held-out 20%) are meaningful here.
+    fit_score, _, test_score = ee.kf_embedding_evaluation(
         model, dataset, fixed_splits, representation=args.eval_representation, include_test=True, fit_on_train_val=True)
 
     score_fmt = ('acc_mean: {} acc_std: {} f1_mean: {} f1_std: {} sen_mean: {} sen_std: {} '
                  'spe_mean: {} spe_std: {} auc_mean: {} auc_std: {}')
-    logging.info('FinalTrainScore (checkpoint epoch %d): ' + score_fmt, best_epoch, *train_score)
-    logging.info('FinalValidationScore (checkpoint epoch %d): ' + score_fmt, best_epoch, *val_score)
-    logging.info('FinalTestScore (checkpoint epoch %d, evaluated once): ' + score_fmt, best_epoch, *test_score)
+    logging.info('FinalFitScore (checkpoint epoch %d, train+val, in-sample): ' + score_fmt, best_epoch, *fit_score)
+    logging.info('FinalTestScore (checkpoint epoch %d, evaluated once, held out): ' + score_fmt, best_epoch, *test_score)
 
-    return val_score[0]
+    return best_val_accuracy
 
 
 def arg_parse():

@@ -141,3 +141,24 @@ def test_calc_regloss_handles_mixed_valid_and_zero_negative_anchors():
     anchor2 = anchor_subject_ids[1:2]
     loss_subject2_only = calc_regloss(z2, aug2, memory, memory_subject_ids, anchor2)
     assert torch.allclose(loss, loss_subject2_only)
+
+
+def test_calc_regloss_mixed_negatives_gradients_are_finite():
+    """Filtering happens BEFORE logsumexp now, so no -inf/NaN intermediate
+    value should ever be created for the invalid-negative anchor -- confirmed
+    by checking the gradients flowing back into z and aug are finite too,
+    not just the forward loss value."""
+    torch.manual_seed(0)
+    z = torch.randn(2, 8, requires_grad=True)
+    aug = torch.randn(2, 8, requires_grad=True)
+    anchor_subject_ids = torch.tensor([1, 2])
+    memory = torch.randn(2, 8)
+    memory_subject_ids = torch.tensor([1, 1])
+
+    loss = calc_regloss(z, aug, memory, memory_subject_ids, anchor_subject_ids)
+    loss.backward()
+
+    assert z.grad is not None
+    assert aug.grad is not None
+    assert torch.isfinite(z.grad).all()
+    assert torch.isfinite(aug.grad).all()

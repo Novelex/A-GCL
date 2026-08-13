@@ -4,6 +4,8 @@ kf_embedding_evaluation(..., include_test=False) must never compute a real
 test score, and the checkpoint dict written by the training scripts must
 carry everything needed to resume evaluation from exactly one selected epoch.
 """
+from unittest.mock import patch
+
 import numpy as np
 import torch
 import pytest
@@ -79,22 +81,38 @@ def test_include_test_false_never_yields_real_test_scores():
 
 def test_fit_on_train_val_uses_combined_80_percent_not_train_only():
     """The final evaluation must refit the classifier on train+val (80% of
-    the outer split) before scoring test, not just the 64% train fold."""
+    the outer split) before scoring test, not just the 64% train fold --
+    verified by capturing the actual row count passed to
+    ee_binary_classification (i.e. what classifier.fit() sees), not just
+    checking that the outputs happen to be finite."""
     dataset = _GraphDataset(n_per_class=20)
     splits = create_fixed_splits(dataset, n_splits=5, seed=123)
     model = make_model()
 
-    ee_default = make_ee()
-    _, _, test_default = ee_default.kf_embedding_evaluation(
-        model, dataset, splits, representation='z', include_test=True, fit_on_train_val=False)
+    def fit_sizes(fit_on_train_val):
+        ee = make_ee()
+        sizes = []
+        with patch.object(ee, 'ee_binary_classification', wraps=ee.ee_binary_classification) as spy:
+            ee.kf_embedding_evaluation(
+                model, dataset, splits, representation='z',
+                include_test=True, fit_on_train_val=fit_on_train_val)
+            for call in spy.call_args_list:
+                fit_emb = call.args[0]
+                sizes.append(fit_emb.shape[0])
+        return sizes
 
-    ee_combined = make_ee()
-    _, _, test_combined = ee_combined.kf_embedding_evaluation(
-        model, dataset, splits, representation='z', include_test=True, fit_on_train_val=True)
+    sizes_train_only = fit_sizes(fit_on_train_val=False)
+    sizes_train_val = fit_sizes(fit_on_train_val=True)
 
-    # both must produce real, finite test scores either way
-    assert np.isfinite(test_default[0])
-    assert np.isfinite(test_combined[0])
+    assert len(sizes_train_only) == len(splits)
+    assert len(sizes_train_val) == len(splits)
+
+    for split, n_train_only, n_train_val in zip(splits, sizes_train_only, sizes_train_val):
+        expected_train_only = len(split["train"])
+        expected_train_val = len(split["train"]) + len(split["val"])
+        assert n_train_only == expected_train_only
+        assert n_train_val == expected_train_val
+        assert n_train_val > n_train_only
 
 
 def test_include_test_true_yields_real_test_scores():
