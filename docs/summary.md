@@ -82,16 +82,52 @@
 
 ## Remaining operational action
 
-The code supports the paper-literal configuration, but the current `scripts/train_queue_200ep_cpu.slurm` does not pass those options. Add:
+**Superseded.** The paper-literal configuration is no longer a set of individual flags to pass by
+hand -- it's a single runtime switch, `--training_profile paper_exact`, added after this section was
+first written (see `docs/changes.md`'s "training_profile: side-by-side paper_exact vs corrected" and
+`correction.md` Section 10). `--training_profile` defaults to `corrected`; passing
+`--training_profile paper_exact` alone forces every value below via `PAPER_EXACT_OVERRIDES`
+(`unsupervised/training_profiles.py`), and a warning is now logged if any of them were also passed
+explicitly and get overridden:
 
-```bash
---normalize_nodes false \
---message_relu false \
---post_bn_relu false \
---batch_temperature 1.0 \
---memory_temperature 1.0 \
---eval_representation z \
---regularizer_mode paper_keep
+```
+--model_lr/--view_lr 0.0005, --num_gc_layers 2, --emb_dim 32, --mlp_edge_model_dim 64,
+--batch_size 32, --reg_lambda 2.0, --cr_lambda 0.4, --max_length 256,
+--concrete_temperature 1.0, --batch_temperature 1.0, --memory_temperature 1.0,
+--contrastive_symmetric false, --regularizer_mode paper_keep,
+--normalize_nodes false, --message_relu false, --post_bn_relu false, --drop_ratio 0.0,
+--eval_representation z, --n_folds 5, --feature_type instance
 ```
 
-These corrections remove the identified implementation errors, but they do not guarantee 80% accuracy. That claim requires passing all tests and producing a fresh, complete training log from the corrected implementation.
+The individual flag list this section originally suggested adding to
+`scripts/train_queue_200ep_cpu.slurm` is superseded by the above -- passing those flags without
+`--training_profile paper_exact` does nothing useful now: `--regularizer_mode paper_keep` is already
+both profiles' default, and the rest are silent no-ops under `corrected` (the current default).
+Both dedicated 200-epoch scripts (`train_queue_200ep_corrected.slurm`,
+`train_queue_200ep_paper_exact.slurm`) now pass `--training_profile` explicitly instead.
+
+**Known result under `paper_exact`:** this profile's regularizer (`--regularizer_mode paper_keep`,
+forced regardless of the flag) has no term opposing the view learner's drop-pressure (see
+`correction.md` Section 10 and `docs/changes.md`'s "regularizer: paper-literal R(mu)" section) --
+keep-probability collapses monotonically rather than converging (0.449 -> 0.219 over 6 epochs on
+real data, ~51% relative decline, never reverses). This is an accepted, documented consequence of
+the paper's own printed formula, not a bug -- a full `paper_exact` run is not expected to beat an
+untrained baseline, and that is the honest, reportable finding if this profile is what gets
+submitted.
+
+**`corrected`'s regularizer is now fixed, real budget dynamics confirmed on real data:**
+`--regularizer_mode` defaults to `'budget'` for `corrected` (still `'paper_keep'` under
+`paper_exact`, unaffected) -- same `R(mu)=mean(mu)` quantity, opposite sign in `view_loss`, so
+ascending pushes keep-probability up instead of down, opposing the drop-pressure. Verified via a
+proper SLURM job (`scripts/verify_budget_regularizer.slurm`; an earlier attempt run directly in the
+interactive session was abandoned after it was found to be monopolizing the shared login node's
+cores -- a real mistake, not the fix itself): over 6 epochs, KeepProb declined only ~12%
+(0.4937 -> 0.4327) and, unlike `paper_keep`, reversed upward at epoch 6 -- the actual signature of
+an opposing force, not just a slower collapse. Not yet resolved: this same short run still selected
+epoch 0 as best-on-validation, but 6 epochs is too short to expect a real accuracy signal either
+way -- confirming `corrected` beats the untrained baseline over a full run still requires an actual
+200-epoch run.
+
+These corrections remove the identified implementation errors, but they do not guarantee 80%
+accuracy. That claim requires passing all tests (`pytest tests/` -- 62 passed as of this revision)
+and producing a fresh, complete training log from the corrected implementation.

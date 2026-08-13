@@ -52,13 +52,35 @@ decision: told explicitly to follow the paper. reg now equals mean(mu) directly 
 separately fixed: the symmetrize_edge_logits() approach for bug 2 achieved B_ij = B_ji by averaging two *independently drawn* Gumbel-noise samples (one per direction) -- correct for the final mask being symmetric, but not the same noise distribution as drawing one shared value per undirected pair. added sample_symmetric_logistic_noise(), which uses the same reverse-edge index to draw noise only for a canonical direction of each pair and broadcast it to both, so (i,j) and (j,i) now share one true noise draw rather than the average of two.
 files: unsupervised/view_learner.py, agcl_ABIDE.py, agcl_ABIDE_queue.py
 
-==================== deliberately left unfixed (conscious decisions, not misses) =====================
+==================== deliberately left unfixed (conscious decisions, not misses) — STALE, corrected below =====================
 
-- memory bank cold-start zero rows still count as negatives for the first ~8 batches until the queue fills once (max_length / batch_size)
-- KFold/train_test_split still use random_state=None -- fresh, non-reproducible, non-stratified splits every evaluation -- because the project decided to match the paper's own (also non-reproducible) evaluation protocol rather than substitute a stricter one
-- best-epoch selection still reads argmax directly off the test curve per metric, so BestTestScore mixes results from different epochs -- same "match the paper's protocol" decision as above
-- evaluation still uses the encoder's pooled representation (h), not the post-projection-head representation (z) -- standard SimCLR practice discards the projection head for downstream tasks; a GitHub reviewer disagrees, this is being treated as an open, testable design question rather than a bug
-- WGINConv's message-level ReLU, TUEncoder's node-wise F.normalize before pooling, and the two undocumented contrastive temperatures (0.2 batch loss, 0.1 memory loss) are all deviations from the paper's literal formulas, flagged as candidate ablations, not changed
+NOTE: the four bullets below described the code as of the aug13.pdf review round. Three of them
+were fixed by the very next section ("Item 1/2/3") and never removed from here, so this block
+contradicted the current code for a long stretch of this project's history. Corrected in place
+below rather than deleted, so the history stays legible.
+
+- [now profile-specific, not a blanket property] memory bank cold-start zero rows counting as
+  negatives: MemoryBank_Q (corrected profile) tracks a `valid` mask and get_valid_memory() excludes
+  never-written rows entirely -- cold-start rows are NOT negatives under corrected. PaperMemoryBank_Q
+  (paper_exact profile, added later -- see "training_profile" section below) has no such mask by
+  design; its zero rows count as negatives from epoch 1. The original bullet's claim is true only for
+  paper_exact now.
+- [FIXED -- this bullet was stale] ~~KFold/train_test_split still use random_state=None~~ --
+  create_fixed_splits(dataset, n_splits, seed) seeds both the outer StratifiedKFold and the inner
+  train_test_split (seed + fold_id per fold); paper_five_fold_evaluation's plain KFold is seeded too.
+  Splits are reproducible from --seed as of "Item 1: Fixed stratified folds" below.
+- [FIXED -- this bullet was stale] ~~best-epoch selection still reads argmax directly off the test
+  curve~~ -- checkpoint selection now compares val_score[0] only (see "Item 2: Remove test-based
+  epoch selection" below); test is never computed during training in either profile.
+- [FIXED -- this bullet was stale] ~~evaluation still uses h, not z~~ -- eval_representation defaults
+  to 'z' in both scripts' argparse (see "Item 3: Evaluate projected z, not h" below); h remains
+  available via --eval_representation h as an explicit ablation, not the default.
+- WGINConv's message-level ReLU, TUEncoder's node-wise F.normalize before pooling, and the two
+  undocumented contrastive temperatures (0.2 batch loss, 0.1 memory loss) are deviations from the
+  paper's literal formulas. Originally just flagged as candidate ablations; now switchable per-run via
+  --message_relu/--normalize_nodes/--batch_temperature/--memory_temperature, and forced to their
+  paper-literal values automatically under --training_profile paper_exact (PAPER_EXACT_OVERRIDES).
+  corrected profile still defaults to the non-paper-literal values (True/True/0.2/0.1).
 
 ==================== training_profile: side-by-side paper_exact vs corrected =====================
 
@@ -77,6 +99,11 @@ design: paper_exact and corrected are true side-by-side alternatives -- nothing 
 - dataset preflight (agcl_ABIDE.py, agcl_ABIDE_queue.py): paper_exact logs a warning (not a hard error, by default) if the loaded dataset isn't the paper's exact 987-subject/116-ROI ABIDE-I configuration -- our real data is 956 subjects/90 ROIs (Section 9 of correction.md), so this always fires and is expected to. --allow_dataset_mismatch defaults to True for this reason; set False to hard-require an exact match instead. Selecting paper_exact on this data tests the paper-literal CODE PATH faithfully, but its result is not an exact reproduction of the paper's own reported experiment -- both are true at once, and the log line says so explicitly.
 - notation: this project's regularizer is R(mu) = mean(mu), the mean *keep*-probability (see "regularizer: paper-literal R(mu)" above) -- some earlier internal notes referred to this as R(f;B), using the view-learner function f and the sampled mask B as the argument; that notation was imprecise, since what's actually averaged is the deterministic keep-probability mu = sigmoid(edge_logits), not a function of the sampled mask B. Corrected here for the record: R(mu), not R(f;B).
 - keep-probability collapse under paper_exact's regularizer is an accepted, documented consequence of the printed objective (see "regularizer: paper-literal R(mu)" above for the empirical evidence), not a bug introduced by this profile system.
+- default: --training_profile defaults to 'corrected', not 'paper_exact' -- flipped after review found a bare run (including the SLURM scripts, which didn't pass the flag) silently executed the collapse-prone profile, directly contradicting this section's own framing of paper_exact as an opt-in choice. Both 200-epoch SLURM scripts now also pass --training_profile explicitly regardless of the default, per "everywhere, not just the default" from that review.
+- override warning: apply_training_profile() used to silently clobber any CLI flag the user passed under paper_exact (e.g. --batch_size 64 silently ran 32) with no indication anything happened. arg_parse() in both scripts now attaches args._cli_defaults (dest -> parser default, via the parser's own _actions) so apply_training_profile(args, cli_defaults=...) can tell a user-provided value from an untouched default, and logs a warning per field when an explicit CLI value gets overridden.
+- FIXED: a real AD-GCL-style budget regularizer_mode now exists ('budget', corrected's new default, replacing 'paper_keep' as the default -- paper_exact still forces 'paper_keep' via PAPER_EXACT_OVERRIDES regardless). Same reg=R(mu)=mean(mu) as paper_keep, but reg_sign=+1 instead of -1 in view_loss (calc_loss + reg_sign*reg_lambda*reg) -- ascending +reg_lambda*mean(mu) pushes keep-probability UP, opposing the drop-pressure, instead of reinforcing it. Mathematically equivalent to the pre-R(mu)-rewrite budget convention (-reg_lambda*mean(1-mu), see correction.md Section 2's update note), reached via a sign flip on the '+' term instead of redefining reg back to drop-probability -- keeps the paper's own R(mu) notation intact for both modes.
+  Verified on real data, 6 epochs, submitted via SLURM (scripts/verify_budget_regularizer.slurm, job 1842531 -- direct execution on the login node was tried first and abandoned mid-run: it was hogging 16 of the shared login node's cores via GridSearchCV's n_jobs=16, a real HPC-etiquette mistake, not just slow): KeepProb goes 0.4937 -> 0.4939 -> 0.4883 -> 0.4475 -> 0.4126 -> 0.4327 -- an ~12% relative decline over 6 epochs, NOT monotonic (epoch 6 reverses upward), vs. paper_keep's ~51% relative decline, strictly monotonic, over the same span. The non-monotonicity is the actual signature of an opposing force being present, not just a slower one-way collapse.
+  Caveat, not yet resolved: this same 6-epoch run still selected epoch 0 (untrained) as best-on-validation-accuracy -- but 6 epochs is far too short to expect a real accuracy gain regardless of the regularizer fix; this only demonstrates the collapse dynamic itself is fixed, not that a full 200-epoch corrected run will beat the untrained baseline. That still needs an actual full run to confirm.
 files: unsupervised/training_profiles.py (new), unsupervised/view_learner.py, unsupervised/embedding_evaluation.py, agcl_ABIDE.py, agcl_ABIDE_queue.py
 
 separately fixed while wiring this in: score_fmt (the acc/f1/sen/spe/auc summary format string used for FinalFitScore/FinalTestScore) mixed str.format()'s '{}' placeholders with a '%d'-style prefix, then passed the whole thing to logging.info(msg, *args) -- logging's lazy `msg % args` formatting only recognizes the one real '%d' directive, so this raised "not all arguments converted during string formatting" the moment either log line actually fired. Rewritten as a fully %-style format string (%.4f per field). Pre-existing bug, caught while adding the equivalent PaperFiveFoldScore log line rather than propagating the same broken pattern into new code.

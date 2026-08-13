@@ -13,7 +13,7 @@ cd /users/3171356m/A-GCL
 
 /users/3171356m/A-GCL/.venv/bin/python agcl_ABIDE_queue.py \
   --path data --name ABIDE \
-  --training_profile corrected \
+  --training_profile corrected --regularizer_mode budget \
   --epochs 200 --eval_interval 5 --batch_size 32 \
   --cr_lambda 0.4 --memory_type queue --feature_type instance --max_length 256 \
   --checkpoint_path checkpoints/agcl_queue_corrected_best.pt

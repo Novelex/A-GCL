@@ -35,7 +35,8 @@ annotation and importing `OptTensor`.
 
 ## Section 2 — Blocker: the `reg` sign flip
 
-**Status: reverted. Left matching upstream (`-`).**
+**Status: reverted at the time, then superseded by a later, separate decision. See update below —
+this section's original conclusion is no longer what the code does.**
 
 The audit's own repair pass had flipped `view_loss = model.calc_loss(x, x_aug) - (reg_lambda * reg)`
 to `+` in both `agcl_ABIDE.py` and `agcl_ABIDE_queue.py`, to match the paper's prose ("we want to
@@ -51,9 +52,24 @@ starts at exactly `0.5`. Under the `+` version, `reg` climbed to `0.525` after o
 paper's own default `--reg_lambda 2.0` was calibrated against (Fig. 6 sweep); carrying that value
 over to a flipped sign transfers no comparability to Table 2.
 
-**Change:** reverted `+` back to `-` in `agcl_ABIDE.py:155` and `agcl_ABIDE_queue.py:207`. The
-separate memory-bank sign fix (`+ cr_lambda * cr_loss`, Section 1 above) was *not* reverted — this
-audit confirmed that one is a genuine correction, not a paper-vs-code inconsistency.
+**Change made at the time:** reverted `+` back to `-`, keeping `reg` defined as *drop*-probability
+(`mean(1-mu)`). With that definition, `-reg_lambda*reg` is the correct budget direction: ascending
+it pushes drop-probability down, i.e. keep-probability up, opposing `calc_loss`'s pressure to drop
+more. The separate memory-bank sign fix (`+ cr_lambda * cr_loss`, Section 1 above) was *not*
+reverted — that one is a genuine correction, not a paper-vs-code inconsistency.
+
+**Update — this section is stale, corrected here:** a later commit (documented in
+`docs/changes.md`'s "regularizer: paper-literal R(mu)" section) redefined `reg` from *drop*-probability
+(`mean(1-mu)`) to the paper's own literal *keep*-probability notation, `R(mu) = mean(mu)`, while
+leaving the surrounding `-reg_lambda*reg` sign unchanged. That combination — `-` paired with
+`mean(mu)` instead of `mean(1-mu)` — is mathematically the *same* budget-breaking direction this
+section originally reverted (`+reg_lambda*mean(1-mu)` and `-reg_lambda*mean(mu)` differ only by a
+constant), just reached by changing the multiplied quantity instead of the sign in front of it. That
+redefinition was a deliberate, explicit choice to follow the paper's own formula over the AD-GCL
+budget reading — see `docs/changes.md` for the full reasoning — and it is what the code runs today.
+**The collapse finding referenced in Section 10 below comes from that later decision, not from this
+section** — this section's own conclusion (`-` sign, budget-preserving) was superseded, not extended,
+by it. Kept here, corrected in place, rather than deleted, so the history of the reversal is legible.
 
 ## Section 3 — Blocker: memory-bank variant never executed
 
@@ -225,15 +241,40 @@ existing ones:
   reason: on our data, selecting `paper_exact` always tests the paper-literal *code path* faithfully, but
   its result is never an exact reproduction of the paper's own reported experiment. `--allow_dataset_mismatch
   false` hard-requires an exact match instead, for use against a properly-cropped 116-ROI AAL1 dataset.
-- Notation correction: this project's regularizer (Section 2's blocker above, and `docs/changes.md`'s
-  "regularizer: paper-literal R(mu)" entry) is `R(mu) = mean(mu)`, the mean *keep*-probability. Some
-  earlier internal notes wrote this as `R(f;B)` — the view-learner function `f` and sampled mask `B` as
-  its argument — which is imprecise, since the quantity actually averaged is the deterministic
+- Notation correction: this project's regularizer (`docs/changes.md`'s "regularizer: paper-literal
+  R(mu)" entry — see the corrected Section 2 above for how that decision superseded this section's
+  original, different conclusion) is `R(mu) = mean(mu)`, the mean *keep*-probability. Some earlier
+  internal notes wrote this as `R(f;B)` — the view-learner function `f` and sampled mask `B` as its
+  argument — which is imprecise, since the quantity actually averaged is the deterministic
   keep-probability `mu = sigmoid(edge_logits)`, not a function of the sampled mask `B`. Corrected here:
   it is `R(mu)`, not `R(f;B)`.
 - Keep-probability collapse under `paper_exact`'s regularizer remains the accepted, documented consequence
-  of the printed objective established in Section 2 above — the profile system does not change that
-  finding, only makes choosing to reproduce it an explicit opt-in rather than an accidental default.
+  of the printed objective established by that later decision (`docs/changes.md`'s "regularizer:
+  paper-literal R(mu)" entry, *not* Section 2 above, which reached the opposite, budget-preserving
+  conclusion before being superseded) — the profile system does not change that finding, only makes
+  choosing to reproduce it an explicit opt-in rather than an accidental default now that
+  `--training_profile` defaults to `corrected` (see the argparse default in `agcl_ABIDE.py`/
+  `agcl_ABIDE_queue.py`, flipped from `paper_exact` for exactly this reason).
+- **FIXED — a real budget `regularizer_mode` now exists.** `'budget'` (new default for `corrected`;
+  `paper_exact` still forces `'paper_keep'` regardless, via `PAPER_EXACT_OVERRIDES`) uses the same
+  `reg = R(mu) = mean(mu)` as `paper_keep`, but flips the sign it enters `view_loss` with: `calc_loss
+  + reg_lambda*reg` instead of `calc_loss - reg_lambda*reg`. Ascending `+reg_lambda*mean(mu)` pushes
+  keep-probability *up*, opposing the drop-pressure, instead of reinforcing it — mathematically the
+  same budget mechanism the original Section 2 above restored (`-reg_lambda*mean(1-mu)`), reached via
+  a sign flip on the added term rather than redefining `reg` back to drop-probability.
+  Verified on real data, 6 epochs, submitted properly via SLURM this time (`scripts/verify_budget_regularizer.slurm`,
+  job 1842531) — an earlier attempt to verify this directly in the interactive session was abandoned
+  mid-run after it was found to be consuming 16 of the shared login node's cores via `GridSearchCV`'s
+  `n_jobs=16`, a real HPC-etiquette mistake distinct from the fix itself. Result: KeepProb goes
+  `0.4937 → 0.4939 → 0.4883 → 0.4475 → 0.4126 → 0.4327` — an ~12% relative decline over 6 epochs and,
+  critically, **not monotonic** (epoch 6 reverses upward), versus `paper_keep`'s ~51% relative decline
+  that never reverses. The reversal is the actual signature of an opposing force, not just a slower
+  version of the same one-way collapse.
+  **Not yet resolved:** this same 6-epoch run still selected epoch 0 (untrained) as best-on-validation
+  — expected at this length (6 epochs is far too short for a real accuracy signal regardless of the
+  regularizer), but it means this fix is verified to stop the collapse dynamic, not yet verified to
+  produce a checkpoint that beats the untrained baseline over a full run. That requires an actual full
+  200-epoch run to confirm.
 
 **Also caught while wiring this in:** the `score_fmt` string used for `FinalFitScore`/`FinalTestScore`
 mixed `str.format()`'s `{}` placeholders with a `logging`-style `%d` prefix, then passed everything to

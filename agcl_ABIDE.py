@@ -43,7 +43,7 @@ def setup_seed(seed):
 
 
 def run(args):
-    args = apply_training_profile(args)
+    args = apply_training_profile(args, cli_defaults=getattr(args, '_cli_defaults', None))
     is_paper_exact = args.training_profile == "paper_exact"
 
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
@@ -171,7 +171,7 @@ def run(args):
                 sym_logits = symmetrize_edge_logits(batch.edge_index, edge_logits, rev_idx)
                 mu = torch.sigmoid(sym_logits)
 
-                temperature = 1.0
+                temperature = args.concrete_temperature
                 bias = 0.0 + 0.0001  # If bias is 0, we run into problems
                 noise = sample_symmetric_logistic_noise(batch.edge_index, rev_idx, bias=bias, device=device)
                 gate_inputs = (noise + sym_logits) / temperature
@@ -195,19 +195,37 @@ def run(args):
                     pass
             keep_prob = torch.stack(keep_prob).mean()
 
-            # regularizer minimized (via the ascended -reg_lambda*reg term):
-            # 'paper_keep' -- R(mu) = mean(mu) directly, as the paper defines it
+            # three regularizer_mode options, differing in what reg equals AND in
+            # the sign it enters view_loss with (reg_sign) -- both matter:
+            # 'paper_keep' (paper_exact's forced value) -- reg = R(mu) = mean(mu),
+            #   sign '-', exactly as the paper's printed formula literally reads.
+            #   No term opposes calc_loss's pressure to drop everything -- keep_prob
+            #   collapses monotonically. This is an accepted, documented consequence
+            #   of the paper's own formula (see docs/changes.md), not a bug.
+            # 'budget' (corrected's default) -- reg = mean(mu) too, but sign '+'.
+            #   Ascending +reg_lambda*mean(mu) pushes keep_prob UP, opposing
+            #   calc_loss's drop-pressure -- the AD-GCL "perturbation budget"
+            #   reading. Mathematically equivalent to the pre-R(mu)-rewrite
+            #   convention (-reg_lambda*mean(1-mu), see correction.md Section 2's
+            #   update note) reached via a '+' sign instead of redefining reg.
             # 'target_keep' -- engineering ablation, NOT the paper's objective:
-            #                  pulls keep_prob toward a chosen target ratio instead
+            #   pulls keep_prob toward a fixed --target_keep ratio via squared
+            #   error; sign '-' converges either way since (keep_prob-target)^2
+            #   is minimized regardless of which side keep_prob approaches from.
             if args.regularizer_mode == 'target_keep':
                 reg = (keep_prob - args.target_keep).pow(2)
+                reg_sign = -1.0
+            elif args.regularizer_mode == 'budget':
+                reg = keep_prob
+                reg_sign = 1.0
             else:
                 reg = keep_prob
+                reg_sign = -1.0
 
             sampled_keep = edge_mask.mean()
 
             view_loss = (model.calc_loss(x, x_aug, temperature=args.batch_temperature, sym=args.contrastive_symmetric)
-                         - (args.reg_lambda * reg))
+                         + reg_sign * (args.reg_lambda * reg))
             view_loss_all += view_loss.item() * batch.num_graphs
             keep_prob_all += keep_prob.item()
             sampled_keep_all += sampled_keep.item()
@@ -348,11 +366,12 @@ def run(args):
 def arg_parse():
     parser = argparse.ArgumentParser(description='A-GCL ABIDE')
 
-    parser.add_argument('--training_profile', type=str, default='paper_exact', choices=['paper_exact', 'corrected'],
-                        help='paper_exact: literal paper formulas (asymmetric mask, collapse-prone regularizer -- '
-                             'matches printed paper, not the released/corrected code). corrected: this project\'s '
-                             'verified, tested fixes. Nothing about the corrected code path is deleted or changed '
-                             'by selecting paper_exact -- see docs/changes.md.')
+    parser.add_argument('--training_profile', type=str, default='corrected', choices=['paper_exact', 'corrected'],
+                        help='corrected (default): this project\'s verified, tested fixes. paper_exact: literal '
+                             'paper formulas (asymmetric mask, collapse-prone regularizer -- matches printed '
+                             'paper, not the released/corrected code) -- an explicit opt-in, not what a bare run '
+                             'executes. Nothing about the corrected code path is deleted or changed by selecting '
+                             'paper_exact -- see docs/changes.md.')
     parser.add_argument('--concrete_temperature', type=float, default=1.0,
                         help='temperature for the Concrete/Gumbel-sigmoid mask reparameterization (both profiles)')
     parser.add_argument('--allow_dataset_mismatch', type=str2bool, default=True,
@@ -389,10 +408,15 @@ def arg_parse():
                         help='Train Epochs')
     parser.add_argument('--reg_lambda', type=float, default=2.0,
                         help='View Learner Edge Perturb Regularization Strength')
-    parser.add_argument('--regularizer_mode', type=str, default='paper_keep', choices=['paper_keep', 'target_keep'],
-                        help="paper_keep: R(mu)=mean(mu) as the paper defines it (default). "
-                             "target_keep: engineering ablation, NOT the paper's objective -- "
-                             "pulls keep-probability toward --target_keep instead")
+    parser.add_argument('--regularizer_mode', type=str, default='budget',
+                        choices=['budget', 'paper_keep', 'target_keep'],
+                        help="budget (default): reg=R(mu)=mean(mu) with sign '+' -- opposes the view "
+                             "learner's drop-pressure (AD-GCL perturbation budget), stable keep-probability. "
+                             "paper_keep: same reg, sign '-', exactly the paper's literal printed formula -- "
+                             "no opposing term, keep-probability collapses monotonically (forced under "
+                             "--training_profile paper_exact regardless of this flag). target_keep: "
+                             "engineering ablation, NOT the paper's objective -- pulls keep-probability "
+                             "toward --target_keep instead")
     parser.add_argument('--target_keep', type=float, default=0.20,
                         help='target keep ratio, only used when --regularizer_mode target_keep')
     parser.add_argument('--normalize_nodes', type=str2bool, default=True,
@@ -415,7 +439,11 @@ def arg_parse():
     parser.add_argument('--checkpoint_path', type=str, default='checkpoints/agcl_best.pt',
                         help='where to save the best-validation-accuracy checkpoint')
 
-    return parser.parse_args()
+    args = parser.parse_args()
+    # used only by apply_training_profile() to warn when a user-provided
+    # flag gets silently clobbered by the paper_exact override table
+    args._cli_defaults = {action.dest: action.default for action in parser._actions}
+    return args
 
 
 if __name__ == '__main__':

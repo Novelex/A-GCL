@@ -71,8 +71,13 @@ def test_uniform_noise_is_clamped_away_from_zero_and_one():
 
 
 def test_default_noise_is_sampled_when_not_provided():
-    torch.manual_seed(0)
+    # logits generated unseeded, deliberately outside the seeded region below
+    # -- seeding here first would let torch.randn(50, 1) consume part of the
+    # stream, so the second manual_seed(0) would NOT realign with the first
+    # sample_ordered_concrete_mask call's draw. Seed immediately before each
+    # call instead.
     logits = torch.randn(50, 1)
+    torch.manual_seed(0)
     _, mask_a = sample_ordered_concrete_mask(logits)
     torch.manual_seed(0)
     _, mask_b = sample_ordered_concrete_mask(logits)

@@ -287,8 +287,13 @@ If you find our work beneficial to your work, please cite our paper
   title={A-GCL: Adversarial graph contrastive learning for fMRI analysis to diagnose neurodevelopmental disorders},
   author={Zhang, Shengjie and Chen, Xiang and Shen, Xin and Ren, Bohan and Yu, Ziqi and Yang, Haibo and Jiang, Xi and Shen, Dinggang and Zhou, Yuan and Zhang, Xiao-Yong},
   journal={Medical Image Analysis},
+  volume={90},
   pages={102932},
   year={2023},
-  publisher={Elsevier}
+  publisher={Elsevier},
+  doi={10.1016/j.media.2023.102932}
 }
 ```
+
+DOI: [10.1016/j.media.2023.102932](https://doi.org/10.1016/j.media.2023.102932) -- the published article is
+not redistributed in this repository (Elsevier copyright); use the DOI to access it.
