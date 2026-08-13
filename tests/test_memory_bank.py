@@ -116,3 +116,28 @@ def test_calc_regloss_handles_zero_valid_negatives_for_all_anchors():
     loss = calc_regloss(z, aug, memory, memory_subject_ids, anchor_subject_ids)
     assert torch.isfinite(loss)
     assert loss.item() == 0.0
+
+
+def test_calc_regloss_handles_mixed_valid_and_zero_negative_anchors():
+    """Mixed case: subject 1 has zero valid negatives (every memory slot is
+    subject 1), subject 2 has valid negatives (neither memory slot is
+    subject 2). has_negative.any() is True overall, so the old code did not
+    early-return -- but subject 1's row still had an all -inf denominator,
+    producing +inf/NaN that leaked into the batch mean. The loss must stay
+    finite, computed only from subject 2's row."""
+    torch.manual_seed(0)
+    z = torch.randn(2, 8)
+    aug = torch.randn(2, 8)
+    anchor_subject_ids = torch.tensor([1, 2])
+    memory = torch.randn(2, 8)
+    memory_subject_ids = torch.tensor([1, 1])
+
+    loss = calc_regloss(z, aug, memory, memory_subject_ids, anchor_subject_ids)
+    assert torch.isfinite(loss)
+
+    # cross-check: computing the loss from subject 2's row alone (the only
+    # anchor with any valid negative) must match exactly
+    z2, aug2 = z[1:2], aug[1:2]
+    anchor2 = anchor_subject_ids[1:2]
+    loss_subject2_only = calc_regloss(z2, aug2, memory, memory_subject_ids, anchor2)
+    assert torch.allclose(loss, loss_subject2_only)

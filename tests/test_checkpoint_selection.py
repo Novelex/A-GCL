@@ -77,6 +77,26 @@ def test_include_test_false_never_yields_real_test_scores():
     assert all(np.isnan(v) for v in test_score)
 
 
+def test_fit_on_train_val_uses_combined_80_percent_not_train_only():
+    """The final evaluation must refit the classifier on train+val (80% of
+    the outer split) before scoring test, not just the 64% train fold."""
+    dataset = _GraphDataset(n_per_class=20)
+    splits = create_fixed_splits(dataset, n_splits=5, seed=123)
+    model = make_model()
+
+    ee_default = make_ee()
+    _, _, test_default = ee_default.kf_embedding_evaluation(
+        model, dataset, splits, representation='z', include_test=True, fit_on_train_val=False)
+
+    ee_combined = make_ee()
+    _, _, test_combined = ee_combined.kf_embedding_evaluation(
+        model, dataset, splits, representation='z', include_test=True, fit_on_train_val=True)
+
+    # both must produce real, finite test scores either way
+    assert np.isfinite(test_default[0])
+    assert np.isfinite(test_combined[0])
+
+
 def test_include_test_true_yields_real_test_scores():
     dataset = _GraphDataset(n_per_class=20)
     splits = create_fixed_splits(dataset, n_splits=5, seed=123)

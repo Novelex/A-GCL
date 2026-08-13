@@ -55,6 +55,11 @@ def calc_regloss(z, aug, memory, memory_subject_ids, anchor_subject_ids, tempera
 	# compute mean of log-likelihood over positives
 	mean_log_prob_pos = (pos_mask * log_prob).sum(1)
 
+	# anchors with zero valid negatives (all-same-subject row) get an
+	# all -inf denominator above -> +inf/NaN; exclude them from the mean
+	# entirely rather than letting one such anchor corrupt the whole batch
+	mean_log_prob_pos = mean_log_prob_pos[has_negative]
+
 	loss = -mean_log_prob_pos.mean()
 
 	return loss
@@ -163,8 +168,20 @@ def run(args):
     model_losses = []
     view_losses = []
     keep_probs = []
-    best_val_accuracy = -float('inf')
-    best_epoch = None
+
+    # guarantee a checkpoint always exists, even if no in-loop eval ever
+    # triggers (e.g. epochs < eval_interval) -- worst case, this is what
+    # gets reloaded for the final evaluation
+    best_val_accuracy = val_score[0]
+    best_epoch = 0
+    torch.save({
+        'epoch': 0,
+        'model_state_dict': model.state_dict(),
+        'view_state_dict': view_learner.state_dict(),
+        'model_optimizer': model_optimizer.state_dict(),
+        'view_optimizer': view_optimizer.state_dict(),
+        'validation_score': val_score,
+    }, args.checkpoint_path)
 
 
     for epoch in range(1, args.epochs + 1):
@@ -287,7 +304,8 @@ def run(args):
         view_losses.append(fin_view_loss)
         keep_probs.append(fin_keep_prob)
 
-        if epoch % args.eval_interval == 0:
+        should_evaluate = epoch % args.eval_interval == 0 or epoch == args.epochs
+        if should_evaluate:
             model.eval()
             # train/val only -- test is never computed during training, so it
             # cannot influence checkpoint selection even by accident
@@ -337,7 +355,7 @@ def run(args):
     model.eval()
 
     train_score, val_score, test_score = ee.kf_embedding_evaluation(
-        model, dataset, fixed_splits, representation=args.eval_representation, include_test=True)
+        model, dataset, fixed_splits, representation=args.eval_representation, include_test=True, fit_on_train_val=True)
 
     score_fmt = ('acc_mean: {} acc_std: {} f1_mean: {} f1_std: {} sen_mean: {} sen_std: {} '
                  'spe_mean: {} spe_std: {} auc_mean: {} auc_std: {}')

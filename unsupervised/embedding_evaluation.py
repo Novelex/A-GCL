@@ -197,7 +197,7 @@ class EmbeddingEvaluation():
 
 		return np.expand_dims(train_raw, axis=1), np.expand_dims(val_raw, axis=1), np.expand_dims(test_raw, axis=1)
 
-	def embedding_evaluation(self, encoder, train_loader, valid_loader, test_loader, flag, representation='z'):
+	def embedding_evaluation(self, encoder, train_loader, valid_loader, test_loader, flag, representation='z', fit_on_train_val=False):
 		encoder.eval()
 		val_start = time.time()
 		train_emb, train_y = get_emb_y(train_loader, encoder, self.device, is_rand_label=self.is_rand_label, representation=representation)
@@ -207,6 +207,18 @@ class EmbeddingEvaluation():
 		running_time = val_end-val_start
 		if flag:
 			print('validation time cost : %.5f sec' %running_time)
+
+		if fit_on_train_val:
+			# final evaluation only: the checkpoint was already selected via
+			# validation, so refit on the complete outer 80% (train+val)
+			# before scoring the held-out 20% test fold, instead of leaving
+			# 16% of the data unused for the number that gets reported.
+			# train_score/sen/spe/f1/auc below then reflect this combined
+			# fit set, not the original train-only split -- val is no longer
+			# a meaningful held-out signal once merged in, which is fine
+			# since it isn't used for any selection at this point.
+			train_emb = np.concatenate([train_emb, val_emb], axis=0)
+			train_y = np.concatenate([train_y, val_y], axis=0)
 
 		if 'classification' in self.task_type:
 
@@ -258,7 +270,7 @@ class EmbeddingEvaluation():
 				train_sen_score, val_sen_score, test_sen_score, train_spe_score, val_spe_score, test_spe_score,
 				train_auc, val_auc, test_auc, running_time)
 
-	def kf_embedding_evaluation(self, encoder, dataset, fixed_splits, representation='z', batch_size=128, flag=False, include_test=True):
+	def kf_embedding_evaluation(self, encoder, dataset, fixed_splits, representation='z', batch_size=128, flag=False, include_test=True, fit_on_train_val=False):
 		kf_train = []
 		kf_val = []
 		kf_test = []
@@ -295,7 +307,7 @@ class EmbeddingEvaluation():
 			 train_spe, val_spe, test_spe,
 			 train_auc, val_auc, test_auc,
 			 running_time) = self.embedding_evaluation(
-				encoder, train_loader, valid_loader, test_loader, flag, representation=representation)
+				encoder, train_loader, valid_loader, test_loader, flag, representation=representation, fit_on_train_val=fit_on_train_val)
 
 			if not include_test:
 				test_score = test_f1 = test_sen = test_spe = test_auc = float('nan')

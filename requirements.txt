@@ -6,6 +6,9 @@ scikit-learn==1.9.0
 matplotlib==3.11.1
 seaborn==0.13.2
 
+# Test suite (tests/)
+pytest==8.3.3
+
 # Deep learning stack (versions match the working grastiacl conda env, CUDA 12.1)
 torch==2.5.0
 torch_geometric==2.6.1
