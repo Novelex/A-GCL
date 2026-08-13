@@ -71,3 +71,703 @@ Done!
 13-Aug-26 16:15:53 - Metric: auc Train_std: 0.027960733961262866 Val_std: 0.051671281579734774 Test_std: 0.02193952786229077
 13-Aug-26 16:16:01 - Epoch 11, Model Loss 4.406698062502104, View Loss 9.420207023620605, Reg 0.123020114826745
 13-Aug-26 16:16:09 - Epoch 12, Model Loss 4.714125707231719, View Loss 10.191006397378855, Reg 0.12461861993732123
+13-Aug-26 16:16:17 - Epoch 13, Model Loss 4.793730744000139, View Loss 9.392191590933963, Reg 0.14471741662970905
+13-Aug-26 16:16:25 - Epoch 14, Model Loss 3.990098106450048, View Loss 8.979444602440143, Reg 0.12569922671235842
+13-Aug-26 16:16:33 - Epoch 15, Model Loss 4.505031667906662, View Loss 9.708066611454404, Reg 0.1158983257823977
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:16:36 - Metric: accuracy Train_mean: 0.5537702042082518 Val_mean: 0.5058823529411764 Test_mean: 0.4968586387434556
+13-Aug-26 16:16:36 - Metric: accuracy Train_std: 0.021793185446160858 Val_std: 0.022489739260242156 Test_std: 0.0194775656939668
+13-Aug-26 16:16:36 - Metric: f1 Train_mean: 0.35546530973383994 Val_mean: 0.30950909948238103 Test_mean: 0.2986965857656826
+13-Aug-26 16:16:36 - Metric: f1 Train_std: 0.16527631872922774 Val_std: 0.13054243476280333 Test_std: 0.10321830088207117
+13-Aug-26 16:16:36 - Metric: sen Train_mean: 0.2931399246695012 Val_mean: 0.2485992242161832 Test_mean: 0.24401360001515796
+13-Aug-26 16:16:36 - Metric: sen Train_std: 0.15355703715533664 Val_std: 0.11263649937458478 Test_std: 0.10123841304700744
+13-Aug-26 16:16:36 - Metric: spe Train_mean: 0.7816198304692187 Val_mean: 0.7611717989763864 Test_mean: 0.7353282264799834
+13-Aug-26 16:16:36 - Metric: spe Train_std: 0.09891677038599778 Val_std: 0.1268788739403881 Test_std: 0.13740823038029176
+13-Aug-26 16:16:36 - Metric: auc Train_mean: 0.5657984390103523 Val_mean: 0.48408925680249715 Test_mean: 0.4991411449608961
+13-Aug-26 16:16:36 - Metric: auc Train_std: 0.03627143633177813 Val_std: 0.01929477701882994 Test_std: 0.03821689488328063
+13-Aug-26 16:16:44 - Epoch 16, Model Loss 4.846928514283279, View Loss 10.920579022374646, Reg 0.10768019510754223
+13-Aug-26 16:16:52 - Epoch 17, Model Loss 4.447774500682436, View Loss 9.044727095242205, Reg 0.10547958314418793
+13-Aug-26 16:17:00 - Epoch 18, Model Loss 4.378546048854959, View Loss 9.241918333645526, Reg 0.0946169955463245
+13-Aug-26 16:17:08 - Epoch 19, Model Loss 4.2569071835485, View Loss 9.220902574473413, Reg 0.09474389537655074
+13-Aug-26 16:17:16 - Epoch 20, Model Loss 4.368711405786975, View Loss 9.19469274323562, Reg 0.10750347992469525
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:17:18 - Metric: accuracy Train_mean: 0.5635885669052128 Val_mean: 0.5098039215686274 Test_mean: 0.5282722513089004
+13-Aug-26 16:17:18 - Metric: accuracy Train_std: 0.018441955124121365 Val_std: 0.040290287601104445 Test_std: 0.020304418250958432
+13-Aug-26 16:17:18 - Metric: f1 Train_mean: 0.4096644401499945 Val_mean: 0.3604562552681565 Test_mean: 0.376041915441229
+13-Aug-26 16:17:18 - Metric: f1 Train_std: 0.08638554048803172 Val_std: 0.0784782425933996 Test_std: 0.06814927828043729
+13-Aug-26 16:17:18 - Metric: sen Train_mean: 0.33410177145090236 Val_mean: 0.2932473297417543 Test_mean: 0.30863590665259244
+13-Aug-26 16:17:18 - Metric: sen Train_std: 0.10936620614641707 Val_std: 0.08628122979360231 Test_std: 0.08156493580333722
+13-Aug-26 16:17:18 - Metric: spe Train_mean: 0.7678804277699887 Val_mean: 0.7170571574433614 Test_mean: 0.729731125404235
+13-Aug-26 16:17:18 - Metric: spe Train_std: 0.0830956352622693 Val_std: 0.11657983394987993 Test_std: 0.08938794883976674
+13-Aug-26 16:17:18 - Metric: auc Train_mean: 0.5756566844627613 Val_mean: 0.5132197414730648 Test_mean: 0.510344153905565
+13-Aug-26 16:17:18 - Metric: auc Train_std: 0.04000555816780639 Val_std: 0.04049918858093005 Test_std: 0.02188824015488974
+13-Aug-26 16:17:26 - Epoch 21, Model Loss 5.067548242108575, View Loss 9.33101931933699, Reg 0.16703436754900833
+13-Aug-26 16:17:34 - Epoch 22, Model Loss 4.713506567067113, View Loss 9.340250837391821, Reg 0.1403999654897328
+13-Aug-26 16:17:42 - Epoch 23, Model Loss 5.66280170966839, View Loss 8.114114991549787, Reg 0.12018618321624296
+13-Aug-26 16:17:50 - Epoch 24, Model Loss 5.5820392411330655, View Loss 6.360252084403203, Reg 0.09775301839770942
+13-Aug-26 16:17:58 - Epoch 25, Model Loss 5.380965512374352, View Loss 6.105908804926379, Reg 0.08570546579772029
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:18:01 - Metric: accuracy Train_mean: 0.5763443620765273 Val_mean: 0.515032679738562 Test_mean: 0.49370091623036655
+13-Aug-26 16:18:01 - Metric: accuracy Train_std: 0.02883417297878332 Val_std: 0.0407960432269993 Test_std: 0.031471930624243284
+13-Aug-26 16:18:01 - Metric: f1 Train_mean: 0.4680434671494636 Val_mean: 0.3915998536001782 Test_mean: 0.3829440969600467
+13-Aug-26 16:18:01 - Metric: f1 Train_std: 0.13116411127743097 Val_std: 0.12194360992054651 Test_std: 0.10669317862895461
+13-Aug-26 16:18:01 - Metric: sen Train_mean: 0.42535930568614494 Val_mean: 0.36855926992489535 Test_mean: 0.3620228877652175
+13-Aug-26 16:18:01 - Metric: sen Train_std: 0.17284260201512303 Val_std: 0.180866459246049 Test_std: 0.1633014640984793
+13-Aug-26 16:18:01 - Metric: spe Train_mean: 0.7065996176429084 Val_mean: 0.6494136398105578 Test_mean: 0.6345785100422672
+13-Aug-26 16:18:01 - Metric: spe Train_std: 0.12305988473779789 Val_std: 0.159882908443318 Test_std: 0.1428397627627497
+13-Aug-26 16:18:01 - Metric: auc Train_mean: 0.5913229819670193 Val_mean: 0.4982285043551521 Test_mean: 0.5164989842946639
+13-Aug-26 16:18:01 - Metric: auc Train_std: 0.039311158751988026 Val_std: 0.030547541611561375 Test_std: 0.03572597423767757
+13-Aug-26 16:18:09 - Epoch 26, Model Loss 5.317654922090727, View Loss 5.787458288258519, Reg 0.07439237601798156
+13-Aug-26 16:18:17 - Epoch 27, Model Loss 5.030465767301362, View Loss 5.916173606083311, Reg 0.06140574453205898
+13-Aug-26 16:18:25 - Epoch 28, Model Loss 4.833275712769607, View Loss 5.956549184075717, Reg 0.05877408513735081
+13-Aug-26 16:18:33 - Epoch 29, Model Loss 4.728009635004504, View Loss 6.486836860919821, Reg 0.06579404979430396
+13-Aug-26 16:18:41 - Epoch 30, Model Loss 4.673396883339717, View Loss 6.458340036457982, Reg 0.07716745780459766
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:18:43 - Metric: accuracy Train_mean: 0.5717686638212296 Val_mean: 0.5228758169934641 Test_mean: 0.5146705933682373
+13-Aug-26 16:18:43 - Metric: accuracy Train_std: 0.02123838497411626 Val_std: 0.03531831656498379 Test_std: 0.013592431103520151
+13-Aug-26 16:18:43 - Metric: f1 Train_mean: 0.47581838930893816 Val_mean: 0.41734895379348236 Test_mean: 0.41289903247836657
+13-Aug-26 16:18:43 - Metric: f1 Train_std: 0.07002885161893195 Val_std: 0.08176949357865781 Test_std: 0.0497526972204575
+13-Aug-26 16:18:43 - Metric: sen Train_mean: 0.41654276424714337 Val_mean: 0.3743401751224587 Test_mean: 0.36911757639090137
+13-Aug-26 16:18:43 - Metric: sen Train_std: 0.08668956743331792 Val_std: 0.10489747618217286 Test_std: 0.08707728802195322
+13-Aug-26 16:18:43 - Metric: spe Train_mean: 0.7103997097817445 Val_mean: 0.661399513290592 Test_mean: 0.6544440855735942
+13-Aug-26 16:18:43 - Metric: spe Train_std: 0.06491285067012376 Val_std: 0.07578772609726887 Test_std: 0.09331287307113519
+13-Aug-26 16:18:43 - Metric: auc Train_mean: 0.6012452078489453 Val_mean: 0.5125250362470982 Test_mean: 0.5030699017932057
+13-Aug-26 16:18:43 - Metric: auc Train_std: 0.024003237743547932 Val_std: 0.04660419050405562 Test_std: 0.02520390983687558
+13-Aug-26 16:18:52 - Epoch 31, Model Loss 4.561385680889261, View Loss 6.400660120207688, Reg 0.08088690170954013
+13-Aug-26 16:19:00 - Epoch 32, Model Loss 4.3954516772566175, View Loss 6.447634548976503, Reg 0.10114863257983635
+13-Aug-26 16:19:08 - Epoch 33, Model Loss 4.619622296300427, View Loss 6.932894640955432, Reg 0.15447697942626887
+13-Aug-26 16:19:16 - Epoch 34, Model Loss 4.8641339006095095, View Loss 6.073962902200633, Reg 0.16998224525616087
+13-Aug-26 16:19:24 - Epoch 35, Model Loss 6.040081665433687, View Loss 6.160055703130261, Reg 0.11618443835398247
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:19:26 - Metric: accuracy Train_mean: 0.5665185113870971 Val_mean: 0.5098039215686274 Test_mean: 0.5146160558464223
+13-Aug-26 16:19:26 - Metric: accuracy Train_std: 0.015836420683959747 Val_std: 0.02066848143900901 Test_std: 0.024486509176140422
+13-Aug-26 16:19:26 - Metric: f1 Train_mean: 0.3866723159322604 Val_mean: 0.3214019050124407 Test_mean: 0.3200020143161243
+13-Aug-26 16:19:26 - Metric: f1 Train_std: 0.09880755015605952 Val_std: 0.07736786035904303 Test_std: 0.07328978307946789
+13-Aug-26 16:19:26 - Metric: sen Train_mean: 0.30794573358993255 Val_mean: 0.2547314443776947 Test_mean: 0.2530257293202895
+13-Aug-26 16:19:26 - Metric: sen Train_std: 0.129925799251804 Val_std: 0.10014397616060795 Test_std: 0.09380591023930315
+13-Aug-26 16:19:26 - Metric: spe Train_mean: 0.7921833625077221 Val_mean: 0.7540434140203303 Test_mean: 0.7648002275045629
+13-Aug-26 16:19:26 - Metric: spe Train_std: 0.12447637816374883 Val_std: 0.12306303511881976 Test_std: 0.08101324410752017
+13-Aug-26 16:19:26 - Metric: auc Train_mean: 0.5873523209149788 Val_mean: 0.4965027432595953 Test_mean: 0.4996383520752216
+13-Aug-26 16:19:26 - Metric: auc Train_std: 0.016723031265998424 Val_std: 0.04143491337434526 Test_std: 0.03286103158050227
+13-Aug-26 16:19:34 - Epoch 36, Model Loss 5.617751697014118, View Loss 5.685357718632139, Reg 0.07861291129013588
+13-Aug-26 16:19:42 - Epoch 37, Model Loss 5.477710230597134, View Loss 5.797169767577072, Reg 0.05269169833125739
+13-Aug-26 16:19:50 - Epoch 38, Model Loss 5.017214610658843, View Loss 6.048343872201854, Reg 0.04159024113724972
+13-Aug-26 16:19:58 - Epoch 39, Model Loss 4.657642002763419, View Loss 6.204463777870967, Reg 0.05769752762440977
+13-Aug-26 16:20:06 - Epoch 40, Model Loss 5.535044143939841, View Loss 7.1892488742696825, Reg 0.07830554426744066
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:20:09 - Metric: accuracy Train_mean: 0.5675010429703796 Val_mean: 0.48496732026143796 Test_mean: 0.5021106020942409
+13-Aug-26 16:20:09 - Metric: accuracy Train_std: 0.02183517822564848 Val_std: 0.019996154955265827 Test_std: 0.01769198888859396
+13-Aug-26 16:20:09 - Metric: f1 Train_mean: 0.498010744601476 Val_mean: 0.3740829704995985 Test_mean: 0.43066865150739997
+13-Aug-26 16:20:09 - Metric: f1 Train_std: 0.08987656583580368 Val_std: 0.0736295565703148 Test_std: 0.0573009882347426
+13-Aug-26 16:20:09 - Metric: sen Train_mean: 0.46625131041810713 Val_mean: 0.34716832224675526 Test_mean: 0.40832001132694007
+13-Aug-26 16:20:09 - Metric: sen Train_std: 0.1281053292959716 Val_std: 0.10363403336188033 Test_std: 0.10307432077222817
+13-Aug-26 16:20:09 - Metric: spe Train_mean: 0.6557112768085696 Val_mean: 0.6094913076167152 Test_mean: 0.5966825788773061
+13-Aug-26 16:20:09 - Metric: spe Train_std: 0.10432944108647157 Val_std: 0.08705218288346714 Test_std: 0.11643400330386237
+13-Aug-26 16:20:09 - Metric: auc Train_mean: 0.5887300280235801 Val_mean: 0.4770439801681604 Test_mean: 0.5055565057686342
+13-Aug-26 16:20:09 - Metric: auc Train_std: 0.03291451474578615 Val_std: 0.026331725605988128 Test_std: 0.021526249500510224
+13-Aug-26 16:20:17 - Epoch 41, Model Loss 5.57940256184545, View Loss 5.776017600092395, Reg 0.04379009185680028
+13-Aug-26 16:20:25 - Epoch 42, Model Loss 5.317936650637923, View Loss 5.888808431296513, Reg 0.0469479498549782
+13-Aug-26 16:20:33 - Epoch 43, Model Loss 5.214491794849264, View Loss 5.950932848042455, Reg 0.06839358357006106
+13-Aug-26 16:20:41 - Epoch 44, Model Loss 4.56512033528295, View Loss 6.595829108665729, Reg 0.08548640511159239
+13-Aug-26 16:20:49 - Epoch 45, Model Loss 6.102094584497912, View Loss 7.571895254069362, Reg 0.09006209157664201
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:20:51 - Metric: accuracy Train_mean: 0.562281377362729 Val_mean: 0.5320261437908497 Test_mean: 0.5147414921465969
+13-Aug-26 16:20:51 - Metric: accuracy Train_std: 0.02307398278981793 Val_std: 0.021319616248758295 Test_std: 0.05032846976245399
+13-Aug-26 16:20:51 - Metric: f1 Train_mean: 0.38241868395620043 Val_mean: 0.3387766049598543 Test_mean: 0.31549760168024227
+13-Aug-26 16:20:51 - Metric: f1 Train_std: 0.10018345879185676 Val_std: 0.06944247962652132 Test_std: 0.11375575998642037
+13-Aug-26 16:20:51 - Metric: sen Train_mean: 0.3016498066576666 Val_mean: 0.2586942751676181 Test_mean: 0.24982369480333916
+13-Aug-26 16:20:51 - Metric: sen Train_std: 0.11239517963977182 Val_std: 0.09003979584604963 Test_std: 0.11986515970041431
+13-Aug-26 16:20:51 - Metric: spe Train_mean: 0.7948043746635248 Val_mean: 0.7921097810210045 Test_mean: 0.7592054031110305
+13-Aug-26 16:20:51 - Metric: spe Train_std: 0.1026178208594696 Val_std: 0.10948258264625076 Test_std: 0.07133939974931489
+13-Aug-26 16:20:51 - Metric: auc Train_mean: 0.5744725129989033 Val_mean: 0.5370733225586777 Test_mean: 0.4976696567922817
+13-Aug-26 16:20:51 - Metric: auc Train_std: 0.03423093676323344 Val_std: 0.013629349532801864 Test_std: 0.06414373946830626
+13-Aug-26 16:20:59 - Epoch 46, Model Loss 5.793185332725788, View Loss 5.871461901171454, Reg 0.09609141123705897
+13-Aug-26 16:21:07 - Epoch 47, Model Loss 5.604659392915923, View Loss 5.632382195571373, Reg 0.06868162468589585
+13-Aug-26 16:21:15 - Epoch 48, Model Loss 5.492599388648724, View Loss 5.679662145417312, Reg 0.04712506396503284
+13-Aug-26 16:21:23 - Epoch 49, Model Loss 5.2948322789422395, View Loss 5.7153495262409075, Reg 0.03155691350071595
+13-Aug-26 16:21:31 - Epoch 50, Model Loss 5.048141923444025, View Loss 5.727334121177936, Reg 0.02421295199671696
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:21:34 - Metric: accuracy Train_mean: 0.5635789394863238 Val_mean: 0.5032679738562091 Test_mean: 0.4915903141361257
+13-Aug-26 16:21:34 - Metric: accuracy Train_std: 0.014177868615160728 Val_std: 0.03877750842925839 Test_std: 0.03406971515588929
+13-Aug-26 16:21:34 - Metric: f1 Train_mean: 0.43765700090406395 Val_mean: 0.3569358178053831 Test_mean: 0.32722626966529406
+13-Aug-26 16:21:34 - Metric: f1 Train_std: 0.03742176012054137 Val_std: 0.059300538442066626 Test_std: 0.0883613406407315
+13-Aug-26 16:21:34 - Metric: sen Train_mean: 0.3626631586279161 Val_mean: 0.2879437942011319 Test_mean: 0.27235141816386943
+13-Aug-26 16:21:34 - Metric: sen Train_std: 0.05759505507904379 Val_std: 0.060598892648900636 Test_std: 0.10795583448596005
+13-Aug-26 16:21:34 - Metric: spe Train_mean: 0.7429932708543024 Val_mean: 0.7046601003350661 Test_mean: 0.6926048665512938
+13-Aug-26 16:21:34 - Metric: spe Train_std: 0.06896779753476369 Val_std: 0.10025545157781961 Test_std: 0.07092743107732108
+13-Aug-26 16:21:34 - Metric: auc Train_mean: 0.5835663721481668 Val_mean: 0.4939118766340587 Test_mean: 0.46808575946116165
+13-Aug-26 16:21:34 - Metric: auc Train_std: 0.02005412890605194 Val_std: 0.044628679450405384 Test_std: 0.03609266263481317
+13-Aug-26 16:21:42 - Epoch 51, Model Loss 4.865209201286579, View Loss 6.005861019266063, Reg 0.02197840424447224
+13-Aug-26 16:21:50 - Epoch 52, Model Loss 4.916729203585921, View Loss 6.159347024457208, Reg 0.022082733953821248
+13-Aug-26 16:21:58 - Epoch 53, Model Loss 4.766723221745984, View Loss 6.243943757024304, Reg 0.026152973866154408
+13-Aug-26 16:22:06 - Epoch 54, Model Loss 4.715839665511559, View Loss 6.2996410501414335, Reg 0.04121069520198066
+13-Aug-26 16:22:14 - Epoch 55, Model Loss 4.706050823474753, View Loss 6.1957491184103075, Reg 0.05365917857350974
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:22:16 - Metric: accuracy Train_mean: 0.5616245734518575 Val_mean: 0.515032679738562 Test_mean: 0.5073516579406632
+13-Aug-26 16:22:16 - Metric: accuracy Train_std: 0.01890954151442741 Val_std: 0.05505735866314426 Test_std: 0.02466578188812669
+13-Aug-26 16:22:16 - Metric: f1 Train_mean: 0.4181077261298293 Val_mean: 0.3725914646378905 Test_mean: 0.34484553423359393
+13-Aug-26 16:22:16 - Metric: f1 Train_std: 0.05466222168065416 Val_std: 0.12416051695271767 Test_std: 0.07760502452555586
+13-Aug-26 16:22:16 - Metric: sen Train_mean: 0.3401516522184581 Val_mean: 0.3196361645828766 Test_mean: 0.29210504797125464
+13-Aug-26 16:22:16 - Metric: sen Train_std: 0.08154241370405697 Val_std: 0.1566374178241717 Test_std: 0.1285009398122389
+13-Aug-26 16:22:16 - Metric: spe Train_mean: 0.7553851883354661 Val_mean: 0.7052771235216865 Test_mean: 0.7206375548264429
+13-Aug-26 16:22:16 - Metric: spe Train_std: 0.09559801249987304 Val_std: 0.0972375101865541 Test_std: 0.11230789456043937
+13-Aug-26 16:22:16 - Metric: auc Train_mean: 0.5719384451649786 Val_mean: 0.5184987862666655 Test_mean: 0.5138668713011938
+13-Aug-26 16:22:16 - Metric: auc Train_std: 0.0225093087251716 Val_std: 0.062370412612968044 Test_std: 0.012515095756769217
+13-Aug-26 16:22:24 - Epoch 56, Model Loss 4.733452846264017, View Loss 6.295973531131087, Reg 0.07154366296940837
+13-Aug-26 16:22:32 - Epoch 57, Model Loss 4.703335926450532, View Loss 6.569939958638158, Reg 0.0727075537473991
+13-Aug-26 16:22:40 - Epoch 58, Model Loss 4.750167205415923, View Loss 6.086041022991312, Reg 0.06693548336625099
+13-Aug-26 16:22:48 - Epoch 59, Model Loss 4.824907845464246, View Loss 6.760535486813249, Reg 0.04280056836533135
+13-Aug-26 16:22:56 - Epoch 60, Model Loss 5.051584769939554, View Loss 6.529073369914088, Reg 0.02302732289736641
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:22:59 - Metric: accuracy Train_mean: 0.5557320582351872 Val_mean: 0.5137254901960785 Test_mean: 0.5031086387434555
+13-Aug-26 16:22:59 - Metric: accuracy Train_std: 0.022915831027123235 Val_std: 0.036178699354504705 Test_std: 0.034639218363926624
+13-Aug-26 16:22:59 - Metric: f1 Train_mean: 0.40954751887384866 Val_mean: 0.3973631222165095 Test_mean: 0.3591803301999718
+13-Aug-26 16:22:59 - Metric: f1 Train_std: 0.03706196711867591 Val_std: 0.03637023974031752 Test_std: 0.057075888842804366
+13-Aug-26 16:22:59 - Metric: sen Train_mean: 0.3301371822232244 Val_mean: 0.32043763062811664 Test_mean: 0.29518046336768605
+13-Aug-26 16:22:59 - Metric: sen Train_std: 0.04242494811281071 Val_std: 0.03687585637235554 Test_std: 0.055585295626841044
+13-Aug-26 16:22:59 - Metric: spe Train_mean: 0.7560685475862616 Val_mean: 0.7092552285852338 Test_mean: 0.6888067371907243
+13-Aug-26 16:22:59 - Metric: spe Train_std: 0.034583008886058794 Val_std: 0.0753978090849078 Test_std: 0.051994741651664456
+13-Aug-26 16:22:59 - Metric: auc Train_mean: 0.5639609764312024 Val_mean: 0.5288796272238143 Test_mean: 0.4845613580561839
+13-Aug-26 16:22:59 - Metric: auc Train_std: 0.025219296791226174 Val_std: 0.04639343071594761 Test_std: 0.023874426097515212
+13-Aug-26 16:23:07 - Epoch 61, Model Loss 5.073523817391231, View Loss 6.109236174616321, Reg 0.013086078592158597
+13-Aug-26 16:23:15 - Epoch 62, Model Loss 5.079037764976764, View Loss 6.339659526430327, Reg 0.009584572680037597
+13-Aug-26 16:23:23 - Epoch 63, Model Loss 4.997917010866362, View Loss 6.080565699215593, Reg 0.009585544820232638
+13-Aug-26 16:23:31 - Epoch 64, Model Loss 4.811691448606294, View Loss 6.083894729614258, Reg 0.01144137105037426
+13-Aug-26 16:23:39 - Epoch 65, Model Loss 4.900654858556287, View Loss 6.141993456873401, Reg 0.008193227992360962
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:23:41 - Metric: accuracy Train_mean: 0.5652182749804777 Val_mean: 0.4993464052287582 Test_mean: 0.4864256108202444
+13-Aug-26 16:23:41 - Metric: accuracy Train_std: 0.02370600308010343 Val_std: 0.03890947991146986 Test_std: 0.030874983460442325
+13-Aug-26 16:23:41 - Metric: f1 Train_mean: 0.4044654299497716 Val_mean: 0.32774241822771805 Test_mean: 0.32739058977779806
+13-Aug-26 16:23:41 - Metric: f1 Train_std: 0.10794969344060282 Val_std: 0.13393075384797642 Test_std: 0.10731757059955006
+13-Aug-26 16:23:41 - Metric: sen Train_mean: 0.3373305969258088 Val_mean: 0.28591705628618236 Test_mean: 0.29368116358342294
+13-Aug-26 16:23:41 - Metric: sen Train_std: 0.14739731391361763 Val_std: 0.1683058251555292 Test_std: 0.1636632419720243
+13-Aug-26 16:23:41 - Metric: spe Train_mean: 0.7612678638116716 Val_mean: 0.7193859035905408 Test_mean: 0.6803671071476094
+13-Aug-26 16:23:41 - Metric: spe Train_std: 0.15138092149515558 Val_std: 0.1742767728949431 Test_std: 0.17619465837157663
+13-Aug-26 16:23:41 - Metric: auc Train_mean: 0.5736600195345672 Val_mean: 0.49275893223536926 Test_mean: 0.4877803254439191
+13-Aug-26 16:23:41 - Metric: auc Train_std: 0.023586250530617983 Val_std: 0.038485013447179535 Test_std: 0.042168220043603495
+13-Aug-26 16:23:49 - Epoch 66, Model Loss 4.8115167124518035, View Loss 6.66075167162665, Reg 0.008776626148229015
+13-Aug-26 16:23:57 - Epoch 67, Model Loss 4.555633890217748, View Loss 7.349834014629495, Reg 0.01256773405676258
+13-Aug-26 16:24:05 - Epoch 68, Model Loss 4.996312042762494, View Loss 7.727385981329556, Reg 0.04498017797696179
+13-Aug-26 16:24:13 - Epoch 69, Model Loss 4.772962339993181, View Loss 7.576234242011761, Reg 0.05730383894566832
+13-Aug-26 16:24:21 - Epoch 70, Model Loss 4.531883058876827, View Loss 8.223971153127737, Reg 0.03297375804134484
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:24:24 - Metric: accuracy Train_mean: 0.5658708000385098 Val_mean: 0.5058823529411766 Test_mean: 0.48529668411867366
+13-Aug-26 16:24:24 - Metric: accuracy Train_std: 0.016722639359716417 Val_std: 0.039346188087039005 Test_std: 0.03910272008526171
+13-Aug-26 16:24:24 - Metric: f1 Train_mean: 0.4100284804194767 Val_mean: 0.3345101609664717 Test_mean: 0.321256527895153
+13-Aug-26 16:24:24 - Metric: f1 Train_std: 0.04879028896270757 Val_std: 0.07019206454563305 Test_std: 0.04409971658342221
+13-Aug-26 16:24:24 - Metric: sen Train_mean: 0.32384209917758916 Val_mean: 0.26291719305816963 Test_mean: 0.25878959561187787
+13-Aug-26 16:24:24 - Metric: sen Train_std: 0.05978396891314301 Val_std: 0.09783641256761852 Test_std: 0.05510181808865266
+13-Aug-26 16:24:24 - Metric: spe Train_mean: 0.7804335035402368 Val_mean: 0.7435608477127498 Test_mean: 0.6943301815953451
+13-Aug-26 16:24:24 - Metric: spe Train_std: 0.05897022955311627 Val_std: 0.11570441683210285 Test_std: 0.08678345746278479
+13-Aug-26 16:24:24 - Metric: auc Train_mean: 0.5816012722070149 Val_mean: 0.5031155715835064 Test_mean: 0.48387883537817755
+13-Aug-26 16:24:24 - Metric: auc Train_std: 0.02383284886901897 Val_std: 0.02140250363614154 Test_std: 0.020598434245027383
+13-Aug-26 16:24:32 - Epoch 71, Model Loss 4.292222023010254, View Loss 8.870989931040796, Reg 0.04431064131444898
+13-Aug-26 16:24:40 - Epoch 72, Model Loss 4.86848051794644, View Loss 8.848576677256617, Reg 0.09232396118599794
+13-Aug-26 16:24:48 - Epoch 73, Model Loss 4.637215005940404, View Loss 6.774334512907883, Reg 0.13054021113905415
+13-Aug-26 16:24:56 - Epoch 74, Model Loss 5.479546004328235, View Loss 6.523080118771257, Reg 0.058707712153936255
+13-Aug-26 16:25:04 - Epoch 75, Model Loss 5.1818367201706454, View Loss 6.46310778321891, Reg 0.022990804647320305
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:25:07 - Metric: accuracy Train_mean: 0.5658702651819048 Val_mean: 0.5098039215686274 Test_mean: 0.5031413612565445
+13-Aug-26 16:25:07 - Metric: accuracy Train_std: 0.0172395507431251 Val_std: 0.03627303771375583 Test_std: 0.04350278131485024
+13-Aug-26 16:25:07 - Metric: f1 Train_mean: 0.47630568445427757 Val_mean: 0.371772267720929 Test_mean: 0.4164160528016775
+13-Aug-26 16:25:07 - Metric: f1 Train_std: 0.07738873466519486 Val_std: 0.06070327595971605 Test_std: 0.03946612912463421
+13-Aug-26 16:25:07 - Metric: sen Train_mean: 0.4189814514669651 Val_mean: 0.34173866822124477 Test_mean: 0.3807349864762661
+13-Aug-26 16:25:07 - Metric: sen Train_std: 0.10782428625905549 Val_std: 0.09078017176859428 Test_std: 0.08035792322635828
+13-Aug-26 16:25:07 - Metric: spe Train_mean: 0.7001170021192481 Val_mean: 0.6380963740612003 Test_mean: 0.6297519030488997
+13-Aug-26 16:25:07 - Metric: spe Train_std: 0.07972644265732834 Val_std: 0.10702537028263039 Test_std: 0.12968304991663418
+13-Aug-26 16:25:07 - Metric: auc Train_mean: 0.6023623021101026 Val_mean: 0.4794645326405873 Test_mean: 0.4992607577074173
+13-Aug-26 16:25:07 - Metric: auc Train_std: 0.03031078077598857 Val_std: 0.044854042460647656 Test_std: 0.05491687931719445
+13-Aug-26 16:25:15 - Epoch 76, Model Loss 5.035973828414391, View Loss 6.729137075358424, Reg 0.00908478365504536
+13-Aug-26 16:25:23 - Epoch 77, Model Loss 4.9028285125206255, View Loss 6.447539428184772, Reg 0.006441999226808548
+13-Aug-26 16:25:31 - Epoch 78, Model Loss 4.771513577165274, View Loss 6.558106389538995, Reg 0.005822637407430287
+13-Aug-26 16:25:39 - Epoch 79, Model Loss 4.733094955312795, View Loss 6.522091026963858, Reg 0.005143302364339088
+13-Aug-26 16:25:47 - Epoch 80, Model Loss 4.578127745924325, View Loss 6.281408441477809, Reg 0.004698728805343653
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:25:49 - Metric: accuracy Train_mean: 0.5701132826289271 Val_mean: 0.47320261437908495 Test_mean: 0.5302628708551484
+13-Aug-26 16:25:49 - Metric: accuracy Train_std: 0.028063299690152164 Val_std: 0.042679288149841836 Test_std: 0.04571465206774523
+13-Aug-26 16:25:49 - Metric: f1 Train_mean: 0.4555860490115903 Val_mean: 0.36408673135648756 Test_mean: 0.39980296533198445
+13-Aug-26 16:25:49 - Metric: f1 Train_std: 0.05095848210826793 Val_std: 0.09708301403980159 Test_std: 0.0669863988599701
+13-Aug-26 16:25:49 - Metric: sen Train_mean: 0.388099916672562 Val_mean: 0.3144167795138213 Test_mean: 0.33591847836149086
+13-Aug-26 16:25:49 - Metric: sen Train_std: 0.07835996406911429 Val_std: 0.09833445998047637 Test_std: 0.08412947550913036
+13-Aug-26 16:25:49 - Metric: spe Train_mean: 0.7266064489922164 Val_mean: 0.6403118821886763 Test_mean: 0.7128319542163658
+13-Aug-26 16:25:49 - Metric: spe Train_std: 0.08398938759427563 Val_std: 0.08674679784740089 Test_std: 0.06657207622756212
+13-Aug-26 16:25:49 - Metric: auc Train_mean: 0.600759047769673 Val_mean: 0.4970805020978924 Test_mean: 0.5357708500700474
+13-Aug-26 16:25:49 - Metric: auc Train_std: 0.032261620531250486 Val_std: 0.05629754458086177 Test_std: 0.05068320027913851
+13-Aug-26 16:25:57 - Epoch 81, Model Loss 4.607751172164391, View Loss 7.019600259846654, Reg 0.00422969951037446
+13-Aug-26 16:26:05 - Epoch 82, Model Loss 4.587042956516661, View Loss 6.744595100139749, Reg 0.003781715424024853
+13-Aug-26 16:26:13 - Epoch 83, Model Loss 4.636822930697737, View Loss 6.802598591508536, Reg 0.003487592819949676
+13-Aug-26 16:26:21 - Epoch 84, Model Loss 4.624467948387409, View Loss 6.603460114577721, Reg 0.0031798844595022245
+13-Aug-26 16:26:29 - Epoch 85, Model Loss 4.513751227280189, View Loss 6.806759965830836, Reg 0.002961801228530962
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:26:32 - Metric: accuracy Train_mean: 0.5704481028636222 Val_mean: 0.5098039215686274 Test_mean: 0.509429537521815
+13-Aug-26 16:26:32 - Metric: accuracy Train_std: 0.015846489316446413 Val_std: 0.01938875421462918 Test_std: 0.028269425400240432
+13-Aug-26 16:26:32 - Metric: f1 Train_mean: 0.5020095602819941 Val_mean: 0.4245308782652753 Test_mean: 0.4164801959401829
+13-Aug-26 16:26:32 - Metric: f1 Train_std: 0.0890198822805936 Val_std: 0.033044051164221946 Test_std: 0.09118894122515163
+13-Aug-26 16:26:32 - Metric: sen Train_mean: 0.4651297419351442 Val_mean: 0.42279454621947804 Test_mean: 0.3857873500178995
+13-Aug-26 16:26:32 - Metric: sen Train_std: 0.12860369114363723 Val_std: 0.06705335261649224 Test_std: 0.12890697223091555
+13-Aug-26 16:26:32 - Metric: spe Train_mean: 0.6648132462618711 Val_mean: 0.5832763354393096 Test_mean: 0.6254637774365331
+13-Aug-26 16:26:32 - Metric: spe Train_std: 0.09984685084825942 Val_std: 0.07441131296724267 Test_std: 0.10272229099217253
+13-Aug-26 16:26:32 - Metric: auc Train_mean: 0.5909797430045238 Val_mean: 0.5101909083228824 Test_mean: 0.5037816047631448
+13-Aug-26 16:26:32 - Metric: auc Train_std: 0.028598065313076976 Val_std: 0.032567976061357896 Test_std: 0.03298165043355001
+13-Aug-26 16:26:40 - Epoch 86, Model Loss 4.515663558039172, View Loss 6.668005071837326, Reg 0.0027177090001902706
+13-Aug-26 16:26:48 - Epoch 87, Model Loss 4.5191699389753675, View Loss 7.012769633326037, Reg 0.002502483909885431
+13-Aug-26 16:26:56 - Epoch 88, Model Loss 4.485857552495496, View Loss 6.972153104584793, Reg 0.0023357292139453106
+13-Aug-26 16:27:04 - Epoch 89, Model Loss 4.515960101423593, View Loss 7.001745174671042, Reg 0.0021534828461128577
+13-Aug-26 16:27:12 - Epoch 90, Model Loss 4.446225889797868, View Loss 6.723964296538254, Reg 0.002040392915910945
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:27:14 - Metric: accuracy Train_mean: 0.5580244536439781 Val_mean: 0.5098039215686274 Test_mean: 0.515799520069808
+13-Aug-26 16:27:14 - Metric: accuracy Train_std: 0.025046233172581967 Val_std: 0.054683661864972255 Test_std: 0.053876589588640604
+13-Aug-26 16:27:14 - Metric: f1 Train_mean: 0.40606694105757735 Val_mean: 0.37648045108823147 Test_mean: 0.35082473648888646
+13-Aug-26 16:27:14 - Metric: f1 Train_std: 0.07556580869877061 Val_std: 0.06123418357635096 Test_std: 0.03130545701736604
+13-Aug-26 16:27:14 - Metric: sen Train_mean: 0.32736824320930263 Val_mean: 0.3139982674038512 Test_mean: 0.274532353045963
+13-Aug-26 16:27:14 - Metric: sen Train_std: 0.09085573033457997 Val_std: 0.07826279410793734 Test_std: 0.029944761143597686
+13-Aug-26 16:27:14 - Metric: spe Train_mean: 0.7647272798246348 Val_mean: 0.6933078156093349 Test_mean: 0.7369747659939246
+13-Aug-26 16:27:14 - Metric: spe Train_std: 0.07799744519767195 Val_std: 0.09793809703911377 Test_std: 0.12279669192342058
+13-Aug-26 16:27:14 - Metric: auc Train_mean: 0.5800304731467677 Val_mean: 0.5009568329382551 Test_mean: 0.4949095840319858
+13-Aug-26 16:27:14 - Metric: auc Train_std: 0.027546605515124653 Val_std: 0.04649800108829799 Test_std: 0.05515783256826981
+13-Aug-26 16:27:22 - Epoch 91, Model Loss 4.580488977761104, View Loss 6.8939011672447466, Reg 0.0019144786618136126
+13-Aug-26 16:27:30 - Epoch 92, Model Loss 4.412511463822989, View Loss 6.697222183490622, Reg 0.0017719753367569425
+13-Aug-26 16:27:38 - Epoch 93, Model Loss 4.491682660990748, View Loss 7.074346673899684, Reg 0.0016564223192760657
+13-Aug-26 16:27:47 - Epoch 94, Model Loss 4.493434560709987, View Loss 6.834989284646922, Reg 0.0015499367266251095
+13-Aug-26 16:27:54 - Epoch 95, Model Loss 4.476369866009416, View Loss 7.147101073429503, Reg 0.0014675762664912075
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:27:57 - Metric: accuracy Train_mean: 0.5573719285859461 Val_mean: 0.5137254901960784 Test_mean: 0.5115292321116928
+13-Aug-26 16:27:57 - Metric: accuracy Train_std: 0.018974650696896373 Val_std: 0.022489739260242177 Test_std: 0.018244039308468605
+13-Aug-26 16:27:57 - Metric: f1 Train_mean: 0.3847961213028307 Val_mean: 0.31675458188452627 Test_mean: 0.3103867150132037
+13-Aug-26 16:27:57 - Metric: f1 Train_std: 0.1250889492089076 Val_std: 0.13195077807829417 Test_std: 0.11305409014612992
+13-Aug-26 16:27:57 - Metric: sen Train_mean: 0.3127940222075786 Val_mean: 0.2751479908886281 Test_mean: 0.25299624869340187
+13-Aug-26 16:27:57 - Metric: sen Train_std: 0.13751262996043487 Val_std: 0.15501062692180204 Test_std: 0.12697775173336387
+13-Aug-26 16:27:57 - Metric: spe Train_mean: 0.7797370166723662 Val_mean: 0.7220189058054372 Test_mean: 0.753821076884915
+13-Aug-26 16:27:57 - Metric: spe Train_std: 0.10215197135246257 Val_std: 0.16266968876671298 Test_std: 0.11092797174187641
+13-Aug-26 16:27:57 - Metric: auc Train_mean: 0.5739126021664009 Val_mean: 0.47680308475859867 Test_mean: 0.49260649262388245
+13-Aug-26 16:27:57 - Metric: auc Train_std: 0.026688983966698953 Val_std: 0.004525832359712246 Test_std: 0.004310262341207779
+13-Aug-26 16:28:05 - Epoch 96, Model Loss 4.4659149400119125, View Loss 7.284648780165048, Reg 0.0013708656990964864
+13-Aug-26 16:28:13 - Epoch 97, Model Loss 4.521126467606117, View Loss 6.963051927500758, Reg 0.0012693353607479867
+13-Aug-26 16:28:21 - Epoch 98, Model Loss 4.535194413415317, View Loss 7.310849929678029, Reg 0.0011898696559063833
+13-Aug-26 16:28:29 - Epoch 99, Model Loss 4.574466212042447, View Loss 6.889098923781822, Reg 0.0011248469095805596
+13-Aug-26 16:28:37 - Epoch 100, Model Loss 4.4551832593720535, View Loss 7.344726447401376, Reg 0.00104737854040838
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:28:39 - Metric: accuracy Train_mean: 0.5845019950151366 Val_mean: 0.4928104575163399 Test_mean: 0.5062881762652706
+13-Aug-26 16:28:39 - Metric: accuracy Train_std: 0.01696536679478403 Val_std: 0.03296606591612678 Test_std: 0.024420265357508894
+13-Aug-26 16:28:39 - Metric: f1 Train_mean: 0.45638981798052114 Val_mean: 0.3525144035474036 Test_mean: 0.3643172346417618
+13-Aug-26 16:28:39 - Metric: f1 Train_std: 0.0419393215713285 Val_std: 0.0768222720541498 Test_std: 0.031197062471570943
+13-Aug-26 16:28:39 - Metric: sen Train_mean: 0.3752581261518724 Val_mean: 0.2877289751384109 Test_mean: 0.30025749943474034
+13-Aug-26 16:28:39 - Metric: sen Train_std: 0.0589666923196032 Val_std: 0.10319785123770696 Test_std: 0.04714766072723821
+13-Aug-26 16:28:39 - Metric: spe Train_mean: 0.7669294108035511 Val_mean: 0.7079959915572623 Test_mean: 0.6952593632913349
+13-Aug-26 16:28:39 - Metric: spe Train_std: 0.0545846893903665 Val_std: 0.07515713602866694 Test_std: 0.05586568371571363
+13-Aug-26 16:28:39 - Metric: auc Train_mean: 0.6025750450601515 Val_mean: 0.4626906424717004 Test_mean: 0.49179585665657016
+13-Aug-26 16:28:39 - Metric: auc Train_std: 0.016936869044468564 Val_std: 0.04626804326282128 Test_std: 0.024492065855201132
+13-Aug-26 16:28:47 - Epoch 101, Model Loss 4.496963928485739, View Loss 7.213716852253881, Reg 0.0009956524871964135
+13-Aug-26 16:28:55 - Epoch 102, Model Loss 4.533016977639034, View Loss 7.155579550512906, Reg 0.0009439358014035327
+13-Aug-26 16:29:04 - Epoch 103, Model Loss 4.496509963068469, View Loss 7.440638098223456, Reg 0.0008650383177406058
+13-Aug-26 16:29:12 - Epoch 104, Model Loss 4.522997346417657, View Loss 7.196343273952089, Reg 0.0008178154139072988
+13-Aug-26 16:29:20 - Epoch 105, Model Loss 4.480264301957755, View Loss 7.620884550028834, Reg 0.0007877078706173804
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:29:22 - Metric: accuracy Train_mean: 0.5544184504134442 Val_mean: 0.5098039215686274 Test_mean: 0.5021160558464224
+13-Aug-26 16:29:22 - Metric: accuracy Train_std: 0.02207938125821082 Val_std: 0.02226063577245283 Test_std: 0.015534308259071195
+13-Aug-26 16:29:22 - Metric: f1 Train_mean: 0.3966066292171416 Val_mean: 0.3204559486772146 Test_mean: 0.306093135306842
+13-Aug-26 16:29:22 - Metric: f1 Train_std: 0.0527212713082325 Val_std: 0.04177493957005204 Test_std: 0.058587837827832265
+13-Aug-26 16:29:22 - Metric: sen Train_mean: 0.30933018266539847 Val_mean: 0.25122548396806027 Test_mean: 0.234198925639079
+13-Aug-26 16:29:22 - Metric: sen Train_std: 0.05830401330738701 Val_std: 0.038936737504905165 Test_std: 0.057253312522055254
+13-Aug-26 16:29:22 - Metric: spe Train_mean: 0.7796333612919647 Val_mean: 0.7361257557252064 Test_mean: 0.7441407259269812
+13-Aug-26 16:29:22 - Metric: spe Train_std: 0.03951240017415913 Val_std: 0.04231412410889617 Test_std: 0.03128478938381985
+13-Aug-26 16:29:22 - Metric: auc Train_mean: 0.5741033509718524 Val_mean: 0.4675015074043814 Test_mean: 0.49310278973948735
+13-Aug-26 16:29:22 - Metric: auc Train_std: 0.02397986804753136 Val_std: 0.02246777625200606 Test_std: 0.020056058134147736
+13-Aug-26 16:29:30 - Epoch 106, Model Loss 4.438743361111345, View Loss 7.627093726191028, Reg 0.0007200673953148311
+13-Aug-26 16:29:38 - Epoch 107, Model Loss 4.457582309328276, View Loss 7.311711327782993, Reg 0.0006934648303411387
+13-Aug-26 16:29:46 - Epoch 108, Model Loss 4.456267866595038, View Loss 8.270366043880069, Reg 0.000673168226434239
+13-Aug-26 16:29:54 - Epoch 109, Model Loss 4.46582606743122, View Loss 7.687585912901779, Reg 0.0006452381614884682
+13-Aug-26 16:30:02 - Epoch 110, Model Loss 4.474347838040056, View Loss 7.761480808258057, Reg 0.0006101883723047273
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:30:04 - Metric: accuracy Train_mean: 0.5599921910935679 Val_mean: 0.5150326797385621 Test_mean: 0.5167539267015707
+13-Aug-26 16:30:04 - Metric: accuracy Train_std: 0.02361431991418963 Val_std: 0.03541494688665114 Test_std: 0.02978316786037254
+13-Aug-26 16:30:04 - Metric: f1 Train_mean: 0.4860983307213614 Val_mean: 0.3844141677312776 Test_mean: 0.42707624712644765
+13-Aug-26 16:30:04 - Metric: f1 Train_std: 0.047138341062441975 Val_std: 0.07465636033443637 Test_std: 0.06612744552722356
+13-Aug-26 16:30:04 - Metric: sen Train_mean: 0.43719322593837556 Val_mean: 0.3450909040237509 Test_mean: 0.388436123468762
+13-Aug-26 16:30:04 - Metric: sen Train_std: 0.07242632540998512 Val_std: 0.09414918156275831 Test_std: 0.09964905192502857
+13-Aug-26 16:30:04 - Metric: spe Train_mean: 0.6718424807774189 Val_mean: 0.6606040431888014 Test_mean: 0.6349253049330824
+13-Aug-26 16:30:04 - Metric: spe Train_std: 0.07482908461324171 Val_std: 0.062168022523903084 Test_std: 0.08221186063664637
+13-Aug-26 16:30:04 - Metric: auc Train_mean: 0.5754238541112886 Val_mean: 0.5134078182354044 Test_mean: 0.5094156885546711
+13-Aug-26 16:30:04 - Metric: auc Train_std: 0.024031597532501905 Val_std: 0.02327212068479809 Test_std: 0.03862026334185103
+13-Aug-26 16:30:13 - Epoch 111, Model Loss 4.474300220094878, View Loss 6.953889156210011, Reg 0.000564390895807923
+13-Aug-26 16:30:21 - Epoch 112, Model Loss 4.439268835659685, View Loss 7.509806600110284, Reg 0.0005418284362631625
+13-Aug-26 16:30:29 - Epoch 113, Model Loss 4.445986928610966, View Loss 8.115142246772503, Reg 0.0005230502343881104
+13-Aug-26 16:30:37 - Epoch 114, Model Loss 4.3864891611296555, View Loss 7.8185301813586, Reg 0.0004999858291081056
+13-Aug-26 16:30:45 - Epoch 115, Model Loss 4.34143643543638, View Loss 7.7333281451258165, Reg 0.00047313189535433875
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:30:47 - Metric: accuracy Train_mean: 0.5691425178909535 Val_mean: 0.5084967320261438 Test_mean: 0.5135852966841187
+13-Aug-26 16:30:47 - Metric: accuracy Train_std: 0.010319863887518271 Val_std: 0.031318035426695257 Test_std: 0.016568929964629987
+13-Aug-26 16:30:47 - Metric: f1 Train_mean: 0.37817179648251675 Val_mean: 0.3312368977129343 Test_mean: 0.31154684741410177
+13-Aug-26 16:30:47 - Metric: f1 Train_std: 0.15067088893489194 Val_std: 0.11947640455478793 Test_std: 0.15034290135496037
+13-Aug-26 16:30:47 - Metric: sen Train_mean: 0.30878744540682107 Val_mean: 0.26641049650811943 Test_mean: 0.2607331779239902
+13-Aug-26 16:30:47 - Metric: sen Train_std: 0.13928453596140974 Val_std: 0.12239367481348502 Test_std: 0.13774017756573967
+13-Aug-26 16:30:47 - Metric: spe Train_mean: 0.7940332660992366 Val_mean: 0.7671828069566765 Test_mean: 0.7493248474853728
+13-Aug-26 16:30:47 - Metric: spe Train_std: 0.10543071553943138 Val_std: 0.12990569337960187 Test_std: 0.11531649002755946
+13-Aug-26 16:30:47 - Metric: auc Train_mean: 0.5827297107118211 Val_mean: 0.522964413020289 Test_mean: 0.481621774068706
+13-Aug-26 16:30:47 - Metric: auc Train_std: 0.027006003544138298 Val_std: 0.037307365783005426 Test_std: 0.020920021205770575
+13-Aug-26 16:30:55 - Epoch 116, Model Loss 4.342362601181557, View Loss 8.924171102458033, Reg 0.0004609954174094159
+13-Aug-26 16:31:03 - Epoch 117, Model Loss 4.378892224410484, View Loss 7.510265843621616, Reg 0.0004373773488874451
+13-Aug-26 16:31:11 - Epoch 118, Model Loss 4.358651473604399, View Loss 7.987690251449059, Reg 0.0004241477140097012
+13-Aug-26 16:31:19 - Epoch 119, Model Loss 4.347484818820296, View Loss 8.060398348446551, Reg 0.00039911709208009316
+13-Aug-26 16:31:27 - Epoch 120, Model Loss 4.370437531635679, View Loss 8.511246582557416, Reg 0.00037917899116392023
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:31:29 - Metric: accuracy Train_mean: 0.5776392499170973 Val_mean: 0.47581699346405226 Test_mean: 0.5313645287958115
+13-Aug-26 16:31:29 - Metric: accuracy Train_std: 0.012224415763222045 Val_std: 0.025615579009497305 Test_std: 0.021423851903944045
+13-Aug-26 16:31:29 - Metric: f1 Train_mean: 0.44288389549961477 Val_mean: 0.3435494989717694 Test_mean: 0.40174086982637486
+13-Aug-26 16:31:29 - Metric: f1 Train_std: 0.037466781943357154 Val_std: 0.06024110452313902 Test_std: 0.038671405320732766
+13-Aug-26 16:31:29 - Metric: sen Train_mean: 0.3595027370540568 Val_mean: 0.2822776409353941 Test_mean: 0.33449842888026987
+13-Aug-26 16:31:29 - Metric: sen Train_std: 0.05198010931679768 Val_std: 0.06595572989290205 Test_std: 0.053039931263950485
+13-Aug-26 16:31:29 - Metric: spe Train_mean: 0.7705754219338988 Val_mean: 0.6652542898087643 Test_mean: 0.7165784504309611
+13-Aug-26 16:31:29 - Metric: spe Train_std: 0.04627349695817309 Val_std: 0.060350178608517234 Test_std: 0.05905849309490501
+13-Aug-26 16:31:29 - Metric: auc Train_mean: 0.6011847603680474 Val_mean: 0.4634848166515509 Test_mean: 0.5233897434158643
+13-Aug-26 16:31:29 - Metric: auc Train_std: 0.023698507150759173 Val_std: 0.05677629107593049 Test_std: 0.027467785307679324
+13-Aug-26 16:31:38 - Epoch 121, Model Loss 4.286462372746961, View Loss 7.948618576444429, Reg 0.0003710745257759017
+13-Aug-26 16:31:46 - Epoch 122, Model Loss 4.359327003873628, View Loss 8.26173262760557, Reg 0.0003642298166784618
+13-Aug-26 16:31:54 - Epoch 123, Model Loss 4.297117940310774, View Loss 7.797831617552658, Reg 0.0003484473232549198
+13-Aug-26 16:32:02 - Epoch 124, Model Loss 4.317778192717453, View Loss 7.898818164036192, Reg 0.00034388347031099015
+13-Aug-26 16:32:10 - Epoch 125, Model Loss 4.2811704668505435, View Loss 9.051856961743585, Reg 0.0003354379963450905
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:32:12 - Metric: accuracy Train_mean: 0.5733973021832847 Val_mean: 0.4980392156862745 Test_mean: 0.5209533158813263
+13-Aug-26 16:32:12 - Metric: accuracy Train_std: 0.02200503717293011 Val_std: 0.03660130718954249 Test_std: 0.017344797774658104
+13-Aug-26 16:32:12 - Metric: f1 Train_mean: 0.3594089679387573 Val_mean: 0.32577694463948104 Test_mean: 0.3103335858662223
+13-Aug-26 16:32:12 - Metric: f1 Train_std: 0.09528293818716238 Val_std: 0.06843514412291375 Test_std: 0.09560352558744487
+13-Aug-26 16:32:12 - Metric: sen Train_mean: 0.2679258367618549 Val_mean: 0.23885008833938032 Test_mean: 0.24014921835102881
+13-Aug-26 16:32:12 - Metric: sen Train_std: 0.08900770553907414 Val_std: 0.06985473663283255 Test_std: 0.10796375247531666
+13-Aug-26 16:32:12 - Metric: spe Train_mean: 0.8384210977158147 Val_mean: 0.7839071533153044 Test_mean: 0.7733480898243126
+13-Aug-26 16:32:12 - Metric: spe Train_std: 0.04544648920985938 Val_std: 0.08914893679706833 Test_std: 0.09173084362060069
+13-Aug-26 16:32:12 - Metric: auc Train_mean: 0.577444826604626 Val_mean: 0.5130857548220129 Test_mean: 0.5158274990438263
+13-Aug-26 16:32:12 - Metric: auc Train_std: 0.025958003844156363 Val_std: 0.04996913934613795 Test_std: 0.022918576067415382
+13-Aug-26 16:32:20 - Epoch 126, Model Loss 4.301800744286899, View Loss 8.602947120008798, Reg 0.00032594676454679976
+13-Aug-26 16:32:28 - Epoch 127, Model Loss 4.288252978489317, View Loss 8.23900788405846, Reg 0.0003117968424640853
+13-Aug-26 16:32:36 - Epoch 128, Model Loss 4.259898235057962, View Loss 8.87694947472934, Reg 0.00031030826834592455
+13-Aug-26 16:32:44 - Epoch 129, Model Loss 4.231846159902112, View Loss 8.309949003416916, Reg 0.00030263287420705733
+13-Aug-26 16:32:52 - Epoch 130, Model Loss 4.261009175201942, View Loss 8.165282561861236, Reg 0.0002976034859251552
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:32:55 - Metric: accuracy Train_mean: 0.567180129007413 Val_mean: 0.4928104575163399 Test_mean: 0.48427137870855147
+13-Aug-26 16:32:55 - Metric: accuracy Train_std: 0.01808559725076167 Val_std: 0.03109902549900738 Test_std: 0.031735582168072485
+13-Aug-26 16:32:55 - Metric: f1 Train_mean: 0.41841377730545054 Val_mean: 0.3143169730363002 Test_mean: 0.34645768035326824
+13-Aug-26 16:32:55 - Metric: f1 Train_std: 0.1370137912712505 Val_std: 0.1330371389826255 Test_std: 0.09002733626002797
+13-Aug-26 16:32:55 - Metric: sen Train_mean: 0.3634040512780843 Val_mean: 0.30104201769447536 Test_mean: 0.3184137663560357
+13-Aug-26 16:32:55 - Metric: sen Train_std: 0.19535479327599786 Val_std: 0.2046568198070424 Test_std: 0.15733039209872351
+13-Aug-26 16:32:55 - Metric: spe Train_mean: 0.7410345847589228 Val_mean: 0.6779955520154398 Test_mean: 0.6644745200708386
+13-Aug-26 16:32:55 - Metric: spe Train_std: 0.15657413281892238 Val_std: 0.18029703825759244 Test_std: 0.18162415931018297
+13-Aug-26 16:32:55 - Metric: auc Train_mean: 0.5872184828412104 Val_mean: 0.4972955632251428 Test_mean: 0.4655774153692144
+13-Aug-26 16:32:55 - Metric: auc Train_std: 0.032906404243441274 Val_std: 0.027067127682507457 Test_std: 0.013909290414067106
+13-Aug-26 16:33:03 - Epoch 131, Model Loss 4.225959424314828, View Loss 8.40604122753801, Reg 0.000301297202581893
+13-Aug-26 16:33:11 - Epoch 132, Model Loss 4.300591575688329, View Loss 8.404793591334903, Reg 0.00028126768954499654
+13-Aug-26 16:33:19 - Epoch 133, Model Loss 4.2238033639973604, View Loss 8.186915627841291, Reg 0.0002802692043619102
+13-Aug-26 16:33:27 - Epoch 134, Model Loss 4.248028335900142, View Loss 8.603025699483938, Reg 0.0002742140129377166
+13-Aug-26 16:33:35 - Epoch 135, Model Loss 4.228937806754277, View Loss 8.504198518292657, Reg 0.0002653262751570357
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:33:37 - Metric: accuracy Train_mean: 0.5792785854112512 Val_mean: 0.5124183006535947 Test_mean: 0.5115401396160558
+13-Aug-26 16:33:37 - Metric: accuracy Train_std: 0.00937191951743993 Val_std: 0.037111292984518665 Test_std: 0.02178186837010671
+13-Aug-26 16:33:37 - Metric: f1 Train_mean: 0.47833848140566654 Val_mean: 0.3954038491980466 Test_mean: 0.406544623447898
+13-Aug-26 16:33:37 - Metric: f1 Train_std: 0.04694055576674587 Val_std: 0.07083597914502016 Test_std: 0.03689935991920667
+13-Aug-26 16:33:37 - Metric: sen Train_mean: 0.4077515336853744 Val_mean: 0.3547269115558772 Test_mean: 0.35662713224968484
+13-Aug-26 16:33:37 - Metric: sen Train_std: 0.06976909056842015 Val_std: 0.09630462308718692 Test_std: 0.06709990933092357
+13-Aug-26 16:33:37 - Metric: spe Train_mean: 0.7362977136084854 Val_mean: 0.6519139954113474 Test_mean: 0.6538018667379653
+13-Aug-26 16:33:37 - Metric: spe Train_std: 0.05444015914229114 Val_std: 0.06252474411496571 Test_std: 0.09428143391270571
+13-Aug-26 16:33:37 - Metric: auc Train_mean: 0.6016167496701085 Val_mean: 0.5210924351996601 Test_mean: 0.519058093333052
+13-Aug-26 16:33:37 - Metric: auc Train_std: 0.016789104596089937 Val_std: 0.03108555761132992 Test_std: 0.030836186404818316
+13-Aug-26 16:33:45 - Epoch 136, Model Loss 4.2329898620473925, View Loss 8.600774255292169, Reg 0.0002565252713072274
+13-Aug-26 16:33:53 - Epoch 137, Model Loss 4.244900736315497, View Loss 8.337307650467444, Reg 0.0002549798543974436
+13-Aug-26 16:34:01 - Epoch 138, Model Loss 4.195393784292813, View Loss 8.307179763399322, Reg 0.0002481636108533511
+13-Aug-26 16:34:09 - Epoch 139, Model Loss 4.237227012371195, View Loss 8.024353257540998, Reg 0.00025311063128073924
+13-Aug-26 16:34:17 - Epoch 140, Model Loss 4.240038814215825, View Loss 8.532844674998316, Reg 0.00024244716041721404
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:34:20 - Metric: accuracy Train_mean: 0.5711081159141234 Val_mean: 0.4993464052287582 Test_mean: 0.5094131762652705
+13-Aug-26 16:34:20 - Metric: accuracy Train_std: 0.014040628874766196 Val_std: 0.034237387852833465 Test_std: 0.026981991232583047
+13-Aug-26 16:34:20 - Metric: f1 Train_mean: 0.43305548305727937 Val_mean: 0.365936852911786 Test_mean: 0.3488557880101024
+13-Aug-26 16:34:20 - Metric: f1 Train_std: 0.03600495890239412 Val_std: 0.06251114666129566 Test_std: 0.07990720429648739
+13-Aug-26 16:34:20 - Metric: sen Train_mean: 0.3492958659098471 Val_mean: 0.29863326131077284 Test_mean: 0.2827966688425474
+13-Aug-26 16:34:20 - Metric: sen Train_std: 0.045781825131334955 Val_std: 0.07026588013925816 Test_std: 0.08170139853943635
+13-Aug-26 16:34:20 - Metric: spe Train_mean: 0.7687287630306276 Val_mean: 0.6946198329638131 Test_mean: 0.714552359589777
+13-Aug-26 16:34:20 - Metric: spe Train_std: 0.04347457084025715 Val_std: 0.06256284169772061 Test_std: 0.0420989861628718
+13-Aug-26 16:34:20 - Metric: auc Train_mean: 0.5887532006590633 Val_mean: 0.5250780829259375 Test_mean: 0.506541604373202
+13-Aug-26 16:34:20 - Metric: auc Train_std: 0.015081052448108685 Val_std: 0.028085586052948842 Test_std: 0.05054327404617791
+13-Aug-26 16:34:28 - Epoch 141, Model Loss 4.194953038774687, View Loss 8.044755442389127, Reg 0.00024721831894190663
+13-Aug-26 16:34:36 - Epoch 142, Model Loss 4.250799902554216, View Loss 7.766332182390936, Reg 0.0002338552424997284
+13-Aug-26 16:34:44 - Epoch 143, Model Loss 4.252173571751036, View Loss 8.099226080138108, Reg 0.00022390294681576178
+13-Aug-26 16:34:52 - Epoch 144, Model Loss 4.2463388771846375, View Loss 7.820294939238449, Reg 0.00022015115948682972
+13-Aug-26 16:35:00 - Epoch 145, Model Loss 4.2125948215353075, View Loss 8.690237966077081, Reg 0.00021157465606189236
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:35:02 - Metric: accuracy Train_mean: 0.5678224917899511 Val_mean: 0.5111111111111111 Test_mean: 0.49370636998254797
+13-Aug-26 16:35:02 - Metric: accuracy Train_std: 0.017577351728199374 Val_std: 0.01773158165522946 Test_std: 0.023847396857552487
+13-Aug-26 16:35:02 - Metric: f1 Train_mean: 0.44641614991146505 Val_mean: 0.36383490826793063 Test_mean: 0.34458737833032754
+13-Aug-26 16:35:02 - Metric: f1 Train_std: 0.05036761938837282 Val_std: 0.05225472844640964 Test_std: 0.023571955397422135
+13-Aug-26 16:35:02 - Metric: sen Train_mean: 0.36856466584006675 Val_mean: 0.3062840841530191 Test_mean: 0.28399705951795806
+13-Aug-26 16:35:02 - Metric: sen Train_std: 0.0658760604239067 Val_std: 0.06088957934265205 Test_std: 0.05133607434371888
+13-Aug-26 16:35:02 - Metric: spe Train_mean: 0.7501831384052806 Val_mean: 0.6849930539521273 Test_mean: 0.6903458042596448
+13-Aug-26 16:35:02 - Metric: spe Train_std: 0.056463266018872735 Val_std: 0.05677050653120029 Test_std: 0.09433668479295984
+13-Aug-26 16:35:02 - Metric: auc Train_mean: 0.5936331297273447 Val_mean: 0.4810921298297835 Test_mean: 0.48407805363936013
+13-Aug-26 16:35:02 - Metric: auc Train_std: 0.03362770095114121 Val_std: 0.01640151943863983 Test_std: 0.028421734726229844
+13-Aug-26 16:35:10 - Epoch 146, Model Loss 4.253020097469461, View Loss 8.377899400119123, Reg 0.0002050455263213672
+13-Aug-26 16:35:18 - Epoch 147, Model Loss 4.184127840502509, View Loss 8.721902156698293, Reg 0.0002103260937066556
+13-Aug-26 16:35:26 - Epoch 148, Model Loss 4.191317599395226, View Loss 8.07039425290864, Reg 0.00019732149265674423
+13-Aug-26 16:35:34 - Epoch 149, Model Loss 4.190804185538457, View Loss 8.246730409819504, Reg 0.00019530512458757209
+13-Aug-26 16:35:43 - Epoch 150, Model Loss 4.176898101280475, View Loss 8.121810748659332, Reg 0.00019551950992598873
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 16:35:45 - Metric: accuracy Train_mean: 0.5606484601478344 Val_mean: 0.4954248366013072 Test_mean: 0.49055410122164045
+13-Aug-26 16:35:45 - Metric: accuracy Train_std: 0.012961815494975996 Val_std: 0.038645086272142436 Test_std: 0.017294720986646528
+13-Aug-26 16:35:45 - Metric: f1 Train_mean: 0.3819046060960894 Val_mean: 0.30870064279155185 Test_mean: 0.3060607664191764
+13-Aug-26 16:35:45 - Metric: f1 Train_std: 0.15217733990066462 Val_std: 0.16142279760110922 Test_std: 0.1318571369478318
+13-Aug-26 16:35:45 - Metric: sen Train_mean: 0.3153216194326058 Val_mean: 0.27121721737893106 Test_mean: 0.2673539178408239
+13-Aug-26 16:35:45 - Metric: sen Train_std: 0.14046129372861307 Val_std: 0.1454741095131653 Test_std: 0.1382730390851715
+13-Aug-26 16:35:45 - Metric: spe Train_mean: 0.7788802741563179 Val_mean: 0.7015755241355948 Test_mean: 0.7096037399344104
+13-Aug-26 16:35:45 - Metric: spe Train_std: 0.10028533417529657 Val_std: 0.16324929690969273 Test_std: 0.15986665089859514
+13-Aug-26 16:35:45 - Metric: auc Train_mean: 0.5755523053368057 Val_mean: 0.5100805256250049 Test_mean: 0.495281135838513
+13-Aug-26 16:35:45 - Metric: auc Train_std: 0.023060598632745764 Val_std: 0.03269856269652398 Test_std: 0.026132870834325285
+13-Aug-26 16:35:53 - Epoch 151, Model Loss 4.169141119924085, View Loss 8.385929189879318, Reg 0.00019399422534002825
+[2026-08-13T16:35:59.254] error: *** JOB 1834745 ON node08 CANCELLED AT 2026-08-13T16:35:59 DUE to SIGNAL Terminated ***

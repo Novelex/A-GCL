@@ -1,7 +1,7 @@
 import numpy as np
 from sklearn.utils import shuffle
 import torch
-from sklearn.model_selection import GridSearchCV, KFold
+from sklearn.model_selection import GridSearchCV, StratifiedKFold
 from sklearn.model_selection import train_test_split
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.pipeline import make_pipeline, Pipeline
@@ -23,9 +23,29 @@ import torch.nn.functional as F
 from sklearn.metrics import precision_recall_curve, average_precision_score,roc_curve, auc, precision_score, recall_score, f1_score, confusion_matrix, accuracy_score, roc_auc_score
 import time
 
-def get_emb_y(loader, encoder, device, dtype='numpy', is_rand_label=False):
+def create_fixed_splits(dataset, n_splits=5, seed=123):
+	"""Precompute stratified train/val/test indices once, so every evaluation
+	across every epoch reuses the exact same folds instead of resampling."""
+	labels = np.array([int(dataset[i].y.item()) for i in range(len(dataset))])
+
+	outer_cv = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=seed)
+
+	splits = []
+	for fold_id, (train_val_idx, test_idx) in enumerate(outer_cv.split(np.zeros(len(labels)), labels)):
+		train_idx, val_idx = train_test_split(
+			train_val_idx,
+			test_size=0.20,
+			stratify=labels[train_val_idx],
+			random_state=seed + fold_id
+		)
+		splits.append({"train": train_idx, "val": val_idx, "test": test_idx})
+
+	return splits
+
+
+def get_emb_y(loader, encoder, device, dtype='numpy', is_rand_label=False, representation='z'):
 	# train_emb, train_y
-	x, y = encoder.get_embeddings(loader, device, is_rand_label)
+	x, y = encoder.get_embeddings(loader, device, representation=representation, is_rand_label=is_rand_label)
 
 	if dtype == 'numpy':
 		return x,y
@@ -177,12 +197,12 @@ class EmbeddingEvaluation():
 
 		return np.expand_dims(train_raw, axis=1), np.expand_dims(val_raw, axis=1), np.expand_dims(test_raw, axis=1)
 
-	def embedding_evaluation(self, encoder, train_loader, valid_loader, test_loader, flag):
+	def embedding_evaluation(self, encoder, train_loader, valid_loader, test_loader, flag, representation='z'):
 		encoder.eval()
 		val_start = time.time()
-		train_emb, train_y = get_emb_y(train_loader, encoder, self.device, is_rand_label=self.is_rand_label)
-		val_emb, val_y = get_emb_y(valid_loader, encoder, self.device, is_rand_label=self.is_rand_label)
-		test_emb, test_y = get_emb_y(test_loader, encoder, self.device, is_rand_label=self.is_rand_label)
+		train_emb, train_y = get_emb_y(train_loader, encoder, self.device, is_rand_label=self.is_rand_label, representation=representation)
+		val_emb, val_y = get_emb_y(valid_loader, encoder, self.device, is_rand_label=self.is_rand_label, representation=representation)
+		test_emb, test_y = get_emb_y(test_loader, encoder, self.device, is_rand_label=self.is_rand_label, representation=representation)
 		val_end = time.time()
 		running_time = val_end-val_start
 		if flag:
@@ -238,7 +258,7 @@ class EmbeddingEvaluation():
 				train_sen_score, val_sen_score, test_sen_score, train_spe_score, val_spe_score, test_spe_score,
 				train_auc, val_auc, test_auc, running_time)
 
-	def kf_embedding_evaluation(self, encoder, dataset, folds=5, batch_size=128, flag=False):
+	def kf_embedding_evaluation(self, encoder, dataset, fixed_splits, representation='z', batch_size=128, flag=False, include_test=True):
 		kf_train = []
 		kf_val = []
 		kf_test = []
@@ -255,14 +275,14 @@ class EmbeddingEvaluation():
 		kf_val_auc = []
 		kf_test_auc = []
 		running_times = []
-		
-		kf = KFold(n_splits=folds, shuffle=True, random_state=None)
-		for k_id, (train_val_index, test_index) in enumerate(kf.split(dataset)):
-			test_dataset = [dataset[int(i)] for i in list(test_index)]
-			train_index, val_index = train_test_split(train_val_index, test_size=0.2, random_state=None)
 
-			train_dataset = [dataset[int(i)] for i in list(train_index)]
-			val_dataset = [dataset[int(i)] for i in list(val_index)]
+		for split in fixed_splits:
+			train_dataset = [dataset[int(i)] for i in split["train"]]
+			val_dataset = [dataset[int(i)] for i in split["val"]]
+			# same-shaped test data every time -- either the real fixed test
+			# fold, or the val fold again (unused, just keeps the plumbing
+			# below identical) when include_test=False for training-time evals
+			test_dataset = [dataset[int(i)] for i in split["test"]] if include_test else val_dataset
 
 			train_loader = DataLoader(train_dataset, batch_size=batch_size)
 			valid_loader = DataLoader(val_dataset, batch_size=batch_size)
@@ -275,7 +295,10 @@ class EmbeddingEvaluation():
 			 train_spe, val_spe, test_spe,
 			 train_auc, val_auc, test_auc,
 			 running_time) = self.embedding_evaluation(
-				encoder, train_loader, valid_loader, test_loader, flag)
+				encoder, train_loader, valid_loader, test_loader, flag, representation=representation)
+
+			if not include_test:
+				test_score = test_f1 = test_sen = test_spe = test_auc = float('nan')
 
 			running_times.append(running_time)
 

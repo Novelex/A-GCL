@@ -13,7 +13,8 @@ from unsupervised.convs import GCNConv
 
 
 class TUEncoder(torch.nn.Module):
-	def __init__(self, num_dataset_features, emb_dim=300, num_gc_layers=5, drop_ratio=0.0, pooling_type="standard", is_infograph=False):
+	def __init__(self, num_dataset_features, emb_dim=300, num_gc_layers=5, drop_ratio=0.0, pooling_type="standard", is_infograph=False,
+				 normalize_nodes=True, message_relu=True, post_bn_relu=True):
 		super(TUEncoder, self).__init__()
 
 		self.pooling_type = pooling_type
@@ -21,6 +22,11 @@ class TUEncoder(torch.nn.Module):
 		self.num_gc_layers = num_gc_layers
 		self.drop_ratio = drop_ratio
 		self.is_infograph = is_infograph
+		# deviations from the paper's literal formula, made explicit and
+		# individually toggleable instead of silently baked in:
+		self.normalize_nodes = normalize_nodes  # paper sums GIN outputs directly, no F.normalize before pooling
+		self.message_relu = message_relu        # paper uses the weighted neighbour representation directly, no ReLU inside message()
+		self.post_bn_relu = post_bn_relu        # extra ReLU between GIN layers, after BatchNorm, not in the paper's formula
 
 		self.out_node_dim = self.emb_dim
 		if self.pooling_type == "standard":
@@ -45,7 +51,7 @@ class TUEncoder(torch.nn.Module):
 				nn = Sequential(Linear(num_dataset_features, emb_dim), ReLU(), Linear(emb_dim, emb_dim))
 				#nn = Linear(num_dataset_features, emb_dims[i])
 				#conv = GCNConv(num_dataset_features, emb_dim)
-			conv = WGINConv(nn)
+			conv = WGINConv(nn, message_relu=self.message_relu)
 			#通过全连接层构造卷积层
 			#bn = torch.nn.BatchNorm1d(emb_dims[i])
 			bn = torch.nn.BatchNorm1d(emb_dim)
@@ -62,10 +68,13 @@ class TUEncoder(torch.nn.Module):
 			if i == self.num_gc_layers - 1:
 				# remove relu for the last layer
 				x = F.dropout(x, self.drop_ratio, training=self.training)
-			else:
+			elif self.post_bn_relu:
 				x = F.dropout(F.relu(x), self.drop_ratio, training=self.training)
+			else:
+				x = F.dropout(x, self.drop_ratio, training=self.training)
 			xs.append(x)
-		x = F.normalize(x, dim=1)
+		if self.normalize_nodes:
+			x = F.normalize(x, dim=1)
 		# compute graph embedding using pooling
 		if self.pooling_type == "standard":
 			xpool = global_add_pool(x, batch)

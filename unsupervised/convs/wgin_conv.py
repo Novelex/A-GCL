@@ -11,12 +11,16 @@ from unsupervised.convs.inits import reset
 
 class WGINConv(MessagePassing):
 	def __init__(self, nn: Callable, eps: float = 0., train_eps: bool = False,
-				 **kwargs):
+				 message_relu: bool = True, **kwargs):
 		kwargs.setdefault('aggr', 'add')
 		super(WGINConv, self).__init__(**kwargs)
 		#self.nn = nn
 		self.lin = nn
 		self.initial_eps = eps
+		# paper's Eq. formula uses the weighted neighbour representation
+		# directly, with no ReLU inside the message; message_relu=True
+		# matches the current/original code, False is the paper-literal ablation
+		self.message_relu = message_relu
 		if train_eps:
 			self.eps = torch.nn.Parameter(torch.Tensor([eps]))
 		else:
@@ -45,7 +49,8 @@ class WGINConv(MessagePassing):
 		return self.lin(out)
 
 	def message(self, x_j: Tensor, edge_weight) -> Tensor:
-		return F.relu(x_j) if edge_weight is None else  F.relu(x_j)  * edge_weight.view(-1, 1)
+		x_j = F.relu(x_j) if self.message_relu else x_j
+		return x_j if edge_weight is None else x_j * edge_weight.view(-1, 1)
 
 
 	def __repr__(self):

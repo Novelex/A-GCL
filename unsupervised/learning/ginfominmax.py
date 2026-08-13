@@ -1,3 +1,4 @@
+import numpy as np
 import torch
 from torch.nn import Sequential, Linear, ReLU
 
@@ -21,13 +22,45 @@ class GInfoMinMax(torch.nn.Module):
 				if m.bias is not None:
 					m.bias.data.fill_(0.0)
 
+	def encode(self, batch, x, edge_index, edge_attr=None, edge_weight=None):
+		h, node_emb = self.encoder(batch, x, edge_index, edge_attr, edge_weight)
+		z = self.proj_head(h)
+		return h, z, node_emb
+
 	def forward(self, batch, x, edge_index, edge_attr, edge_weight=None):
 
-		z, node_emb = self.encoder(batch, x, edge_index, edge_attr, edge_weight)
+		_, z, node_emb = self.encode(batch, x, edge_index, edge_attr, edge_weight)
 
-		z = self.proj_head(z)
 		# z shape -> Batch x proj_hidden_dim = 32*32
 		return z, node_emb
+
+	def get_embeddings(self, loader, device, representation='z', is_rand_label=False):
+		assert representation in ('z', 'h')
+		ret = []
+		y = []
+		self.eval()
+		with torch.no_grad():
+			for data in loader:
+				if isinstance(data, list):
+					data = data[0].to(device)
+				data = data.to(device)
+				batch, x, edge_index = data.batch, data.x, data.edge_index
+				edge_weight = data.edge_weight if hasattr(data, 'edge_weight') else None
+
+				if x is None:
+					x = torch.ones((batch.shape[0], 1)).to(device)
+
+				h, z, _ = self.encode(batch, x, edge_index, None, edge_weight)
+				selected = z if representation == 'z' else h
+
+				ret.append(selected.cpu().numpy())
+				if is_rand_label:
+					y.append(data.rand_label.cpu().numpy())
+				else:
+					y.append(data.y.cpu().numpy())
+		ret = np.concatenate(ret, 0)
+		y = np.concatenate(y, 0)
+		return ret, y
 
 	@staticmethod
 	def calc_loss( x, x_aug, temperature=0.2, sym=True):
