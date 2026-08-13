@@ -44,6 +44,44 @@ def sample_symmetric_logistic_noise(edge_index, rev_idx=None, bias=1e-4, device=
 	return noise
 
 
+def sample_ordered_concrete_mask(
+	edge_logits,
+	temperature=1.0,
+	uniform_noise=None,
+	eps=1e-4,
+):
+	"""paper_exact profile: literal Binary-Concrete relaxation applied directly
+	per directed edge, with independent noise per direction -- no symmetrization,
+	no shared noise across (i,j)/(j,i). Kept alongside, not in place of, the
+	corrected profile's symmetric mask (symmetrize_edge_logits +
+	sample_symmetric_logistic_noise)."""
+	logits = edge_logits.squeeze(-1)
+
+	if uniform_noise is None:
+		uniform_noise = torch.empty_like(logits).uniform_(eps, 1.0 - eps)
+	else:
+		uniform_noise = uniform_noise.to(
+			device=logits.device,
+			dtype=logits.dtype,
+		)
+		uniform_noise = uniform_noise.clamp(eps, 1.0 - eps)
+
+	logistic_noise = (
+		torch.log(uniform_noise)
+		- torch.log1p(-uniform_noise)
+	)
+
+	# Deterministic Bernoulli keep probability
+	mu = torch.sigmoid(logits)
+
+	# Relaxed sampled mask B
+	edge_mask = torch.sigmoid(
+		(logits + logistic_noise) / temperature
+	)
+
+	return mu, edge_mask
+
+
 class ViewLearner(torch.nn.Module):
 	def __init__(self, encoder, mlp_edge_model_dim=64):
 		super(ViewLearner, self).__init__()

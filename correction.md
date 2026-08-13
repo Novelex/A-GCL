@@ -186,3 +186,61 @@ so the behaviour is explicit rather than silently inherited.
   to avoid test-fold leakage into training statistics, but note the consequence: it removes
   between-subject amplitude information entirely, leaving node features as pure per-subject
   spatial pattern.
+
+## Section 10 — `training_profile`: paper_exact vs corrected, side-by-side
+
+**Status: added, additive only. No prior fix in this document was reverted or altered.**
+
+Every section above resolved a paper-vs-code question (regularizer sign, memory-bank timing/exclusion,
+mask symmetry) by picking one convention and applying it globally. That worked as long as each question
+came up once, but the same "paper's literal formula vs. the tested/corrected code" tension kept
+resurfacing across independent pieces, and picking a single global answer meant any future re-litigation
+would require touching already-verified code again. Resolved instead with a runtime switch:
+`--training_profile paper_exact | corrected` on both `agcl_ABIDE.py` and `agcl_ABIDE_queue.py`.
+
+**Nothing in Sections 1–9 above was reverted.** `corrected` (selectable explicitly, and the behaviour
+`apply_training_profile` leaves untouched) is exactly the code this document already describes. `paper_exact`
+is implemented as new, additive components selected via an `is_paper_exact` branch, not a rewrite of the
+existing ones:
+
+- `unsupervised/training_profiles.py` (new) — `PAPER_EXACT_OVERRIDES` forces the paper's Section 2.4
+  hyperparameters, the paper-literal GIN ablation flags Section 9 above already exposed as
+  toggles (`normalize_nodes`/`message_relu`/`post_bn_relu` → `False`), temperature 1.0 wherever a
+  temperature is undocumented in the paper, `sym=False`, and `eval_representation='z'`.
+- `sample_ordered_concrete_mask()` (`unsupervised/view_learner.py`, new) — literal per-directed-edge
+  Concrete relaxation, independent noise per direction, no reverse-edge symmetrization. Added alongside
+  `symmetrize_edge_logits`/`sample_symmetric_logistic_noise` (Bug 2's fix, still the `corrected` default).
+- `PaperMemoryBank_Q` / `calc_regloss_paper()` (`agcl_ABIDE_queue.py`, new) — deliberately reproduce, under
+  `paper_exact` only, the exact behaviours Section 1's audit table fixed as bugs: zero-filled cold-start
+  queue with no validity mask, push-before-loss ordering, no same-subject exclusion. `MemoryBank_Q`/
+  `calc_regloss` (the corrected versions) are unchanged and remain the default.
+- `paper_five_fold_evaluation()` (`unsupervised/embedding_evaluation.py`, new) — plain (non-stratified)
+  `KFold` directly on embeddings, no separate held-out test split, matching this document's Section 7
+  description of the paper's own (non-reproducible, non-held-out) evaluation protocol. Used only for
+  `paper_exact`'s final evaluation (`PaperFiveFoldScore`); `kf_embedding_evaluation` (fixed stratified
+  splits, val-only checkpoint selection, held-out test) remains `corrected`'s final evaluation unchanged.
+- Dataset preflight check — `paper_exact` logs a warning (not a hard error, by default) that this
+  project's real data (956 subjects / 90 ROIs — Section 9 above) does not match the paper's own ABIDE-I
+  configuration (987 subjects / 116 ROIs). `--allow_dataset_mismatch` defaults to `True` for exactly this
+  reason: on our data, selecting `paper_exact` always tests the paper-literal *code path* faithfully, but
+  its result is never an exact reproduction of the paper's own reported experiment. `--allow_dataset_mismatch
+  false` hard-requires an exact match instead, for use against a properly-cropped 116-ROI AAL1 dataset.
+- Notation correction: this project's regularizer (Section 2's blocker above, and `docs/changes.md`'s
+  "regularizer: paper-literal R(mu)" entry) is `R(mu) = mean(mu)`, the mean *keep*-probability. Some
+  earlier internal notes wrote this as `R(f;B)` — the view-learner function `f` and sampled mask `B` as
+  its argument — which is imprecise, since the quantity actually averaged is the deterministic
+  keep-probability `mu = sigmoid(edge_logits)`, not a function of the sampled mask `B`. Corrected here:
+  it is `R(mu)`, not `R(f;B)`.
+- Keep-probability collapse under `paper_exact`'s regularizer remains the accepted, documented consequence
+  of the printed objective established in Section 2 above — the profile system does not change that
+  finding, only makes choosing to reproduce it an explicit opt-in rather than an accidental default.
+
+**Also caught while wiring this in:** the `score_fmt` string used for `FinalFitScore`/`FinalTestScore`
+mixed `str.format()`'s `{}` placeholders with a `logging`-style `%d` prefix, then passed everything to
+`logging.info(msg, *args)` — `logging`'s lazy `msg % args` formatting only recognises the one real `%d`
+directive, so either line would raise `TypeError: not all arguments converted during string formatting`
+the moment it actually fired. Rewritten as a fully `%`-style string (`%.4f` per field). Pre-existing bug,
+unrelated to the profile system itself, caught while adding the equivalent `PaperFiveFoldScore` log line.
+
+files: `unsupervised/training_profiles.py` (new), `unsupervised/view_learner.py`,
+`unsupervised/embedding_evaluation.py`, `agcl_ABIDE.py`, `agcl_ABIDE_queue.py`

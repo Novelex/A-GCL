@@ -11,11 +11,14 @@ from torch_scatter import scatter
 from sklearn.metrics import precision_recall_curve, average_precision_score,roc_curve, auc, precision_score, recall_score, f1_score, confusion_matrix, accuracy_score
 from datasets import ABIDEDataset
 from datasets import TUEvaluator
-from unsupervised.embedding_evaluation import EmbeddingEvaluation, get_emb_y, create_fixed_splits
+from unsupervised.embedding_evaluation import (EmbeddingEvaluation, get_emb_y, create_fixed_splits,
+                                                 paper_five_fold_evaluation)
 from unsupervised.encoder import TUEncoder
 from unsupervised.learning import GInfoMinMax
-from unsupervised.view_learner import ViewLearner, symmetrize_edge_logits, compute_reverse_index, sample_symmetric_logistic_noise
+from unsupervised.view_learner import (ViewLearner, symmetrize_edge_logits, compute_reverse_index,
+                                       sample_symmetric_logistic_noise, sample_ordered_concrete_mask)
 from unsupervised.utils import initialize_node_features, set_tu_dataset_y_shape
+from unsupervised.training_profiles import apply_training_profile
 from numpy import interp
 
 
@@ -40,21 +43,48 @@ def setup_seed(seed):
 
 
 def run(args):
+    args = apply_training_profile(args)
+    is_paper_exact = args.training_profile == "paper_exact"
+
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     logging.info("Using Device: %s" % device)
     logging.info("Seed: %d" % args.seed)
+    logging.info("Training profile: %s", args.training_profile)
     logging.info(args)
     setup_seed(args.seed)
 
 
-    my_transforms = Compose([set_tu_dataset_y_shape]) 
+    my_transforms = Compose([set_tu_dataset_y_shape])
     dataset = ABIDEDataset(args.path, args.name, transform=my_transforms)
 
     dataset.data.y = dataset.data.y.squeeze()
 
-    logging.info("N = %d (ASD = %d, NC = %d)", len(dataset),
-                 int((dataset.data.y == 1).sum()), int((dataset.data.y == 0).sum()))
+    n_subjects = len(dataset)
+    n_asd = int((dataset.data.y == 1).sum())
+    n_nc = int((dataset.data.y == 0).sum())
+    n_rois = dataset[0].x.size(0)
+    logging.info("N = %d (ASD = %d, NC = %d)", n_subjects, n_asd, n_nc)
+    logging.info("ROIs (M) = %d, edges per graph = %d", n_rois, n_rois * n_rois)
+
+    if is_paper_exact:
+        paper_n_subjects, paper_n_rois = 987, 116
+        dataset_matches_paper = (n_subjects == paper_n_subjects and n_rois == paper_n_rois)
+        if dataset_matches_paper:
+            logging.info("Dataset preflight: matches paper's ABIDE-I configuration (987 subjects, 116 ROIs).")
+        else:
+            msg = (
+                "Dataset preflight: paper_exact profile selected, but this dataset is "
+                "%d subjects / %d ROIs, not the paper's 987 subjects / 116 ROIs (AAL1). "
+                "This run tests the paper-literal CODE PATH, but its result is NOT an "
+                "exact reproduction of the paper's ABIDE-I experiment."
+            ) % (n_subjects, n_rois)
+            if args.allow_dataset_mismatch:
+                logging.warning(msg)
+            else:
+                raise ValueError(
+                    msg + " Pass --allow_dataset_mismatch true to run anyway."
+                )
 
     # precomputed once, reused for every evaluation across every epoch --
     # never resampled, so results are reproducible from --seed
@@ -129,15 +159,23 @@ def run(args):
         
             x, _ = model(batch.batch, batch.x, batch.edge_index, None, batch.edge_weight)
             edge_logits = view_learner(batch.batch, batch.x, batch.edge_index, None, batch.edge_weight)
-            rev_idx = compute_reverse_index(batch.edge_index)
-            sym_logits = symmetrize_edge_logits(batch.edge_index, edge_logits, rev_idx)
-            mu = torch.sigmoid(sym_logits)
 
-            temperature = 1.0
-            bias = 0.0 + 0.0001  # If bias is 0, we run into problems
-            noise = sample_symmetric_logistic_noise(batch.edge_index, rev_idx, bias=bias, device=device)
-            gate_inputs = (noise + sym_logits) / temperature
-            edge_mask = torch.sigmoid(gate_inputs)
+            if is_paper_exact:
+                # paper_exact: literal ordered/asymmetric Concrete mask, no
+                # reverse-edge symmetrization -- (i,j) and (j,i) may sample
+                # to different keep/drop outcomes, matching the printed paper
+                mu, edge_mask = sample_ordered_concrete_mask(
+                    edge_logits, temperature=args.concrete_temperature)
+            else:
+                rev_idx = compute_reverse_index(batch.edge_index)
+                sym_logits = symmetrize_edge_logits(batch.edge_index, edge_logits, rev_idx)
+                mu = torch.sigmoid(sym_logits)
+
+                temperature = 1.0
+                bias = 0.0 + 0.0001  # If bias is 0, we run into problems
+                noise = sample_symmetric_logistic_noise(batch.edge_index, rev_idx, bias=bias, device=device)
+                gate_inputs = (noise + sym_logits) / temperature
+                edge_mask = torch.sigmoid(gate_inputs)
             aug_edge_weight = batch.edge_weight * edge_mask
 
             x_aug, _ = model(batch.batch, batch.x, batch.edge_index, None, aug_edge_weight)
@@ -168,7 +206,8 @@ def run(args):
 
             sampled_keep = edge_mask.mean()
 
-            view_loss = model.calc_loss(x, x_aug, temperature=args.batch_temperature) - (args.reg_lambda * reg)
+            view_loss = (model.calc_loss(x, x_aug, temperature=args.batch_temperature, sym=args.contrastive_symmetric)
+                         - (args.reg_lambda * reg))
             view_loss_all += view_loss.item() * batch.num_graphs
             keep_prob_all += keep_prob.item()
             sampled_keep_all += sampled_keep.item()
@@ -183,18 +222,24 @@ def run(args):
 
             x, _ = model(batch.batch, batch.x, batch.edge_index, None, batch.edge_weight)
 
-            with torch.no_grad():
-                edge_logits = view_learner(batch.batch, batch.x, batch.edge_index, None, batch.edge_weight)
-                rev_idx = compute_reverse_index(batch.edge_index)
-                sym_logits = symmetrize_edge_logits(batch.edge_index, edge_logits, rev_idx)
-                noise = sample_symmetric_logistic_noise(batch.edge_index, rev_idx, bias=bias, device=device)
-                gate_inputs = (noise + sym_logits) / temperature
-                edge_mask = torch.sigmoid(gate_inputs)
+            if is_paper_exact:
+                with torch.no_grad():
+                    edge_logits = view_learner(batch.batch, batch.x, batch.edge_index, None, batch.edge_weight)
+                    _, edge_mask = sample_ordered_concrete_mask(
+                        edge_logits, temperature=args.concrete_temperature)
+            else:
+                with torch.no_grad():
+                    edge_logits = view_learner(batch.batch, batch.x, batch.edge_index, None, batch.edge_weight)
+                    rev_idx = compute_reverse_index(batch.edge_index)
+                    sym_logits = symmetrize_edge_logits(batch.edge_index, edge_logits, rev_idx)
+                    noise = sample_symmetric_logistic_noise(batch.edge_index, rev_idx, bias=bias, device=device)
+                    gate_inputs = (noise + sym_logits) / temperature
+                    edge_mask = torch.sigmoid(gate_inputs)
             aug_edge_weight = batch.edge_weight * edge_mask
 
             x_aug, _ = model(batch.batch, batch.x, batch.edge_index, None, aug_edge_weight)
 
-            model_loss = model.calc_loss(x, x_aug, temperature=args.batch_temperature)
+            model_loss = model.calc_loss(x, x_aug, temperature=args.batch_temperature, sym=args.contrastive_symmetric)
             model_loss_all += model_loss.item() * batch.num_graphs
             # standard gradient descent formulation
             model_loss.backward()
@@ -264,25 +309,60 @@ def run(args):
     model.load_state_dict(checkpoint['model_state_dict'])
     model.eval()
 
-    # fit_on_train_val=True means the returned "val_score" here is an
-    # in-sample score (validation was merged into the fit set) -- it is
-    # never held out at this point, so it must not be reported or labeled
-    # as a validation metric. Only FinalFitScore (train+val, in-sample) and
-    # FinalTestScore (the genuinely held-out 20%) are meaningful here.
-    fit_score, _, test_score = ee.kf_embedding_evaluation(
-        model, dataset, fixed_splits, representation=args.eval_representation, include_test=True, fit_on_train_val=True)
+    # %-style throughout -- these are lazily formatted by logging via
+    # msg % args, so mixing in str.format()'s '{}' placeholders here would
+    # raise "not all arguments converted" the moment the line actually fires
+    score_fmt = ('acc_mean: %.4f acc_std: %.4f f1_mean: %.4f f1_std: %.4f sen_mean: %.4f sen_std: %.4f '
+                 'spe_mean: %.4f spe_std: %.4f auc_mean: %.4f auc_std: %.4f')
 
-    score_fmt = ('acc_mean: {} acc_std: {} f1_mean: {} f1_std: {} sen_mean: {} sen_std: {} '
-                 'spe_mean: {} spe_std: {} auc_mean: {} auc_std: {}')
-    logging.info('FinalFitScore (checkpoint epoch %d, train+val, in-sample): ' + score_fmt, best_epoch, *fit_score)
-    logging.info('FinalTestScore (checkpoint epoch %d, evaluated once, held out): ' + score_fmt, best_epoch, *test_score)
+    if is_paper_exact:
+        # paper_exact: the paper's own reported protocol -- plain (non-
+        # stratified) K-fold CV directly on embeddings from the validation-
+        # selected checkpoint, no separate held-out test fold beyond that.
+        full_loader = DataLoader(dataset, batch_size=128)
+        embeddings, labels = get_emb_y(full_loader, model, device, representation=args.eval_representation)
+        paper_score = paper_five_fold_evaluation(embeddings, labels, seed=args.seed, n_splits=args.n_folds)
+        logging.info(
+            'PaperFiveFoldScore (checkpoint epoch %d, plain %d-fold CV on embeddings): ' + score_fmt,
+            best_epoch, args.n_folds,
+            paper_score['acc_mean'], paper_score['acc_std'],
+            paper_score['f1_mean'], paper_score['f1_std'],
+            paper_score['sen_mean'], paper_score['sen_std'],
+            paper_score['spe_mean'], paper_score['spe_std'],
+            paper_score['auc_mean'], paper_score['auc_std'])
+    else:
+        # fit_on_train_val=True means the returned "val_score" here is an
+        # in-sample score (validation was merged into the fit set) -- it is
+        # never held out at this point, so it must not be reported or labeled
+        # as a validation metric. Only FinalFitScore (train+val, in-sample) and
+        # FinalTestScore (the genuinely held-out 20%) are meaningful here.
+        fit_score, _, test_score = ee.kf_embedding_evaluation(
+            model, dataset, fixed_splits, representation=args.eval_representation, include_test=True, fit_on_train_val=True)
+
+        logging.info('FinalFitScore (checkpoint epoch %d, train+val, in-sample): ' + score_fmt, best_epoch, *fit_score)
+        logging.info('FinalTestScore (checkpoint epoch %d, evaluated once, held out): ' + score_fmt, best_epoch, *test_score)
 
     return best_val_accuracy
 
 
 def arg_parse():
     parser = argparse.ArgumentParser(description='A-GCL ABIDE')
-    
+
+    parser.add_argument('--training_profile', type=str, default='paper_exact', choices=['paper_exact', 'corrected'],
+                        help='paper_exact: literal paper formulas (asymmetric mask, collapse-prone regularizer -- '
+                             'matches printed paper, not the released/corrected code). corrected: this project\'s '
+                             'verified, tested fixes. Nothing about the corrected code path is deleted or changed '
+                             'by selecting paper_exact -- see docs/changes.md.')
+    parser.add_argument('--concrete_temperature', type=float, default=1.0,
+                        help='temperature for the Concrete/Gumbel-sigmoid mask reparameterization (both profiles)')
+    parser.add_argument('--allow_dataset_mismatch', type=str2bool, default=True,
+                        help="paper_exact expects the paper's exact ABIDE-I configuration (987 subjects, 116 ROIs). "
+                             "we only have 90-ROI/956-subject data, so this defaults to True (warn, don't block) -- "
+                             "set False to hard-require an exact dataset match instead.")
+    parser.add_argument('--contrastive_symmetric', type=str2bool, default=True,
+                        help='symmetric (both-direction) contrastive loss term (True=current/corrected code) vs. '
+                             'the paper-literal one-directional loss (False, sym=False in calc_loss)')
+
     parser.add_argument('--name', type=str, default='ABIDE',
                         help='dataset.')
     parser.add_argument('--path', type=str, default='',

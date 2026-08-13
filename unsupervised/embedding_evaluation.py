@@ -1,11 +1,12 @@
 import numpy as np
 from sklearn.utils import shuffle
 import torch
-from sklearn.model_selection import GridSearchCV, StratifiedKFold
+from sklearn.model_selection import GridSearchCV, StratifiedKFold, KFold
 from sklearn.model_selection import train_test_split
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.pipeline import make_pipeline, Pipeline
 from sklearn.preprocessing import StandardScaler
+from sklearn.svm import LinearSVC
 from torch_geometric.data import DataLoader
 
 import matplotlib.pyplot as plt
@@ -41,6 +42,52 @@ def create_fixed_splits(dataset, n_splits=5, seed=123):
 		splits.append({"train": train_idx, "val": val_idx, "test": test_idx})
 
 	return splits
+
+
+def paper_five_fold_evaluation(embeddings, labels, seed=123, n_splits=5):
+	"""paper_exact profile: the paper's own reported evaluation protocol --
+	plain (non-stratified) K-Fold cross-validation directly on the encoder's
+	embeddings, one held-out fold scored per split, no separate val/test
+	split and no checkpoint-based epoch selection beyond the single
+	validation-selected checkpoint already used to produce `embeddings`.
+	Kept alongside, not in place of, the corrected kf_embedding_evaluation
+	(stratified fixed splits, val-only checkpoint selection, held-out test
+	fold, fit-on-train+val refit)."""
+	labels = np.ravel(labels)
+	kf = KFold(n_splits=n_splits, shuffle=True, random_state=seed)
+
+	accs, sens, spes, f1s, aucs = [], [], [], [], []
+
+	for train_idx, test_idx in kf.split(embeddings):
+		train_emb, test_emb = embeddings[train_idx], embeddings[test_idx]
+		train_y, test_y = labels[train_idx], labels[test_idx]
+
+		pipeline = Pipeline([('scaler', StandardScaler()),
+		                      ('clf', LinearSVC(dual=False, fit_intercept=True, max_iter=10000))])
+		params_dict = {'clf__C': [0.001, 0.01, 0.1, 1, 10, 100, 1000]}
+		classifier = GridSearchCV(pipeline, params_dict, cv=5, scoring='accuracy', n_jobs=16, verbose=0)
+		classifier.fit(train_emb, train_y)
+
+		pred = classifier.predict(test_emb)
+
+		accs.append(accuracy_score(test_y, pred))
+		sens.append(recall_score(test_y, pred, pos_label=1))
+		spes.append(recall_score(test_y, pred, pos_label=0))
+		f1s.append(f1_score(test_y, pred))
+
+		dec = classifier.decision_function(test_emb)
+		try:
+			aucs.append(roc_auc_score(test_y, dec))
+		except ValueError:
+			aucs.append(float('nan'))
+
+	return {
+		'acc_mean': np.mean(accs), 'acc_std': np.std(accs),
+		'sen_mean': np.mean(sens), 'sen_std': np.std(sens),
+		'spe_mean': np.mean(spes), 'spe_std': np.std(spes),
+		'f1_mean': np.mean(f1s), 'f1_std': np.std(f1s),
+		'auc_mean': np.nanmean(aucs), 'auc_std': np.nanstd(aucs),
+	}
 
 
 def get_emb_y(loader, encoder, device, dtype='numpy', is_rand_label=False, representation='z'):

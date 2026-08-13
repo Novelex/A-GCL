@@ -5,8 +5,6 @@ from os import listdir
 import numpy as np
 import os.path as osp
 import scipy.io as sio
-import numpy as np
-import scipy.sparse as sp
 
 
 class ABIDEDataset(InMemoryDataset):
@@ -18,8 +16,7 @@ class ABIDEDataset(InMemoryDataset):
         self.eval_metric = 'accuracy'
 
         super(ABIDEDataset, self).__init__(root,transform, pre_transform)
-        path = osp.join(self.processed_dir, 'data.pt')
-        self.data, self.slices = torch.load(path)
+        self.data, self.slices = torch.load(self.processed_paths[0])
 
     @property
     def raw_file_names(self):
@@ -34,7 +31,10 @@ class ABIDEDataset(InMemoryDataset):
 
     @property
     def processed_file_names(self):
-        return  'data.pt'
+        # bumped from 'data.pt' -- the dense M^2 edge construction changed
+        # what gets cached, so an old cache from before this change must
+        # not be silently reloaded
+        return 'data_dense_v2.pt'
 
     def download(self):
         # Download to `self.raw_dir`.
@@ -63,22 +63,34 @@ class ABIDEDataset(InMemoryDataset):
                 x = (x - x_min) / (x_max - x_min)
 
             adj = sio.loadmat(osp.join(path_adj, file))
-            edge_index = adj['cropped_matrix']
+            fc = adj['cropped_matrix']
+            fc = np.nan_to_num(fc).astype(np.float32)
 
-            edge_index = np.nan_to_num(edge_index)
-            edge_index_temp = sp.coo_matrix(edge_index)
-            edge_weight = torch.Tensor(edge_index_temp.data)
-            # paper Sec. 2.1: edge weights normalized to [-1, 1] by
-            # dividing by the max absolute value
-            edge_weight_max = edge_weight.abs().max()
-            if edge_weight_max > 0:
-                edge_weight = edge_weight / edge_weight_max
+            if fc.ndim != 2 or fc.shape[0] != fc.shape[1]:
+                raise ValueError(f"{file}: FC matrix must be square, got {fc.shape}")
 
-            edge_index = torch.Tensor(edge_index)
-            edge_index = edge_index.nonzero(as_tuple=False).t().contiguous()
+            # paper Sec. 2.1: edge weights normalized to [-1, 1] by dividing
+            # by the max absolute value
+            max_abs = np.abs(fc).max()
+            if max_abs > 0:
+                fc = fc / max_abs
+
+            # dense M x M construction, not .nonzero() -- the paper initializes
+            # A with all 1's (a complete graph including the diagonal), so an
+            # edge must not silently disappear just because its FC weight
+            # happens to be exactly 0.0. row-major order matches what
+            # .nonzero() produced anyway for our real (zero-free) data, so
+            # this is a verified no-op here and a correctness generalization
+            # for any future data that does contain exact zeros.
+            num_nodes = fc.shape[0]
+            nodes = torch.arange(num_nodes, dtype=torch.long)
+            src = nodes.repeat_interleave(num_nodes)
+            dst = nodes.repeat(num_nodes)
+            edge_index = torch.stack([src, dst], dim=0)
+            edge_weight = torch.from_numpy(fc.reshape(-1)).float()
 
             data = Data(x=x, edge_index=edge_index, edge_weight=edge_weight,
-                        y=label)
+                        y=label, num_nodes=num_nodes)
 
             if self.pre_filter is not None and not self.pre_filter(data):
                 continue
@@ -105,8 +117,7 @@ class ABIDEDataset(InMemoryDataset):
         for i, data in enumerate(data_list):
             data.subject_id = torch.tensor([i], dtype=torch.long)
 
-        torch.save(self.collate(data_list),
-                osp.join(self.processed_dir, 'data.pt'))
+        torch.save(self.collate(data_list), self.processed_paths[0])
 
     def __repr__(self):
         return '{}({})'.format(self.name, len(self))
