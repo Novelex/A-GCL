@@ -1,0 +1,10 @@
+20:24:49 | INFO | Running ComBat: N=956, 19 sites, batch_col=SITE_ID, preserved=DX_GROUP
+20:24:49 | INFO | N=956, ASD=455, NC=501
+20:24:49 | INFO | === New ALFF + ComBat | LinearSVC === (n_jobs=8)
+20:25:01 | INFO |   [New ALFF + ComBat | LinearSVC] fold 1/5: acc=0.5573 auc=0.6061 best_params={'clf__C': 0.001}
+20:25:02 | INFO |   [New ALFF + ComBat | LinearSVC] fold 2/5: acc=0.5550 auc=0.5665 best_params={'clf__C': 0.001}
+20:25:03 | INFO |   [New ALFF + ComBat | LinearSVC] fold 3/5: acc=0.5497 auc=0.5771 best_params={'clf__C': 0.001}
+20:25:04 | INFO |   [New ALFF + ComBat | LinearSVC] fold 4/5: acc=0.5864 auc=0.5892 best_params={'clf__C': 0.001}
+20:25:04 | INFO |   [New ALFF + ComBat | LinearSVC] fold 5/5: acc=0.6230 auc=0.6427 best_params={'clf__C': 0.001}
+20:25:04 | INFO | [New ALFF + ComBat | LinearSVC] acc: 0.5743 +- 0.0275 | auc: 0.5963 +- 0.0267
+20:25:04 | INFO | Saved: data/ALFF_need/alff_baseline_combat_new_LinearSVC.npz

@@ -1,0 +1,51 @@
+Deep analysis complete. I re-audited the three newest commits, verified your new budget implementation line by line, read every real cluster log you committed today, cross-checked checkpoint selection against the raw validation curves, and ran controls on synthetic data. Here is the answer to your actual question — what blunder makes the accuracies so bad — and it has layers, because you have already fixed the first one.
+
+Layer 1 — the blunder you already found and fixed (confirmed closed)
+
+Your overnight budget mode is implemented correctly: reg_sign * (reg_lambda * reg) at agcl_ABIDE_queue.py:375–376 gives the view learner the objective minimize I − λ·mean(μ) — the AD-GCL budget, algebra verified. And it works empirically, on both datasets: on real data KeepProb settles into a healthy interior equilibrium (0.494 → 0.18–0.27, oscillating, never collapsing), on synthetic it rises (0.494 → 0.562). The contrast runs prove the old blunder one final time: paper_exact on real data collapsed KeepProb from 0.209 to 6.8×10⁻⁵, and your first "corrected" job (1841269) — whose logged Namespace shows it actually ran regularizer_mode='paper_keep', because the submitted script predated the budget mode — collapsed to 0.033 by epoch 83 before you cancelled it. That chapter is genuinely finished. Which is exactly what makes the next finding so important.
+
+Layer 2 — the real remaining blunder: your graphs carry no recoverable signal, and no training mode can fix that
+
+Look at what the healthy budget run did. Over 200 epochs and 40 evaluations, validation accuracy ranged 0.463 to 0.522 — and the untrained, epoch-0 encoder scored 0.532, so checkpoint selection (whose logic I verified is correct, lines 265/481) rightly kept epoch 0. The final held-out result, acc 0.5052 / AUC 0.4945 with sensitivity 0.18 against specificity 0.80, is literally the untrained random encoder plus a majority-leaning SVM — and the proof is that your 6-epoch verify_budget run's final score is bit-identical (0.5052), because both evaluated the same epoch-0 checkpoint. The paper_exact run tells the same story from the other side: PaperFiveFoldScore 0.501 / AUC 0.524 from an epoch-5 checkpoint whose untrained baseline was 0.5255. Train-probe accuracy sat at 0.54–0.58 the whole time — barely above fitting noise on 32 dimensions — while validation hugged the 52.4% class prior.
+
+So across every real run ever made — old collapsing code, paper_exact, and now a correctly functioning budget — the pattern is identical: self-supervised training never once improves on a randomly initialized GIN, and a randomly initialized GIN on your graphs is at chance. Compare synthetic: the same committed code, on toy graphs where I planted a connectivity difference between classes, gives an untrained train-probe of 0.733 and val 0.625, and yesterday's short run selected a trained checkpoint with held-out 0.563 / AUC 0.627. The machinery transmits signal when the graphs contain it. Your real graphs, as constructed from cropped_matrix + norm_matrix, contain none that a linear probe on this encoder can see. That means the blunder you are hunting is not a deviation from the paper in the training code — it is upstream, in the data files, the labels, or the feature construction.
+
+Layer 3 — the decisive experiment, and the ranked suspects
+
+I cannot test this myself — your real data exists only on the cluster (the data symlink in the repo is broken here). But one ten-minute experiment splits the world in half: a plain linear SVM on the raw connectivity itself, no GIN, no SSL. On sound ABIDE-I data with correct labels, this baseline reliably reaches ~0.63–0.68 in the literature. Run this on the cluster:
+
+python
+import numpy as np, scipy.io as sio, os
+from sklearn.model_selection import StratifiedKFold, GridSearchCV
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import LinearSVC
+from sklearn.metrics import accuracy_score, roc_auc_score
+
+X, y = [], []
+for label, d in [(1, 'data/raw/ASD_ADJ'), (0, 'data/raw/NC_ADJ')]:
+    for f in sorted(os.listdir(d)):
+        fc = np.nan_to_num(sio.loadmat(os.path.join(d, f))['cropped_matrix'])
+        X.append(fc[np.triu_indices_from(fc, k=1)]); y.append(label)
+X, y = np.array(X), np.array(y)
+print("X:", X.shape, "ASD:", y.sum(), "NC:", len(y)-y.sum())
+accs, aucs = [], []
+for tr, te in StratifiedKFold(5, shuffle=True, random_state=123).split(X, y):
+    clf = GridSearchCV(Pipeline([('s', StandardScaler()), ('c', LinearSVC(dual=False, max_iter=10000))]),
+                       {'c__C': [0.001, 0.01, 0.1, 1, 10, 100, 1000]}, cv=5, n_jobs=16)
+    clf.fit(X[tr], y[tr])
+    accs.append(accuracy_score(y[te], clf.predict(X[te])))
+    aucs.append(roc_auc_score(y[te], clf.decision_function(X[te])))
+print("raw-FC SVM  acc %.4f ± %.4f   auc %.4f ± %.4f" % (np.mean(accs), np.std(accs), np.mean(aucs), np.std(aucs)))
+
+If this prints ~0.50, your data or labels are broken and nothing downstream can ever work. Then check, in order: that files in ASD_ADJ are truly ASD subjects — spot-check five subject IDs against the ABIDE phenotype file's DX_GROUP; that the adj↔nf filename pairing pairs the same subject and not merely the same stem position; what cropped_matrix actually is (which 26 of the 116 AAL ROIs were cropped out, and by whom — if it isn't a PCC matrix at all, everything follows); and the NaN count per matrix before nan_to_num (many NaNs mean dead ROIs — your new dense construction keeps them as zero-weight edges, so also log the zero-fraction).
+
+If this prints ~0.63+, the data is fine and your GIN feature path is destroying the signal. Then the prime suspect becomes the node features: print per-channel min/max/std of norm_matrix for five subjects before and after your joint min-max — if the three channels have very different scales, the joint normalization flattens two of them to near-constants (the paper's §2.1 wording is genuinely ambiguous here, my finding F7; add a per-channel ablation flag). Also confirm norm_matrix really is the three ALFF bands and not some already-normalized other quantity — the name suggests preprocessing you may be double-applying. After that, the cheaper ablations: --eval_representation h, and a control where you feed the raw FC row of each node as its feature vector, which bounds how much the 3-dim ALFF input is costing you.
+
+One expectation to fix regardless of outcome: even with everything working, your honest protocol (no per-metric test-curve argmax) plus 956 subjects at 90 ROIs makes 80.65% an unrealistic target — upstream's headline is partly a protocol artifact, as your own correction.md now documents. A defensible outcome for your report is "materially above the raw-FC baseline under a leak-free protocol," not the paper's number.
+
+Housekeeping found while doing this
+
+torch.load at abideDataset.py still lacks weights_only=False — it crashed my fresh environment twice again today; that one-liner has now survived three commits unfixed. _cli_defaults is stored on args and pollutes every logged Namespace — pop it before logging. --epochs still defaults to 1. Model checkpoints (.pt) and .pyc files are now committed to git. On the positive side: correction.md §2 finally carries an honest superseded-status header, the override warning landed, and the reworked direction tests are in. And the "submit a script whose flag the code doesn't support yet" race from job 1841269 only accidentally produced a useful paper_keep datapoint — same habit, lucky outcome; smoke-test the exact script+commit pair before every submission.
+
+Run the raw-FC baseline first. Everything you do next should branch on that one number — and if you share its output, I can tell you precisely which branch you are on and what to change.

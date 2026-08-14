@@ -1,0 +1,41 @@
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/data/in_memory_dataset.py:300: UserWarning: It is not recommended to directly access the internal storage format `data` of an 'InMemoryDataset'. If you are absolutely certain what you are doing, access the internal storage via `InMemoryDataset._data` instead to suppress this warning. Alternatively, you can access stacked individual attributes of every graph via `dataset.{attr_name}`.
+  warnings.warn(msg)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+14-Aug-26 16:58:20 - [epoch 0 (untrained)] embedding norm mean=64.6140 std=1.0073 | mean pairwise cos-sim=0.9997 | class-mean cos-sim (ASD vs NC)=1.0000 | quick-probe acc=0.5094 +- 0.0274
+14-Aug-26 16:58:28 - Epoch 1: view calc_loss=4.9451 cr_loss=10.2629 | model calc_loss=1.8988 cr_loss=3.2399
+14-Aug-26 16:58:36 - Epoch 2: view calc_loss=5.1417 cr_loss=9.8669 | model calc_loss=1.6791 cr_loss=3.3782
+14-Aug-26 16:58:44 - Epoch 3: view calc_loss=5.9131 cr_loss=13.4007 | model calc_loss=1.6104 cr_loss=3.3159
+14-Aug-26 16:58:52 - Epoch 4: view calc_loss=5.7774 cr_loss=11.7831 | model calc_loss=1.4287 cr_loss=3.0983
+14-Aug-26 16:59:00 - Epoch 5: view calc_loss=4.8381 cr_loss=7.9713 | model calc_loss=1.1964 cr_loss=2.5674
+14-Aug-26 16:59:00 - [epoch 5] embedding norm mean=85.6841 std=17.3217 | mean pairwise cos-sim=0.8800 | class-mean cos-sim (ASD vs NC)=0.9998 | quick-probe acc=0.4906 +- 0.0326
+14-Aug-26 16:59:08 - Epoch 6: view calc_loss=4.7072 cr_loss=7.9071 | model calc_loss=1.3879 cr_loss=2.5775
+14-Aug-26 16:59:16 - Epoch 7: view calc_loss=4.8083 cr_loss=8.4015 | model calc_loss=1.2774 cr_loss=2.8473
+14-Aug-26 16:59:24 - Epoch 8: view calc_loss=4.6281 cr_loss=6.4721 | model calc_loss=1.4545 cr_loss=3.1721
+14-Aug-26 16:59:32 - Epoch 9: view calc_loss=4.6338 cr_loss=9.0347 | model calc_loss=1.7198 cr_loss=3.5836
+14-Aug-26 16:59:40 - Epoch 10: view calc_loss=4.7017 cr_loss=9.4698 | model calc_loss=1.8638 cr_loss=3.7505
+14-Aug-26 16:59:40 - [epoch 10] embedding norm mean=51.7109 std=9.6667 | mean pairwise cos-sim=0.6577 | class-mean cos-sim (ASD vs NC)=0.9987 | quick-probe acc=0.4958 +- 0.0230
+14-Aug-26 16:59:48 - Epoch 11: view calc_loss=4.8387 cr_loss=10.6770 | model calc_loss=2.0963 cr_loss=4.0175
+14-Aug-26 16:59:56 - Epoch 12: view calc_loss=4.5005 cr_loss=9.2287 | model calc_loss=2.0312 cr_loss=3.9479
+14-Aug-26 17:00:04 - Epoch 13: view calc_loss=4.6213 cr_loss=9.9024 | model calc_loss=2.0507 cr_loss=4.0776
+14-Aug-26 17:00:12 - Epoch 14: view calc_loss=4.6326 cr_loss=10.6461 | model calc_loss=2.0753 cr_loss=4.0637
+14-Aug-26 17:00:20 - Epoch 15: view calc_loss=4.7702 cr_loss=10.2247 | model calc_loss=1.8351 cr_loss=3.6469
+14-Aug-26 17:00:20 - [epoch 15] embedding norm mean=53.1456 std=10.8209 | mean pairwise cos-sim=0.3268 | class-mean cos-sim (ASD vs NC)=0.9920 | quick-probe acc=0.5314 +- 0.0282
+14-Aug-26 17:00:28 - Epoch 16: view calc_loss=5.0041 cr_loss=11.5520 | model calc_loss=1.6040 cr_loss=3.4919
+14-Aug-26 17:00:36 - Epoch 17: view calc_loss=5.1535 cr_loss=11.7971 | model calc_loss=1.6168 cr_loss=3.5717
+14-Aug-26 17:00:44 - Epoch 18: view calc_loss=5.3954 cr_loss=11.7944 | model calc_loss=1.6782 cr_loss=3.5967
+14-Aug-26 17:00:52 - Epoch 19: view calc_loss=5.1790 cr_loss=11.4818 | model calc_loss=1.4878 cr_loss=3.2460
+14-Aug-26 17:01:00 - Epoch 20: view calc_loss=4.6669 cr_loss=8.9233 | model calc_loss=1.3386 cr_loss=2.9790
+14-Aug-26 17:01:00 - [epoch 20] embedding norm mean=66.0221 std=15.8583 | mean pairwise cos-sim=0.3295 | class-mean cos-sim (ASD vs NC)=0.9972 | quick-probe acc=0.5250 +- 0.0374
+14-Aug-26 17:01:08 - Epoch 21: view calc_loss=5.8881 cr_loss=12.8981 | model calc_loss=1.5674 cr_loss=3.4404
+14-Aug-26 17:01:16 - Epoch 22: view calc_loss=5.2015 cr_loss=11.6726 | model calc_loss=1.4651 cr_loss=3.3395
+14-Aug-26 17:01:24 - Epoch 23: view calc_loss=5.4616 cr_loss=12.3887 | model calc_loss=1.4353 cr_loss=3.2606
+14-Aug-26 17:01:32 - Epoch 24: view calc_loss=5.3830 cr_loss=12.0233 | model calc_loss=1.5697 cr_loss=3.5142
+14-Aug-26 17:01:39 - Epoch 25: view calc_loss=5.3484 cr_loss=12.1536 | model calc_loss=1.5962 cr_loss=3.4467
+14-Aug-26 17:01:40 - [epoch 25] embedding norm mean=60.7758 std=14.4183 | mean pairwise cos-sim=0.3380 | class-mean cos-sim (ASD vs NC)=0.9942 | quick-probe acc=0.5062 +- 0.0346
+14-Aug-26 17:01:48 - Epoch 26: view calc_loss=5.2293 cr_loss=11.7400 | model calc_loss=1.5555 cr_loss=3.4344
+14-Aug-26 17:01:56 - Epoch 27: view calc_loss=5.2735 cr_loss=12.1020 | model calc_loss=1.5024 cr_loss=3.3564
+14-Aug-26 17:02:03 - Epoch 28: view calc_loss=5.4888 cr_loss=12.5945 | model calc_loss=1.5187 cr_loss=3.3926
+14-Aug-26 17:02:11 - Epoch 29: view calc_loss=5.7079 cr_loss=13.5580 | model calc_loss=1.3518 cr_loss=3.0797
+14-Aug-26 17:02:19 - Epoch 30: view calc_loss=5.1161 cr_loss=12.2202 | model calc_loss=1.2920 cr_loss=3.0879
+14-Aug-26 17:02:20 - [epoch 30] embedding norm mean=73.7214 std=16.8650 | mean pairwise cos-sim=0.5912 | class-mean cos-sim (ASD vs NC)=0.9984 | quick-probe acc=0.4979 +- 0.0289

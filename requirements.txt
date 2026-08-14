@@ -9,6 +9,9 @@ seaborn==0.13.2
 # Test suite (tests/)
 pytest==8.3.3
 
+# ALFF phase 1 -- ComBat site harmonization (docs/alff_phase1_log.md)
+neuroCombat==0.2.12
+
 # Deep learning stack (versions match the working grastiacl conda env, CUDA 12.1)
 torch==2.5.0
 torch_geometric==2.6.1

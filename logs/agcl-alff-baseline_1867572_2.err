@@ -1,0 +1,9 @@
+19:53:49 | INFO | N=956, ASD=455, NC=501
+19:53:49 | INFO | === New ALFF | LinearSVC ===
+19:53:59 | INFO |   [New ALFF | LinearSVC] fold 1/5: acc=0.6042 auc=0.6077 best_params={'clf__C': 0.001}
+19:54:00 | INFO |   [New ALFF | LinearSVC] fold 2/5: acc=0.5288 auc=0.5580 best_params={'clf__C': 0.001}
+19:54:02 | INFO |   [New ALFF | LinearSVC] fold 3/5: acc=0.5131 auc=0.5565 best_params={'clf__C': 0.001}
+19:54:03 | INFO |   [New ALFF | LinearSVC] fold 4/5: acc=0.6126 auc=0.6153 best_params={'clf__C': 0.001}
+19:54:04 | INFO |   [New ALFF | LinearSVC] fold 5/5: acc=0.6126 auc=0.6386 best_params={'clf__C': 0.001}
+19:54:04 | INFO | [New ALFF | LinearSVC] acc: 0.5742 +- 0.0439 | auc: 0.5952 +- 0.0326
+19:54:04 | INFO | Saved: data/ALFF_need/alff_baseline_new_LinearSVC.npz
