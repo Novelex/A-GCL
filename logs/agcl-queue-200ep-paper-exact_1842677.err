@@ -1040,3 +1040,151 @@
 13-Aug-26 23:06:55 - Metric: auc Train_std: 0.018285485623168184 Val_std: 0.0350137696421343
 13-Aug-26 23:07:04 - Epoch 176, Model Loss 4.489915173629234, View Loss 5.651616655547043, KeepProb 8.76031889016178e-05, DropProb 0.9999123968110983, SampledKeep 0.000583507742829107
 13-Aug-26 23:07:12 - Epoch 177, Model Loss 4.483861298396669, View Loss 5.65269554072413, KeepProb 0.0001013531966299493, DropProb 0.99989864680337, SampledKeep 0.0006576553549103696
+13-Aug-26 23:07:21 - Epoch 178, Model Loss 4.4814933250690325, View Loss 5.652195864710315, KeepProb 8.334456884015175e-05, DropProb 0.9999166554311598, SampledKeep 0.0005551214763445073
+13-Aug-26 23:07:29 - Epoch 179, Model Loss 4.492582945988096, View Loss 5.652648892895929, KeepProb 8.947092747207377e-05, DropProb 0.999910529072528, SampledKeep 0.0005837327079116849
+13-Aug-26 23:07:38 - Epoch 180, Model Loss 4.507558082712108, View Loss 5.653561608544711, KeepProb 8.04906717505595e-05, DropProb 0.9999195093282495, SampledKeep 0.000538505030723674
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/unsupervised/embedding_evaluation.py:401: RuntimeWarning: Mean of empty slice
+  np.nanmean(kf_test_auc), np.nanstd(kf_test_auc)]
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/numpy/lib/nanfunctions.py:1879: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+13-Aug-26 23:07:41 - Metric: accuracy Train_mean: 0.577967117015928 Val_mean: 0.5019607843137255
+13-Aug-26 23:07:41 - Metric: accuracy Train_std: 0.011459644277697644 Val_std: 0.007622159339667049
+13-Aug-26 23:07:41 - Metric: f1 Train_mean: 0.4905635907780729 Val_mean: 0.3879803169449562
+13-Aug-26 23:07:41 - Metric: f1 Train_std: 0.029974574910152617 Val_std: 0.05448101111477102
+13-Aug-26 23:07:41 - Metric: sen Train_mean: 0.428865977907677 Val_mean: 0.3369862967536124
+13-Aug-26 23:07:41 - Metric: sen Train_std: 0.04009883737647086 Val_std: 0.07432690290648374
+13-Aug-26 23:07:41 - Metric: spe Train_mean: 0.713228190923099 Val_mean: 0.6524999918437502
+13-Aug-26 23:07:41 - Metric: spe Train_std: 0.01665037083406443 Val_std: 0.05884301074416146
+13-Aug-26 23:07:41 - Metric: auc Train_mean: 0.6069391319009538 Val_mean: 0.4895890410958904
+13-Aug-26 23:07:41 - Metric: auc Train_std: 0.012061975590646725 Val_std: 0.01444353121366308
+13-Aug-26 23:07:49 - Epoch 181, Model Loss 4.493249136826088, View Loss 5.653055043056093, KeepProb 8.362872948306051e-05, DropProb 0.9999163712705169, SampledKeep 0.0005531393371397983
+13-Aug-26 23:07:58 - Epoch 182, Model Loss 4.497616340374124, View Loss 5.652253709990402, KeepProb 8.387150065290967e-05, DropProb 0.9999161284993471, SampledKeep 0.000561788924548229
+13-Aug-26 23:08:06 - Epoch 183, Model Loss 4.486585271769557, View Loss 5.652174390595535, KeepProb 8.343053710193308e-05, DropProb 0.9999165694628981, SampledKeep 0.0005582337145260053
+13-Aug-26 23:08:15 - Epoch 184, Model Loss 4.484856885055016, View Loss 5.652983583253006, KeepProb 8.114150866809911e-05, DropProb 0.9999188584913319, SampledKeep 0.0005407265271060169
+13-Aug-26 23:08:23 - Epoch 185, Model Loss 4.473512600208151, View Loss 5.652975164610764, KeepProb 7.803691005392466e-05, DropProb 0.9999219630899461, SampledKeep 0.0005258795873518905
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/unsupervised/embedding_evaluation.py:401: RuntimeWarning: Mean of empty slice
+  np.nanmean(kf_test_auc), np.nanstd(kf_test_auc)]
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/numpy/lib/nanfunctions.py:1879: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+13-Aug-26 23:08:26 - Metric: accuracy Train_mean: 0.5635858926221881 Val_mean: 0.4993464052287582
+13-Aug-26 23:08:26 - Metric: accuracy Train_std: 0.013807333709280833 Val_std: 0.009782110815095254
+13-Aug-26 23:08:26 - Metric: f1 Train_mean: 0.4769775762701823 Val_mean: 0.38847989196314925
+13-Aug-26 23:08:26 - Metric: f1 Train_std: 0.033746589612573305 Val_std: 0.040193974227944906
+13-Aug-26 23:08:26 - Metric: sen Train_mean: 0.4206185552556064 Val_mean: 0.33698629675361236
+13-Aug-26 23:08:26 - Metric: sen Train_std: 0.046795998548602634 Val_std: 0.05654730728168154
+13-Aug-26 23:08:26 - Metric: spe Train_mean: 0.6932729729167837 Val_mean: 0.6474999919062502
+13-Aug-26 23:08:26 - Metric: spe Train_std: 0.03598776097936328 Val_std: 0.05667891953528667
+13-Aug-26 23:08:26 - Metric: auc Train_mean: 0.601865077453405 Val_mean: 0.4712671232876712
+13-Aug-26 23:08:26 - Metric: auc Train_std: 0.012822054157225636 Val_std: 0.013501753046732812
+13-Aug-26 23:08:34 - Epoch 186, Model Loss 4.486629140788112, View Loss 5.65283203125, KeepProb 7.941580412895339e-05, DropProb 0.999920584195871, SampledKeep 0.0005336308963235531
+13-Aug-26 23:08:43 - Epoch 187, Model Loss 4.497276339037665, View Loss 5.652686842556657, KeepProb 7.529762610672684e-05, DropProb 0.9999247023738933, SampledKeep 0.0005061783183542691
+13-Aug-26 23:08:51 - Epoch 188, Model Loss 4.473599565440211, View Loss 5.6522132774879195, KeepProb 7.712709822075779e-05, DropProb 0.9999228729017793, SampledKeep 0.0005108043676892552
+13-Aug-26 23:08:59 - Epoch 189, Model Loss 4.481934794064226, View Loss 5.652956600846915, KeepProb 7.603470043375574e-05, DropProb 0.9999239652995663, SampledKeep 0.0005114661642061226
+13-Aug-26 23:09:07 - Epoch 190, Model Loss 4.4877316540685195, View Loss 5.652133283943965, KeepProb 7.332068218664941e-05, DropProb 0.9999266793178133, SampledKeep 0.0005004616245498944
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/unsupervised/embedding_evaluation.py:401: RuntimeWarning: Mean of empty slice
+  np.nanmean(kf_test_auc), np.nanstd(kf_test_auc)]
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/numpy/lib/nanfunctions.py:1879: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+13-Aug-26 23:09:10 - Metric: accuracy Train_mean: 0.5933303381363456 Val_mean: 0.4562091503267974
+13-Aug-26 23:09:10 - Metric: accuracy Train_std: 0.012864281222261744 Val_std: 0.036833994257791845
+13-Aug-26 23:09:10 - Metric: f1 Train_mean: 0.5234908593670092 Val_mean: 0.3832928453921085
+13-Aug-26 23:09:10 - Metric: f1 Train_std: 0.035194074079011636 Val_std: 0.06106844128477584
+13-Aug-26 23:09:10 - Metric: sen Train_mean: 0.4735395172730601 Val_mean: 0.3589041046725465
+13-Aug-26 23:09:10 - Metric: sen Train_std: 0.06079269913815836 Val_std: 0.07622152083665619
+13-Aug-26 23:09:10 - Metric: spe Train_mean: 0.7020346551323577 Val_mean: 0.5449999931875001
+13-Aug-26 23:09:10 - Metric: spe Train_std: 0.05064749349107676 Val_std: 0.06403124157393796
+13-Aug-26 23:09:10 - Metric: auc Train_mean: 0.6204225278607444 Val_mean: 0.4463013698630137
+13-Aug-26 23:09:10 - Metric: auc Train_std: 0.017968432705790793 Val_std: 0.042386774767297165
+13-Aug-26 23:09:19 - Epoch 191, Model Loss 4.47221798732363, View Loss 5.652737584607355, KeepProb 7.08787843779709e-05, DropProb 0.999929121215622, SampledKeep 0.00047476717836930063
+13-Aug-26 23:09:27 - Epoch 192, Model Loss 4.46849982491855, View Loss 5.65267878565295, KeepProb 7.434098834296335e-05, DropProb 0.9999256590116571, SampledKeep 0.0005066483863629401
+13-Aug-26 23:09:35 - Epoch 193, Model Loss 4.482625024072055, View Loss 5.6527820455616915, KeepProb 7.513894963957337e-05, DropProb 0.9999248610503604, SampledKeep 0.0004958111626208471
+13-Aug-26 23:09:44 - Epoch 194, Model Loss 4.476270626331198, View Loss 5.652118090925546, KeepProb 6.972218385460016e-05, DropProb 0.9999302778161454, SampledKeep 0.0004706349929369151
+13-Aug-26 23:09:52 - Epoch 195, Model Loss 4.4762084566313645, View Loss 5.652851269162935, KeepProb 6.829468719811773e-05, DropProb 0.9999317053128018, SampledKeep 0.0004661968775727818
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/unsupervised/embedding_evaluation.py:401: RuntimeWarning: Mean of empty slice
+  np.nanmean(kf_test_auc), np.nanstd(kf_test_auc)]
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/numpy/lib/nanfunctions.py:1879: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+13-Aug-26 23:09:55 - Metric: accuracy Train_mean: 0.593001401324305 Val_mean: 0.5032679738562091
+13-Aug-26 23:09:55 - Metric: accuracy Train_std: 0.00930929181865899 Val_std: 0.027106459285395717
+13-Aug-26 23:09:55 - Metric: f1 Train_mean: 0.53061176541836 Val_mean: 0.41671334988408165
+13-Aug-26 23:09:55 - Metric: f1 Train_std: 0.02780581021081456 Val_std: 0.035198340189086165
+13-Aug-26 23:09:55 - Metric: sen Train_mean: 0.4859106512511661 Val_mean: 0.37260273462188037
+13-Aug-26 23:09:55 - Metric: sen Train_std: 0.045620417094846925 Val_std: 0.03716345145324186
+13-Aug-26 23:09:55 - Metric: spe Train_mean: 0.6901849666957889 Val_mean: 0.6224999922187502
+13-Aug-26 23:09:55 - Metric: spe Train_std: 0.034688337239107546 Val_std: 0.03824264587391281
+13-Aug-26 23:09:55 - Metric: auc Train_mean: 0.6224456300649817 Val_mean: 0.4988698630136986
+13-Aug-26 23:09:55 - Metric: auc Train_std: 0.015545627852802422 Val_std: 0.03619582744687168
+13-Aug-26 23:10:03 - Epoch 196, Model Loss 4.4707556099727235, View Loss 5.6524508246060075, KeepProb 7.200873959187322e-05, DropProb 0.9999279912604081, SampledKeep 0.0004835251446789259
+13-Aug-26 23:10:12 - Epoch 197, Model Loss 4.4678505535783435, View Loss 5.652366473756987, KeepProb 6.658819858847861e-05, DropProb 0.9999334118014115, SampledKeep 0.0004520369247043634
+13-Aug-26 23:10:20 - Epoch 198, Model Loss 4.481508994924611, View Loss 5.653051392785434, KeepProb 5.6318395983343465e-05, DropProb 0.9999436816040167, SampledKeep 0.00039123228032559416
+13-Aug-26 23:10:28 - Epoch 199, Model Loss 4.475571484401308, View Loss 5.6525864929988465, KeepProb 5.8602478522265424e-05, DropProb 0.9999413975214777, SampledKeep 0.0004015208361469659
+13-Aug-26 23:10:36 - Epoch 200, Model Loss 4.475910038783632, View Loss 5.652594862313106, KeepProb 6.82472414312009e-05, DropProb 0.9999317527585688, SampledKeep 0.0004676176492999918
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+/users/3171356m/A-GCL/unsupervised/embedding_evaluation.py:401: RuntimeWarning: Mean of empty slice
+  np.nanmean(kf_test_auc), np.nanstd(kf_test_auc)]
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/numpy/lib/nanfunctions.py:1879: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+13-Aug-26 23:10:39 - Metric: accuracy Train_mean: 0.584506273867976 Val_mean: 0.5058823529411764
+13-Aug-26 23:10:39 - Metric: accuracy Train_std: 0.012493448965431798 Val_std: 0.020502466851448534
+13-Aug-26 23:10:39 - Metric: f1 Train_mean: 0.5103835863432511 Val_mean: 0.412789098485275
+13-Aug-26 23:10:39 - Metric: f1 Train_std: 0.04057154984130512 Val_std: 0.053139429358185386
+13-Aug-26 23:10:39 - Metric: sen Train_mean: 0.4597938128529423 Val_mean: 0.3698630086320136
+13-Aug-26 23:10:39 - Metric: sen Train_std: 0.06686123142392876 Val_std: 0.07797396863464542
+13-Aug-26 23:10:39 - Metric: spe Train_mean: 0.6976538140245707 Val_mean: 0.629999992125
+13-Aug-26 23:10:39 - Metric: spe Train_std: 0.04037078947103471 Val_std: 0.06964194051539634
+13-Aug-26 23:10:39 - Metric: auc Train_mean: 0.6121647477277837 Val_mean: 0.5013013698630137
+13-Aug-26 23:10:39 - Metric: auc Train_std: 0.015398457517193457 Val_std: 0.022304907834201245
+13-Aug-26 23:10:39 - FinishedTraining!
+13-Aug-26 23:10:39 - BestEpoch: 5 (validation accuracy 0.5373)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+13-Aug-26 23:10:40 - PaperFiveFoldScore (checkpoint epoch 5, plain 5-fold CV on embeddings): acc_mean: 0.5011 acc_std: 0.0270 f1_mean: 0.3413 f1_std: 0.0915 sen_mean: 0.2951 sen_std: 0.1394 spe_mean: 0.7073 spe_std: 0.1251 auc_mean: 0.5238 auc_std: 0.0429
