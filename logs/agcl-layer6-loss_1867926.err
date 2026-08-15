@@ -1,0 +1,103 @@
+22:41:06 | INFO | Device: cpu
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/data/in_memory_dataset.py:300: UserWarning: It is not recommended to directly access the internal storage format `data` of an 'InMemoryDataset'. If you are absolutely certain what you are doing, access the internal storage via `InMemoryDataset._data` instead to suppress this warning. Alternatively, you can access stacked individual attributes of every graph via `dataset.{attr_name}`.
+  warnings.warn(msg)
+22:41:06 | INFO | Loaded dataset: N=956
+22:41:06 | INFO | Loaded SITE_ID for 956 subjects, 19 unique sites
+22:41:06 | INFO | ==============================================================================
+22:41:06 | INFO | SOURCE: OLD ALFF
+22:41:06 | INFO | ==============================================================================
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+22:41:10 | INFO | [OLD untrained] batch retrieval top1 acc=0.9332 (chance~0.03125, B=32) | mean pos sim=1.0000 | mean neg sim=0.9984 | gap=0.0016
+22:41:11 | INFO | --- untrained, OLD ALFF: probes on trained z ---
+22:41:11 | INFO | [OLD untrained DX            ] probe acc=0.5105 +- 0.0250 (chance~0.5000, n_classes=2)
+22:41:11 | INFO | [OLD untrained SITE          ] probe acc=0.1778 +- 0.0077 (chance~0.0526, n_classes=19)
+22:41:11 | INFO | [OLD untrained node-strength ] probe R^2=0.0924 +- 0.0291 (0 = no better than predicting the mean)
+22:41:21 | INFO | OLD ALFF epoch  1: view[calc_loss=4.3342 cr_loss=8.6913 reg(keep_prob)=0.4704] | model[calc_loss=1.2897 cr_loss=2.3114]
+22:41:31 | INFO | OLD ALFF epoch  2: view[calc_loss=3.9926 cr_loss=8.5829 reg(keep_prob)=0.3764] | model[calc_loss=0.8121 cr_loss=2.0839]
+22:41:41 | INFO | OLD ALFF epoch  3: view[calc_loss=3.8073 cr_loss=8.5039 reg(keep_prob)=0.2878] | model[calc_loss=0.8050 cr_loss=2.2187]
+22:41:50 | INFO | OLD ALFF epoch  4: view[calc_loss=4.1455 cr_loss=10.1200 reg(keep_prob)=0.2007] | model[calc_loss=1.5368 cr_loss=3.5426]
+22:42:00 | INFO | OLD ALFF epoch  5: view[calc_loss=3.7814 cr_loss=9.8154 reg(keep_prob)=0.1456] | model[calc_loss=1.5652 cr_loss=3.5658]
+22:42:10 | INFO | OLD ALFF epoch  6: view[calc_loss=4.0382 cr_loss=10.8250 reg(keep_prob)=0.1111] | model[calc_loss=1.6758 cr_loss=3.6139]
+22:42:20 | INFO | OLD ALFF epoch  7: view[calc_loss=3.9269 cr_loss=10.8027 reg(keep_prob)=0.0887] | model[calc_loss=1.5344 cr_loss=3.4154]
+22:42:30 | INFO | OLD ALFF epoch  8: view[calc_loss=3.8687 cr_loss=10.7785 reg(keep_prob)=0.0753] | model[calc_loss=1.4323 cr_loss=3.3234]
+22:42:40 | INFO | OLD ALFF epoch  9: view[calc_loss=4.0239 cr_loss=10.9713 reg(keep_prob)=0.0581] | model[calc_loss=1.6160 cr_loss=3.6141]
+22:42:49 | INFO | OLD ALFF epoch 10: view[calc_loss=3.8666 cr_loss=10.9361 reg(keep_prob)=0.0432] | model[calc_loss=1.2803 cr_loss=3.0300]
+22:42:59 | INFO | OLD ALFF epoch 11: view[calc_loss=3.8799 cr_loss=10.8290 reg(keep_prob)=0.0314] | model[calc_loss=1.2070 cr_loss=2.9799]
+22:43:08 | INFO | OLD ALFF epoch 12: view[calc_loss=3.9221 cr_loss=11.0424 reg(keep_prob)=0.0241] | model[calc_loss=1.1414 cr_loss=2.8711]
+22:43:18 | INFO | OLD ALFF epoch 13: view[calc_loss=3.9963 cr_loss=10.3774 reg(keep_prob)=0.0190] | model[calc_loss=1.0285 cr_loss=2.7871]
+22:43:28 | INFO | OLD ALFF epoch 14: view[calc_loss=3.9543 cr_loss=10.5490 reg(keep_prob)=0.0154] | model[calc_loss=1.0200 cr_loss=2.7371]
+22:43:38 | INFO | OLD ALFF epoch 15: view[calc_loss=4.1454 cr_loss=10.0599 reg(keep_prob)=0.0124] | model[calc_loss=1.0087 cr_loss=2.7120]
+22:43:48 | INFO | OLD ALFF epoch 16: view[calc_loss=4.2279 cr_loss=10.1362 reg(keep_prob)=0.0098] | model[calc_loss=0.9180 cr_loss=2.6889]
+22:43:58 | INFO | OLD ALFF epoch 17: view[calc_loss=4.1652 cr_loss=11.1647 reg(keep_prob)=0.0076] | model[calc_loss=0.9411 cr_loss=2.6772]
+22:44:08 | INFO | OLD ALFF epoch 18: view[calc_loss=4.2592 cr_loss=10.9955 reg(keep_prob)=0.0071] | model[calc_loss=0.9429 cr_loss=2.6717]
+22:44:17 | INFO | OLD ALFF epoch 19: view[calc_loss=4.3096 cr_loss=10.3301 reg(keep_prob)=0.0064] | model[calc_loss=0.8943 cr_loss=2.6115]
+22:44:27 | INFO | OLD ALFF epoch 20: view[calc_loss=4.3038 cr_loss=10.8669 reg(keep_prob)=0.0056] | model[calc_loss=0.8586 cr_loss=2.5746]
+22:44:37 | INFO | OLD ALFF epoch 21: view[calc_loss=4.2137 cr_loss=11.1447 reg(keep_prob)=0.0051] | model[calc_loss=0.8104 cr_loss=2.5247]
+22:44:48 | INFO | OLD ALFF epoch 22: view[calc_loss=4.2090 cr_loss=11.6993 reg(keep_prob)=0.0044] | model[calc_loss=0.8730 cr_loss=2.6057]
+22:44:58 | INFO | OLD ALFF epoch 23: view[calc_loss=4.3255 cr_loss=10.6767 reg(keep_prob)=0.0051] | model[calc_loss=0.8072 cr_loss=2.5321]
+22:45:08 | INFO | OLD ALFF epoch 24: view[calc_loss=4.2136 cr_loss=11.1926 reg(keep_prob)=0.0041] | model[calc_loss=0.7549 cr_loss=2.4746]
+22:45:18 | INFO | OLD ALFF epoch 25: view[calc_loss=4.3288 cr_loss=10.8134 reg(keep_prob)=0.0038] | model[calc_loss=0.7569 cr_loss=2.4563]
+22:45:28 | INFO | OLD ALFF epoch 26: view[calc_loss=4.2890 cr_loss=10.8829 reg(keep_prob)=0.0035] | model[calc_loss=0.6916 cr_loss=2.4473]
+22:45:38 | INFO | OLD ALFF epoch 27: view[calc_loss=4.3022 cr_loss=10.2202 reg(keep_prob)=0.0034] | model[calc_loss=0.7189 cr_loss=2.3901]
+22:45:48 | INFO | OLD ALFF epoch 28: view[calc_loss=4.1327 cr_loss=10.4102 reg(keep_prob)=0.0035] | model[calc_loss=0.6957 cr_loss=2.3876]
+22:45:58 | INFO | OLD ALFF epoch 29: view[calc_loss=4.2086 cr_loss=10.4972 reg(keep_prob)=0.0034] | model[calc_loss=0.6819 cr_loss=2.3906]
+22:46:07 | INFO | OLD ALFF epoch 30: view[calc_loss=4.2271 cr_loss=9.8657 reg(keep_prob)=0.0041] | model[calc_loss=0.6436 cr_loss=2.3464]
+22:46:11 | INFO | [OLD trained_ep30] batch retrieval top1 acc=0.0485 (chance~0.03125, B=32) | mean pos sim=0.0470 | mean neg sim=0.0399 | gap=0.0071
+22:46:12 | INFO | --- trained_ep30, OLD ALFF: probes on trained z ---
+22:46:12 | INFO | [OLD trained_ep30 DX         ] probe acc=0.4905 +- 0.0385 (chance~0.5000, n_classes=2)
+22:46:12 | INFO | [OLD trained_ep30 SITE       ] probe acc=0.1768 +- 0.0304 (chance~0.0526, n_classes=19)
+22:46:12 | INFO | [OLD trained_ep30 node-strength] probe R^2=0.6372 +- 0.0597 (0 = no better than predicting the mean)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/data/in_memory_dataset.py:300: UserWarning: It is not recommended to directly access the internal storage format `data` of an 'InMemoryDataset'. The data of the dataset is already cached, so any modifications to `data` will not be reflected when accessing its elements. Clearing the cache now by removing all elements in `dataset._data_list`. If you are absolutely certain what you are doing, access the internal storage via `InMemoryDataset._data` instead to suppress this warning. Alternatively, you can access stacked individual attributes of every graph via `dataset.{attr_name}`.
+  warnings.warn(msg)
+22:46:12 | INFO | ==============================================================================
+22:46:12 | INFO | SOURCE: NEW ALFF
+22:46:12 | INFO | ==============================================================================
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+22:46:16 | INFO | [NEW untrained] batch retrieval top1 acc=0.9634 (chance~0.03125, B=32) | mean pos sim=1.0000 | mean neg sim=0.9958 | gap=0.0042
+22:46:16 | INFO | --- untrained, NEW ALFF: probes on trained z ---
+22:46:16 | INFO | [NEW untrained DX            ] probe acc=0.5345 +- 0.0295 (chance~0.5000, n_classes=2)
+22:46:17 | INFO | [NEW untrained SITE          ] probe acc=0.1789 +- 0.0103 (chance~0.0526, n_classes=19)
+22:46:17 | INFO | [NEW untrained node-strength ] probe R^2=0.1411 +- 0.0260 (0 = no better than predicting the mean)
+22:46:27 | INFO | NEW ALFF epoch  1: view[calc_loss=4.0267 cr_loss=7.8911 reg(keep_prob)=0.4648] | model[calc_loss=1.1806 cr_loss=2.1490]
+22:46:36 | INFO | NEW ALFF epoch  2: view[calc_loss=3.8867 cr_loss=8.9597 reg(keep_prob)=0.3797] | model[calc_loss=0.6383 cr_loss=1.8825]
+22:46:46 | INFO | NEW ALFF epoch  3: view[calc_loss=3.7040 cr_loss=8.9340 reg(keep_prob)=0.2740] | model[calc_loss=0.5771 cr_loss=1.8623]
+22:46:56 | INFO | NEW ALFF epoch  4: view[calc_loss=4.0529 cr_loss=10.2468 reg(keep_prob)=0.2040] | model[calc_loss=0.6494 cr_loss=2.0157]
+22:47:06 | INFO | NEW ALFF epoch  5: view[calc_loss=4.0528 cr_loss=10.1822 reg(keep_prob)=0.1562] | model[calc_loss=0.8425 cr_loss=2.3315]
+22:47:16 | INFO | NEW ALFF epoch  6: view[calc_loss=3.8105 cr_loss=9.3886 reg(keep_prob)=0.1382] | model[calc_loss=0.9889 cr_loss=2.6785]
+22:47:26 | INFO | NEW ALFF epoch  7: view[calc_loss=3.8919 cr_loss=9.8125 reg(keep_prob)=0.1002] | model[calc_loss=1.1168 cr_loss=2.8530]
+22:47:35 | INFO | NEW ALFF epoch  8: view[calc_loss=3.8890 cr_loss=9.8830 reg(keep_prob)=0.0881] | model[calc_loss=1.0436 cr_loss=2.8104]
+22:47:45 | INFO | NEW ALFF epoch  9: view[calc_loss=3.9714 cr_loss=10.0250 reg(keep_prob)=0.0793] | model[calc_loss=1.0565 cr_loss=2.8527]
+22:47:55 | INFO | NEW ALFF epoch 10: view[calc_loss=3.7530 cr_loss=9.9429 reg(keep_prob)=0.0635] | model[calc_loss=1.0345 cr_loss=2.8157]
+22:48:06 | INFO | NEW ALFF epoch 11: view[calc_loss=3.9499 cr_loss=9.8514 reg(keep_prob)=0.0600] | model[calc_loss=0.9445 cr_loss=2.7031]
+22:48:16 | INFO | NEW ALFF epoch 12: view[calc_loss=3.9236 cr_loss=9.9073 reg(keep_prob)=0.0502] | model[calc_loss=1.0804 cr_loss=2.9950]
+22:48:26 | INFO | NEW ALFF epoch 13: view[calc_loss=4.0018 cr_loss=9.7437 reg(keep_prob)=0.0416] | model[calc_loss=1.0147 cr_loss=2.7743]
+22:48:35 | INFO | NEW ALFF epoch 14: view[calc_loss=3.9757 cr_loss=9.6441 reg(keep_prob)=0.0310] | model[calc_loss=1.1716 cr_loss=3.1465]
+22:48:45 | INFO | NEW ALFF epoch 15: view[calc_loss=3.9306 cr_loss=9.5940 reg(keep_prob)=0.0315] | model[calc_loss=0.9998 cr_loss=2.8422]
+22:48:55 | INFO | NEW ALFF epoch 16: view[calc_loss=3.9953 cr_loss=9.4607 reg(keep_prob)=0.0263] | model[calc_loss=0.9914 cr_loss=2.8404]
+22:49:05 | INFO | NEW ALFF epoch 17: view[calc_loss=3.9771 cr_loss=9.3944 reg(keep_prob)=0.0180] | model[calc_loss=0.9705 cr_loss=2.8270]
+22:49:15 | INFO | NEW ALFF epoch 18: view[calc_loss=4.1851 cr_loss=9.5287 reg(keep_prob)=0.0146] | model[calc_loss=1.0883 cr_loss=2.9876]
+22:49:25 | INFO | NEW ALFF epoch 19: view[calc_loss=4.0922 cr_loss=9.7710 reg(keep_prob)=0.0063] | model[calc_loss=0.9269 cr_loss=2.7741]
+22:49:35 | INFO | NEW ALFF epoch 20: view[calc_loss=4.2263 cr_loss=9.7332 reg(keep_prob)=0.0078] | model[calc_loss=0.9210 cr_loss=2.7590]
+22:49:45 | INFO | NEW ALFF epoch 21: view[calc_loss=4.1699 cr_loss=9.9049 reg(keep_prob)=0.0072] | model[calc_loss=0.8356 cr_loss=2.6418]
+22:49:55 | INFO | NEW ALFF epoch 22: view[calc_loss=4.2542 cr_loss=9.4863 reg(keep_prob)=0.0081] | model[calc_loss=0.8447 cr_loss=2.6874]
+22:50:04 | INFO | NEW ALFF epoch 23: view[calc_loss=4.1426 cr_loss=10.2151 reg(keep_prob)=0.0047] | model[calc_loss=0.8564 cr_loss=2.7202]
+22:50:14 | INFO | NEW ALFF epoch 24: view[calc_loss=4.2283 cr_loss=9.3387 reg(keep_prob)=0.0036] | model[calc_loss=0.8369 cr_loss=2.6269]
+22:50:24 | INFO | NEW ALFF epoch 25: view[calc_loss=4.1221 cr_loss=9.9842 reg(keep_prob)=0.0041] | model[calc_loss=0.8486 cr_loss=2.6857]
+22:50:34 | INFO | NEW ALFF epoch 26: view[calc_loss=4.1303 cr_loss=9.6517 reg(keep_prob)=0.0036] | model[calc_loss=0.7685 cr_loss=2.5262]
+22:50:44 | INFO | NEW ALFF epoch 27: view[calc_loss=4.1645 cr_loss=9.3987 reg(keep_prob)=0.0037] | model[calc_loss=0.7225 cr_loss=2.5176]
+22:50:54 | INFO | NEW ALFF epoch 28: view[calc_loss=4.1349 cr_loss=9.4212 reg(keep_prob)=0.0044] | model[calc_loss=0.7693 cr_loss=2.5744]
+22:51:04 | INFO | NEW ALFF epoch 29: view[calc_loss=4.1133 cr_loss=9.2109 reg(keep_prob)=0.0041] | model[calc_loss=0.7706 cr_loss=2.5648]
+22:51:14 | INFO | NEW ALFF epoch 30: view[calc_loss=4.1022 cr_loss=9.5411 reg(keep_prob)=0.0030] | model[calc_loss=0.7385 cr_loss=2.5354]
+22:51:16 | INFO | [NEW trained_ep30] batch retrieval top1 acc=0.0603 (chance~0.03125, B=32) | mean pos sim=0.1976 | mean neg sim=0.1921 | gap=0.0055
+22:51:17 | INFO | --- trained_ep30, NEW ALFF: probes on trained z ---
+22:51:17 | INFO | [NEW trained_ep30 DX         ] probe acc=0.5167 +- 0.0348 (chance~0.5000, n_classes=2)
+22:51:17 | INFO | [NEW trained_ep30 SITE       ] probe acc=0.1653 +- 0.0123 (chance~0.0526, n_classes=19)
+22:51:17 | INFO | [NEW trained_ep30 node-strength] probe R^2=0.6691 +- 0.0510 (0 = no better than predicting the mean)
+22:51:17 | INFO | Saved: /users/3171356m/A-GCL/layertesting/layer6/layer6_results.npz
+22:51:17 | INFO | ==============================================================================
+22:51:17 | INFO | SUMMARY: trained-z probe accuracy, DX vs SITE vs node-strength
+22:51:17 | INFO | ==============================================================================
+22:51:17 | INFO | old  DX acc=0.4905 (chance 0.5000) | SITE acc=0.1768 (chance 0.0526) | node-strength R^2=0.6372 | retrieval top1=0.0485
+22:51:17 | INFO | new  DX acc=0.5167 (chance 0.5000) | SITE acc=0.1653 (chance 0.0526) | node-strength R^2=0.6691 | retrieval top1=0.0603

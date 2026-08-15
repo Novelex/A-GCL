@@ -1,0 +1,76 @@
+22:21:05 | INFO | Device: cpu
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/data/in_memory_dataset.py:300: UserWarning: It is not recommended to directly access the internal storage format `data` of an 'InMemoryDataset'. If you are absolutely certain what you are doing, access the internal storage via `InMemoryDataset._data` instead to suppress this warning. Alternatively, you can access stacked individual attributes of every graph via `dataset.{attr_name}`.
+  warnings.warn(msg)
+22:21:05 | INFO | Loaded dataset: N=956
+22:21:05 | INFO | ==============================================================================
+22:21:05 | INFO | SOURCE: OLD ALFF
+22:21:05 | INFO | ==============================================================================
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+22:21:07 | INFO | --- untrained, OLD ALFF ---
+22:21:07 | INFO | [OLD untrained view-encoder              ] norm=0.9925+-0.0154 | pairwise cos=0.9991 | class-mean cos=1.0000 | probe acc=0.5230+-0.0281
+22:21:07 | INFO | [OLD untrained | corrected] corr(diagnostic relevance, mean keep-prob mu): pearson=+0.0223 spearman=+0.0510
+22:21:07 | INFO | [OLD untrained | paper_exact] corr(diagnostic relevance, mean keep-prob mu): pearson=+0.0100 spearman=+0.0088
+22:21:07 | INFO | [OLD untrained] mu_corr: range=[0.4458, 0.5215], finite=True
+22:21:07 | INFO | [OLD untrained] mu_paper: range=[0.4458, 0.5360], finite=True
+22:21:07 | INFO | [OLD untrained] edge_mask_corr: range=[0.0001, 0.9999], finite=True
+22:21:07 | INFO | [OLD untrained] corrected mu symmetric (i,j)==(j,i): True (expect True)
+22:21:07 | INFO | [OLD untrained] paper_exact mu symmetric: False | fraction of edges where (i,j)!=(j,i): 0.0000 (expect >0, i.e. NOT symmetric)
+22:21:47 | INFO | OLD ALFF epoch 5: view calc_loss=3.9467 | model calc_loss=1.6499
+22:22:26 | INFO | OLD ALFF epoch 10: view calc_loss=4.0215 | model calc_loss=1.6650
+22:23:05 | INFO | OLD ALFF epoch 15: view calc_loss=3.8256 | model calc_loss=1.7475
+22:23:44 | INFO | OLD ALFF epoch 20: view calc_loss=4.0268 | model calc_loss=1.5481
+22:24:24 | INFO | OLD ALFF epoch 25: view calc_loss=4.2092 | model calc_loss=1.2761
+22:25:03 | INFO | OLD ALFF epoch 30: view calc_loss=4.2988 | model calc_loss=1.0468
+22:25:05 | INFO | --- trained_ep30, OLD ALFF ---
+22:25:05 | INFO | [OLD trained_ep30 view-encoder           ] norm=0.9659+-0.0672 | pairwise cos=0.2446 | class-mean cos=0.9959 | probe acc=0.4968+-0.0441
+22:25:05 | INFO | [OLD trained_ep30 | corrected] corr(diagnostic relevance, mean keep-prob mu): pearson=+0.0461 spearman=+0.1157
+22:25:05 | INFO | [OLD trained_ep30 | paper_exact] corr(diagnostic relevance, mean keep-prob mu): pearson=+0.0459 spearman=+0.1139
+22:25:05 | INFO | [OLD trained_ep30] mu_corr: range=[0.0000, 0.4598], finite=True
+22:25:05 | INFO | [OLD trained_ep30] mu_paper: range=[0.0000, 0.4598], finite=True
+22:25:05 | INFO | [OLD trained_ep30] edge_mask_corr: range=[0.0000, 0.9954], finite=True
+22:25:05 | INFO | [OLD trained_ep30] corrected mu symmetric (i,j)==(j,i): True (expect True)
+22:25:05 | INFO | [OLD trained_ep30] paper_exact mu symmetric: False | fraction of edges where (i,j)!=(j,i): 0.0000 (expect >0, i.e. NOT symmetric)
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/data/in_memory_dataset.py:300: UserWarning: It is not recommended to directly access the internal storage format `data` of an 'InMemoryDataset'. The data of the dataset is already cached, so any modifications to `data` will not be reflected when accessing its elements. Clearing the cache now by removing all elements in `dataset._data_list`. If you are absolutely certain what you are doing, access the internal storage via `InMemoryDataset._data` instead to suppress this warning. Alternatively, you can access stacked individual attributes of every graph via `dataset.{attr_name}`.
+  warnings.warn(msg)
+22:25:05 | INFO | ==============================================================================
+22:25:05 | INFO | SOURCE: NEW ALFF
+22:25:05 | INFO | ==============================================================================
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+22:25:06 | INFO | --- untrained, NEW ALFF ---
+22:25:06 | INFO | [NEW untrained view-encoder              ] norm=0.9913+-0.0175 | pairwise cos=0.9978 | class-mean cos=1.0000 | probe acc=0.5178+-0.0283
+22:25:06 | INFO | [NEW untrained | corrected] corr(diagnostic relevance, mean keep-prob mu): pearson=+0.0209 spearman=+0.0453
+22:25:06 | INFO | [NEW untrained | paper_exact] corr(diagnostic relevance, mean keep-prob mu): pearson=+0.0095 spearman=+0.0075
+22:25:06 | INFO | [NEW untrained] mu_corr: range=[0.4314, 0.5260], finite=True
+22:25:06 | INFO | [NEW untrained] mu_paper: range=[0.4314, 0.5387], finite=True
+22:25:06 | INFO | [NEW untrained] edge_mask_corr: range=[0.0001, 0.9999], finite=True
+22:25:06 | INFO | [NEW untrained] corrected mu symmetric (i,j)==(j,i): True (expect True)
+22:25:06 | INFO | [NEW untrained] paper_exact mu symmetric: False | fraction of edges where (i,j)!=(j,i): 0.0343 (expect >0, i.e. NOT symmetric)
+22:25:46 | INFO | NEW ALFF epoch 5: view calc_loss=3.9194 | model calc_loss=0.8529
+22:26:26 | INFO | NEW ALFF epoch 10: view calc_loss=3.8579 | model calc_loss=1.1184
+22:27:05 | INFO | NEW ALFF epoch 15: view calc_loss=4.1297 | model calc_loss=1.0887
+22:27:44 | INFO | NEW ALFF epoch 20: view calc_loss=4.2241 | model calc_loss=1.0479
+22:28:23 | INFO | NEW ALFF epoch 25: view calc_loss=4.3037 | model calc_loss=0.8651
+22:29:02 | INFO | NEW ALFF epoch 30: view calc_loss=4.1856 | model calc_loss=0.7409
+22:29:04 | INFO | --- trained_ep30, NEW ALFF ---
+22:29:04 | INFO | [NEW trained_ep30 view-encoder           ] norm=0.9633+-0.0404 | pairwise cos=0.3972 | class-mean cos=0.9972 | probe acc=0.5011+-0.0109
+22:29:04 | INFO | [NEW trained_ep30 | corrected] corr(diagnostic relevance, mean keep-prob mu): pearson=+0.0665 spearman=+0.0989
+22:29:04 | INFO | [NEW trained_ep30 | paper_exact] corr(diagnostic relevance, mean keep-prob mu): pearson=+0.0651 spearman=+0.0965
+22:29:04 | INFO | [NEW trained_ep30] mu_corr: range=[0.0000, 0.1995], finite=True
+22:29:04 | INFO | [NEW trained_ep30] mu_paper: range=[0.0000, 0.2473], finite=True
+22:29:04 | INFO | [NEW trained_ep30] edge_mask_corr: range=[0.0000, 0.9966], finite=True
+22:29:04 | INFO | [NEW trained_ep30] corrected mu symmetric (i,j)==(j,i): True (expect True)
+22:29:04 | INFO | [NEW trained_ep30] paper_exact mu symmetric: False | fraction of edges where (i,j)!=(j,i): 0.0881 (expect >0, i.e. NOT symmetric)
+22:29:04 | INFO | Saved: /users/3171356m/A-GCL/layertesting/layer4/layer4_results.npz
+22:29:04 | INFO | ==============================================================================
+22:29:04 | INFO | SUMMARY: edge-level correlation, diagnostic relevance vs. mean keep-prob mu
+22:29:04 | INFO | ==============================================================================
+22:29:04 | INFO | old  untrained        corrected  | pearson=+0.0223 spearman=+0.0510
+22:29:04 | INFO | old  untrained        paper      | pearson=+0.0100 spearman=+0.0088
+22:29:04 | INFO | old  trained_ep30     corrected  | pearson=+0.0461 spearman=+0.1157
+22:29:04 | INFO | old  trained_ep30     paper      | pearson=+0.0459 spearman=+0.1139
+22:29:04 | INFO | new  untrained        corrected  | pearson=+0.0209 spearman=+0.0453
+22:29:04 | INFO | new  untrained        paper      | pearson=+0.0095 spearman=+0.0075
+22:29:04 | INFO | new  trained_ep30     corrected  | pearson=+0.0665 spearman=+0.0989
+22:29:04 | INFO | new  trained_ep30     paper      | pearson=+0.0651 spearman=+0.0965

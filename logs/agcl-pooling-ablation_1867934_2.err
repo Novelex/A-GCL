@@ -1,0 +1,23 @@
+23:29:06 | INFO | Device: cpu | variant=l2norm config={'num_gc_layers': 2, 'pool_type': 'sum', 'post_pool_l2norm': True} | source=old ALFF
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/data/in_memory_dataset.py:300: UserWarning: It is not recommended to directly access the internal storage format `data` of an 'InMemoryDataset'. If you are absolutely certain what you are doing, access the internal storage via `InMemoryDataset._data` instead to suppress this warning. Alternatively, you can access stacked individual attributes of every graph via `dataset.{attr_name}`.
+  warnings.warn(msg)
+23:29:06 | INFO | Loaded dataset: N=956, ASD=455, NC=501
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+23:29:19 | INFO |   [l2norm/old fold 1/5] stopped at epoch 20 (best val_acc=0.5652 @ epoch 5) | test acc=0.5365 auc=0.5527
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+23:29:31 | INFO |   [l2norm/old fold 2/5] stopped at epoch 19 (best val_acc=0.5130 @ epoch 4) | test acc=0.4660 auc=0.4610
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+23:30:02 | INFO |   [l2norm/old fold 3/5] stopped at epoch 48 (best val_acc=0.6174 @ epoch 33) | test acc=0.5079 auc=0.5153
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+23:30:12 | INFO |   [l2norm/old fold 4/5] stopped at epoch 17 (best val_acc=0.5565 @ epoch 2) | test acc=0.4764 auc=0.5167
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+23:30:22 | INFO |   [l2norm/old fold 5/5] stopped at epoch 19 (best val_acc=0.5826 @ epoch 4) | test acc=0.4974 auc=0.5321
+23:30:22 | INFO | ==============================================================================
+23:30:22 | INFO | [l2norm/old] acc=0.4968 +- 0.0247 | auc=0.5156 +- 0.0304
+23:30:22 | INFO | [l2norm/old] delta vs. known chance-level baseline: acc +0.0051, auc +0.0215
+23:30:22 | INFO | Saved: /users/3171356m/A-GCL/layertesting/layer3/pooling_ablation_l2norm_old.npz

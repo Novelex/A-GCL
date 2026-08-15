@@ -1,0 +1,52 @@
+23:16:36 | INFO | Device: cpu
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/data/in_memory_dataset.py:300: UserWarning: It is not recommended to directly access the internal storage format `data` of an 'InMemoryDataset'. If you are absolutely certain what you are doing, access the internal storage via `InMemoryDataset._data` instead to suppress this warning. Alternatively, you can access stacked individual attributes of every graph via `dataset.{attr_name}`.
+  warnings.warn(msg)
+23:16:36 | INFO | Loaded dataset: N=956, ASD=455, NC=501
+23:16:36 | INFO | ==============================================================================
+23:16:36 | INFO | SOURCE: OLD ALFF (supervised, end-to-end, same TUEncoder architecture)
+23:16:36 | INFO | ==============================================================================
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+23:16:51 | INFO |   [OLD fold 1/5] stopped at epoch 23 (best val_acc=0.5739 @ epoch 8) | test acc=0.4635 auc=0.4777
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+23:17:09 | INFO |   [OLD fold 2/5] stopped at epoch 29 (best val_acc=0.6087 @ epoch 14) | test acc=0.5497 auc=0.5411
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+23:17:34 | INFO |   [OLD fold 3/5] stopped at epoch 44 (best val_acc=0.6087 @ epoch 29) | test acc=0.4869 auc=0.4663
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+23:17:45 | INFO |   [OLD fold 4/5] stopped at epoch 19 (best val_acc=0.5478 @ epoch 4) | test acc=0.4346 auc=0.4558
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+23:18:01 | INFO |   [OLD fold 5/5] stopped at epoch 25 (best val_acc=0.6000 @ epoch 10) | test acc=0.5236 auc=0.5298
+23:18:01 | INFO | [OLD] supervised GNN, same architecture: acc=0.4917 +- 0.0411 | auc=0.4941 +- 0.0346
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/data/in_memory_dataset.py:300: UserWarning: It is not recommended to directly access the internal storage format `data` of an 'InMemoryDataset'. If you are absolutely certain what you are doing, access the internal storage via `InMemoryDataset._data` instead to suppress this warning. Alternatively, you can access stacked individual attributes of every graph via `dataset.{attr_name}`.
+  warnings.warn(msg)
+23:18:01 | INFO | ==============================================================================
+23:18:01 | INFO | SOURCE: NEW ALFF (supervised, end-to-end, same TUEncoder architecture)
+23:18:01 | INFO | ==============================================================================
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+23:18:23 | INFO |   [NEW fold 1/5] stopped at epoch 43 (best val_acc=0.5913 @ epoch 28) | test acc=0.4583 auc=0.4950
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+23:18:33 | INFO |   [NEW fold 2/5] stopped at epoch 20 (best val_acc=0.5652 @ epoch 5) | test acc=0.5288 auc=0.4981
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+23:18:42 | INFO |   [NEW fold 3/5] stopped at epoch 16 (best val_acc=0.5478 @ epoch 1) | test acc=0.5236 auc=0.6113
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+23:18:52 | INFO |   [NEW fold 4/5] stopped at epoch 19 (best val_acc=0.6261 @ epoch 4) | test acc=0.4503 auc=0.4247
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+23:19:01 | INFO |   [NEW fold 5/5] stopped at epoch 18 (best val_acc=0.6000 @ epoch 3) | test acc=0.4974 auc=0.4746
+23:19:01 | INFO | [NEW] supervised GNN, same architecture: acc=0.4917 +- 0.0324 | auc=0.5008 +- 0.0612
+23:19:01 | INFO | Saved: /users/3171356m/A-GCL/layertesting/supervised_gnn_baseline/supervised_gnn_results.npz
+23:19:01 | INFO | ==============================================================================
+23:19:01 | INFO | SUMMARY: same architecture, supervised end-to-end vs. unsupervised contrastive
+23:19:01 | INFO | ==============================================================================
+23:19:01 | INFO | Unsupervised contrastive pipeline (real 200-epoch runs, this session): ~50%% (chance)
+23:19:01 | INFO | L1-LogReg on raw FC edges (layertesting/supervised_edge_discovery): acc=0.6506 auc=0.6939
+23:19:01 | INFO | Supervised GNN, old ALFF: acc=0.4917 +- 0.0411 | auc=0.4941 +- 0.0346
+23:19:01 | INFO | Supervised GNN, new ALFF: acc=0.4917 +- 0.0324 | auc=0.5008 +- 0.0612

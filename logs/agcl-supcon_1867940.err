@@ -1,0 +1,91 @@
+23:50:06 | INFO | Device: cpu
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/data/in_memory_dataset.py:300: UserWarning: It is not recommended to directly access the internal storage format `data` of an 'InMemoryDataset'. If you are absolutely certain what you are doing, access the internal storage via `InMemoryDataset._data` instead to suppress this warning. Alternatively, you can access stacked individual attributes of every graph via `dataset.{attr_name}`.
+  warnings.warn(msg)
+23:50:06 | INFO | Loaded dataset: N=956, ASD=455, NC=501
+23:50:06 | INFO | ==============================================================================
+23:50:06 | INFO | SOURCE: OLD ALFF (SupCon pretraining, same 2-layer/sum-pool architecture)
+23:50:06 | INFO | ==============================================================================
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+23:50:07 | INFO |   [OLD fold 1 SupCon] epoch   1: loss=6.7851
+23:50:21 | INFO |   [OLD fold 1 SupCon] epoch  20: loss=4.1544
+23:50:36 | INFO |   [OLD fold 1 SupCon] epoch  40: loss=4.1466
+23:50:52 | INFO |   [OLD fold 1 SupCon] epoch  60: loss=4.1448
+23:51:07 | INFO |   [OLD fold 1 SupCon] epoch  80: loss=4.1438
+23:51:20 | INFO |   [OLD fold 1 SupCon] epoch 100: loss=4.1440
+23:51:23 | INFO |   [OLD fold 1/5] SupCon loss 6.7851 -> 4.1440 | downstream: acc=0.5417 auc=0.5213 best_C=10
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+23:51:23 | INFO |   [OLD fold 2 SupCon] epoch   1: loss=6.8905
+23:51:34 | INFO |   [OLD fold 2 SupCon] epoch  20: loss=4.1522
+23:51:50 | INFO |   [OLD fold 2 SupCon] epoch  40: loss=4.1461
+23:52:05 | INFO |   [OLD fold 2 SupCon] epoch  60: loss=4.1449
+23:52:19 | INFO |   [OLD fold 2 SupCon] epoch  80: loss=4.1446
+23:52:33 | INFO |   [OLD fold 2 SupCon] epoch 100: loss=4.1439
+23:52:34 | INFO |   [OLD fold 2/5] SupCon loss 6.8905 -> 4.1439 | downstream: acc=0.5497 auc=0.5357 best_C=0.01
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+23:52:35 | INFO |   [OLD fold 3 SupCon] epoch   1: loss=6.8147
+23:52:48 | INFO |   [OLD fold 3 SupCon] epoch  20: loss=4.1523
+23:53:01 | INFO |   [OLD fold 3 SupCon] epoch  40: loss=4.1467
+23:53:15 | INFO |   [OLD fold 3 SupCon] epoch  60: loss=4.1448
+23:53:30 | INFO |   [OLD fold 3 SupCon] epoch  80: loss=4.1444
+23:53:44 | INFO |   [OLD fold 3 SupCon] epoch 100: loss=4.1439
+23:53:45 | INFO |   [OLD fold 3/5] SupCon loss 6.8147 -> 4.1439 | downstream: acc=0.4869 auc=0.4790 best_C=1000
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+23:53:46 | INFO |   [OLD fold 4 SupCon] epoch   1: loss=6.7712
+23:53:59 | INFO |   [OLD fold 4 SupCon] epoch  20: loss=4.1526
+23:54:13 | INFO |   [OLD fold 4 SupCon] epoch  40: loss=4.1465
+23:54:27 | INFO |   [OLD fold 4 SupCon] epoch  60: loss=4.1446
+23:54:40 | INFO |   [OLD fold 4 SupCon] epoch  80: loss=4.1445
+23:54:56 | INFO |   [OLD fold 4 SupCon] epoch 100: loss=4.1437
+23:54:56 | INFO |   [OLD fold 4/5] SupCon loss 6.7712 -> 4.1437 | downstream: acc=0.4398 auc=0.4315 best_C=0.001
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+23:54:57 | INFO |   [OLD fold 5 SupCon] epoch   1: loss=6.9099
+23:55:10 | INFO |   [OLD fold 5 SupCon] epoch  20: loss=4.1537
+23:55:25 | INFO |   [OLD fold 5 SupCon] epoch  40: loss=4.1464
+23:55:39 | INFO |   [OLD fold 5 SupCon] epoch  60: loss=4.1451
+23:55:52 | INFO |   [OLD fold 5 SupCon] epoch  80: loss=4.1444
+23:56:06 | INFO |   [OLD fold 5 SupCon] epoch 100: loss=4.1440
+23:56:07 | INFO |   [OLD fold 5/5] SupCon loss 6.9099 -> 4.1440 | downstream: acc=0.5026 auc=0.5168 best_C=0.001
+23:56:07 | INFO | [OLD] SupCon downstream: acc=0.5041 +- 0.0398 | auc=0.4969 +- 0.0377 | mean loss 6.8343 -> 4.1439
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/data/in_memory_dataset.py:300: UserWarning: It is not recommended to directly access the internal storage format `data` of an 'InMemoryDataset'. If you are absolutely certain what you are doing, access the internal storage via `InMemoryDataset._data` instead to suppress this warning. Alternatively, you can access stacked individual attributes of every graph via `dataset.{attr_name}`.
+  warnings.warn(msg)
+23:56:07 | INFO | ==============================================================================
+23:56:07 | INFO | SOURCE: NEW ALFF (SupCon pretraining, same 2-layer/sum-pool architecture)
+23:56:07 | INFO | ==============================================================================
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+23:56:08 | INFO |   [NEW fold 1 SupCon] epoch   1: loss=6.8086
+23:56:22 | INFO |   [NEW fold 1 SupCon] epoch  20: loss=4.1525
+23:56:37 | INFO |   [NEW fold 1 SupCon] epoch  40: loss=4.1469
+23:56:51 | INFO |   [NEW fold 1 SupCon] epoch  60: loss=4.1455
+23:57:05 | INFO |   [NEW fold 1 SupCon] epoch  80: loss=4.1441
+23:57:21 | INFO |   [NEW fold 1 SupCon] epoch 100: loss=4.1439
+23:57:21 | INFO |   [NEW fold 1/5] SupCon loss 6.8086 -> 4.1439 | downstream: acc=0.5000 auc=0.5003 best_C=0.001
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+23:57:22 | INFO |   [NEW fold 2 SupCon] epoch   1: loss=6.8437
+23:57:36 | INFO |   [NEW fold 2 SupCon] epoch  20: loss=4.1522
+23:57:47 | INFO |   [NEW fold 2 SupCon] epoch  40: loss=4.1475
+23:57:59 | INFO |   [NEW fold 2 SupCon] epoch  60: loss=4.1442
+23:58:14 | INFO |   [NEW fold 2 SupCon] epoch  80: loss=4.1444
+23:58:29 | INFO |   [NEW fold 2 SupCon] epoch 100: loss=4.1436
+23:58:30 | INFO |   [NEW fold 2/5] SupCon loss 6.8437 -> 4.1436 | downstream: acc=0.5340 auc=0.5264 best_C=0.01
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+23:58:31 | INFO |   [NEW fold 3 SupCon] epoch   1: loss=6.8209
+23:58:45 | INFO |   [NEW fold 3 SupCon] epoch  20: loss=4.1521
+23:58:58 | INFO |   [NEW fold 3 SupCon] epoch  40: loss=4.1465
+23:59:13 | INFO |   [NEW fold 3 SupCon] epoch  60: loss=4.1452
+23:59:30 | INFO |   [NEW fold 3 SupCon] epoch  80: loss=4.1445
+23:59:46 | INFO |   [NEW fold 3 SupCon] epoch 100: loss=4.1442
+23:59:46 | INFO |   [NEW fold 3/5] SupCon loss 6.8209 -> 4.1442 | downstream: acc=0.4346 auc=0.4345 best_C=10
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+23:59:47 | INFO |   [NEW fold 4 SupCon] epoch   1: loss=6.7450
+00:00:02 | INFO |   [NEW fold 4 SupCon] epoch  20: loss=4.1526
+00:00:19 | INFO |   [NEW fold 4 SupCon] epoch  40: loss=4.1465
+00:00:36 | INFO |   [NEW fold 4 SupCon] epoch  60: loss=4.1451
