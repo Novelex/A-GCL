@@ -1,0 +1,29 @@
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/data/in_memory_dataset.py:300: UserWarning: It is not recommended to directly access the internal storage format `data` of an 'InMemoryDataset'. If you are absolutely certain what you are doing, access the internal storage via `InMemoryDataset._data` instead to suppress this warning. Alternatively, you can access stacked individual attributes of every graph via `dataset.{attr_name}`.
+  warnings.warn(msg)
+00:31:07 | INFO | Loaded dataset: N=956, ASD=455, NC=501
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+00:31:08 | INFO | ==============================================================================
+00:31:08 | INFO | SOURCE: OLD ALFF -- signal localization, stage by stage
+00:31:08 | INFO | ==============================================================================
+00:33:40 | INFO | [raw_edges       ] acc=0.6569 +- 0.0237 | auc=0.7057 +- 0.0242
+00:33:41 | INFO | [agg1_pre_mlp    ] acc=0.5188 +- 0.0360 | auc=0.5235 +- 0.0467
+00:33:41 | INFO | [gin1_post_mlp   ] acc=0.5104 +- 0.0153 | auc=0.5131 +- 0.0248
+00:33:41 | INFO | [gin1_post_bn    ] acc=0.5209 +- 0.0395 | auc=0.5124 +- 0.0299
+00:33:42 | INFO | [agg2_pre_mlp    ] acc=0.5010 +- 0.0410 | auc=0.5092 +- 0.0446
+00:33:42 | INFO | [gin2_post_mlp   ] acc=0.5209 +- 0.0376 | auc=0.5224 +- 0.0448
+00:33:43 | INFO | [gin2_post_bn    ] acc=0.5209 +- 0.0376 | auc=0.5225 +- 0.0445
+00:33:43 | INFO | [h               ] acc=0.4947 +- 0.0282 | auc=0.5002 +- 0.0293
+00:33:43 | INFO | Saved: /users/3171356m/A-GCL/layertesting/layer3/signal_localization_results_old.npz
+00:33:43 | INFO | ==============================================================================
+00:33:43 | INFO | SUMMARY: accuracy by stage, old ALFF
+00:33:43 | INFO | ==============================================================================
+00:33:43 | INFO | Stage            | Accuracy  
+00:33:43 | INFO | raw_edges        | 0.6569
+00:33:43 | INFO | agg1_pre_mlp     | 0.5188
+00:33:43 | INFO | gin1_post_mlp    | 0.5104
+00:33:43 | INFO | gin1_post_bn     | 0.5209
+00:33:43 | INFO | agg2_pre_mlp     | 0.5010
+00:33:43 | INFO | gin2_post_mlp    | 0.5209
+00:33:43 | INFO | gin2_post_bn     | 0.5209
+00:33:43 | INFO | h                | 0.4947

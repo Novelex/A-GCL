@@ -89,3 +89,25 @@
 00:00:02 | INFO |   [NEW fold 4 SupCon] epoch  20: loss=4.1526
 00:00:19 | INFO |   [NEW fold 4 SupCon] epoch  40: loss=4.1465
 00:00:36 | INFO |   [NEW fold 4 SupCon] epoch  60: loss=4.1451
+00:00:52 | INFO |   [NEW fold 4 SupCon] epoch  80: loss=4.1447
+00:01:08 | INFO |   [NEW fold 4 SupCon] epoch 100: loss=4.1438
+00:01:09 | INFO |   [NEW fold 4/5] SupCon loss 6.7450 -> 4.1438 | downstream: acc=0.4869 auc=0.4865 best_C=0.001
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+00:01:10 | INFO |   [NEW fold 5 SupCon] epoch   1: loss=6.7880
+00:01:25 | INFO |   [NEW fold 5 SupCon] epoch  20: loss=4.1513
+00:01:42 | INFO |   [NEW fold 5 SupCon] epoch  40: loss=4.1463
+00:01:58 | INFO |   [NEW fold 5 SupCon] epoch  60: loss=4.1451
+00:02:15 | INFO |   [NEW fold 5 SupCon] epoch  80: loss=4.1443
+00:02:32 | INFO |   [NEW fold 5 SupCon] epoch 100: loss=4.1442
+00:02:32 | INFO |   [NEW fold 5/5] SupCon loss 6.7880 -> 4.1442 | downstream: acc=0.4712 auc=0.4552 best_C=0.001
+00:02:32 | INFO | [NEW] SupCon downstream: acc=0.4853 +- 0.0328 | auc=0.4806 +- 0.0325 | mean loss 6.8012 -> 4.1439
+00:02:32 | INFO | Saved: /users/3171356m/A-GCL/layertesting/layer3/supcon_results.npz
+00:02:32 | INFO | ==============================================================================
+00:02:32 | INFO | SUMMARY: SupCon pretraining vs. everything else tested so far
+00:02:32 | INFO | ==============================================================================
+00:02:32 | INFO | Unsupervised contrastive pipeline (real 200-epoch runs): ~50%% (chance)
+00:02:32 | INFO | Plain end-to-end supervised, same arch (early-stopped, possibly premature): ~49%%
+00:02:32 | INFO | L1-LogReg on raw FC edges directly (no GNN): acc=0.6506 auc=0.6939
+00:02:32 | INFO | SupCon pretraining, old ALFF: acc=0.5041 +- 0.0398 | auc=0.4969 +- 0.0377 | loss 6.8343 -> 4.1439
+00:02:32 | INFO | SupCon pretraining, new ALFF: acc=0.4853 +- 0.0328 | auc=0.4806 +- 0.0325 | loss 6.8012 -> 4.1439

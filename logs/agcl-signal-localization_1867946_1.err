@@ -1,0 +1,9 @@
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/data/in_memory_dataset.py:300: UserWarning: It is not recommended to directly access the internal storage format `data` of an 'InMemoryDataset'. If you are absolutely certain what you are doing, access the internal storage via `InMemoryDataset._data` instead to suppress this warning. Alternatively, you can access stacked individual attributes of every graph via `dataset.{attr_name}`.
+  warnings.warn(msg)
+00:22:07 | INFO | Loaded dataset: N=956, ASD=455, NC=501
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+00:22:08 | INFO | ==============================================================================
+00:22:08 | INFO | SOURCE: NEW ALFF -- signal localization, stage by stage
+00:22:08 | INFO | ==============================================================================
+[2026-08-16T00:30:05.434] error: *** JOB 1867946 ON node01 CANCELLED AT 2026-08-16T00:30:05 DUE to SIGNAL Terminated ***
