@@ -1,0 +1,82 @@
+21:58:35 | INFO | Device: cpu
+Processing...
+Done!
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/data/in_memory_dataset.py:300: UserWarning: It is not recommended to directly access the internal storage format `data` of an 'InMemoryDataset'. If you are absolutely certain what you are doing, access the internal storage via `InMemoryDataset._data` instead to suppress this warning. Alternatively, you can access stacked individual attributes of every graph via `dataset.{attr_name}`.
+  warnings.warn(msg)
+21:59:01 | INFO | Loaded dataset: N=956
+21:59:01 | INFO | New ALFF swap built: shape=(86040, 3), differs from old: True
+21:59:01 | INFO | ==============================================================================
+21:59:01 | INFO | SOURCE: OLD ALFF
+21:59:01 | INFO | ==============================================================================
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+21:59:01 | INFO | --- Stage diagnostics: UNTRAINED, OLD ALFF ---
+21:59:01 | INFO | [OLD untrained gin1_subj                 ] norm=17.0667+-5.6121 | pairwise cos=0.9994 | class-mean cos=1.0000 | probe acc=0.5335+-0.0194
+21:59:01 | INFO | [OLD untrained gin2_subj                 ] norm=217.9933+-128.6539 | pairwise cos=0.9988 | class-mean cos=1.0000 | probe acc=0.5272+-0.0172
+21:59:01 | INFO | [OLD untrained normalized_subj           ] norm=0.9918+-0.0169 | pairwise cos=0.9986 | class-mean cos=1.0000 | probe acc=0.5094+-0.0107
+21:59:01 | INFO | [OLD untrained h_raw                     ] norm=19619.3945+-11578.8486 | pairwise cos=0.9988 | class-mean cos=1.0000 | probe acc=0.5272+-0.0172
+21:59:01 | INFO | [OLD untrained h_normalized              ] norm=89.2637+-1.5185 | pairwise cos=0.9986 | class-mean cos=1.0000 | probe acc=0.5094+-0.0107
+21:59:01 | INFO | [OLD untrained z_raw                     ] norm=14249.8076+-8411.0830 | pairwise cos=0.9985 | class-mean cos=1.0000 | probe acc=0.5293+-0.0198
+21:59:01 | INFO | [OLD untrained z_normalized              ] norm=64.8596+-1.0997 | pairwise cos=0.9983 | class-mean cos=1.0000 | probe acc=0.5105+-0.0250
+21:59:40 | INFO | OLD ALFF epoch 5: view calc_loss=3.9572 | model calc_loss=0.8687
+22:00:19 | INFO | OLD ALFF epoch 10: view calc_loss=3.8330 | model calc_loss=1.5027
+22:00:58 | INFO | OLD ALFF epoch 15: view calc_loss=3.9224 | model calc_loss=1.4705
+22:01:36 | INFO | OLD ALFF epoch 20: view calc_loss=3.9474 | model calc_loss=1.3881
+22:02:15 | INFO | OLD ALFF epoch 25: view calc_loss=3.9110 | model calc_loss=1.1583
+22:02:54 | INFO | OLD ALFF epoch 30: view calc_loss=3.9013 | model calc_loss=0.9335
+22:02:54 | INFO | --- Stage diagnostics: TRAINED (30 epochs), OLD ALFF ---
+22:02:54 | INFO | [OLD trained(ep30) gin1_subj             ] norm=4.8431+-2.3334 | pairwise cos=0.7131 | class-mean cos=0.9994 | probe acc=0.5209+-0.0240
+22:02:54 | INFO | [OLD trained(ep30) gin2_subj             ] norm=7.3608+-5.3287 | pairwise cos=0.3271 | class-mean cos=0.9978 | probe acc=0.4895+-0.0274
+22:02:54 | INFO | [OLD trained(ep30) normalized_subj       ] norm=0.9507+-0.0524 | pairwise cos=0.3216 | class-mean cos=0.9978 | probe acc=0.5010+-0.0268
+22:02:54 | INFO | [OLD trained(ep30) h_raw                 ] norm=662.4748+-479.5805 | pairwise cos=0.3271 | class-mean cos=0.9978 | probe acc=0.4895+-0.0274
+22:02:54 | INFO | [OLD trained(ep30) h_normalized          ] norm=85.5667+-4.7170 | pairwise cos=0.3216 | class-mean cos=0.9978 | probe acc=0.5010+-0.0268
+22:02:54 | INFO | [OLD trained(ep30) z_raw                 ] norm=488.8762+-423.0495 | pairwise cos=0.0676 | class-mean cos=0.9888 | probe acc=0.4979+-0.0296
+22:02:55 | INFO | [OLD trained(ep30) z_normalized          ] norm=63.5759+-19.0527 | pairwise cos=0.0626 | class-mean cos=0.9876 | probe acc=0.4717+-0.0220
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/data/in_memory_dataset.py:300: UserWarning: It is not recommended to directly access the internal storage format `data` of an 'InMemoryDataset'. The data of the dataset is already cached, so any modifications to `data` will not be reflected when accessing its elements. Clearing the cache now by removing all elements in `dataset._data_list`. If you are absolutely certain what you are doing, access the internal storage via `InMemoryDataset._data` instead to suppress this warning. Alternatively, you can access stacked individual attributes of every graph via `dataset.{attr_name}`.
+  warnings.warn(msg)
+22:02:55 | INFO | ==============================================================================
+22:02:55 | INFO | SOURCE: NEW ALFF
+22:02:55 | INFO | ==============================================================================
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+  warnings.warn(out)
+22:02:55 | INFO | --- Stage diagnostics: UNTRAINED, NEW ALFF ---
+22:02:55 | INFO | [NEW untrained gin1_subj                 ] norm=12.4719+-4.7557 | pairwise cos=0.9982 | class-mean cos=1.0000 | probe acc=0.5178+-0.0325
+22:02:55 | INFO | [NEW untrained gin2_subj                 ] norm=161.9975+-106.2955 | pairwise cos=0.9964 | class-mean cos=1.0000 | probe acc=0.5272+-0.0136
+22:02:55 | INFO | [NEW untrained normalized_subj           ] norm=0.9904+-0.0195 | pairwise cos=0.9961 | class-mean cos=1.0000 | probe acc=0.5335+-0.0131
+22:02:55 | INFO | [NEW untrained h_raw                     ] norm=14579.7695+-9566.5928 | pairwise cos=0.9964 | class-mean cos=1.0000 | probe acc=0.5272+-0.0136
+22:02:55 | INFO | [NEW untrained h_normalized              ] norm=89.1326+-1.7515 | pairwise cos=0.9961 | class-mean cos=1.0000 | probe acc=0.5335+-0.0131
+22:02:55 | INFO | [NEW untrained z_raw                     ] norm=10624.3936+-6961.8242 | pairwise cos=0.9959 | class-mean cos=1.0000 | probe acc=0.5283+-0.0169
+22:02:55 | INFO | [NEW untrained z_normalized              ] norm=65.0081+-1.3766 | pairwise cos=0.9957 | class-mean cos=1.0000 | probe acc=0.5345+-0.0295
+22:03:34 | INFO | NEW ALFF epoch 5: view calc_loss=3.9930 | model calc_loss=0.9199
+22:04:12 | INFO | NEW ALFF epoch 10: view calc_loss=3.7495 | model calc_loss=1.0210
+22:04:51 | INFO | NEW ALFF epoch 15: view calc_loss=4.0178 | model calc_loss=1.0486
+22:05:30 | INFO | NEW ALFF epoch 20: view calc_loss=4.1228 | model calc_loss=1.0311
+22:06:08 | INFO | NEW ALFF epoch 25: view calc_loss=4.1336 | model calc_loss=0.9664
+22:06:47 | INFO | NEW ALFF epoch 30: view calc_loss=4.2107 | model calc_loss=0.8413
+22:06:48 | INFO | --- Stage diagnostics: TRAINED (30 epochs), NEW ALFF ---
+22:06:48 | INFO | [NEW trained(ep30) gin1_subj             ] norm=4.4273+-2.4091 | pairwise cos=0.6858 | class-mean cos=0.9988 | probe acc=0.5042+-0.0399
+22:06:48 | INFO | [NEW trained(ep30) gin2_subj             ] norm=5.1623+-3.8339 | pairwise cos=0.1684 | class-mean cos=0.9864 | probe acc=0.4969+-0.0082
+22:06:48 | INFO | [NEW trained(ep30) normalized_subj       ] norm=0.9494+-0.0614 | pairwise cos=0.1800 | class-mean cos=0.9866 | probe acc=0.5126+-0.0163
+22:06:48 | INFO | [NEW trained(ep30) h_raw                 ] norm=464.6082+-345.0488 | pairwise cos=0.1684 | class-mean cos=0.9864 | probe acc=0.4969+-0.0082
+22:06:48 | INFO | [NEW trained(ep30) h_normalized          ] norm=85.4435+-5.5269 | pairwise cos=0.1800 | class-mean cos=0.9866 | probe acc=0.5126+-0.0163
+22:06:48 | INFO | [NEW trained(ep30) z_raw                 ] norm=384.2240+-343.5907 | pairwise cos=0.0858 | class-mean cos=0.9795 | probe acc=0.5053+-0.0342
+22:06:48 | INFO | [NEW trained(ep30) z_normalized          ] norm=69.0848+-15.8466 | pairwise cos=0.0910 | class-mean cos=0.9806 | probe acc=0.5126+-0.0199
+22:06:48 | INFO | Saved: /users/3171356m/A-GCL/layertesting/layer3/layer3_results.npz
+22:06:48 | INFO | ==============================================================================
+22:06:48 | INFO | SUMMARY: pairwise cosine similarity (collapse indicator) by stage
+22:06:48 | INFO | ==============================================================================
+22:06:48 | INFO | condition  stage              | old cos    | new cos   
+22:06:48 | INFO | untrained  gin1_subj          |     0.9994 |     0.9982
+22:06:48 | INFO | untrained  gin2_subj          |     0.9988 |     0.9964
+22:06:48 | INFO | untrained  normalized_subj    |     0.9986 |     0.9961
+22:06:48 | INFO | untrained  h_raw              |     0.9988 |     0.9964
+22:06:48 | INFO | untrained  h_normalized       |     0.9986 |     0.9961
+22:06:48 | INFO | untrained  z_raw              |     0.9985 |     0.9959
+22:06:48 | INFO | untrained  z_normalized       |     0.9983 |     0.9957
+22:06:48 | INFO | trained    gin1_subj          |     0.7131 |     0.6858
+22:06:48 | INFO | trained    gin2_subj          |     0.3271 |     0.1684
+22:06:48 | INFO | trained    normalized_subj    |     0.3216 |     0.1800
+22:06:48 | INFO | trained    h_raw              |     0.3271 |     0.1684
+22:06:48 | INFO | trained    h_normalized       |     0.3216 |     0.1800
+22:06:48 | INFO | trained    z_raw              |     0.0676 |     0.0858
+22:06:48 | INFO | trained    z_normalized       |     0.0626 |     0.0910

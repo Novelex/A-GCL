@@ -1,0 +1,50 @@
+======================================================================
+OLD ALFF (norm_matrix) -- format and normalization
+======================================================================
+File format: .mat, key='norm_matrix'
+Sample file: CMU_a_0050642_nf.mat
+Shape: (90, 3), dtype: float64
+Loaded all 956 subjects: shape=(956, 90, 3) dtype=float64
+All finite (no NaN/Inf): True
+Normalization check -- per-subject-per-band stats across all 956 subjects:
+  mean(|per-subject-band mean|) = 0.00000000 (expect ~0 if z-scored)
+  mean(per-subject-band std)    = 1.000000 (expect ~1 if z-scored)
+  VERDICT: already z-scored per-subject-per-band = True
+  (traced source: DPARSFA's automatic zALFFMap output, not raw ALFF -- see docs/alff_phase1_log.md)
+======================================================================
+NEW ALFF (alff_new.npz) -- format and normalization
+======================================================================
+File format: .npz, keys=['file_ids', 'alff', 'malff', 'dx_group', 'ok']
+alff shape=(956, 90, 3) dtype=float64
+malff shape=(956, 90, 3) dtype=float64
+All finite (alff): True
+All finite (malff): True
+Normalization check -- raw alff, per-subject-per-band stats:
+  mean(|per-subject-band mean|) = 4.448993, mean(per-subject-band std) = 1.977149
+  VERDICT: NOT z-scored (raw magnitude scale, as computed by compute_alff.py) -- this is the expected, correct un-normalized state at this layer
+mALFF invariant: malff.mean(axis=1) per band, averaged over subjects = [1. 1. 1.] (expect [1,1,1])
+======================================================================
+RAW PCC / FC (cropped_matrix) -- format and normalization
+======================================================================
+File format: .mat, key='cropped_matrix'
+Sample file: CMU_a_0050642_adj.mat
+Shape: (90, 90), dtype: float64
+Min/max on disk (BEFORE our pipeline's max-abs normalization): -0.203179 / 1.000000
+Diagonal (self-correlation) values, first 5: [1. 1. 1. 1. 1.]
+VERDICT: on-disk values are RAW Pearson correlations (range [-1,1] already, since PCC is bounded by construction) -- NOT yet passed through abideDataset.py's max-abs normalization step (that happens at Layer 2, graph construction, not here)
+Any NaN in this sample: False
+======================================================================
+LABELS and overall cross-source status
+======================================================================
+Label format: ABIDE convention, dx_group in {1, 2} (1=ASD, 2=control)
+Project convention used downstream: ASD=1, NC=0 (remapped)
+Counts: N=956, ASD=455, NC=501
+Subject-set cross-check: our 956-subject cohort vs alff_new.npz's file_ids
+  missing from npz: 0, extra in npz: 0, exact match: True
+Known reference numbers from prior layer-testing (docs/alff_phase1_log.md):
+  raw-FC (PCC) baseline, no GNN: acc=0.6401 auc=0.6777
+  old ALFF baseline (LinearSVC): acc=0.5722 auc=0.5916
+  new ALFF baseline (LinearSVC): acc=0.5742 auc=0.5952
+  old vs new ALFF correlation (Step 1.5): mean r=0.6576 (meaningfully different)
+======================================================================
+Layer 1 audit complete.

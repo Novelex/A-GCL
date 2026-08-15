@@ -1,0 +1,24 @@
+21:29:17 | INFO | N=956, ASD=455, NC=501
+21:29:17 | INFO | === Old ALFF + per-band min-max fix | LinearSVC ===
+21:29:22 | INFO |   [Old ALFF (fixed norm)] fold 1/5: acc=0.5833 auc=0.6085 best_C=0.1
+21:29:27 | INFO |   [Old ALFF (fixed norm)] fold 2/5: acc=0.5812 auc=0.6423 best_C=0.001
+21:29:35 | INFO |   [Old ALFF (fixed norm)] fold 3/5: acc=0.5812 auc=0.5699 best_C=0.01
+21:29:39 | INFO |   [Old ALFF (fixed norm)] fold 4/5: acc=0.5707 auc=0.5954 best_C=0.001
+21:29:41 | INFO |   [Old ALFF (fixed norm)] fold 5/5: acc=0.6021 auc=0.6265 best_C=0.1
+21:29:41 | INFO | [Old ALFF (fixed norm)] acc: 0.5837 +- 0.0102 | auc: 0.6085 +- 0.0250
+21:29:41 | INFO | === New ALFF + per-band min-max fix | LinearSVC ===
+21:29:50 | INFO |   [New ALFF (fixed norm)] fold 1/5: acc=0.5938 auc=0.6039 best_C=0.001
+21:29:53 | INFO |   [New ALFF (fixed norm)] fold 2/5: acc=0.5393 auc=0.5730 best_C=0.001
+21:29:59 | INFO |   [New ALFF (fixed norm)] fold 3/5: acc=0.5654 auc=0.5691 best_C=0.001
+21:30:05 | INFO |   [New ALFF (fixed norm)] fold 4/5: acc=0.5812 auc=0.6263 best_C=0.001
+21:30:06 | INFO |   [New ALFF (fixed norm)] fold 5/5: acc=0.6178 auc=0.6434 best_C=0.001
+21:30:06 | INFO | [New ALFF (fixed norm)] acc: 0.5795 +- 0.0264 | auc: 0.6031 +- 0.0291
+21:30:06 | INFO | 
+21:30:06 | INFO | === SUMMARY: per-band min-max fix vs. original (z-scored) Step 1.6 ===
+21:30:06 | INFO | Features                     | Accuracy             | AUC                 
+21:30:06 | INFO | Old ALFF (fixed norm)        | 0.5837 +- 0.0102    | 0.6085 +- 0.0250
+21:30:06 | INFO | New ALFF (fixed norm)        | 0.5795 +- 0.0264    | 0.6031 +- 0.0291
+21:30:06 | INFO | (original Step 1.6, z-scored, LinearSVC: Old=0.5722/0.5916, New=0.5742/0.5952)
+21:30:06 | INFO | New ALFF delta from fix: acc +0.0053, auc +0.0079
+21:30:06 | INFO | Old ALFF delta from fix: acc +0.0115, auc +0.0169
+21:30:06 | INFO | Saved: /users/3171356m/A-GCL/layertesting/layer2/normalization_fix_results.npz

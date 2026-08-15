@@ -31,10 +31,11 @@ class ABIDEDataset(InMemoryDataset):
 
     @property
     def processed_file_names(self):
-        # bumped from 'data.pt' -- the dense M^2 edge construction changed
-        # what gets cached, so an old cache from before this change must
-        # not be silently reloaded
-        return 'data_dense_v2.pt'
+        # v2 -> v3: node-feature normalization changed from joint (all 3
+        # bands combined) to per-band min-max (layertesting/layer2) -- an
+        # old v2 cache, built with the joint normalization, must not be
+        # silently reloaded
+        return 'data_dense_v3.pt'
 
     def download(self):
         # Download to `self.raw_dir`.
@@ -56,11 +57,21 @@ class ABIDEDataset(InMemoryDataset):
             x = nf['norm_matrix']
             x = np.nan_to_num(x)
             x = torch.Tensor(x)
-            # paper Sec. 2.1: node features min-max normalized to [0, 1]
-            # across all 3 channels
-            x_min, x_max = x.min(), x.max()
-            if x_max > x_min:
-                x = (x - x_min) / (x_max - x_min)
+            # per-band min-max to [0, 1], NOT joint/global across all 3 channels
+            # combined -- verified on real data (layertesting/layer2) that a
+            # joint min-max lets whichever band has the single largest raw
+            # value (consistently slow-5) claim the full [0,1] range while the
+            # other two bands get compressed into roughly half that range or
+            # less, every subject, systematically. Harmless for old ALFF
+            # (already z-scored per band upstream, so all 3 bands enter this
+            # step on equal footing already) but destructive for new ALFF
+            # (raw magnitude, no such pre-equalization). Per-band normalization
+            # gives every band its own full [0,1] range regardless of its raw
+            # units, fixing this for both sources.
+            x_min = x.min(dim=0, keepdim=True).values
+            x_max = x.max(dim=0, keepdim=True).values
+            span = x_max - x_min
+            x = torch.where(span > 0, (x - x_min) / span, x)
 
             adj = sio.loadmat(osp.join(path_adj, file))
             fc = adj['cropped_matrix']
