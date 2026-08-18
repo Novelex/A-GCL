@@ -1,0 +1,41 @@
+merged 120 conditions
+
+=== BEST-PER-SOURCE (chosen on ORDINARY CV) — how they hold up ===
+  M1   all3/D_SUBJ_BAND_Z/linsvm
+       ordinary AUC=0.6547 | grouped(site-aware)=0.6273 (drop +0.0273) | LOSO=0.6304 (drop +0.0242)
+  M2   slow5/F_TRAINFOLD_BAND_Z/linsvm
+       ordinary AUC=0.6455 | grouped(site-aware)=0.6148 (drop +0.0307) | LOSO=0.6165 (drop +0.0290)
+  OLD  all3/F_TRAINFOLD_BAND_Z/logreg
+       ordinary AUC=0.6364 | grouped(site-aware)=0.6154 (drop +0.0209) | LOSO=0.6152 (drop +0.0212)
+
+=== MEAN DROP UNDER SITE-AWARE EVALUATION, by source (all 40 conditions each) ===
+        pooled_auc  grouped_pooled_auc  loso_pooled_auc  drop_grouped  drop_loso
+source                                                                          
+M1          0.6377              0.6139           0.6192        0.0238     0.0185
+M2          0.6194              0.5918           0.5928        0.0276     0.0266
+OLD         0.6155              0.6064           0.6048        0.0091     0.0107
+
+=== BEST BY LOSO AUC (the site-held-out ranking) ===
+source      band                norm    clf  pooled_auc  grouped_pooled_auc  loso_pooled_auc  drop_loso
+    M1 classical               A_RAW linsvm      0.6541              0.6392           0.6398     0.0143
+    M1 classical       D_SUBJ_BAND_Z logreg      0.6526              0.6363           0.6354     0.0172
+    M1 classical  F_TRAINFOLD_BAND_Z logreg      0.6457              0.6276           0.6337     0.0119
+    M1     slow5       D_SUBJ_BAND_Z linsvm      0.6523              0.6303           0.6325     0.0198
+    M1      all3               A_RAW logreg      0.6535              0.6307           0.6324     0.0210
+    M1 classical B_SUBJ_JOINT_MINMAX linsvm      0.6483              0.6264           0.6320     0.0164
+    M1 classical       D_SUBJ_BAND_Z linsvm      0.6392              0.6270           0.6317     0.0075
+    M1     slow5  F_TRAINFOLD_BAND_Z logreg      0.6529              0.6136           0.6316     0.0212
+    M1     slow5               A_RAW logreg      0.6460              0.6212           0.6314     0.0146
+    M1 classical  F_TRAINFOLD_BAND_Z linsvm      0.6410              0.6236           0.6312     0.0098
+    M1 classical B_SUBJ_JOINT_MINMAX logreg      0.6478              0.6250           0.6311     0.0167
+    M1      all3       D_SUBJ_BAND_Z linsvm      0.6547              0.6273           0.6304     0.0242
+
+=== BEST PER SOURCE UNDER LOSO ===
+  M1   LOSO AUC=0.6398 (classical, A_RAW, linsvm)  ordinary=0.6541  bacc=0.6006
+  M2   LOSO AUC=0.6236 (slow5, A_RAW, linsvm)  ordinary=0.6363  bacc=0.5839
+  OLD  LOSO AUC=0.6226 (all3, A_RAW, linsvm)  ordinary=0.6356  bacc=0.5897
+
+=== PER-SITE LOSO AUC for the LOSO-best of each source ===
+  M1   mean=0.640 sd=0.111 min=0.474 max=0.818 n_sites_below_0.5=2/19
+  M2   mean=0.629 sd=0.091 min=0.439 max=0.804 n_sites_below_0.5=1/19
+  OLD  mean=0.625 sd=0.094 min=0.422 max=0.800 n_sites_below_0.5=2/19

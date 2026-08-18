@@ -1,0 +1,47 @@
+=== HOSTNAME ===
+node01.cognition.gla.alces.network
+=== SLURM ALLOCATION ===
+SLURM_JOB_ID           = 1868799
+SLURM_JOB_PARTITION    = gpu-l40s
+SLURM_CPUS_PER_TASK    = 8
+SLURM_CPUS_ON_NODE     = 8
+SLURM_MEM_PER_NODE(MB) = 32768
+affinity cpus          = 8
+cgroup cpuset          = 0-31
+cgroup mem.max         = n/a
+node total RAM         = 376 GiB
+=== GIT BEFORE ===
+906a494b076968768573a24c31804c6b0b1dd65b
+?? ALFF_func_proc/
+(blank = clean)
+5e581b3ae6cf6da5bdc56e611bee4ea4f0e7ba9223e22b53c2c7349d6de3593e  /users/3171356m/agcl_audit_s0/git_status_before_cpujob.txt
+=== PYTHON / TORCH ===
+python path: /users/3171356m/A-GCL/.venv/bin/python
+sys.executable : /users/3171356m/A-GCL/.venv/bin/python
+python.version : 3.12.13 | packaged by Anaconda, Inc. | (main, Jul  9 2026, 14:38:16) [GCC 14.3.0]
+platform       : Linux-5.14.0-687.25.1.el9_8.x86_64-x86_64-with-glibc2.34
+torch          : 2.5.0+cu121
+torch.cuda.is_available: False
+torch threads  : 8
+=== PYTEST (external pycache prefix, cache provider disabled) ===
+PYTHONPYCACHEPREFIX=/users/3171356m/agcl_audit_s0/pycache_slurm
+PYTEST_EXIT_CODE=0
+======================= 65 passed, 22 warnings in 13.75s =======================
+passed_lines=65
+failed_lines=0
+error_lines=0
+skipped_lines=0
+=== CPU DETERMINISM (same seed twice, compute node) ===
+torch.equal        : True
+max_abs_diff       : 0.0
+run1_sum           : 511.999969482422
+run2_sum           : 511.999969482422
+run1_sha256        : 6d50a7e77fe4774a81881d14e5745c6014ab422fca984db750327d0c5d7e0958
+run2_sha256        : 6d50a7e77fe4774a81881d14e5745c6014ab422fca984db750327d0c5d7e0958
+=== GIT AFTER ===
+906a494b076968768573a24c31804c6b0b1dd65b
+?? ALFF_func_proc/
+(blank = clean)
+5e581b3ae6cf6da5bdc56e611bee4ea4f0e7ba9223e22b53c2c7349d6de3593e  /users/3171356m/agcl_audit_s0/git_status_after_cpujob.txt
+GIT_STATUS_IDENTICAL=YES
+=== CPU PROBE DONE ===

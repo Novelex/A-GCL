@@ -1,0 +1,18 @@
+=== What is data/raw/*_NF/*.mat 'norm_matrix'? (the loader's ACTUAL input) ===
+  stacked shape (954, 90, 3)
+  global min=-3.599432 max=5.630675 mean=-0.000000 std=1.000000
+
+  per-subject-per-band statistics (is it already normalized upstream?):
+   slow5      mean of per-subject means=-0.000000 (sd 0.000000) | mean of per-subject sd=1.000000 (sd 0.000000)
+   slow4      mean of per-subject means=-0.000000 (sd 0.000000) | mean of per-subject sd=1.000000 (sd 0.000000)
+   classical  mean of per-subject means=+0.000000 (sd 0.000000) | mean of per-subject sd=1.000000 (sd 0.000000)
+
+  subjects where per-band mean~0 AND sd~1 (i.e. already z-scored): 954/954
+  subjects where per-band min~0 AND max~1 (already min-maxed): 0/954
+  zero-span subject-bands (loader's span>0 guard would trigger): 0/2862
+
+=== Is norm_matrix related to OLD/M1/M2? ===
+  norm_matrix vs OLD alff  : pearson=+0.591059 spearman=+0.590743
+  norm_matrix vs OLD malff : pearson=+0.736398 spearman=+0.716771
+  norm_matrix vs M1        : pearson=+0.351580 spearman=+0.342033
+  within subject-band spearman(norm_matrix, OLD alff): min=0.4554 mean=0.6969

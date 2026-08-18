@@ -1,0 +1,19 @@
+=== SYNTHETIC SIGNALS: DPABI port vs our implementation ===
+    T     TR  binsets identical   max_abs_diff  max_rel_diff
+  116   1.50               True      2.776e-17     4.188e-16
+  116   2.00               True      5.551e-17     1.667e-16
+  116   3.00               True      2.776e-17     9.693e-16
+  196   1.50               True      2.776e-17     3.408e-16
+  196   2.00               True      5.551e-17     5.378e-16
+  196   3.00               True      1.388e-17     2.833e-16
+  246   1.50               True      2.776e-17     2.209e-16
+  246   2.00               True      2.776e-17     1.574e-16
+  246   3.00               True      2.776e-17     4.634e-16
+  316   1.50               True      5.551e-17     5.316e-16
+  316   2.00               True      2.776e-17     2.866e-16
+  316   3.00               True      2.776e-17     5.771e-16
+  -> bin sets identical for ALL 72 (T,TR) combinations tested
+
+=== REAL ROI TIME SERIES (19-subject sample) ===
+  Pitt_0050058: ours vs DPABI-port max_abs=1.776e-15; DPABI-port vs STORED max_abs=1.776e-15
+  across all 19: max_abs(ours - DPABI_port)=7.105e-15  max_rel=5.541e-16

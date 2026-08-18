@@ -1,0 +1,46 @@
+=== HOSTNAME ===
+node02.cognition.gla.alces.network
+=== nvidia-smi ===
+Tue Aug 18 15:34:30 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 595.71.05              Driver Version: 595.71.05      CUDA Version: 13.2     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA L40S                    On  |   00000000:45:00.0 Off |                    0 |
+| N/A   38C    P8             34W /  350W |       0MiB /  46068MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
+=== nvidia-smi query ===
+name, driver_version, memory.total [MiB], compute_cap
+NVIDIA L40S, 595.71.05, 46068 MiB, 8.9
+=== TORCH CUDA + GPU DETERMINISM ===
+torch: 2.5.0+cu121 | torch.version.cuda: 12.1
+cuda.is_available: True
+device_count: 1
+device_name: NVIDIA L40S
+capability: (8, 9)
+cudnn: 90100
+--- GPU determinism (same device, twice) ---
+gpu_run1_sum: 512.000000000000
+gpu_run2_sum: 512.000000000000
+gpu_bitwise_identical: True
+gpu_max_abs_diff: 0.0
+--- CPU determinism (inside GPU job, for reference) ---
+cpu_run1_sum: 511.999969482422
+cpu_run2_sum: 511.999969482422
+cpu_bitwise_identical: True
+--- CPU vs GPU cross-device (NOT required to match) ---
+cpu_vs_gpu_max_abs_diff: 1.0
+cpu_vs_gpu_bitwise_identical: False
+=== PROBE DONE rc=0 ===

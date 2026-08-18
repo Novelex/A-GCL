@@ -1,0 +1,22 @@
+Variant definitions computed on the OLD route (.1D) for ALL 954 subjects.
+  V1 mean|amp|  = OURS = DPABI canonical
+  V2 sum |amp|  = 'total amplitude'
+  V3 mean amp^2 = mean power
+  V4 sum  amp^2 = paper's literal 'total power'
+
+bins per band across 954: slow5 5-17, slow4 15-47, classical 22-71
+  => 'sum' multiplies each subject-band by its own bin count, which varies by 3.23x (classical) ACROSS subjects.
+
+=== Agreement of each variant with OURS, over all 954x90x3 ===
+  V2 sum|amp|                    pearson=0.525220  spearman=0.538080
+  V3 mean amp^2                  pearson=0.909810  spearman=0.997021
+  V4 sum amp^2 (paper literal)   pearson=0.646590  spearman=0.799183
+
+=== within-subject-band ROI rank preservation (Spearman==1 means identical ROI ordering) ===
+  V2 sum|amp|                    min=1.000000 mean=1.000000
+  V3 mean amp^2                  min=0.984772 mean=0.995346
+  V4 sum amp^2 (paper literal)   min=0.984772 mean=0.995346
+
+=== cross-subject effect: correlation of subject-mean level with (bins) ===
+  V1 mean|amp| (ours)            corr(subject mean, n_bins_classical) = +0.1441
+  V2 sum|amp|                    corr(subject mean, n_bins_classical) = +0.7865

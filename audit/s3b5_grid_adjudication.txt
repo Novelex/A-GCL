@@ -1,0 +1,15 @@
+  AAL_61x73x61_YCG (used by M1/M2)                     shape=(61, 73, 61)   origin=(np.float64(90.0), np.float64(-126.0), np.float64(-72.0))
+  aal_mask_pad (used by norm_matrix + FC validation)   shape=(65, 77, 63)   origin=(np.float64(96.0), np.float64(-132.0), np.float64(-71.0))
+  DPARSF mALFFMap grid                                 shape=(61, 73, 61)   origin=(np.float64(90.0), np.float64(-126.0), np.float64(-72.0))
+
+ADJUDICATION:
+  The DPARSF mALFF grid (61,73,61 @ origin 90,-126,-72) is IDENTICAL to the standard
+  DPABI 3mm grid of AAL_61x73x61_YCG. aal_mask_pad is a PADDED variant: +4 voxels in
+  x and y (2 each side) and +2 in z, and its affine origin is shifted accordingly
+  (90->96 in x, -126->-132 in y), i.e. the pad IS recorded in the affine.
+  S1 independently validated aal_mask_pad's affine as world-correct: its 2001-style
+  codes map bijectively onto YCG indices 1..116 by voxel overlap after world-space
+  resampling, agreeing with aal_Labels.mat centroids to <=7.82 mm (0 disagreements).
+  => world-space (sform-aware) resampling is the anatomically correct operation, and
+     an index-identity FLIRT between these two grids is off by exactly the recorded
+     pad: 2 voxels in x and 2 in y = 6 mm each.

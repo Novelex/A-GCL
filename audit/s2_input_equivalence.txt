@@ -1,0 +1,10 @@
+=== is func_preproc (nofilt_noglobal) band-pass filtered? ===
+  CMU_a_0050642      T= 236 hdrTR=2.0000 csvTR=2.0000  power>0.1Hz = 0.4830
+  Caltech_0051456    T= 146 hdrTR=2.0000 csvTR=2.0000  power>0.1Hz = 0.5105
+  NYU_0051049        T= 176 hdrTR=2.0000 csvTR=2.0000  power>0.1Hz = 0.5517
+
+=== M1 input (func_preproc ROI-avg) vs OLD input (nofilt rois_aal .1D) ===
+    per-ROI Pearson r over time, 90 ROIs  [provenance equivalence test]
+  CMU_a_0050642      shapes ours=(236, 90) official=(236, 90) | r min=0.5022 mean=0.9116 | r<0.99: 87/90
+  Caltech_0051456    shapes ours=(146, 90) official=(146, 90) | r min=0.3225 mean=0.8666 | r<0.99: 89/90
+  NYU_0051049        shapes ours=(176, 90) official=(176, 90) | r min=0.5111 mean=0.8707 | r<0.99: 90/90

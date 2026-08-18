@@ -1,0 +1,9 @@
+phenotypic_filtered_v2.csv: 956 rows, 109 cols
+motion-like columns: ['func_dvars', 'func_mean_fd', 'func_num_fd', 'func_perc_fd']
+key columns present: ['SITE_ID', 'FILE_ID', 'DX_GROUP', 'AGE_AT_SCAN', 'SEX', 'HANDEDNESS_CATEGORY', 'FIQ', 'EYE_STATUS_AT_SCAN']
+  AGE_AT_SCAN                  n_valid= 956 n_-9999=   0 min=6.470 max=64.000
+  SEX                          n_valid= 956 n_-9999=   0 min=1.000 max=2.000
+  func_dvars                   n_valid= 956 n_-9999=   0 min=0.710 max=1.571
+  func_mean_fd                 n_valid= 956 n_-9999=   0 min=0.016 max=0.500
+  func_num_fd                  n_valid= 956 n_-9999=   0 min=0.000 max=240.000
+  func_perc_fd                 n_valid= 956 n_-9999=   0 min=0.000 max=80.498

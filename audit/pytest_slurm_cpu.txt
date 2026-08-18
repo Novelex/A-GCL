@@ -1,0 +1,167 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.13, pytest-8.3.3, pluggy-1.6.0 -- /users/3171356m/A-GCL/.venv/bin/python
+rootdir: /users/3171356m/A-GCL
+collecting ... collected 65 items
+
+tests/test_augmentation.py::test_shapes_match_real_config PASSED         [  1%]
+tests/test_augmentation.py::test_mask_is_symmetric PASSED                [  3%]
+tests/test_augmentation.py::test_shared_noise_not_averaged_independent_draws PASSED [  4%]
+tests/test_augmentation.py::test_all_ones_mask_recovers_E PASSED         [  6%]
+tests/test_augmentation.py::test_all_zeros_mask_gives_zero PASSED        [  7%]
+tests/test_augmentation.py::test_gradients_reach_both_directional_logits PASSED [  9%]
+tests/test_augmentation.py::test_self_loop_handling_deterministic PASSED [ 10%]
+tests/test_augmentation.py::test_different_subjects_do_not_share_edge_pairs PASSED [ 12%]
+tests/test_checkpoint_selection.py::test_include_test_false_never_yields_real_test_scores PASSED [ 13%]
+tests/test_checkpoint_selection.py::test_fit_on_train_val_uses_combined_80_percent_not_train_only PASSED [ 15%]
+tests/test_checkpoint_selection.py::test_include_test_true_yields_real_test_scores PASSED [ 16%]
+tests/test_checkpoint_selection.py::test_checkpoint_dict_round_trips_model_state PASSED [ 18%]
+tests/test_embeddings.py::test_h_and_z_shapes PASSED                     [ 20%]
+tests/test_embeddings.py::test_h_and_z_not_numerically_identical PASSED  [ 21%]
+tests/test_embeddings.py::test_projection_head_parameters_affect_z_not_h PASSED [ 23%]
+tests/test_embeddings.py::test_invalid_representation_raises PASSED      [ 24%]
+tests/test_fixed_splits.py::test_same_seed_gives_identical_indices PASSED [ 26%]
+tests/test_fixed_splits.py::test_different_seed_gives_different_indices PASSED [ 27%]
+tests/test_fixed_splits.py::test_no_overlap_between_train_val_test PASSED [ 29%]
+tests/test_fixed_splits.py::test_every_subject_appears_in_exactly_one_outer_test_fold PASSED [ 30%]
+tests/test_fixed_splits.py::test_class_proportions_preserved_across_folds PASSED [ 32%]
+tests/test_memory_bank.py::test_fresh_queue_has_zero_valid_negatives PASSED [ 33%]
+tests/test_memory_bank.py::test_queue_contains_only_detached_tensors_no_gradients PASSED [ 35%]
+tests/test_memory_bank.py::test_after_one_batch_32_valid_entries PASSED  [ 36%]
+tests/test_memory_bank.py::test_after_eight_batches_queue_is_full PASSED [ 38%]
+tests/test_memory_bank.py::test_ninth_batch_overwrites_oldest_and_size_never_exceeds_max PASSED [ 40%]
+tests/test_memory_bank.py::test_pointer_wraps_correctly PASSED           [ 41%]
+tests/test_memory_bank.py::test_current_batch_not_visible_before_its_own_push PASSED [ 43%]
+tests/test_memory_bank.py::test_matching_subject_ids_excluded_from_calc_regloss_negatives PASSED [ 44%]
+tests/test_memory_bank.py::test_calc_regloss_handles_zero_valid_negatives_for_all_anchors PASSED [ 46%]
+tests/test_memory_bank.py::test_calc_regloss_handles_mixed_valid_and_zero_negative_anchors PASSED [ 47%]
+tests/test_memory_bank.py::test_calc_regloss_mixed_negatives_gradients_are_finite PASSED [ 49%]
+tests/test_paper_augmentation.py::test_mu_is_deterministic_sigmoid_of_logits PASSED [ 50%]
+tests/test_paper_augmentation.py::test_shapes_are_squeezed_to_1d PASSED  [ 52%]
+tests/test_paper_augmentation.py::test_mask_can_be_asymmetric_across_reverse_pairs PASSED [ 53%]
+tests/test_paper_augmentation.py::test_same_uniform_noise_gives_reproducible_mask PASSED [ 55%]
+tests/test_paper_augmentation.py::test_uniform_noise_is_clamped_away_from_zero_and_one PASSED [ 56%]
+tests/test_paper_augmentation.py::test_default_noise_is_sampled_when_not_provided PASSED [ 58%]
+tests/test_paper_augmentation.py::test_lower_temperature_sharpens_mask_toward_mu_extremes PASSED [ 60%]
+tests/test_paper_gin.py::test_paper_self_signal_is_counted_twice PASSED  [ 61%]
+tests/test_paper_gin.py::test_message_relu_false_does_not_clip_negative_messages PASSED [ 63%]
+tests/test_paper_gin.py::test_message_relu_true_clips_negative_activations_before_weighting PASSED [ 64%]
+tests/test_paper_gin.py::test_normalize_nodes_false_skips_l2_normalization PASSED [ 66%]
+tests/test_paper_gin.py::test_normalize_nodes_true_produces_unit_norm_node_embeddings PASSED [ 67%]
+tests/test_paper_memory_bank.py::test_fresh_paper_queue_is_full_of_zeros_not_empty PASSED [ 69%]
+tests/test_paper_memory_bank.py::test_paper_bank_has_no_validity_or_subject_tracking PASSED [ 70%]
+tests/test_paper_memory_bank.py::test_paper_push_requires_no_subject_ids PASSED [ 72%]
+tests/test_paper_memory_bank.py::test_paper_push_overwrites_fifo_like_corrected_bank PASSED [ 73%]
+tests/test_paper_memory_bank.py::test_paper_queue_contains_only_detached_tensors_no_gradients PASSED [ 75%]
+tests/test_paper_memory_bank.py::test_calc_regloss_paper_counts_zero_rows_as_negatives PASSED [ 76%]
+tests/test_paper_memory_bank.py::test_calc_regloss_paper_does_not_exclude_same_subject PASSED [ 78%]
+tests/test_paper_memory_bank.py::test_calc_regloss_paper_matches_calc_regloss_when_nothing_would_be_excluded PASSED [ 80%]
+tests/test_paper_memory_bank.py::test_paper_profile_bank_and_corrected_bank_diverge_at_cold_start PASSED [ 81%]
+tests/test_regularizer_direction.py::test_paper_regularizer_reduces_keep_probability PASSED [ 83%]
+tests/test_regularizer_direction.py::test_larger_reg_lambda_drops_keep_probability_faster PASSED [ 84%]
+tests/test_regularizer_direction.py::test_regularizer_term_alone_has_no_stationary_point_at_positive_keep_prob PASSED [ 86%]
+tests/test_regularizer_direction.py::test_target_keep_ablation_has_a_stationary_point_at_the_target PASSED [ 87%]
+tests/test_regularizer_direction.py::test_budget_regularizer_increases_keep_probability PASSED [ 89%]
+tests/test_regularizer_direction.py::test_budget_and_paper_keep_push_in_opposite_directions PASSED [ 90%]
+tests/test_regularizer_direction.py::test_regularizer_term_alone_has_no_stationary_point_at_positive_keep_prob_budget_mode PASSED [ 92%]
+tests/test_training_profiles.py::test_corrected_profile_leaves_args_completely_unchanged PASSED [ 93%]
+tests/test_training_profiles.py::test_paper_exact_profile_overrides_every_documented_key PASSED [ 95%]
+tests/test_training_profiles.py::test_paper_exact_does_not_touch_attributes_outside_the_override_table PASSED [ 96%]
+tests/test_training_profiles.py::test_apply_training_profile_is_idempotent PASSED [ 98%]
+tests/test_training_profiles.py::test_unknown_profile_value_is_treated_as_not_paper_exact PASSED [100%]
+
+=============================== warnings summary ===============================
+tests/test_checkpoint_selection.py: 20 warnings
+  /users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/deprecation.py:26: UserWarning: 'data.DataLoader' is deprecated, use 'loader.DataLoader' instead
+    warnings.warn(out)
+
+tests/test_checkpoint_selection.py::test_include_test_false_never_yields_real_test_scores
+  /users/3171356m/A-GCL/unsupervised/embedding_evaluation.py:401: RuntimeWarning: Mean of empty slice
+    np.nanmean(kf_test_auc), np.nanstd(kf_test_auc)]
+
+tests/test_checkpoint_selection.py::test_include_test_false_never_yields_real_test_scores
+  /users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/numpy/lib/nanfunctions.py:1879: RuntimeWarning: Degrees of freedom <= 0 for slice.
+    var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+==================================== PASSES ====================================
+____________ test_include_test_false_never_yields_real_test_scores _____________
+----------------------------- Captured stdout call -----------------------------
+mean validation time 0.00385:
+
+________ test_fit_on_train_val_uses_combined_80_percent_not_train_only _________
+----------------------------- Captured stdout call -----------------------------
+mean validation time 0.00310:
+
+mean validation time 0.00303:
+
+________________ test_include_test_true_yields_real_test_scores ________________
+----------------------------- Captured stdout call -----------------------------
+mean validation time 0.00303:
+
+=========================== short test summary info ============================
+PASSED tests/test_augmentation.py::test_shapes_match_real_config
+PASSED tests/test_augmentation.py::test_mask_is_symmetric
+PASSED tests/test_augmentation.py::test_shared_noise_not_averaged_independent_draws
+PASSED tests/test_augmentation.py::test_all_ones_mask_recovers_E
+PASSED tests/test_augmentation.py::test_all_zeros_mask_gives_zero
+PASSED tests/test_augmentation.py::test_gradients_reach_both_directional_logits
+PASSED tests/test_augmentation.py::test_self_loop_handling_deterministic
+PASSED tests/test_augmentation.py::test_different_subjects_do_not_share_edge_pairs
+PASSED tests/test_checkpoint_selection.py::test_include_test_false_never_yields_real_test_scores
+PASSED tests/test_checkpoint_selection.py::test_fit_on_train_val_uses_combined_80_percent_not_train_only
+PASSED tests/test_checkpoint_selection.py::test_include_test_true_yields_real_test_scores
+PASSED tests/test_checkpoint_selection.py::test_checkpoint_dict_round_trips_model_state
+PASSED tests/test_embeddings.py::test_h_and_z_shapes
+PASSED tests/test_embeddings.py::test_h_and_z_not_numerically_identical
+PASSED tests/test_embeddings.py::test_projection_head_parameters_affect_z_not_h
+PASSED tests/test_embeddings.py::test_invalid_representation_raises
+PASSED tests/test_fixed_splits.py::test_same_seed_gives_identical_indices
+PASSED tests/test_fixed_splits.py::test_different_seed_gives_different_indices
+PASSED tests/test_fixed_splits.py::test_no_overlap_between_train_val_test
+PASSED tests/test_fixed_splits.py::test_every_subject_appears_in_exactly_one_outer_test_fold
+PASSED tests/test_fixed_splits.py::test_class_proportions_preserved_across_folds
+PASSED tests/test_memory_bank.py::test_fresh_queue_has_zero_valid_negatives
+PASSED tests/test_memory_bank.py::test_queue_contains_only_detached_tensors_no_gradients
+PASSED tests/test_memory_bank.py::test_after_one_batch_32_valid_entries
+PASSED tests/test_memory_bank.py::test_after_eight_batches_queue_is_full
+PASSED tests/test_memory_bank.py::test_ninth_batch_overwrites_oldest_and_size_never_exceeds_max
+PASSED tests/test_memory_bank.py::test_pointer_wraps_correctly
+PASSED tests/test_memory_bank.py::test_current_batch_not_visible_before_its_own_push
+PASSED tests/test_memory_bank.py::test_matching_subject_ids_excluded_from_calc_regloss_negatives
+PASSED tests/test_memory_bank.py::test_calc_regloss_handles_zero_valid_negatives_for_all_anchors
+PASSED tests/test_memory_bank.py::test_calc_regloss_handles_mixed_valid_and_zero_negative_anchors
+PASSED tests/test_memory_bank.py::test_calc_regloss_mixed_negatives_gradients_are_finite
+PASSED tests/test_paper_augmentation.py::test_mu_is_deterministic_sigmoid_of_logits
+PASSED tests/test_paper_augmentation.py::test_shapes_are_squeezed_to_1d
+PASSED tests/test_paper_augmentation.py::test_mask_can_be_asymmetric_across_reverse_pairs
+PASSED tests/test_paper_augmentation.py::test_same_uniform_noise_gives_reproducible_mask
+PASSED tests/test_paper_augmentation.py::test_uniform_noise_is_clamped_away_from_zero_and_one
+PASSED tests/test_paper_augmentation.py::test_default_noise_is_sampled_when_not_provided
+PASSED tests/test_paper_augmentation.py::test_lower_temperature_sharpens_mask_toward_mu_extremes
+PASSED tests/test_paper_gin.py::test_paper_self_signal_is_counted_twice
+PASSED tests/test_paper_gin.py::test_message_relu_false_does_not_clip_negative_messages
+PASSED tests/test_paper_gin.py::test_message_relu_true_clips_negative_activations_before_weighting
+PASSED tests/test_paper_gin.py::test_normalize_nodes_false_skips_l2_normalization
+PASSED tests/test_paper_gin.py::test_normalize_nodes_true_produces_unit_norm_node_embeddings
+PASSED tests/test_paper_memory_bank.py::test_fresh_paper_queue_is_full_of_zeros_not_empty
+PASSED tests/test_paper_memory_bank.py::test_paper_bank_has_no_validity_or_subject_tracking
+PASSED tests/test_paper_memory_bank.py::test_paper_push_requires_no_subject_ids
+PASSED tests/test_paper_memory_bank.py::test_paper_push_overwrites_fifo_like_corrected_bank
+PASSED tests/test_paper_memory_bank.py::test_paper_queue_contains_only_detached_tensors_no_gradients
+PASSED tests/test_paper_memory_bank.py::test_calc_regloss_paper_counts_zero_rows_as_negatives
+PASSED tests/test_paper_memory_bank.py::test_calc_regloss_paper_does_not_exclude_same_subject
+PASSED tests/test_paper_memory_bank.py::test_calc_regloss_paper_matches_calc_regloss_when_nothing_would_be_excluded
+PASSED tests/test_paper_memory_bank.py::test_paper_profile_bank_and_corrected_bank_diverge_at_cold_start
+PASSED tests/test_regularizer_direction.py::test_paper_regularizer_reduces_keep_probability
+PASSED tests/test_regularizer_direction.py::test_larger_reg_lambda_drops_keep_probability_faster
+PASSED tests/test_regularizer_direction.py::test_regularizer_term_alone_has_no_stationary_point_at_positive_keep_prob
+PASSED tests/test_regularizer_direction.py::test_target_keep_ablation_has_a_stationary_point_at_the_target
+PASSED tests/test_regularizer_direction.py::test_budget_regularizer_increases_keep_probability
+PASSED tests/test_regularizer_direction.py::test_budget_and_paper_keep_push_in_opposite_directions
+PASSED tests/test_regularizer_direction.py::test_regularizer_term_alone_has_no_stationary_point_at_positive_keep_prob_budget_mode
+PASSED tests/test_training_profiles.py::test_corrected_profile_leaves_args_completely_unchanged
+PASSED tests/test_training_profiles.py::test_paper_exact_profile_overrides_every_documented_key
+PASSED tests/test_training_profiles.py::test_paper_exact_does_not_touch_attributes_outside_the_override_table
+PASSED tests/test_training_profiles.py::test_apply_training_profile_is_idempotent
+PASSED tests/test_training_profiles.py::test_unknown_profile_value_is_treated_as_not_paper_exact
+======================= 65 passed, 22 warnings in 13.75s =======================

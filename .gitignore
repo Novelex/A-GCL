@@ -1,2 +1,6 @@
 .venv/
 data/
+
+audit/pycache*/
+audit/**/slurm_*.out
+audit/**/slurm_*.err

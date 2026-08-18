@@ -1,0 +1,28 @@
+SCALE-INVARIANT metrics. Variance SHARES (fraction of total variance), so a uniform
+rescaling shows as UNCHANGED - only genuine structure loss moves these numbers.
+r_subjlevel = Pearson(subject mean before, subject mean after) -> 1.0 means between-
+subject ordering/scale fully retained; ~0 means destroyed.
+
+src transform         share_subj share_band share_roi  r_subjlevel r_bandlevel
+M1  A raw                0.33030    0.04319   0.19569      1.00000     1.00000
+M1  B subj-joint mm      0.09980    0.05803   0.29682      0.05872     1.00000
+M1  C subj-band mm       0.06806    0.00079   0.35134      0.06615    -0.98824
+M1  D subj-band z        0.00000    0.00000   0.39017      0.00000     0.00000
+M1  E fold-band mm       0.35601    0.00088   0.21129      0.99969    -0.18922
+M1  F fold-band z        0.35818    0.00000   0.21267      0.99940     0.99994
+
+M2  A raw                0.58779    0.01022   0.10163      1.00000     1.00000
+M2  B subj-joint mm      0.18867    0.01892   0.25641     -0.09049     0.99997
+M2  C subj-band mm       0.15572    0.00070   0.28091     -0.10113    -0.95827
+M2  D subj-band z        0.00000    0.00000   0.34927      0.00000     0.00000
+M2  E fold-band mm       0.57682    0.03849   0.09877      0.99988    -0.99055
+M2  F fold-band z        0.59967    0.00000   0.10297      0.99994     0.99755
+
+OLD A raw                0.25536    0.02984   0.35343      1.00000     1.00000
+OLD B subj-joint mm      0.08311    0.03518   0.47732      0.03219     1.00000
+OLD C subj-band mm       0.05894    0.00219   0.53106      0.04157    -0.96480
+OLD D subj-band z        0.00000    0.00000   0.57882      0.00000     0.00000
+OLD E fold-band mm       0.26355    0.02673   0.36499      0.99916    -0.96328
+OLD F fold-band z        0.27111    0.00000   0.37549      0.99952     0.99994
+
+NOTE r_bandlevel uses only 3 points (3 bands) - reported for completeness, weak statistic.

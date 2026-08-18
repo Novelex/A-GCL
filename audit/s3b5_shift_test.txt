@@ -1,0 +1,9 @@
+Searching integer-voxel shifts that best align FLIRT output to world-space resampling
+(if FLIRT's identity were world-correct, the best shift would be (0,0,0))
+
+  best alignment r=0.9668 at voxel shift (dx,dy,dz)=(-2, -2, 0)  = (-6,-6,0) mm
+  zero-shift r=0.3243
+
+  atlas origin [  96. -132.  -71.]  vs  mALFF origin [  90. -126.  -72.]
+  origin difference (mm): [ 6. -6.  1.]
+  FOV: atlas [195 231 189] mm, mALFF [183 219 183] mm

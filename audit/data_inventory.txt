@@ -1,0 +1,58 @@
+======================================================================
+PER-DIRECTORY FILE COUNTS
+======================================================================
+ASD_ADJ  files= 455  unique_subject_ids= 455  nonconforming_names=0  duplicate_ids=0
+ASD_NF   files= 455  unique_subject_ids= 455  nonconforming_names=0  duplicate_ids=0
+ASD_DW   files= 455  unique_subject_ids= 455  nonconforming_names=0  duplicate_ids=0
+NC_ADJ   files= 501  unique_subject_ids= 501  nonconforming_names=0  duplicate_ids=0
+NC_NF    files= 501  unique_subject_ids= 501  nonconforming_names=0  duplicate_ids=0
+NC_DW    files= 501  unique_subject_ids= 501  nonconforming_names=0  duplicate_ids=0
+
+======================================================================
+ASD / NC CLASS TOTALS
+======================================================================
+ASD adjacency files : 455
+ASD node-feature    : 455
+ASD degree/weight   : 455
+NC  adjacency files : 501
+NC  node-feature    : 501
+NC  degree/weight   : 501
+TOTAL subjects (ASD+NC by ADJ) : 956
+
+======================================================================
+WITHIN-CLASS FILENAME MATCHING (ADJ vs NF vs DW)
+======================================================================
+[ASD]
+  ADJ∩NF matched      : 455
+  in ADJ missing NF   : 0  []
+  in NF  extra vs ADJ : 0  []
+  ADJ∩DW matched      : 455
+  in ADJ missing DW   : 0  []
+  in DW  extra vs ADJ : 0  []
+  triple ADJ∩NF∩DW    : 455
+[NC]
+  ADJ∩NF matched      : 501
+  in ADJ missing NF   : 0  []
+  in NF  extra vs ADJ : 0  []
+  ADJ∩DW matched      : 501
+  in ADJ missing DW   : 0  []
+  in DW  extra vs ADJ : 0  []
+  triple ADJ∩NF∩DW    : 501
+
+======================================================================
+CROSS-CLASS SUBJECT-ID OVERLAP (ASD vs NC) — must be 0
+======================================================================
+  ADJ: overlapping ids = 0  []
+  NF: overlapping ids = 0  []
+  DW: overlapping ids = 0  []
+
+======================================================================
+SITE PREFIX DISTRIBUTION (from subject id)
+======================================================================
+[ASD] 23 sites: {'CMU_a': 5, 'CMU_b': 4, 'Caltech': 12, 'KKI': 19, 'Leuven_1': 14, 'Leuven_2': 15, 'MaxMun_a': 6, 'MaxMun_b': 6, 'MaxMun_c': 2, 'MaxMun_d': 9, 'NYU': 74, 'Olin': 18, 'Pitt': 29, 'SBL': 15, 'SDSU': 11, 'Stanford': 19, 'Trinity': 21, 'UCLA_1': 37, 'UCLA_2': 10, 'UM_1': 45, 'UM_2': 13, 'USM': 44, 'Yale': 27}
+[NC] 22 sites: {'CMU_a': 8, 'CMU_b': 4, 'Caltech': 16, 'KKI': 28, 'Leuven_1': 15, 'Leuven_2': 18, 'MaxMun_a': 7, 'MaxMun_c': 15, 'MaxMun_d': 4, 'NYU': 99, 'Olin': 15, 'Pitt': 26, 'SBL': 14, 'SDSU': 20, 'Stanford': 20, 'Trinity': 24, 'UCLA_1': 29, 'UCLA_2': 13, 'UM_1': 53, 'UM_2': 20, 'USM': 25, 'Yale': 28}
+
+======================================================================
+ZERO-BYTE / UNREADABLE CHECK
+======================================================================
+  zero-byte files: 0 []

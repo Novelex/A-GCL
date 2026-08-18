@@ -1,0 +1,16 @@
+/users/3171356m/miniconda3/lib/python3.13/site-packages/numpy/lib/_function_base_impl.py:3036: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[:, None]
+/users/3171356m/miniconda3/lib/python3.13/site-packages/numpy/lib/_function_base_impl.py:3037: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[None, :]
+Official C-PAC atlas + func_mask, ROI-average func_preproc, vs each rois_aal strategy
+(replicates validate_aal_averaging.py; provenance equivalence only)
+
+  CMU_a_0050642     vs nofilt(A-GCL/OLD): n_labels=116 | all116 r min=0.5009 mean=0.8602 | AAL90 r min=0.5009 mean=0.8844 | r<0.99: 90/90
+  CMU_a_0050642     vs filt  (FC source): n_labels=116 | all116 r min=0.3480 mean=0.6789 | AAL90 r min=0.4138 mean=0.7057 | r<0.99: 90/90
+
+  Caltech_0051456   vs nofilt(A-GCL/OLD): n_labels=116 | all116 r min=0.3377 mean=0.8394 | AAL90 r min=0.3377 mean=0.8395 | r<0.99: 90/90
+  Caltech_0051456   vs filt  (FC source): n_labels=116 | all116 r min=0.2006 mean=0.6310 | AAL90 r min=0.2378 mean=0.6635 | r<0.99: 90/90
+
+  NYU_0051049       vs nofilt(A-GCL/OLD): n_labels=116 | all116 r min=0.1848 mean=0.7940 | AAL90 r min=0.3729 mean=0.8331 | r<0.99: 90/90
+  NYU_0051049       vs filt  (FC source): n_labels=116 | all116 r min=0.1486 mean=0.6285 | AAL90 r min=0.2359 mean=0.6705 | r<0.99: 90/90
+

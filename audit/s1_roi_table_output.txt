@@ -1,0 +1,28 @@
+.1D header codes: 116; kept(<9001): 90
+C-PAC atlas codes == .1D header order: True
+
+=== 90-ROW ROI ALIGNMENT TABLE -> /users/3171356m/agcl_audit_s0/s1_roi_alignment_90.csv ===
+pos AALidx  code name                     M1   M2   OLD    FC   pur match
+  0      1  2001 Precentral_L              1    1  2001  2001 0.904 yes
+  1      2  2002 Precentral_R              2    2  2002  2002 0.859 yes
+  2      3  2101 Frontal_Sup_L             3    3  2101  2101 0.917 yes
+  3      4  2102 Frontal_Sup_R             4    4  2102  2102 0.908 yes
+  4      5  2111 Frontal_Sup_Orb_L         5    5  2111  2111 0.725 yes
+  5      6  2112 Frontal_Sup_Orb_R         6    6  2112  2112 0.845 yes
+ 27     28  2702 Rectus_R                 28   28  2702  2702 0.904 yes
+ 28     29  3001 Insula_L                 29   29  3001  3001 0.802 yes
+ 29     30  3002 Insula_R                 30   30  3002  3002 0.907 yes
+ 30     31  4001 Cingulum_Ant_L           31   31  4001  4001  0.88 yes
+ 86     87  8211 Temporal_Pole_Mid_L      87   87  8211  8211 0.914 yes
+ 87     88  8212 Temporal_Pole_Mid_R      88   88  8212  8212 0.914 yes
+ 88     89  8301 Temporal_Inf_L           89   89  8301  8301 0.901 yes
+ 89     90  8302 Temporal_Inf_R           90   90  8302  8302 0.881 yes
+   ... (all 90 rows in the CSV)
+
+MATCH yes : 90/90
+MATCH no  : 0/90
+UNPROVEN  : 0/90
+duplicate ROI identities across the 90 positions: 0 (codes), 0 (names)
+missing ROIs (expected AAL idx 1..90): []
+permutation detected: False
+min overlap purity across the 90: 0.5

@@ -1,0 +1,12 @@
+=== T (timepoints) equality: A-GCL nofilt .1D vs GraSTIACL filt .1D, all 954 ===
+  T mismatches: 0 []
+
+=== SPECTRAL TEST: fraction of power above 0.1 Hz (band-pass evidence) ===
+   (input-signal provenance only - no ALFF computed, nothing normalized/ranked)
+subject               nofilt(A-GCL)  filt(GraSTIACL)
+  CMU_a_0050642              0.2793         0.001344
+  CMU_a_0050646              0.3118         0.001394
+  CMU_a_0050647              0.3125         0.002236
+  CMU_a_0050649              0.2060         0.000417
+  CMU_a_0050654              0.2307         0.001105
+  CMU_a_0050656              0.2582         0.001055

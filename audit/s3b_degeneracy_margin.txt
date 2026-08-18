@@ -1,0 +1,15 @@
+=== 3. DEGENERACY MARGIN: how close is any subject-band to zero variance? ===
+   (min-max divides by span; z-score divides by sd. 0 would produce NaN/Inf.)
+  M1                         min span=3.190724  min sd=0.751785  n(span==0)=0  n(sd==0)=0 of 2862
+                             joint(B) min span=5.033402  n==0: 0 of 954
+  M2                         min span=4.954804  min sd=1.002454  n(span==0)=0  n(sd==0)=0 of 2862
+                             joint(B) min span=5.771470  n==0: 0 of 954
+  OLD                        min span=3.449912  min sd=0.788377  n(span==0)=0  n(sd==0)=0 of 2862
+                             joint(B) min span=4.795392  n==0: 0 of 954
+  norm_matrix(loader input)  min span=3.724640  min sd=1.000000  n(span==0)=0  n(sd==0)=0 of 2862
+                             joint(B) min span=3.795281  n==0: 0 of 954
+
+  -> no degeneracy in THIS cohort; margins are comfortable, so A-F are all well-defined here.
+  -> but the loader's span>0 guard is the only code-level protection; a future subject
+     with a constant band would be silently passed through UNNORMALIZED by that guard
+     (torch.where returns raw x), mixing scales inside one batch.

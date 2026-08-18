@@ -1,0 +1,44 @@
+combos: 120 (expect 120)  |  all unique: True
+
+=== TOP 15 BY POOLED OOF AUC ===
+source      band                norm    clf  pooled_auc  auc_mean  auc_sd  bacc_mean  sens_mean  spec_mean
+    M1      all3       D_SUBJ_BAND_Z linsvm      0.6547    0.6548  0.0275     0.6162     0.5451     0.6874
+    M1     slow5       D_SUBJ_BAND_Z logreg      0.6545    0.6566  0.0315     0.6029     0.5165     0.6894
+    M1 classical               A_RAW linsvm      0.6541    0.6561  0.0197     0.6215     0.5516     0.6914
+    M1      all3               A_RAW logreg      0.6535    0.6535  0.0177     0.6016     0.5099     0.6934
+    M1     slow5  F_TRAINFOLD_BAND_Z logreg      0.6529    0.6543  0.0243     0.6067     0.4879     0.7254
+    M1 classical       D_SUBJ_BAND_Z logreg      0.6526    0.6522  0.0143     0.6260     0.5407     0.7114
+    M1     slow5       D_SUBJ_BAND_Z linsvm      0.6523    0.6535  0.0313     0.5982     0.5011     0.6954
+    M1      all3  F_TRAINFOLD_BAND_Z linsvm      0.6485    0.6487  0.0191     0.6002     0.4989     0.7014
+    M1 classical B_SUBJ_JOINT_MINMAX linsvm      0.6483    0.6488  0.0141     0.6219     0.5604     0.6834
+    M1 classical B_SUBJ_JOINT_MINMAX logreg      0.6478    0.6478  0.0165     0.6211     0.5648     0.6773
+    M1      all3  C_SUBJ_BAND_MINMAX linsvm      0.6467    0.6471  0.0143     0.6129     0.5385     0.6873
+    M1     slow5               A_RAW linsvm      0.6466    0.6474  0.0299     0.5973     0.5495     0.6452
+    M1      all3 B_SUBJ_JOINT_MINMAX linsvm      0.6463    0.6476  0.0182     0.5983     0.5011     0.6954
+    M1     slow5               A_RAW logreg      0.6460    0.6527  0.0274     0.6002     0.4989     0.7015
+    M1 classical               A_RAW logreg      0.6459    0.6494  0.0189     0.6110     0.5187     0.7034
+
+=== BEST PER SOURCE ===
+  M1   AUC=0.6547 (all3, D_SUBJ_BAND_Z, linsvm)  bacc=0.6162
+  M2   AUC=0.6455 (slow5, F_TRAINFOLD_BAND_Z, linsvm)  bacc=0.6002
+  OLD  AUC=0.6364 (all3, F_TRAINFOLD_BAND_Z, logreg)  bacc=0.6024
+
+=== MEAN POOLED AUC BY SOURCE x NORM (averaged over band+clf) ===
+norm     A_RAW  B_SUBJ_JOINT_MINMAX  C_SUBJ_BAND_MINMAX  D_SUBJ_BAND_Z  F_TRAINFOLD_BAND_Z
+source                                                                                    
+M1      0.6417               0.6329              0.6328         0.6409              0.6401
+M2      0.6200               0.6143              0.6165         0.6225              0.6238
+OLD     0.6246               0.6098              0.6135         0.6119              0.6179
+
+=== MEAN POOLED AUC BY SOURCE x BAND ===
+band      all3  classical   slow4   slow5
+source                                   
+M1      0.6466     0.6451  0.6165  0.6425
+M2      0.6239     0.6166  0.6019  0.6353
+OLD     0.6257     0.6143  0.5990  0.6231
+
+=== MEAN BY CLASSIFIER ===
+          mean     max
+clf                   
+linsvm  0.6236  0.6547
+logreg  0.6248  0.6545

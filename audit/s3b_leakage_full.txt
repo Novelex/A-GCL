@@ -1,0 +1,18 @@
+=== 11. TRAIN-ONLY FITTING, NESTED train/val/test, NO diagnosis labels ===
+Outer KFold(5,seed=0) -> test; inner split of train -> val. Params fitted on TRAIN ONLY.
+ fold  n_tr  n_va  n_te  E_test_outside01  E_val_outside01  E_test_outside01_ifglobal  E_param_delta  F_param_delta_mu  F_param_delta_sd  F_test_mean  F_test_std
+    0   610   153   191                 0                3                          0         0.0000            0.0046            0.0188       0.0075      0.9544
+    1   610   153   191                 0                0                          0         0.0000            0.0070            0.0345      -0.0294      0.9766
+    2   610   153   191                 6                0                          0        20.5690            0.0059            0.0678       0.0249      1.0974
+    3   610   153   191                 9                9                          0        20.5690            0.0040            0.0034      -0.0244      0.9709
+    4   611   153   190                 0                0                          0         0.0000            0.0434            0.0345       0.0206      1.0064
+
+PROOF OF NO LEAKAGE (three independent signatures):
+  (i)   splits verified disjoint every fold (assert passed, 5/5)
+  (ii)  train-fitted params differ from all-954 params: E max-delta up to 20.569; F sd-delta up to 0.0678
+  (iii) TEST values escape [0,1] under train-only min-max in 2/5 folds (total 15 values), but in 0/5 folds under all-954 fitting.
+        A test value outside [0,1] is only possible if the test extremes were NOT
+        used to fit -> it is positive evidence of train-only fitting.
+  (iv)  F: test mean/std deviate from exactly (0,1) - mean up to 0.0294, std 0.9544-1.0974. Exactly (0,1) on test would itself indicate the test set was used.
+
+NOTE: KFold used WITHOUT stratification, so no diagnosis label was read at any point.

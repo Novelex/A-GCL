@@ -1,0 +1,68 @@
+============================================================================
+1-5 COHORT CHECKS
+============================================================================
+  |A|=954 |B|=954 |A n B|=954
+  exactly 954 unique ids        : True
+  duplicate ids in A/B/OLD/FC   : 0/0/0/0
+  ASD n NC overlap (storage)    : 0
+  ASD=455  NC=499  (target 455/499)  -> True
+  cohort subset of FC           : True
+  OLD superset of cohort        : True  (OLD extra = ['CMU_b_0050669', 'Leuven_1_0050706'])
+  A ids == B ids                : True
+  OLD-subset == cohort          : True
+  SHA-256 of sorted 954 ids (newline-joined): aca3d945f7d89ccb1cc6fb46ca01f6036ccf036d81d120d2b09fe4bd0d1d68c9
+  SHA-256 of A-order 954 ids               : aca3d945f7d89ccb1cc6fb46ca01f6036ccf036d81d120d2b09fe4bd0d1d68c9
+
+============================================================================
+6. ROW ORDER
+============================================================================
+  A order == B order            : True
+  A order == sorted(cohort)     : True
+  OLD natural order restricted to cohort == A order : True
+  OLD full order is sorted      : True
+  combat file order == OLD order: True
+  FC dir listing sorted == cohort-sorted (on cohort): True
+  NOTE: OLD row index != A row index for subjects after the first exclusion.
+        e.g. first 3 cohort ids -> OLD indices [('CMU_a_0050642', 0), ('CMU_a_0050646', 1), ('CMU_a_0050647', 2)]
+        first index where OLD_idx != A_idx : A position 20 (id Caltech_0051456, OLD idx 21)
+
+============================================================================
+7. DIAGNOSIS CODING SCHEMES (derived, not assumed)
+============================================================================
+  sources: subject_tr.csv(956), download_manifest.csv(956), phenotypic_filtered_v2.csv(956), alff_new.npz dx_group(956)
+  [subject_tr.csv DX_GROUP] crosstab storage x value: {('ASD', 1): 455, ('NC', 2): 501}
+      value 1            -> storage {'ASD': 455}  PURE=True
+      value 2            -> storage {'NC': 501}  PURE=True
+  [download_manifest.csv label] crosstab storage x value: {('ASD', 'ASD'): 455, ('NC', 'NC'): 501}
+      value 'ASD'        -> storage {'ASD': 455}  PURE=True
+      value 'NC'         -> storage {'NC': 501}  PURE=True
+  [phenotypic_filtered_v2 DX_GROUP] crosstab storage x value: {('ASD', 1): 455, ('NC', 2): 501}
+      value 1            -> storage {'ASD': 455}  PURE=True
+      value 2            -> storage {'NC': 501}  PURE=True
+  [alff_new.npz dx_group] crosstab storage x value: {('ASD', 1): 455, ('NC', 2): 501}
+      value 1            -> storage {'ASD': 455}  PURE=True
+      value 2            -> storage {'NC': 501}  PURE=True
+  [phenotypic DSM_IV_TR] crosstab storage x value: {('ASD', 1): 296, ('NC', 0): 481, ('ASD', 4): 3, ('ASD', 2): 81, ('ASD', 3): 34, ('ASD', 0): 18, ('ASD', -9999): 23, ('NC', -9999): 20}
+      value -9999        -> storage {'ASD': 23, 'NC': 20}  PURE=False
+      value 0            -> storage {'NC': 481, 'ASD': 18}  PURE=False
+      value 1            -> storage {'ASD': 296}  PURE=True
+      value 2            -> storage {'ASD': 81}  PURE=True
+      value 3            -> storage {'ASD': 34}  PURE=True
+      value 4            -> storage {'ASD': 3}  PURE=True
+
+============================================================================
+8. SUBJECT-LEVEL DIAGNOSIS MISMATCH (cohort of 954)
+============================================================================
+  audit table rows: 954  -> /users/3171356m/agcl_audit_s0/s1_audit_table.csv
+  per-source diagnosis mismatches vs storage: ZERO across all 4 sources
+  subjects with ANY mismatch: 0
+  site agreement tr vs pheno : 954/954
+  site_combat distinct values: ['CALTECH', 'CMU', 'KKI', 'LEUVEN_1', 'LEUVEN_2', 'MAX_MUN', 'NYU', 'OLIN'] ... n=19
+  site_tr distinct: n=19  site_prefix distinct: n=23
+
+============================================================================
+10. EXCLUDED SUBJECTS
+============================================================================
+  CMU_b_0050669: in_cohort=False in_A=False in_B=False in_OLD=True in_FC=True storage=NC
+  Leuven_1_0050706: in_cohort=False in_A=False in_B=False in_OLD=True in_FC=True storage=NC
+  cohort contains neither excluded id: True

@@ -1,0 +1,70 @@
+=== LEVEL 1: DISTRIBUTIONS / STABILITY ===
+source      band       min       max      mean        sd       iqr  outliers_3iqr  n_nan  subject_sd_cv  roi_sd_cv
+    M1     slow5    0.4609   62.0829    6.2290    3.0730    3.5555            483      0         0.3196     0.2292
+    M1     slow4    0.4830   48.9118    4.9898    2.1822    2.5310            455      0         0.3149     0.2266
+    M1 classical    0.4847   49.6544    5.2173    2.2524    2.6279            446      0         0.3094     0.2307
+    M2     slow5    0.5396  126.1842   13.9157    4.9018    5.5646            528      0         0.4302     0.2320
+    M2     slow4    0.5770   98.3202   12.8840    4.1473    5.2163            251      0         0.3922     0.1820
+    M2 classical    0.5727  104.4702   13.0551    4.2386    5.2047            315      0         0.4026     0.1959
+   OLD     slow5    0.0018   51.9378    5.0541    2.9444    3.3251            557      0         0.3142     0.3318
+   OLD     slow4    0.0027   33.3721    4.0600    2.1450    2.4807            463      0         0.2909     0.3099
+   OLD classical    0.0025   38.1552    4.2421    2.2238    2.5671            435      0         0.2879     0.3159
+
+=== LEVEL 1: BOOTSTRAP RELIABILITY of the ROI mean profile (500 resamples) ===
+source      band  boot_profile_r_mean  boot_profile_r_p2p5  boot_profile_r_p97p5
+    M1     slow5             0.998791             0.997884              0.999335
+    M1     slow4             0.999130             0.998347              0.999561
+    M1 classical             0.999187             0.998487              0.999572
+    M2     slow5             0.998605             0.996862              0.999398
+    M2     slow4             0.998698             0.997005              0.999493
+    M2 classical             0.998639             0.996798              0.999454
+   OLD     slow5             0.999484             0.999122              0.999709
+   OLD     slow4             0.999596             0.999169              0.999799
+   OLD classical             0.999628             0.999297              0.999827
+
+=== LEVEL 1: CROSS-SOURCE AGREEMENT ===
+     pair      band  pearson  spearman
+ M1_vs_M2     slow5   0.7576    0.7342
+ M1_vs_M2     slow4   0.7132    0.6677
+ M1_vs_M2 classical   0.7305    0.6885
+M1_vs_OLD     slow5   0.8013    0.7882
+M1_vs_OLD     slow4   0.8113    0.7928
+M1_vs_OLD classical   0.8067    0.7890
+M2_vs_OLD     slow5   0.6252    0.6053
+M2_vs_OLD     slow4   0.5914    0.5495
+M2_vs_OLD classical   0.6007    0.5609
+
+=== LEVEL 1: UNIVARIATE DIAGNOSIS SIGNAL (descriptive; NOT used for feature selection) ===
+source      band  n_fdr_sig  max_absg  mean_absg  max_auc_dev  mean_auc_dev   mean_mi     min_q
+    M1 classical         21    0.3019     0.1183       0.0788        0.0305    0.0072    0.0023
+    M1     slow4         22    0.2705     0.1252       0.0722        0.0320    0.0083    0.0048
+    M1     slow5          6    0.3284     0.0918       0.0811        0.0249    0.0081    0.0013
+    M2 classical         53    0.3482     0.1820       0.0824        0.0447    0.0108    0.0008
+    M2     slow4         54    0.3413     0.1787       0.0813        0.0447    0.0095    0.0013
+    M2     slow5         41    0.3552     0.1814       0.0834        0.0419    0.0097    0.0005
+   OLD classical         31    0.2764     0.1298       0.0791        0.0336    0.0071    0.0021
+   OLD     slow4         30    0.2721     0.1359       0.0803        0.0353    0.0081    0.0016
+   OLD     slow5         12    0.2515     0.0992       0.0715        0.0279    0.0077    0.0052
+
+=== LEVEL 4: CONFOUND ENCODING (no diagnosis label used) ===
+  site chance balanced accuracy = 0.0526 (19 sites)
+
+  SITE prediction balanced accuracy, by source x norm (all3 band):
+norm     A_RAW  B_SUBJ_JOINT_MINMAX  C_SUBJ_BAND_MINMAX  D_SUBJ_BAND_Z  F_TRAINFOLD_BAND_Z
+source                                                                                    
+M1      0.5578               0.6274              0.6059         0.5424              0.5510
+M2      0.7264               0.7433              0.7628         0.7093              0.7292
+OLD     0.6407               0.6769              0.6808         0.6233              0.6340
+
+  mean over all bands/norms per source:
+        site_bacc  site_acc  sex_bacc   r2_TR    r2_T  r2_age  r2_func_mean_fd  r2_func_dvars
+source                                                                                       
+M1         0.5563    0.6356    0.5319  0.3834  0.4333  0.2921           0.3249         0.1991
+M2         0.7207    0.7776    0.5321  0.4760  0.5343  0.3944           0.4223         0.2759
+OLD        0.6298    0.6892    0.5251  0.3828  0.4520  0.3099           0.3663         0.1794
+
+  worst-case (max) site encoding per source:
+source
+M1     0.6458
+M2     0.7630
+OLD    0.7092

@@ -1,0 +1,17 @@
+chunks=32  rows=954  unique=954
+covers all 954 cohort ids exactly: True
+
+=== FULL-COHORT (954) INDEPENDENT RECOMPUTATION vs STORED ===
+src        max_abs   mean_of_max_abs      max_rel   mean_abs(mean)
+OLD     1.4211e-14        3.0472e-15   8.0807e-16       3.3210e-16
+M1      1.4211e-14        3.1184e-15   7.2822e-16       3.4487e-16
+M2      2.8422e-14        6.6874e-15   8.3025e-16       7.9530e-16
+
+worst subject per source:
+  OLD: UM_1_0050296  max_abs=1.4211e-14  max_rel=5.5497e-16
+  M1: UM_1_0050296  max_abs=1.4211e-14  max_rel=4.7403e-16
+  M2: UM_1_0050296  max_abs=2.8422e-14  max_rel=4.4385e-16
+
+subjects with max_rel > 1e-10 (any source): 0/954
+min valid voxels per ROI across all 954: 2 (subject Yale_0050605);  n subjects with <20: 19
+T range 116..316

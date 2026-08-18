@@ -1,0 +1,8 @@
+resampled YCG -> CPAC grid (65, 77, 63); nearest-neighbour
+voxels labelled in both atlases: 54754
+YCG indices mapped: 116
+min purity=0.5000  mean=0.8378
+indices with dominant-code purity <0.80: 27 [(5, 2111, 0.725), (11, 2301, 0.752), (12, 2302, 0.705), (17, 2331, 0.742), (21, 2501, 0.529), (22, 2502, 0.79), (27, 2701, 0.788), (39, 4111, 0.71), (41, 4201, 0.79), (42, 4202, 0.671)]
+C-PAC codes claimed by >1 YCG index (non-injective): 0 {}
+YCG indices with no mapping: []
+saved ycg_to_cpac_code.npy

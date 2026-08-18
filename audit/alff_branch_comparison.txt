@@ -1,0 +1,67 @@
+==========================================================================
+PER-BRANCH COUNTS
+==========================================================================
+A = method1 ALFF-ROI-first
+  path              : /users/3171356m/A-GCL/ALFF_func_proc/method1/alff_roi_first.npz
+  entries (rows)    : 954
+  unique subject IDs: 954
+  duplicate IDs     : 0 
+  ASD by storage (in raw/ASD_ADJ): 455
+  NC  by storage (in raw/NC_ADJ) : 499
+  not in frozen cohort at all    : 0
+  ordering identical to sorted() : True
+B = method2 ALFF-voxel-first
+  path              : /users/3171356m/A-GCL/ALFF_func_proc/method2/alff_voxel_first.npz
+  entries (rows)    : 954
+  unique subject IDs: 954
+  duplicate IDs     : 0 
+  ASD by storage (in raw/ASD_ADJ): 455
+  NC  by storage (in raw/NC_ADJ) : 499
+  not in frozen cohort at all    : 0
+  ordering identical to sorted() : True
+OLD = alff_new (rois_aal 1D)
+  path              : /users/3171356m/A-GCL/data/ALFF_need/alff_new.npz
+  entries (rows)    : 956
+  unique subject IDs: 956
+  duplicate IDs     : 0 
+  ASD by storage (in raw/ASD_ADJ): 455
+  NC  by storage (in raw/NC_ADJ) : 501
+  not in frozen cohort at all    : 0
+  ordering identical to sorted() : True
+
+==========================================================================
+A vs B (the two new branches)
+==========================================================================
+  intersection |A∩B|   : 954
+  only in A (M1 ROI)   : 0 []
+  only in B (M2 voxel) : 0 []
+  id ORDER identical   : True
+
+==========================================================================
+EACH BRANCH vs FROZEN 956 ADJ COHORT
+==========================================================================
+[A method1 ROI-first]
+  in cohort (matched) : 954 / 956
+  in cohort MISSING from branch : 2 -> ['CMU_b_0050669', 'Leuven_1_0050706']
+  in branch but NOT in cohort   : 0 -> []
+[B method2 voxel-first]
+  in cohort (matched) : 954 / 956
+  in cohort MISSING from branch : 2 -> ['CMU_b_0050669', 'Leuven_1_0050706']
+  in branch but NOT in cohort   : 0 -> []
+[OLD alff_new]
+  in cohort (matched) : 956 / 956
+  in cohort MISSING from branch : 0 -> []
+  in branch but NOT in cohort   : 0 -> []
+
+==========================================================================
+OLD vs NEW
+==========================================================================
+  |OLD ∩ A| = 954   only-in-OLD = ['CMU_b_0050669', 'Leuven_1_0050706']   only-in-A = []
+  |OLD ∩ B| = 954   only-in-OLD = ['CMU_b_0050669', 'Leuven_1_0050706']   only-in-B = []
+
+==========================================================================
+rois_aal 1D source files (old ALFF input)
+==========================================================================
+  rois_aal .1D files  : 956
+  vs cohort: matched 956, missing 0, extra 0
+  vs A: only-in-rois_aal ['CMU_b_0050669', 'Leuven_1_0050706']

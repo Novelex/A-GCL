@@ -1,0 +1,12 @@
+=== TEST 1: does overlap mapping equal the positional hypothesis (index i -> i-th ascending code)? ===
+  disagreements over all 116: 0 []
+  disagreements within 1..90: 0
+
+=== TEST 2: independent centroid check (aal_Labels.mat coords vs C-PAC voxel centroids) ===
+  centroid distance |aal_Labels[idx] - centroid(mapped code)|: max=7.82mm mean=2.84mm
+  indices where nearest-centroid code != overlap-mapped code: 0 []
+  within 1..90: 0
+
+=== agreement of the two independent methods ===
+  overlap-mapping == positional-hypothesis : True
+  centroid-nearest == overlap-mapping      : True

@@ -1,0 +1,18 @@
+==============================================================================
+S3C PRE-REGISTRATION  (written BEFORE any performance was computed)
+==============================================================================
+cohort sha256 = aca3d945f7d89ccb1cc6fb46ca01f6036ccf036d81d120d2b09fe4bd0d1d68c9
+  matches S1 frozen cohort: True
+  labels: ASD(1)=455  NC(0)=499
+  metadata: ['subject_id', 'y', 'site', 'TR', 'T', 'age', 'sex', 'func_mean_fd', 'func_dvars', 'func_num_fd', 'func_perc_fd']
+  sites: 19  |  sex 1/2 = 803/151
+
+  outer fold test sizes  : [191, 191, 191, 191, 190]
+  outer fold test ASD n  : [91, 91, 91, 91, 91]
+  grouped fold test sizes: [173, 207, 190, 204, 180]
+  LOSO sites (n>=20, >=5 per class): 19 -> ['CALTECH', 'CMU', 'KKI', 'LEUVEN_1', 'LEUVEN_2', 'MAX_MUN', 'NYU', 'OLIN', 'PITT', 'SBL', 'SDSU', 'STANFORD', 'TRINITY', 'UCLA_1', 'UCLA_2', 'UM_1', 'UM_2', 'USM', 'YALE']
+
+  splits.json SHA256 = 28fed44dc4666066cc0621f329392e58050b39d5ef1371ec5327830518d98916
+  X_sources.npz SHA256 = dc10bf36c4124aa7f214ab6bbc5a89288adc03da747e3950485bb15c0da333a9   shapes M1(954, 90, 3) M2(954, 90, 3) OLD(954, 90, 3)
+
+  data_dense_v3.pt NOT used. norm_matrix NOT used. Source .npz files unmodified.

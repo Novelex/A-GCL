@@ -1,0 +1,6 @@
+Like-for-like: ALL series ROI-averaged over AAL90 first, then power>0.1Hz
+
+subject              func_preproc(M1/M2)   nofilt .1D(OLD)    filt .1D(FC)
+  CMU_a_0050642                   0.2809            0.2793        0.001344
+  Caltech_0051456                 0.3560            0.3533        0.001732
+  NYU_0051049                     0.3552            0.3718        0.005400

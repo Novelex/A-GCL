@@ -1,0 +1,10 @@
+device_context: CPU (login node) login1.cognition.gla.alces.network
+torch: 2.5.0+cu121 threads: 32
+--- CPU determinism: same seeded calc twice on CPU ---
+cpu_run1_sum          : 511.999969482422
+cpu_run2_sum          : 511.999969482422
+cpu_bitwise_identical : True
+cpu_max_abs_diff      : 0.0
+cpu_run1_sha256       : 6d50a7e77fe4774a81881d14e5745c6014ab422fca984db750327d0c5d7e0958
+cpu_run2_sha256       : 6d50a7e77fe4774a81881d14e5745c6014ab422fca984db750327d0c5d7e0958
+numpy_identical       : True 15.740582153762

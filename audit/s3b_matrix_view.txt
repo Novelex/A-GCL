@@ -1,0 +1,104 @@
+=== 2,3. OUTPUT RANGE + INVALID VALUES ===
+source               t   out_min   out_max  out_mean   out_std  n_nan  zerovar_subjband  zerostd_subjband  zerovar_subj_joint
+    M1           A raw    0.4609   62.0829    5.4787    2.5916      0                 0                 0                   0
+    M1 B subj-joint mm    0.0000    1.0000    0.2829    0.1756      0                 0                 0                   0
+    M1  C subj-band mm    0.0000    1.0000    0.3371    0.2089      0                 0                 0                   0
+    M1   D subj-band z   -2.8197    7.1365   -0.0000    1.0000      0                 0                 0                   0
+    M1  E fold-band mm    0.0000    1.0000    0.0943    0.0470      0                 0                 0                   0
+    M1   F fold-band z   -2.0780   19.9251    0.0021    0.9904      0                 0                 0                   0
+    M2           A raw    0.5396  126.1842   13.2849    4.4649      0                 0                 0                   0
+    M2 B subj-joint mm    0.0000    1.0000    0.3650    0.1911      0                 0                 0                   0
+    M2  C subj-band mm    0.0000    1.0000    0.4036    0.2137      0                 0                 0                   0
+    M2   D subj-band z   -4.8445    6.5556    0.0000    1.0000      0                 0                 0                   0
+    M2  E fold-band mm    0.0000    1.0000    0.1175    0.0416      0                 0                 0                   0
+    M2   F fold-band z   -2.9112   22.4054    0.0005    0.9796      0                 0                 0                   0
+   OLD           A raw    0.0018   51.9378    4.4521    2.5017      0                 0                 0                   0
+   OLD B subj-joint mm    0.0000    1.0000    0.2767    0.1779      0                 0                 0                   0
+   OLD  C subj-band mm    0.0000    1.0000    0.3303    0.2098      0                 0                 0                   0
+   OLD   D subj-band z   -2.5700    6.5591   -0.0000    1.0000      0                 0                 0                   0
+   OLD  E fold-band mm   -0.0002    1.0000    0.1098    0.0607      0                 0                 0                   0
+   OLD   F fold-band z   -1.8914   15.8216    0.0013    0.9928      0                 0                 0                   0
+
+=== 4. RANK PRESERVATION (min Spearman vs RAW; 1.0 = order preserved) ===
+source               t  rank_pres_within_band  rank_pres_within_subject_all270
+    M1           A raw               1.000000                         1.000000
+    M1 B subj-joint mm               1.000000                         1.000000
+    M1  C subj-band mm               1.000000                         0.568759
+    M1   D subj-band z               1.000000                         0.764355
+    M1  E fold-band mm               1.000000                         0.904638
+    M1   F fold-band z               1.000000                         0.885304
+    M2           A raw               1.000000                         1.000000
+    M2 B subj-joint mm               1.000000                         1.000000
+    M2  C subj-band mm               1.000000                         0.770501
+    M2   D subj-band z               1.000000                         0.862078
+    M2  E fold-band mm               1.000000                         0.661729
+    M2   F fold-band z               1.000000                         0.923317
+   OLD           A raw               1.000000                         1.000000
+   OLD B subj-joint mm               1.000000                         1.000000
+   OLD  C subj-band mm               1.000000                         0.797863
+   OLD   D subj-band z               1.000000                         0.874454
+   OLD  E fold-band mm               1.000000                         0.848631
+   OLD   F fold-band z               1.000000                         0.937729
+
+=== 5,6,8,9. VARIANCE RETAINED (fraction of RAW) ===
+source               t  var_subj_ret  var_band_ret  var_roi_ret  var_tot_ret
+    M1           A raw       1.00000       1.00000      1.00000      1.00000
+    M1 B subj-joint mm       0.00139       0.00617      0.00696      0.00459
+    M1  C subj-band mm       0.00134       0.00012      0.01166      0.00650
+    M1   D subj-band z       0.00000       0.00000      0.29686      0.14889
+    M1  E fold-band mm       0.00035       0.00001      0.00035      0.00033
+    M1   F fold-band z       0.15838       0.00001      0.15872      0.14605
+    M2           A raw       1.00000       1.00000      1.00000      1.00000
+    M2 B subj-joint mm       0.00059       0.00339      0.00462      0.00183
+    M2  C subj-band mm       0.00061       0.00016      0.00633      0.00229
+    M2   D subj-band z       0.00000       0.00000      0.17240      0.05016
+    M2  E fold-band mm       0.00009       0.00033      0.00008      0.00009
+    M2   F fold-band z       0.04911       0.00000      0.04877      0.04814
+   OLD           A raw       1.00000       1.00000      1.00000      1.00000
+   OLD B subj-joint mm       0.00164       0.00596      0.00683      0.00505
+   OLD  C subj-band mm       0.00162       0.00052      0.01056      0.00703
+   OLD   D subj-band z       0.00000       0.00000      0.26167      0.15978
+   OLD  E fold-band mm       0.00061       0.00053      0.00061      0.00059
+   OLD   F fold-band z       0.16721       0.00001      0.16732      0.15749
+
+=== 7. CORRELATION WITH RAW ===
+source               t  pearson_vs_raw  spearman_vs_raw
+    M1           A raw        1.000000         1.000000
+    M1 B subj-joint mm        0.744364         0.764060
+    M1  C subj-band mm        0.694402         0.727652
+    M1   D subj-band z        0.728879         0.756415
+    M1  E fold-band mm        0.970069         0.972539
+    M1   F fold-band z        0.966090         0.977544
+    M2           A raw        1.000000         1.000000
+    M2 B subj-joint mm        0.501329         0.513136
+    M2  C subj-band mm        0.486026         0.497438
+    M2   D subj-band z        0.572229         0.563226
+    M2  E fold-band mm        0.950182         0.943434
+    M2   F fold-band z        0.992032         0.993983
+   OLD           A raw        1.000000         1.000000
+   OLD B subj-joint mm        0.787696         0.813718
+   OLD  C subj-band mm        0.750295         0.785754
+   OLD   D subj-band z        0.790609         0.823570
+   OLD  E fold-band mm        0.927036         0.932854
+   OLD   F fold-band z        0.974694         0.985021
+
+=== 10. TR / SITE SCALE PATTERNS (no diagnosis labels) ===
+source               t  corr_level_TR  corr_level_NVOL  site_eta2_level
+    M1           A raw        -0.1235           0.1421           0.1112
+    M1 B subj-joint mm         0.0150          -0.0290           0.0561
+    M1  C subj-band mm        -0.0132           0.0073           0.0728
+    M1   D subj-band z         0.0239          -0.0248           0.0095
+    M1  E fold-band mm        -0.1214           0.1378           0.1114
+    M1   F fold-band z        -0.1206           0.1362           0.1114
+    M2           A raw         0.0247           0.0767           0.4243
+    M2 B subj-joint mm         0.0402          -0.2498           0.2506
+    M2  C subj-band mm        -0.0151          -0.1769           0.2606
+    M2   D subj-band z         0.0385          -0.0089           0.0144
+    M2  E fold-band mm         0.0272           0.0704           0.4306
+    M2   F fold-band z         0.0265           0.0723           0.4287
+   OLD           A raw        -0.0782           0.1401           0.1179
+   OLD B subj-joint mm        -0.0028          -0.0409           0.0722
+   OLD  C subj-band mm        -0.0562          -0.0004           0.1169
+   OLD   D subj-band z         0.0041          -0.0281           0.0119
+   OLD  E fold-band mm        -0.0744           0.1329           0.1187
+   OLD   F fold-band z        -0.0753           0.1346           0.1185

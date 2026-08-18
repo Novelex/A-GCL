@@ -1,0 +1,29 @@
+====================================================================================
+11. TRAIN-ONLY FITTING / LEAKAGE PROOF (KFold(5, shuffle, seed=0), NO labels used)
+====================================================================================
+  fold 0: n_train=763  n_test=191  disjoint=True
+  fold0: train min/max per band = [0.4609 0.483  0.4847] / [62.0829 48.9118 49.6544]
+         global  min/max per band = [0.4609 0.483  0.4847] / [62.0829 48.9118 49.6544]   param delta max = 0.0000
+         TEST values outside [0,1] : train-only fit =     0   global(leaky) fit =     0
+  fold1: train min/max per band = [0.4609 0.483  0.4847] / [62.0829 48.9118 49.6544]
+         global  min/max per band = [0.4609 0.483  0.4847] / [62.0829 48.9118 49.6544]   param delta max = 0.0000
+         TEST values outside [0,1] : train-only fit =     0   global(leaky) fit =     0
+  fold2: train min/max per band = [0.4609 0.483  0.4847] / [46.3477 28.3428 32.5975]
+         global  min/max per band = [0.4609 0.483  0.4847] / [62.0829 48.9118 49.6544]   param delta max = 20.5690
+         TEST values outside [0,1] : train-only fit =     6   global(leaky) fit =     0
+  fold3: train min/max per band = [0.7038 0.7865 0.7487] / [62.0829 48.9118 49.6544]
+         global  min/max per band = [0.4609 0.483  0.4847] / [62.0829 48.9118 49.6544]   param delta max = 0.0000
+         TEST values outside [0,1] : train-only fit =     9   global(leaky) fit =     0
+  fold4: train min/max per band = [0.4609 0.483  0.4847] / [62.0829 48.9118 49.6544]
+         global  min/max per band = [0.4609 0.483  0.4847] / [62.0829 48.9118 49.6544]   param delta max = 0.0000
+         TEST values outside [0,1] : train-only fit =     0   global(leaky) fit =     0
+
+  INTERPRETATION: under train-only fitting some TEST values necessarily fall outside
+  [0,1] because the test extremes were never seen. Under global fitting that count is
+  0 by construction -> the 0 is the observable SIGNATURE of test-set leakage.
+
+  fold-to-fold variation of fitted params (E, per band):
+    max  across folds: [[62.083, 48.912, 49.654], [62.083, 48.912, 49.654], [46.348, 28.343, 32.597], [62.083, 48.912, 49.654], [62.083, 48.912, 49.654]]
+    spread (max-min) per band: [15.7352, 20.569, 17.057]
+
+wrote s3b_norm_matrix.csv, s3b_leakage.json

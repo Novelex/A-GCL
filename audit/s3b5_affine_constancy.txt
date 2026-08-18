@@ -1,0 +1,6 @@
+inspected 72 mALFFMap files across 3 bands x 3 chunks
+  n= 72  shape=(61, 73, 61)  origin=(np.float64(90.0), np.float64(-126.0), np.float64(-72.0))  voxsize=(np.float64(-3.0), np.float64(3.0), np.float64(3.0))
+
+distinct geometries: 1  -> CONSTANT across all inspected
+atlas: shape=(65, 77, 63) origin=(np.float64(96.0), np.float64(-132.0), np.float64(-71.0))
+origin difference (atlas - mALFF) = [ 6. -6.  1.] mm

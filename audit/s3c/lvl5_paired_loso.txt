@@ -1,0 +1,29 @@
+=== SITE-HELD-OUT (LOSO) bootstrap 95% CI, best-per-source under LOSO ===
+  M1   classical/A_RAW/linsvm  LOSO AUC=0.6398 95% CI [0.6050, 0.6741]
+  M2   slow5/A_RAW/linsvm  LOSO AUC=0.6236 95% CI [0.5863, 0.6584]
+  OLD  all3/A_RAW/linsvm  LOSO AUC=0.6226 95% CI [0.5865, 0.6572]
+
+=== PAIRED LOSO comparisons (same held-out-site predictions) ===
+  M1 - M2: mean dAUC=+0.0164  95% CI [-0.0333, +0.0653]  boot p=0.5340  not significant
+  M1 - OLD: mean dAUC=+0.0171  95% CI [-0.0347, +0.0669]  boot p=0.5020  not significant
+  M2 - OLD: mean dAUC=+0.0007  95% CI [-0.0497, +0.0523]  boot p=0.9780  not significant
+
+=== M1 same-condition comparison (fairest paired test: identical band/norm/clf) ===
+  condition classical/A_RAW/linsvm
+    M1   LOSO AUC=0.6398
+    M2   LOSO AUC=0.5942
+    OLD  LOSO AUC=0.6125
+      M1-M2: +0.0461 CI [-0.0047,+0.0948] ns
+      M1-OLD: +0.0273 CI [-0.0249,+0.0765] ns
+  condition all3/D_SUBJ_BAND_Z/linsvm
+    M1   LOSO AUC=0.6304
+    M2   LOSO AUC=0.6012
+    OLD  LOSO AUC=0.6153
+      M1-M2: +0.0296 CI [-0.0227,+0.0803] ns
+      M1-OLD: +0.0151 CI [-0.0345,+0.0655] ns
+  condition slow5/F_TRAINFOLD_BAND_Z/linsvm
+    M1   LOSO AUC=0.6278
+    M2   LOSO AUC=0.6165
+    OLD  LOSO AUC=0.6093
+      M1-M2: +0.0116 CI [-0.0366,+0.0625] ns
+      M1-OLD: +0.0193 CI [-0.0310,+0.0672] ns

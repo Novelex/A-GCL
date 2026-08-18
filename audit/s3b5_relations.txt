@@ -1,0 +1,32 @@
+=== 5. RECONSTRUCTION TESTS: can norm_matrix be produced from any audited source? ===
+candidate transform of source           max_abs_err   pearson  spearman
+  per-subj per-band z-score of M1            6.6912    0.4697    0.4483
+  per-subj per-band z-score of M2            5.9083    0.5759    0.5449
+  per-subj per-band z-score of OLD alff       4.4527    0.7381    0.7162
+  per-subj per-band z-score of OLD malff       4.4527    0.7381    0.7162
+  JOINT z-score of OLD alff                  5.1133    0.7088    0.6934
+  JOINT z-score of M2                        6.6292    0.5560    0.5268
+  per-band MIN-MAX of OLD alff               4.8444    0.7047    0.6883
+  per-band MIN-MAX of M2                     5.2681    0.5198    0.4968
+  raw OLD malff (no transform)               3.9183    0.7364    0.7168
+
+  -> NONE reconstructs norm_matrix. It is a genuinely FOURTH construction.
+
+=== ALGEBRAIC CHECK: does the mALFF step survive a per-band z-score? ===
+  max|D(OLD malff) - D(OLD alff)| = 4.441e-15
+  -> mALFF = ALFF / (per-subject-per-band scalar), so the per-band z-score ERASES the
+     mALFF normalization entirely. norm_matrix's 'mALFF' step is therefore inert.
+
+=== 6. SUBJECT-BY-SUBJECT and ROI-BY-ROI ALIGNMENT (954 x 90 x 3) ===
+  norm_matrix stacked shape (954, 90, 3); NaN=0
+  vs D(M1)    subject-level r: min=0.0540 median=0.4699 max=0.8210 n<0.3=81
+              ROI-level  r: min=0.2067 median=0.5441 max=0.7750 n<0.3=3
+  vs D(M2)    subject-level r: min=0.1017 median=0.5849 max=0.9418 n<0.3=20
+              ROI-level  r: min=0.5887 median=0.8035 max=0.9328 n<0.3=0
+  vs D(OLD)   subject-level r: min=0.3413 median=0.7474 max=0.9396 n<0.3=0
+              ROI-level  r: min=0.4330 median=0.6683 max=0.8496 n<0.3=0
+
+=== per-band correlation with D(OLD) ===
+  slow5      pearson=+0.7432 spearman=+0.7166
+  slow4      pearson=+0.7307 spearman=+0.7108
+  classical  pearson=+0.7404 spearman=+0.7204

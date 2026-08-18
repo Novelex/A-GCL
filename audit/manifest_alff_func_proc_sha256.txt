@@ -1,0 +1,2 @@
+647a1d872398ebea26a0b3113aea35765247fc7fcdebd482c2ecbb9f34cc3cf4  ALFF_func_proc/method1/alff_roi_first.npz
+19b95826f4b232fabb4587b806c56d5913a5f1fe09c9350239158608a9680126  ALFF_func_proc/method2/alff_voxel_first.npz

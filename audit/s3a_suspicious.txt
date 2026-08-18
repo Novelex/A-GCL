@@ -1,0 +1,44 @@
+=== OLD low-end tail (min 0.0018 vs M1 min 0.46) ===
+  OLD < 0.01 :     4 cells,    2 subjects,   2 ROIs
+  OLD < 0.05 :    48 cells,   15 subjects,   6 ROIs
+  OLD < 0.1  :    81 cells,   25 subjects,   8 ROIs
+  OLD < 0.46 :   458 cells,  112 subjects,  17 ROIs
+  top ROIs (OLD<0.05): [('Temporal_Pole_Mid_L', 22), ('Rectus_R', 14), ('Rectus_L', 3), ('Frontal_Mid_Orb_R', 3), ('Frontal_Med_Orb_L', 3), ('Amygdala_R', 3)]
+  top sites: [('LEUVEN_1', 14), ('YALE', 9), ('SDSU', 6), ('TRINITY', 6), ('NYU', 4), ('CMU', 3)]
+  top subjects: [('Yale_0050605', 9), ('CMU_b_0050652', 3), ('Caltech_0051473', 3), ('Leuven_1_0050690', 3), ('Leuven_1_0050693', 3)]
+
+=== per-ROI cross-source agreement (mean over subjects, classical band) ===
+  ROI                      r(M1,OLD)  r(M2,OLD)  r(M1,M2)
+  Cingulum_Post_L             0.6315     0.6299    0.6942
+  Frontal_Sup_Medial_R        0.7991     0.5907    0.7327
+  Temporal_Pole_Mid_L         0.8043     0.7286    0.7521
+  Amygdala_L                  0.8094     0.6916    0.7975
+  Olfactory_R                 0.8247     0.7897    0.8484
+  Angular_L                   0.8295     0.5804    0.6750
+   ... best:
+  Calcarine_R                 0.9748     0.7390    0.7523
+  Putamen_R                   0.9755     0.6074    0.6245
+  Calcarine_L                 0.9792     0.8118    0.7965
+
+=== site-level M1-vs-OLD subject correlation ===
+          r_m1_old  r_m2_old   r_m1_m2
+site                                  
+UCLA_2    0.689985  0.515831  0.767063
+CMU       0.697731  0.527728  0.800012
+OLIN      0.699024  0.582268  0.789829
+NYU       0.702706  0.586123  0.747318
+UCLA_1    0.704848  0.507341  0.761023
+LEUVEN_2  0.708577  0.610260  0.828328
+PITT      0.710827  0.585860  0.790653
+MAX_MUN   0.719585  0.496017  0.672264
+TRINITY   0.720625  0.594471  0.753619
+SDSU      0.722388  0.678943  0.845165
+CALTECH   0.732960  0.670369  0.849251
+USM       0.739353  0.463794  0.685435
+UM_1      0.745715  0.562434  0.752547
+STANFORD  0.749949  0.536959  0.760105
+SBL       0.753902  0.553613  0.681037
+LEUVEN_1  0.756020  0.712247  0.859685
+UM_2      0.777441  0.606742  0.774451
+KKI       0.784757  0.630090  0.779561
+YALE      0.785466  0.681929  0.836693

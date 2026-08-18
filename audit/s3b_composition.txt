@@ -1,0 +1,18 @@
+=== Is the ACTIVE pipeline's double normalization (upstream D, then loader C) a no-op? ===
+  M1: max|C(D(X)) - C(X)| = 5.551e-16   identical=True
+  OLD: max|C(D(X)) - C(X)| = 4.441e-16   identical=True
+  -> min-max is INVARIANT to any prior positive per-subject-per-band affine map,
+     so the upstream per-band z-score is mathematically ERASED by the loader's per-band
+     min-max. The double normalization is harmless but the z-score step is redundant.
+
+=== But it is NOT a no-op for the JOINT (paper) normalization B ===
+  M1: max|B(D(X)) - B(X)| = 6.310e-01   identical=False
+  OLD: max|B(D(X)) - B(X)| = 6.212e-01   identical=False
+  -> if the paper's JOINT min-max were used, the upstream per-band z-score would
+     MATERIALLY change the result (it pre-equalizes the 3 bands). This is exactly the
+     interaction the loader comment describes.
+
+=== Order sensitivity of C and D (both per-subject-per-band) ===
+  M1: max|D(C(X)) - D(X)| = 4.885e-15
+  M1: max|C(C(X)) - C(X)| = 0.000e+00  (C idempotent)
+  M1: max|D(D(X)) - D(X)| = 4.441e-15  (D idempotent)

@@ -1,0 +1,23 @@
+====================================================================================================
+LEVEL 3 — NEGATIVE CONTROLS
+====================================================================================================
+total permutation runs: 6000  (each = a FULL nested-CV re-run incl. inner grid search)
+                                cond  n_perm  observed_auc  perm_auc_mean  perm_auc_sd  perm_auc_p2p5  perm_auc_p97p5  perm_auc_max    perm_p  perm_bacc_mean  featperm_auc_mean  featperm_auc_sd  featperm_auc_max
+        M1|all3|D_SUBJ_BAND_Z|linsvm    1000        0.6547         0.4995       0.0252         0.4503          0.5481        0.5867    0.0010          0.4996             0.5007           0.0251            0.5783
+  M2|slow5|F_TRAINFOLD_BAND_Z|linsvm    1000        0.6455         0.4978       0.0255         0.4443          0.5432        0.5744    0.0010          0.4983             0.4999           0.0262            0.5804
+  OLD|all3|F_TRAINFOLD_BAND_Z|logreg    1000        0.6364         0.4976       0.0237         0.4526          0.5448        0.5642    0.0010          0.4974             0.5004           0.0246            0.5788
+ M1|slow4|B_SUBJ_JOINT_MINMAX|linsvm    1000        0.6039         0.4940       0.0255         0.4459          0.5432        0.5773    0.0010          0.4982             0.4997           0.0241            0.5775
+ M2|slow4|B_SUBJ_JOINT_MINMAX|logreg    1000        0.5940         0.4929       0.0252         0.4448          0.5430        0.5773    0.0010          0.4981             0.5005           0.0243            0.5760
+OLD|slow4|B_SUBJ_JOINT_MINMAX|logreg    1000        0.5807         0.4910       0.0253         0.4458          0.5423        0.5736    0.0010          0.4983             0.5001           0.0238            0.5707
+
+  label-permutation AUC should centre on 0.500; feature-column permutation likewise.
+  overall label-perm mean = 0.4955 (sd 0.0252)
+  overall feat-perm  mean = 0.5002 (sd 0.0247)
+
+====================================================================================================
+FINAL S3C DECISION TABLE
+====================================================================================================
+source best_band          best_norm best_clf  best_nested_auc    auc_sd      bacc      sens      spec        f1      prec    perm_p  perm_mean_auc  site_bacc_mean  site_bacc_max     r2_TR      r2_T    r2_age     r2_fd  grouped_auc  loso_auc_sameCond  best_loso_auc         best_loso_cond  mean_drop_loso  fold_auc_sd
+    M1      all3      D_SUBJ_BAND_Z   linsvm           0.6547    0.0275    0.6162    0.5451    0.6874    0.5768    0.6170    0.0010         0.4995          0.5563         0.6458    0.3834    0.4333    0.2921    0.3249       0.6273             0.6304         0.6398 classical/A_RAW/linsvm          0.0185       0.0275
+    M2     slow5 F_TRAINFOLD_BAND_Z   linsvm           0.6455    0.0278    0.6002    0.4769    0.7234    0.5357    0.6119    0.0010         0.4978          0.7207         0.7630    0.4760    0.5343    0.3944    0.4223       0.6148             0.6165         0.6236     slow5/A_RAW/linsvm          0.0266       0.0278
+   OLD      all3 F_TRAINFOLD_BAND_Z   logreg           0.6364    0.0373    0.6024    0.5033    0.7014    0.5485    0.6071    0.0010         0.4976          0.6298         0.7092    0.3828    0.4520    0.3099    0.3663       0.6154             0.6152         0.6226      all3/A_RAW/linsvm          0.0107       0.0373

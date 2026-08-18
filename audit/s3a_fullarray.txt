@@ -1,0 +1,60 @@
+=== 10. FROZEN ORDER CHECK ===
+  cohort sha256 == S1 frozen: True
+  M1 file_ids == cohort order : True
+  M2 file_ids == cohort order : True
+  OLD subset-by-ID length 954; positional!=by-id at 934 rows
+  shapes M1(954, 90, 3) M2(954, 90, 3) OLD_subset(954, 90, 3)  (90 ROI axis frozen S1)
+
+=== 5. INVALID / EXTREME VALUE SCAN (954x90x3 = 257580 each) ===
+  [M1] n=257580  NaN=0  Inf=0 exact_zero=0  negative=0
+      slow5      >3*IQR outliers=   483 (0.56%)  max/median=11.1
+      slow4      >3*IQR outliers=   455 (0.53%)  max/median=10.8
+      classical  >3*IQR outliers=   446 (0.52%)  max/median=10.4
+  [M2] n=257580  NaN=0  Inf=0 exact_zero=0  negative=0
+      slow5      >3*IQR outliers=   528 (0.61%)  max/median=9.5
+      slow4      >3*IQR outliers=   251 (0.29%)  max/median=7.9
+      classical  >3*IQR outliers=   315 (0.37%)  max/median=8.3
+  [OLD] n=257580  NaN=0  Inf=0 exact_zero=0  negative=0
+      slow5      >3*IQR outliers=   557 (0.65%)  max/median=11.8
+      slow4      >3*IQR outliers=   463 (0.54%)  max/median=9.3
+      classical  >3*IQR outliers=   435 (0.51%)  max/median=10.1
+
+=== 8. RAW DISTRIBUTIONS (no normalization) ===
+src band                min         max        mean      median         std         IQR
+M1  slow5           0.46091      62.083       6.229      5.6054       3.073      3.5555
+M1  slow4           0.48303      48.912      4.9898      4.5498      2.1822       2.531
+M1  classical       0.48468      49.654      5.2173      4.7734      2.2524      2.6279
+M2  slow5           0.53964      126.18      13.916      13.277      4.9018      5.5646
+M2  slow4           0.57704       98.32      12.884      12.466      4.1473      5.2163
+M2  classical       0.57267      104.47      13.055      12.616      4.2386      5.2047
+OLD slow5         0.0018327      51.938      5.0541      4.3918      2.9444      3.3251
+OLD slow4         0.0027055      33.372        4.06      3.5977       2.145      2.4807
+OLD classical     0.0025317      38.155      4.2421      3.7608      2.2238      2.5671
+
+=== 6. M1 <= M2 (Jensen expectation from S2 math) ===
+  elements where M1 > M2 + 1e-12: 0 / 257580
+  max violation (M1-M2): 0.000000e+00
+  max margin (M2-M1)   : 6.410138e+01
+  mean (M2-M1)         : 7.806224e+00
+      slow5      violations=     0  max_viol=0.000e+00
+      slow4      violations=     0  max_viol=0.000e+00
+      classical  violations=     0  max_viol=0.000e+00
+
+=== 9. AGREEMENT (raw values; agreement only, not ranking) ===
+  [M1 vs M2] overall  pearson=0.736617  spearman=0.697990
+      slow5      pearson=0.757649 spearman=0.734229
+      slow4      pearson=0.713154 spearman=0.667664
+      classical  pearson=0.730499 spearman=0.688493
+      subject-level pearson: min=0.3165 p05=0.5771 median=0.7724 max=0.9544  n<0.5=24
+  [M1 vs OLD] overall  pearson=0.811640  spearman=0.795275
+      slow5      pearson=0.801292 spearman=0.788167
+      slow4      pearson=0.811346 spearman=0.792819
+      classical  pearson=0.806663 spearman=0.789050
+      subject-level pearson: min=0.4157 p05=0.6014 median=0.7279 max=0.9143  n<0.5=3
+  [M2 vs OLD] overall  pearson=0.612741  spearman=0.577252
+      slow5      pearson=0.625234 spearman=0.605305
+      slow4      pearson=0.591435 spearman=0.549515
+      classical  pearson=0.600723 spearman=0.560921
+      subject-level pearson: min=0.0618 p05=0.3710 median=0.5834 max=0.8528  n<0.5=234
+
+  lowest M1-vs-OLD subject correlations: [('Caltech_0051462', 0.4157), ('Leuven_1_0050685', 0.4666), ('UCLA_1_0051249', 0.4977), ('NYU_0051002', 0.5005), ('Olin_0050112', 0.5113), ('CMU_b_0050644', 0.5196)]

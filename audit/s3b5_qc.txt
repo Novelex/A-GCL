@@ -1,0 +1,18 @@
+=== alff_nf_qc.csv (the generator's own QC record, 956 rows) ===
+  any_flag True: 956/956  -> EVERY subject flagged
+  n_low_coverage   subjects>0:  956  total flags:  18291  max per subject: 69
+  n_nonfinite      subjects>0:    0  total flags:      0  max per subject: 0
+  n_exact_zero     subjects>0:    3  total flags:      9  max per subject: 3
+  n_outlier        subjects>0:   72  total flags:    261  max per subject: 18
+
+  n_low_coverage distribution: min=12 median=18.0 max=69 (out of 90x3=270 region-bands)
+  restricted to the frozen 954: 954 rows; any_flag True 954
+
+  INTERPRETATION: the flags are coverage-only for almost all subjects. The notebook
+  states coverage is 'diagnostic only (not used to filter the mean below)' and the
+  region mean is taken over ALL region voxels unconditionally, INCLUDING the zeros
+  that DPARSFA's brain mask writes at region boundaries. So low-coverage regions are
+  DILUTED TOWARD ZERO rather than excluded or NaN'd.
+
+  worst-flagged subjects: [{'FILE_ID': 'Yale_0050605', 'n_low_coverage': 69}, {'FILE_ID': 'SDSU_0050204', 'n_low_coverage': 66}, {'FILE_ID': 'Caltech_0051462', 'n_low_coverage': 54}, {'FILE_ID': 'Leuven_2_0050736', 'n_low_coverage': 51}, {'FILE_ID': 'Caltech_0051456', 'n_low_coverage': 51}]
+  n_nonfinite>0 subjects: 0  n_exact_zero>0: 3
