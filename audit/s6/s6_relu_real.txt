@@ -1,0 +1,11 @@
+PART 4 (real data) — is message_relu a no-op at layer 1, pre-BN?
+  branch         min x     n x<0    max|relu=T - relu=F|   identical
+  M1_B        0.000000         0               0.000e+00        True
+  M1_C        0.000000         0               0.000e+00        True
+  M1_D       -2.819696     24611               2.576e+01       False
+
+  B and C are min-max to [0,1] so x >= 0 everywhere -> relu(x)=x -> message_relu is
+  EXACTLY a no-op at layer 1 (confirmed 0.0 difference). D is per-band z-scored so
+  ~half its entries are negative and the difference appears immediately.
+  NOTE: this no-op holds ONLY at layer 1 pre-BN. After BatchNorm (S7) the layer-2
+  inputs are centred and will contain negatives for ALL branches.

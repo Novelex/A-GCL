@@ -1,0 +1,26 @@
+{
+ "subject_order_sha256": "71ccbdab06227533ccd9f8c98617d3ae47e05fd68963000d1b542d73f47fa37e",
+ "subject_id_map_sha256": "64fcc09f1e7e3944cf9aa8faebcb168ae2178410ba1be749bc069b04c39921ec",
+ "X_sources_sha256": "dc10bf36c4124aa7f214ab6bbc5a89288adc03da747e3950485bb15c0da333a9",
+ "caches": {
+  "M1_B": {
+   "path": "/users/3171356m/agcl_audit_s0/s5/M1_B/processed/M1_B_v1.pt",
+   "sha256": "312266b23ecf1348ce083cb25d9c5e5a51d5595dab9ce5639875a51c12f1f844",
+   "n": 954,
+   "bytes": 155637176
+  },
+  "M1_C": {
+   "path": "/users/3171356m/agcl_audit_s0/s5/M1_C/processed/M1_C_v1.pt",
+   "sha256": "17338f14073b82f6793beb81c93314a1f94e35f58e92b32488ecba8ff59e0c9d",
+   "n": 954,
+   "bytes": 155637176
+  },
+  "M1_D": {
+   "path": "/users/3171356m/agcl_audit_s0/s5/M1_D/processed/M1_D_v1.pt",
+   "sha256": "59a4c88a2c3797882727fd1c5cd323fdb6608e808641ac2025cbdc64075fd397",
+   "n": 954,
+   "bytes": 155637176
+  }
+ },
+ "ordering": "ASD block (sorted) then NC block (sorted) \u2014 identical to datasets/abideDataset.py process()"
+}

@@ -1,0 +1,46 @@
+==================================================================================
+ANOMALY: subjects at the extremes of negative-edge count
+==================================================================================
+  fewest negative edges:
+         file_id  n_neg_off      vmin  vmax
+Stanford_0051191          0  0.056702   1.0
+  UCLA_1_0051251          0  0.084322   1.0
+    UM_1_0050366          0  0.003007   1.0
+     USM_0050453          0  0.023073   1.0
+MaxMun_d_0051350          2 -0.002218   1.0
+  most negative edges:
+         file_id  n_neg_off      vmin  vmax
+    Yale_0050628       3086 -0.514913   1.0
+MaxMun_d_0051356       3014 -0.467710   1.0
+  UCLA_2_0051303       2796 -0.624158   1.0
+  Stanford_0051191: site=STANFORD off-diag min=0.0567 median=0.5637 frac>0.9=0.003
+  UCLA_1_0051251: site=UCLA_1 off-diag min=0.0843 median=0.6167 frac>0.9=0.007
+  UM_1_0050366: site=UM_1 off-diag min=0.0030 median=0.6430 frac>0.9=0.007
+
+  distribution of n_neg_off over 954: p5=22 median=575 p95=1957
+  subjects with <50 negative edges: 71
+
+==================================================================================
+5. LOADER EDGE NORMALIZATION  fc / max(abs(fc))
+==================================================================================
+  loader datasets/abideDataset.py:85-87 -> max_abs=np.abs(fc).max(); if max_abs>0: fc=fc/max_abs
+  max|FC| before: min over 954 = 1.000000000000000, max = 1.000000000000000
+  subjects where max|FC| differs from 1.0 by >1e-12 : 0/954
+  PROOF it is a NO-OP: Pearson r is bounded |r|<=1, and the diagonal is the
+  self-correlation r_ii = 1 exactly, which is retained. So max|FC| = 1 for every
+  subject, and fc/1.0 = fc identically.
+  empirical check on CMU_a_0050642: max|after-before| = 0.000e+00
+  verified bitwise identical before/after for ALL 954: True
+
+==================================================================================
+6. DENSE EDGE CONSTRUCTION (loader lines 92-99)
+==================================================================================
+  edge_index shape (2, 8100)  edge_weight shape (8100,)
+  total directed entries = 8100 (expected 90*90 = 8100)  -> True
+  self-loops (u==v) present: 90 (expected 90)
+  both (u,v) and (v,u) present for every ordered pair: True (checked 500 sampled pairs)
+  row-major order matches fc.reshape(-1): True
+  exact-zero weights in this graph: 0 (dataset-wide exact zeros: 0)
+  NOTE the loader uses dense construction rather than .nonzero(), so a 0.0 weight
+  would still be emitted as an edge. No subject in this cohort has any exact zero,
+  so dense and .nonzero() coincide here (a verified no-op, per the loader comment).

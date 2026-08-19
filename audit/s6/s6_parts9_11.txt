@@ -1,0 +1,57 @@
+==========================================================================================
+PART 6 ADDENDUM — MEDIAN ratios (the C mean is a degenerate-denominator artifact)
+==========================================================================================
+  C uses per-band min-max, so the minimum ROI in each band is EXACTLY 0. For a node that
+  is the minimum in all 3 bands, ||x_v||=0 -> total_self=0 -> the ratio diverges. The mean
+  is therefore meaningless for C; the median is the honest statistic.
+        ratio_off_over_self  ratio_self_over_q
+branch                                        
+B                   20.0184             0.0776
+C                   27.7103             0.0777
+D                    2.8361             0.6282
+  M1_B nodes with ||x_v|| < 1e-12: 0 of 85860
+
+==========================================================================================
+PART 9 — IS WGIN ALREADY AN FC-STRENGTH ENCODER? (node level, M1_B, 85860 nodes)
+==========================================================================================
+  target      r(s_v)   r(a_v)   r(pos)   r(neg)  r(||x||)  rho(a_v)
+  q_norm      0.8926   0.8850   0.8946   0.5484   0.2703    0.8917
+  w1_norm     0.8919   0.8887   0.8958   0.5330   0.2675    0.8937
+  q0          0.8993   0.8875   0.8994   0.5667   0.2463    0.8925
+  q1          0.8171   0.8035   0.8158   0.5246   0.2775    0.8295
+  q2          0.8673   0.8538   0.8664   0.5539   0.2777    0.8705
+
+  target     R2 FC-strength   R2 ALFF x_v   R2 both  gain from ALFF
+  q_norm             0.8010        0.0731    0.8506          0.0497
+  w1_norm            0.8026        0.0716    0.8501          0.0475
+
+==========================================================================================
+PART 10 — GRAPH-LEVEL PRE-POOLING (sum over 90 nodes; 954 subjects; NO labels)
+==========================================================================================
+    target  max_abs_r     driver  r2_FCsummaries  r2_plus_alff
+     Qsum0     0.8868    fc_mean          0.7887        0.9070
+     Qsum1     0.7735    fc_mean          0.5998        0.8939
+     Qsum2     0.8373    fc_mean          0.7026        0.9596
+    W1sum0     0.8249     fc_pos          0.6836        0.7213
+    W1sum1     0.8733     fc_pos          0.7661        0.8501
+    W1sum2     0.8640     fc_pos          0.7485        0.9742
+    W1sum3     0.8607    fc_mean          0.7426        0.9730
+    W1sum4     0.6081     fc_pos          0.3730        0.3757
+    W1sum5     0.6352 alff_level          0.2030        0.5130
+W1sum_norm     0.8819     fc_pos          0.7801        0.9736
+ Qsum_norm     0.8772    fc_mean          0.7716        0.9771
+
+  max |r| over all graph dims = 0.8868   median = 0.8607
+  median R2 from 6 FC summaries alone = 0.7426  (max 0.7887)
+
+==========================================================================================
+PART 11 — DIAGNOSTIC EDGE ABLATIONS (controls only, NOT paper/original variants)
+==========================================================================================
+  first 200 subjects, node features M1_B, identical seeded MLP
+                  q_norm  Q_mean_cos  Q_eff_rank  Q_frac_var_sv1  Q_across_node_var  W1_mean_cos  W1_eff_rank
+ablation                                                                                                     
+1_raw_signed     16.2948      0.9643      1.3493          0.9907             7.3505       0.9648       1.9487
+2_abs            17.3102      0.9993      1.3821          0.9883             5.3022       0.9976       1.5946
+3_pos_only       16.7802      0.9989      1.3670          0.9894             6.1208       0.9931       1.6347
+4_all_ones       45.6329      1.0000      1.8523          0.9228             0.0260       1.0000       1.9938
+5_offdiag_only   15.7984      0.9581      1.3097          0.9926             7.1890       0.9607       1.9174

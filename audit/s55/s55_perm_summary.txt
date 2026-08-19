@@ -1,0 +1,12 @@
+=== LEVEL: NEGATIVE CONTROLS (label permutation, full nested-CV re-run each) ===
+  total permutation runs: 1920
+           cond  n_perm  observed_auc  perm_mean   perm_sd  perm_p2p5  perm_p97p5  perm_max  perm_bacc_mean   p_value
+  FC+M1D|linsvm     480        0.7566     0.4996    0.0245     0.4524      0.5491    0.5755          0.4996    0.0021
+ FC_only|linsvm     480        0.7565     0.4990    0.0241     0.4586      0.5499    0.5811          0.4984    0.0021
+ FC_only|logreg     480        0.7561     0.4973    0.0235     0.4508      0.5456    0.5657          0.4967    0.0021
+M1D_only|linsvm     480        0.6486     0.5006    0.0250     0.4495      0.5529    0.5728          0.5004    0.0021
+
+  overall permutation AUC mean = 0.4992 (sd 0.0243)
+  overall permutation bacc mean = 0.4988
+  largest AUC produced by ANY null run = 0.5811
+  every observed AUC exceeds every null run: True

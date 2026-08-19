@@ -1,0 +1,65 @@
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/torch_geometric/data/in_memory_dataset.py:300: UserWarning: It is not recommended to directly access the internal storage format `data` of an 'InMemoryDataset'. If you are absolutely certain what you are doing, access the internal storage via `InMemoryDataset._data` instead to suppress this warning. Alternatively, you can access stacked individual attributes of every graph via `dataset.{attr_name}`.
+  warnings.warn(msg)
+====================================================================================
+13. CACHE ISOLATION PROOF
+====================================================================================
+  (a) new roots are OUTSIDE the repo and contain ONLY their own cache file:
+      /users/3171356m/agcl_audit_s0/s5/M1_B/processed -> ['M1_B_v1.pt']
+      /users/3171356m/agcl_audit_s0/s5/M1_C/processed -> ['M1_C_v1.pt']
+      /users/3171356m/agcl_audit_s0/s5/M1_D/processed -> ['M1_D_v1.pt']
+  (b) repo cache directory is untouched:
+      data/processed/data.pt
+      data/processed/data_dense_v2.pt
+      data/processed/data_dense_v3.pt
+      data/processed/pre_filter.pt
+      data/processed/pre_transform.pt
+  (c) repo data_dense_v3.pt hash vs the S0 manifest:
+      now      a63db36dec759f2ffe3c1ebbe0aaf13d44470a5d9639fb39ab3ddcb41ffc5969
+      S0 value a63db36dec759f2ffe3c1ebbe0aaf13d44470a5d9639fb39ab3ddcb41ffc5969
+      UNCHANGED: True
+  (d) no branch root contains a file named data_dense_v3.pt / data.pt:
+      stray legacy-named caches found: 0 []
+  (e) PyG resolves a cache by root + processed_file_names. The three branches use
+      distinct roots AND distinct filenames (M1_B_v1.pt / M1_C_v1.pt / M1_D_v1.pt),
+      so none can resolve to data_dense_v3.pt, and none can resolve to each other.
+
+  (f) content differs from the norm_matrix-derived v3 cache:
+      v3 cache x shape (86040, 3) (954*90=85860 rows)
+Traceback (most recent call last):
+  File "<stdin>", line 41, in <module>
+ValueError: operands could not be broadcast together with shapes (85860,3) (86040,3) 
+====================================================================================
+  (f) CONTENT COMPARISON vs the norm_matrix-derived v3 cache
+====================================================================================
+      v3 cache: 956 graphs, x rows 86040 = 956 subjects x 90 ROIs
+      our branches: 954 graphs, 85860 rows
+      *** v3 CONTAINS 956 SUBJECTS, NOT 954 ***
+      y distribution in v3: ASD=455 NC=501
+      => the ACTIVE pipeline includes the two S0-excluded subjects
+         (CMU_b_0050669, Leuven_1_0050706 — both NC, hence 501 NC).
+      This size difference alone makes a silent substitution impossible.
+      ASD block M1_B vs v3: identical=False max_abs_diff=1.0000 corr=+0.3859
+      ASD block M1_C vs v3: identical=False max_abs_diff=1.0000 corr=+0.4299
+      ASD block M1_D vs v3: identical=False max_abs_diff=6.0547 corr=+0.4303
+      => none of the branches matches v3 in content either.
+
+  (g) branches mutually distinct:
+      M1_B vs M1_C: identical=False max_abs_diff=0.6798
+      M1_B vs M1_D: identical=False max_abs_diff=6.1365
+      M1_C vs M1_D: identical=False max_abs_diff=6.1365
+
+  (h) edge payload identical across branches (same FC, only nodes differ):
+      B==C True   B==D True   edges per branch 7,727,400 = 954*8100 -> True
+
+====================================================================================
+HASHES
+====================================================================================
+  subject ordering (954 ids)   71ccbdab06227533ccd9f8c98617d3ae47e05fd68963000d1b542d73f47fa37e
+  subject_id -> FILE_ID map    64fcc09f1e7e3944cf9aa8faebcb168ae2178410ba1be749bc069b04c39921ec
+  frozen raw M1 (X_sources)    dc10bf36c4124aa7f214ab6bbc5a89288adc03da747e3950485bb15c0da333a9
+  M1_B   312266b23ecf1348ce083cb25d9c5e5a51d5595dab9ce5639875a51c12f1f844
+         155,637,176 bytes, n=954, /users/3171356m/agcl_audit_s0/s5/M1_B/processed/M1_B_v1.pt
+  M1_C   17338f14073b82f6793beb81c93314a1f94e35f58e92b32488ecba8ff59e0c9d
+         155,637,176 bytes, n=954, /users/3171356m/agcl_audit_s0/s5/M1_C/processed/M1_C_v1.pt
+  M1_D   59a4c88a2c3797882727fd1c5cd323fdb6608e808641ac2025cbdc64075fd397
+         155,637,176 bytes, n=954, /users/3171356m/agcl_audit_s0/s5/M1_D/processed/M1_D_v1.pt

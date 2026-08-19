@@ -1,0 +1,59 @@
+==========================================================================================
+PART 6 — REAL-GRAPH MAGNITUDE DECOMPOSITION  q_v = resid + explicit_self + offdiag
+==========================================================================================
+   (per-node norms averaged within subject, then summarised over all 954 subjects)
+           resid  explicit  total_self   offdiag         q    off/self_mean      off/self_sd  off/self_min      off/self_max  self/q_mean  self/q_sd
+branch                                                                                                                                              
+B         0.5041    0.5041      1.0083   14.8940   15.8814          21.2475           9.7004        5.9887          192.5844       0.0900     0.0870
+C         0.5946    0.5946      1.1891   17.4691   18.6322 46816778246.9222 90900964322.7463        6.9595 472880079573.7325       0.0881     0.0436
+D         1.4076    1.4076      2.8152    5.0263    6.5004           3.1345           1.3329        0.9294           15.3652       0.6444     0.1794
+
+  residual == explicit for every branch (diag(E)=1 exactly) -> total_self = 2*||x_v||
+    B: mean |resid - explicit| = 2.220e-16  total_self/resid = 2.000000
+    C: mean |resid - explicit| = 3.331e-16  total_self/resid = 2.000000
+    D: mean |resid - explicit| = 8.882e-16  total_self/resid = 2.000000
+
+==========================================================================================
+PART 7 — SIGN CANCELLATION
+==========================================================================================
+  cancellation = 1 - ||sum_u e_uv x_u|| / (sum_u |e_uv| ||x_u||)   [0 = none, 1 = total]
+           mean      std      min      25%      50%      75%      max
+branch                                                               
+B        0.1038   0.0980   0.0040   0.0326   0.0724   0.1414   0.5699
+C        0.1055   0.0981   0.0046   0.0340   0.0734   0.1435   0.5728
+D        0.8680   0.0625   0.5249   0.8353   0.8751   0.9134   0.9735
+
+  node-level (M1_B, 954x90=85860 nodes): mean=0.1038 sd=0.1658 min=0.0031 max=0.9933
+  per-SITE mean cancellation:
+    {'CALTECH': 0.1491, 'CMU': 0.0401, 'KKI': 0.1524, 'LEUVEN_1': 0.075, 'LEUVEN_2': 0.0666, 'MAX_MUN': 0.1259, 'NYU': 0.122, 'OLIN': 0.0806, 'PITT': 0.0798, 'SBL': 0.069, 'SDSU': 0.0978, 'STANFORD': 0.0625, 'TRINITY': 0.1007, 'UCLA_1': 0.1432, 'UCLA_2': 0.1415, 'UM_1': 0.0719, 'UM_2': 0.0685, 'USM': 0.0626, 'YALE': 0.1813}
+
+==========================================================================================
+PART 8 — X -> Q -> WGIN1  (variance / cosine / effective rank)
+==========================================================================================
+
+  [M1_B]
+    metric                       X           Q       WGIN1
+    across_node_var         0.0253      6.1139      0.2170
+    mean_cos                0.9636      0.9765      0.9743
+    eff_rank                1.8694      1.3720      1.9105
+    frac_var_sv1            0.9159      0.9894      0.9752
+    mean_pair_dist          0.3142      4.5887      2.8529
+    mean_norm               0.5041     15.8814      9.4526
+
+  [M1_C]
+    metric                       X           Q       WGIN1
+    across_node_var         0.0397      8.4290      0.2874
+    mean_cos                0.9477      0.9763      0.9754
+    eff_rank                1.8746      1.3959      1.9063
+    frac_var_sv1            0.9206      0.9888      0.9741
+    mean_pair_dist          0.3958      5.4134      3.3009
+    mean_norm               0.5946     18.6322     10.9005
+
+  [M1_D]
+    metric                       X           Q       WGIN1
+    across_node_var         1.0000     18.2625      0.8167
+    mean_cos                0.0152      0.1076      0.4712
+    eff_rank                1.8782      1.8642      5.9642
+    frac_var_sv1            0.9196      0.8891      0.6984
+    mean_pair_dist          1.9910      8.3983      6.1112
+    mean_norm               1.4076      6.5004      5.6475

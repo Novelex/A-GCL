@@ -1,0 +1,25 @@
+=== DOES ALFF ADD INFORMATION BEYOND FC?  (paired bootstrap on identical OOF folds) ===
+
+  [linsvm] FC-only AUC = 0.7565  95% CI [0.7250, 0.7857]
+      FC+M1B: AUC=0.7522  deltaAUC=-0.0043  boot mean d=-0.0043 95% CI [-0.0107, +0.0020]  p=0.182  ns
+      FC+M1C: AUC=0.7527  deltaAUC=-0.0038  boot mean d=-0.0038 95% CI [-0.0104, +0.0028]  p=0.260  ns
+      FC+M1D: AUC=0.7566  deltaAUC=+0.0001  boot mean d=+0.0001 95% CI [-0.0069, +0.0068]  p=0.976  ns
+
+  [logreg] FC-only AUC = 0.7561  95% CI [0.7247, 0.7851]
+      FC+M1B: AUC=0.7523  deltaAUC=-0.0038  boot mean d=-0.0038 95% CI [-0.0102, +0.0023]  p=0.225  ns
+      FC+M1C: AUC=0.7530  deltaAUC=-0.0031  boot mean d=-0.0031 95% CI [-0.0096, +0.0033]  p=0.362  ns
+      FC+M1D: AUC=0.7566  deltaAUC=+0.0005  boot mean d=+0.0005 95% CI [-0.0063, +0.0072]  p=0.881  ns
+
+=== B vs C vs D  (ALFF-only, paired) ===
+  [linsvm] B=0.6286 C=0.6250 D=0.6486
+      D-B: +0.0198  95% CI [+0.0028, +0.0372]  p=0.020  SIG
+      D-C: +0.0234  95% CI [+0.0078, +0.0392]  p=0.001  SIG
+      C-B: -0.0036  95% CI [-0.0159, +0.0085]  p=0.582  ns
+  [logreg] B=0.6278 C=0.6322 D=0.6497
+      D-B: +0.0217  95% CI [+0.0056, +0.0384]  p=0.009  SIG
+      D-C: +0.0175  95% CI [+0.0044, +0.0309]  p=0.012  SIG
+      C-B: +0.0043  95% CI [-0.0103, +0.0192]  p=0.574  ns
+
+=== FC vs best ALFF-only (paired) ===
+  [linsvm] FC_only - M1D_only = +0.1080  95% CI [+0.0707, +0.1452]  SIGNIFICANT
+  [logreg] FC_only - M1D_only = +0.1065  95% CI [+0.0691, +0.1429]  SIGNIFICANT

@@ -1,0 +1,42 @@
+==================================================================================
+7. FC CONFOUND DIAGNOSTICS (global summaries only; no feature selection)
+==================================================================================
+  global FC mean over 954: 0.3313 (sd 0.1103) range [0.0958, 0.6899]
+  frac negative edges    : mean 0.0913 range [0.0000, 0.3853]
+
+  summary       eta2_site     r_TR      r_T  r_meanFD  r_dvars   r_age
+  fc_mean          0.1054   -0.143    0.153     0.382    0.040   0.082
+  fc_median        0.1051   -0.136    0.132     0.378    0.044   0.086
+  fc_sd            0.2763    0.164   -0.409    -0.153    0.108  -0.032
+  fc_absmean       0.0950   -0.123    0.112     0.386    0.055   0.078
+  frac_neg         0.1549    0.190   -0.267    -0.301    0.012  -0.092
+
+  SITE is by far the dominant driver of global FC level (eta2 up to 0.105).
+
+  site means of fc_mean (sorted):
+            n  fc_mean  frac_neg
+site                            
+YALE       55   0.2647    0.1541
+KKI        47   0.2872    0.1405
+NYU       173   0.2963    0.1077
+UCLA_1     66   0.3056    0.1201
+CALTECH    28   0.3082    0.1232
+MAX_MUN    49   0.3217    0.1058
+UCLA_2     23   0.3237    0.1134
+SDSU       31   0.3252    0.0889
+UM_2       33   0.3295    0.0648
+UM_1       98   0.3413    0.0681
+TRINITY    45   0.3571    0.0896
+USM        69   0.3622    0.0561
+SBL        29   0.3690    0.0674
+STANFORD   39   0.3698    0.0539
+OLIN       33   0.3723    0.0665
+LEUVEN_2   33   0.3749    0.0606
+LEUVEN_1   28   0.3794    0.0683
+PITT       55   0.3805    0.0698
+CMU        20   0.3980    0.0398
+
+  ASD vs NC on global FC level (diagnostic only, NOT a prediction):
+    fc_mean    ASD 0.3297 vs NC 0.3328  Cohen d=-0.0280
+    frac_neg   ASD 0.0911 vs NC 0.0915  Cohen d=-0.0052
+    fc_sd      ASD 0.2125 vs NC 0.2136  Cohen d=-0.0419

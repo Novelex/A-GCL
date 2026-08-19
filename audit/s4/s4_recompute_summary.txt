@@ -1,0 +1,18 @@
+==================================================================================
+3. INDEPENDENT FC RECOMPUTATION — ALL 954 SUBJECTS
+==================================================================================
+  subjects recomputed: 954  covers frozen cohort exactly: True
+  source: GraSTIACL data/raw/rois_aal (cpac/filt_noglobal), header labels<9001, np.corrcoef
+
+  max_abs_error : max over 954 = 0.0000e+00   mean = 0.0000e+00
+  mean_abs_error: max over 954 = 0.0000e+00   mean = 0.0000e+00
+  correlation   : min = 1.000000000000   mean = 1.000000000000
+  entries differing by >1e-8 : 0 of 7727400
+  entries differing by >1e-10: 0 of 7727400
+  subjects with ANY differing entry: 0/954
+
+  dead ROIs (near-zero variance) in the filt source: total 0, subjects affected 0
+  T range 116..316
+
+  => BITWISE EXACT: every one of the 954 x 8100 = 7,727,400 stored entries is
+     reproduced with zero error. The generator chain is independently CONFIRMED.

@@ -1,0 +1,93 @@
+### DEVICE=cpu torch=2.5.0+cu121 dtype=torch.float64
+E (asymmetric):
+ tensor([[ 1.0000000000,  0.5000000000, -0.7500000000,  0.0000000000],
+        [ 0.2500000000,  1.0000000000,  0.0000000000, -1.5000000000],
+        [ 2.0000000000,  0.0000000000,  1.0000000000,  0.3000000000],
+        [ 0.0000000000,  0.6000000000, -0.2000000000,  1.0000000000]],
+       dtype=torch.float64)
+E - E^T max abs: 2.75 -> genuinely asymmetric
+
+============================================================================
+PART 2 — HAND CALCULATION vs CODE (message_relu=False, eps=0)
+============================================================================
+code output q:
+ tensor([[ 6.8750000000, -2.7500000000],
+        [-1.0000000000,  4.5500000000],
+        [ 3.1250000000,  2.1500000000],
+        [-1.1500000000, -5.9250000000]], dtype=torch.float64)
+hand (E X + X):
+ tensor([[ 1.2500000000, -2.6875000000],
+        [ 1.2500000000,  6.6250000000],
+        [ 6.6250000000, -3.7250000000],
+        [-3.2000000000,  0.2500000000]], dtype=torch.float64)
+hand (E^T X + X):
+ tensor([[ 6.8750000000, -2.7500000000],
+        [-1.0000000000,  4.5500000000],
+        [ 3.1250000000,  2.1500000000],
+        [-1.1500000000, -5.9250000000]], dtype=torch.float64)
+
+max_abs_error vs  E X + X : 6.175e+00
+max_abs_error vs E^T X + X : 0.000e+00
+=> implemented operator is E^T (transpose);  passes 1e-6: True
+
+node 0 hand m_0 = sum_u E[u,0]*x_u = [5.375, -0.75]   q_0 = m_0 + x_0 = [6.875, -2.75]
+node 0 code                                                      = [6.875, -2.75]
+
+ORIENTATION PROOF: edge k=i*N+j has edge_index[0]=i (source), edge_index[1]=j (target),
+weight E[i,j]. PyG flow='source_to_target' gathers x_j:=x[edge_index[0]] and scatters
+into out[edge_index[1]]. Hence out[j] = sum_i E[i,j] x_i = (E^T X)[j].
+For SYMMETRIC real FC E^T==E so this is invisible; for a learned asymmetric Bernoulli
+mask it is NOT. RECORD FOR S8.
+
+============================================================================
+PART 3 — SELF-LOOP DOUBLE COUNT
+============================================================================
+residual self (1+eps)*x_v      : [1.5, -2.0]  (eps=0 -> coefficient 1.0)
+explicit FC self e_vv*x_v      : [1.5, -2.0]  (e_00 = 1.0)
+TOTAL SELF = residual+explicit : [3.0, -4.0]  = 2*x_0: [3.0, -4.0]
+  with diagonal, q - offdiag  = [3.0, -4.0]
+  => equals 2*x_0            : True
+  diagonal REMOVED, q - offdiag = [1.5, -2.0]  == x_0: True
+  max|q_with - q_without - x| = 0.000e+00  (exactly the extra x_v)
+
+============================================================================
+PART 4 — message_relu AND NEGATIVE EDGES
+============================================================================
+message_relu=False q:
+ tensor([[ 6.8750000000, -2.7500000000],
+        [-1.0000000000,  4.5500000000],
+        [ 3.1250000000,  2.1500000000],
+        [-1.1500000000, -5.9250000000]], dtype=torch.float64)
+message_relu=True  q:
+ tensor([[ 7.0000000000, -0.7500000000],
+        [ 0.2500000000,  6.0000000000],
+        [ 2.8750000000,  0.5000000000],
+        [-0.6500000000, -5.1750000000]], dtype=torch.float64)
+hand False: E^T X + X          max err: 0.0
+hand True : E^T relu(X) + X    max err: 0.0
+max|True - False| = 2.000000  -> ReLU is NOT a no-op here
+
+worked example: negative x times negative FC, edge u=1 -> v=0, E[1,0]=0.25
+  x_1 = [-0.5, 3.0]  (component 0 is negative)
+  A (relu=False): e*x_u        = [-0.125, 0.75]
+  B (relu=True) : e*relu(x_u)  = [0.0, 0.75]
+  => with relu=False a negative feature times a positive/negative edge keeps its sign
+     and can ADD positively; with relu=True the negative component is zeroed BEFORE
+     weighting, so it contributes nothing regardless of edge sign.
+
+============================================================================
+PART 5 — GRADIENT CHECK (float64, autograd vs central differences)
+============================================================================
+  x              n= 8  max_abs_err=3.163e-09  max_rel_err=3.778e-10  finite=True
+  edge_weight    n=16  max_abs_err=6.069e-09  max_rel_err=4.765e-09  finite=True
+  Linear.weight  n= 4  max_abs_err=4.006e-09  max_rel_err=7.592e-11  finite=True
+  Linear.bias    n= 2  max_abs_err=8.165e-10  max_rel_err=1.467e-10  finite=True
+
+============================================================================
+PART 13 — SANITY
+============================================================================
+  output shape (4, 2)  finite=True
+  edge_weight=0 -> q == x ? True  (max err 0.0e+00)
+  E=Identity   -> q == 2x ? True
+  deterministic repeat: bitwise identical = True
+  negative edges consumed (any negative message contributes): True
