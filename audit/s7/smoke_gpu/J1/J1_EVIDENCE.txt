@@ -1,0 +1,451 @@
+{
+ "provenance": {
+  "host": "node14.cognition.gla.alces.network",
+  "time": "2026-08-19T04:26:48",
+  "slurm_job": "1869285",
+  "slurm_array": null,
+  "git_head": "72accecb86b496557734031a1ba1a9e0825f79c6",
+  "git_dirty": "",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda_available": true,
+  "device_name": "NVIDIA H100 NVL",
+  "base_seed": 20260818,
+  "unit": "J1",
+  "smoke": true,
+  "n_subjects": 8
+ },
+ "J1A": [
+  {
+   "source": "RAW",
+   "pc1": 0.9184078135424366,
+   "pc2": 0.08119791614375005,
+   "pc3": 0.0003942703138133859,
+   "eff_rank": 1.8417456473734253,
+   "pearson": [
+    [
+     1.0,
+     0.7892452758337284,
+     0.8916271455028442
+    ],
+    [
+     0.7892452758337284,
+     1.0,
+     0.9800929503089028
+    ],
+    [
+     0.8916271455028443,
+     0.9800929503089029,
+     1.0
+    ]
+   ],
+   "spearman": [
+    [
+     1.0,
+     0.7709265449971933,
+     0.8772316304622502
+    ],
+    [
+     0.7709265449971933,
+     1.0,
+     0.9779253689403978
+    ],
+    [
+     0.8772316304622502,
+     0.9779253689403978,
+     1.0
+    ]
+   ],
+   "subj_eff_rank_mean": 1.8151888081540823,
+   "subj_eff_rank_sd": 0.08356392864282311,
+   "subj_eff_rank_min": 1.6471841314591276,
+   "subj_eff_rank_max": 1.9207159463682206
+  },
+  {
+   "source": "M1_B",
+   "pc1": 0.9138565221891379,
+   "pc2": 0.08565496279081716,
+   "pc3": 0.0004885150200449717,
+   "eff_rank": 1.8640879988457364,
+   "pearson": [
+    [
+     1.0,
+     0.7791938311091257,
+     0.884360203507801
+    ],
+    [
+     0.7791938311091258,
+     0.9999999999999998,
+     0.9796765656201284
+    ],
+    [
+     0.8843602035078009,
+     0.9796765656201284,
+     1.0
+    ]
+   ],
+   "spearman": [
+    [
+     1.0,
+     0.7709243126068576,
+     0.875149033617748
+    ],
+    [
+     0.7709243126068576,
+     1.0,
+     0.9783786760290974
+    ],
+    [
+     0.8751490336177481,
+     0.9783786760290973,
+     1.0
+    ]
+   ],
+   "subj_eff_rank_mean": 1.8151888081540821,
+   "subj_eff_rank_sd": 0.08356392864282315,
+   "subj_eff_rank_min": 1.6471841314591273,
+   "subj_eff_rank_max": 1.9207159463682206
+  },
+  {
+   "source": "M1_C",
+   "pc1": 0.8972753583379705,
+   "pc2": 0.09982585651080243,
+   "pc3": 0.002898785151227146,
+   "eff_rank": 2.0344075912403294,
+   "pearson": [
+    [
+     1.0,
+     0.7240118151566203,
+     0.8405833585069903
+    ],
+    [
+     0.7240118151566203,
+     1.0,
+     0.9727144075659507
+    ],
+    [
+     0.8405833585069903,
+     0.9727144075659507,
+     1.0
+    ]
+   ],
+   "spearman": [
+    [
+     1.0,
+     0.6921953101248925,
+     0.8195399551103889
+    ],
+    [
+     0.6921953101248925,
+     1.0,
+     0.9707137758096618
+    ],
+    [
+     0.8195399551103889,
+     0.9707137758096618,
+     1.0
+    ]
+   ],
+   "subj_eff_rank_mean": 1.8166978242217096,
+   "subj_eff_rank_sd": 0.09221069498838315,
+   "subj_eff_rank_min": 1.6305140845797779,
+   "subj_eff_rank_max": 1.9408301402767303
+  },
+  {
+   "source": "M1_D",
+   "pc1": 0.9276524808298588,
+   "pc2": 0.0715727670154975,
+   "pc3": 0.0007747521546436775,
+   "eff_rank": 1.8555206679229335,
+   "pearson": [
+    [
+     0.9999999999999998,
+     0.7962061657961105,
+     0.895324073523664
+    ],
+    [
+     0.7962061657961105,
+     1.0,
+     0.9797608298750836
+    ],
+    [
+     0.8953240735236642,
+     0.9797608298750835,
+     0.9999999999999998
+    ]
+   ],
+   "spearman": [
+    [
+     1.0,
+     0.7746749768678822,
+     0.8789958121061189
+    ],
+    [
+     0.7746749768678822,
+     1.0,
+     0.9775285381851945
+    ],
+    [
+     0.8789958121061189,
+     0.9775285381851945,
+     1.0
+    ]
+   ],
+   "subj_eff_rank_mean": 1.8186636313645255,
+   "subj_eff_rank_sd": 0.08571038248319532,
+   "subj_eff_rank_min": 1.6438940018285642,
+   "subj_eff_rank_max": 1.9384077591012876
+  }
+ ],
+ "J1B": {
+  "n": 8,
+  "max_abs_err": 2.2737367544323206e-13,
+  "max_rel_err": 8.114753499179076e-16,
+  "total_mismatch": 0,
+  "n_s5": [
+   8,
+   10
+  ],
+  "n_s4": [
+   24,
+   26
+  ],
+  "n_cl": [
+   35,
+   40
+  ],
+  "n_tail": [
+   3,
+   4
+  ],
+  "total_overlap_bins": 0,
+  "total_extra_bins": 0,
+  "bins_on_nominal_edges": 0,
+  "tail_frac_mean": 0.06398795346659861
+ },
+ "J1C": [
+  {
+   "auc": 0.8,
+   "bacc": 0.6333333333333333,
+   "fold_auc_sd": 0.28867513459481287,
+   "n_folds": 3,
+   "ci95": [
+    0.4,
+    1.0
+   ],
+   "branch": "B",
+   "repr": "Q1",
+   "clf": "linsvm"
+  },
+  {
+   "auc": 0.4666666666666667,
+   "bacc": 0.5333333333333333,
+   "fold_auc_sd": 0.5,
+   "n_folds": 3,
+   "ci95": [
+    0.0,
+    1.0
+   ],
+   "branch": "B",
+   "repr": "X",
+   "clf": "linsvm"
+  },
+  {
+   "auc": 0.6,
+   "bacc": 0.5,
+   "fold_auc_sd": 0.28867513459481287,
+   "n_folds": 3,
+   "ci95": [
+    0.13333333333333333,
+    1.0
+   ],
+   "branch": "B",
+   "repr": "Q1",
+   "clf": "logreg"
+  },
+  {
+   "auc": 0.5333333333333333,
+   "bacc": 0.5,
+   "fold_auc_sd": 0.5773502691896258,
+   "n_folds": 3,
+   "ci95": [
+    0.0,
+    1.0
+   ],
+   "branch": "B",
+   "repr": "X",
+   "clf": "logreg"
+  },
+  {
+   "auc": 1.0,
+   "bacc": 1.0,
+   "fold_auc_sd": 0.0,
+   "n_folds": 3,
+   "ci95": [
+    1.0,
+    1.0
+   ],
+   "branch": "C",
+   "repr": "Q1",
+   "clf": "linsvm"
+  },
+  {
+   "auc": 0.5333333333333332,
+   "bacc": 0.6333333333333333,
+   "fold_auc_sd": 0.28867513459481287,
+   "n_folds": 3,
+   "ci95": [
+    0.08333333333333331,
+    1.0
+   ],
+   "branch": "C",
+   "repr": "X",
+   "clf": "linsvm"
+  },
+  {
+   "auc": 0.7333333333333333,
+   "bacc": 0.5,
+   "fold_auc_sd": 0.0,
+   "n_folds": 3,
+   "ci95": [
+    0.1428571428571429,
+    1.0
+   ],
+   "branch": "C",
+   "repr": "Q1",
+   "clf": "logreg"
+  },
+  {
+   "auc": 0.5333333333333332,
+   "bacc": 0.5,
+   "fold_auc_sd": 0.28867513459481287,
+   "n_folds": 3,
+   "ci95": [
+    0.08333333333333331,
+    1.0
+   ],
+   "branch": "C",
+   "repr": "X",
+   "clf": "logreg"
+  },
+  {
+   "auc": 0.6,
+   "bacc": 0.5333333333333333,
+   "fold_auc_sd": 0.5773502691896258,
+   "n_folds": 3,
+   "ci95": [
+    0.0,
+    1.0
+   ],
+   "branch": "D",
+   "repr": "Q1",
+   "clf": "linsvm"
+  },
+  {
+   "auc": 0.6666666666666666,
+   "bacc": 0.5333333333333333,
+   "fold_auc_sd": 0.0,
+   "n_folds": 3,
+   "ci95": [
+    0.1428571428571429,
+    1.0
+   ],
+   "branch": "D",
+   "repr": "X",
+   "clf": "linsvm"
+  },
+  {
+   "auc": 0.6,
+   "bacc": 0.5,
+   "fold_auc_sd": 0.5773502691896258,
+   "n_folds": 3,
+   "ci95": [
+    0.0,
+    1.0
+   ],
+   "branch": "D",
+   "repr": "Q1",
+   "clf": "logreg"
+  },
+  {
+   "auc": 0.6,
+   "bacc": 0.5,
+   "fold_auc_sd": 0.5773502691896258,
+   "n_folds": 3,
+   "ci95": [
+    0.0,
+    1.0
+   ],
+   "branch": "D",
+   "repr": "X",
+   "clf": "logreg"
+  }
+ ],
+ "J1D": [
+  {
+   "branch": "B",
+   "clf": "linsvm",
+   "control": "shuffled_FC_trainonly",
+   "perm_seed": 0,
+   "auc": 0.5333333333333333,
+   "bacc": 0.5
+  },
+  {
+   "branch": "B",
+   "clf": "linsvm",
+   "control": "training_mean_FC",
+   "perm_seed": null,
+   "auc": 1.0,
+   "bacc": 0.9
+  }
+ ],
+ "J1E": {
+  "arch": {
+   "P": {
+    "normalize_nodes": false,
+    "message_relu": false,
+    "post_bn_relu": false,
+    "drop_ratio": 0.0,
+    "note": "paper_exact profile / paper-literal Sec 2.2.1"
+   },
+   "O": {
+    "normalize_nodes": true,
+    "message_relu": true,
+    "post_bn_relu": true,
+    "drop_ratio": 0.0,
+    "note": "original qbmizsj hardcoded behaviour; dropout inactive in eval"
+   },
+   "C": {
+    "normalize_nodes": true,
+    "message_relu": true,
+    "post_bn_relu": true,
+    "drop_ratio": 0.3,
+    "note": "current fork 'corrected' argparse defaults"
+   }
+  },
+  "h_dim": 32,
+  "z_dim": 32,
+  "AUDIT_CONSTRUCTOR_ERROR_DETECTED": "A first S7 run (J1 job 1869274, J2 1869275, J3a 1869276) recorded z_dim=300. That was an AUDIT-SIDE constructor error: s7_core.build_model used GInfoMinMax's STANDALONE class default proj_hidden_dim=300 instead of instantiating as the real A-GCL callers do. Corrected 2026-08-19; the affected J2/J3a/J3b outputs were discarded and recomputed.",
+  "proj_dim_ledger": {
+   "class_default": "GInfoMinMax.__init__(self, encoder, proj_hidden_dim=300)  <- standalone default, never used by any A-GCL training script",
+   "actual_call_site_current": "agcl_ABIDE.py:98-102 and agcl_ABIDE_queue.py:229-233 -> GInfoMinMax(TUEncoder(...), args.emb_dim), --emb_dim default 32",
+   "actual_call_site_original": "bed5441:A-GCL/adgcl_edge.py:50-53 -> GInfoMinMax(TUEncoder(...), args.emb_dim), --emb_dim default 32",
+   "standalone_default_z_dim": 300,
+   "actual_agcl_experimental_z_dim": 32,
+   "proj_head": "Linear(32,32) -> ReLU -> Linear(32,32)"
+  },
+  "eval_repr": {
+   "P": "z (paper_exact profile sets eval_representation='z')",
+   "O": "h (original passes model.encoder to the evaluator -> pooled encoder output, PRE-projection)",
+   "C_corrected": "z (argparse default)",
+   "C_paper_exact": "z (profile override)",
+   "paper": "AMBIGUOUS - paper says only that an SVM classifies 'the extracted features'"
+  },
+  "pooling": {
+   "default": "standard",
+   "overridden_anywhere": false,
+   "note": "argparse default 'standard'; no call site sets layerwise in the production mains"
+  },
+  "arch_equivalence": "O and C have IDENTICAL architecture flags; they differ only in drop_ratio (inactive under eval()) and in the h-vs-z readout."
+ }
+}

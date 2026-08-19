@@ -1,0 +1,5 @@
+branch,clf,control,perm_seed,auc,bacc
+B,linsvm,shuffled_FC_trainonly,0.0,0.490920302142747,0.48476293245832325
+B,linsvm,shuffled_FC_trainonly,1.0,0.4991653636944218,0.5230945407298113
+B,linsvm,shuffled_FC_trainonly,2.0,0.4907881697460856,0.5018278314871502
+B,linsvm,training_mean_FC,,0.6357902618423661,0.5967891827611267

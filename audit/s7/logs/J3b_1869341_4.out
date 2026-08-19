@@ -1,0 +1,24 @@
+host=node09.cognition.gla.alces.network job=1869357 arr=4 git=72accecb86b496557734031a1ba1a9e0825f79c6 date=2026-08-19T02:57:41+01:00
+330 embeddings, this task 21
+done probe_emb_s000_O_C 0.4746
+done probe_emb_s002_C_D 0.5369
+done probe_emb_s004_C_B 0.5284
+done probe_emb_s005_P_C 0.4829
+done probe_emb_s007_O_D 0.5122
+done probe_emb_s009_O_B 0.5097
+done probe_emb_s011_C_C 0.4914
+done probe_emb_s012_P_D 0.5246
+done probe_emb_s014_P_B 0.491
+done probe_emb_s016_O_C 0.4632
+done probe_emb_s018_C_D 0.5212
+done probe_emb_s020_C_B 0.4894
+done probe_emb_s021_P_C 0.4423
+done probe_emb_s023_O_D 0.4945
+done probe_emb_s025_O_B 0.5059
+done probe_emb_s027_C_C 0.4813
+done probe_emb_s028_P_D 0.5322
+done probe_emb_s032_C_B 0.4926
+done probe_emb_s037_O_B 0.5023
+done probe_emb_s042_P_B 0.493
+done probe_emb_s048_C_B 0.5081
+J3b TASK COMPLETE

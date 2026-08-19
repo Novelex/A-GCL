@@ -1,0 +1,68 @@
+host=node09.cognition.gla.alces.network job=1869262 git=72accecb86b496557734031a1ba1a9e0825f79c6 date=2026-08-19T02:31:10+01:00
+J1A done
+J1B done
+J1C done
+J1D done
+J1 COMPLETE
+traced P B
+traced P C
+traced P D
+traced O B
+traced O C
+traced O D
+traced C B
+traced C C
+traced C D
+estimated full-tensor storage: 0.00 GB
+J2 COMPLETE
+total units 21, this task 21, device cpu
+done emb_s000_P_B 0.1s
+done emb_s000_P_C 0.0s
+done emb_s000_P_D 0.0s
+done emb_s000_O_B 0.0s
+done emb_s000_O_C 0.0s
+done emb_s000_O_D 0.0s
+done emb_s000_C_B 0.0s
+done emb_s000_C_C 0.0s
+done emb_s000_C_D 0.0s
+done emb_s001_P_B 0.0s
+done emb_s001_P_C 0.0s
+done emb_s001_P_D 0.0s
+done emb_s001_O_B 0.0s
+done emb_s001_O_C 0.0s
+done emb_s001_O_D 0.0s
+done emb_s001_C_B 0.0s
+done emb_s001_C_C 0.0s
+done emb_s001_C_D 0.0s
+done emb_s002_P_B 0.0s
+done emb_s002_O_B 0.0s
+done emb_s002_C_B 0.0s
+J3a TASK COMPLETE
+21 embeddings, this task 21
+done probe_emb_s000_C_B 1.0
+done probe_emb_s000_C_C 0.8667
+done probe_emb_s000_C_D 0.8
+done probe_emb_s000_O_B 1.0
+done probe_emb_s000_O_C 0.8667
+done probe_emb_s000_O_D 0.8
+done probe_emb_s000_P_B 0.8667
+done probe_emb_s000_P_C 1.0
+done probe_emb_s000_P_D 0.6667
+done probe_emb_s001_C_B 0.9333
+done probe_emb_s001_C_C 0.8667
+done probe_emb_s001_C_D 0.8667
+done probe_emb_s001_O_B 0.9333
+done probe_emb_s001_O_C 0.8667
+done probe_emb_s001_O_D 0.8667
+done probe_emb_s001_P_B 0.8667
+done probe_emb_s001_P_C 1.0
+done probe_emb_s001_P_D 0.8667
+done probe_emb_s002_C_B 1.0
+done probe_emb_s002_O_B 1.0
+done probe_emb_s002_P_B 0.8667
+J3b TASK COMPLETE
+--- determinism: identical rerun of one J3a unit ---
+determinism identical: True
+--- benchmark: ONE FULL 954-subject random-encoder unit on CPU ---
+BENCH_CPU {"device": "cpu", "forward_s": 1.09, "serialize_s": 0.04, "probe_s": 0.69, "total_s": 1.83, "h_shape": [954, 32], "z_shape": [954, 300]}
+SMOKE_CPU_PASS

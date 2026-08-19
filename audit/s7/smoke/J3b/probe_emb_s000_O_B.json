@@ -1,0 +1,12 @@
+{
+ "seed": 0,
+ "path": "O",
+ "branch": "B",
+ "n": 8,
+ "h_auc": 1.0,
+ "h_bacc": 0.8333333333333333,
+ "h_fold_sd": 0.0,
+ "z_auc": 1.0,
+ "z_bacc": 1.0,
+ "z_fold_sd": 0.0
+}

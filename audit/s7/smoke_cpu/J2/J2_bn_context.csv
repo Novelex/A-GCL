@@ -1,0 +1,5 @@
+batch_size,mode,max_dh_across_companions,max_dz
+2,eval,0.0,0.0
+2,train,32.866493225097656,13.226143836975098
+8,eval,0.0,0.0
+8,train,8.296966552734375e-05,3.0517578125e-05

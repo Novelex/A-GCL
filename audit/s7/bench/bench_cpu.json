@@ -1,0 +1,15 @@
+{
+ "device": "cpu",
+ "forward_s": 1.05,
+ "serialize_s": 0.01,
+ "probe_s": 0.62,
+ "total_s": 1.67,
+ "h_shape": [
+  954,
+  32
+ ],
+ "z_shape": [
+  954,
+  32
+ ]
+}

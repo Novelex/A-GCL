@@ -1,0 +1,12 @@
+host=node09.cognition.gla.alces.network job=1869275 arr=NA git=72accecb86b496557734031a1ba1a9e0825f79c6 date=2026-08-19T02:44:10+01:00
+traced P B
+traced P C
+traced P D
+traced O B
+traced O C
+traced O D
+traced C B
+traced C C
+traced C D
+estimated full-tensor storage: 0.14 GB
+J2 COMPLETE

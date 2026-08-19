@@ -1,0 +1,21 @@
+{
+ "host": "node15.cognition.gla.alces.network",
+ "time": "2026-08-19T02:56:25",
+ "slurm_job": "1869350",
+ "slurm_array": "6",
+ "git_head": "72accecb86b496557734031a1ba1a9e0825f79c6",
+ "git_dirty": "",
+ "python": "3.12.13",
+ "torch": "2.5.0+cu121",
+ "cuda_available": false,
+ "device_name": null,
+ "base_seed": 20260818,
+ "unit": "J3a",
+ "seed": 10,
+ "path": "C",
+ "branch": "B",
+ "device": "cpu",
+ "secs": 0.95,
+ "h_dim": 32,
+ "z_dim": 32
+}

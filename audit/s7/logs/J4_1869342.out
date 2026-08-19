@@ -1,0 +1,16 @@
+host=node09.cognition.gla.alces.network job=1869342 arr=NA git=72accecb86b496557734031a1ba1a9e0825f79c6 date=2026-08-19T03:00:11+01:00
+{
+ "status": "COMPLETE",
+ "expected_units": 662,
+ "completed_units": 662,
+ "n_missing": 0,
+ "failed_units": [],
+ "J1_status": "DONE",
+ "J2_status": "DONE",
+ "J3a_status": "330/330",
+ "J3b_status": "330/330",
+ "git_head": "72accecb86b496557734031a1ba1a9e0825f79c6",
+ "git_dirty": "",
+ "timestamp": "2026-08-19T03:00:15"
+}
+J4 COMPLETE

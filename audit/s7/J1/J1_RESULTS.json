@@ -1,0 +1,467 @@
+{
+ "provenance": {
+  "host": "node09.cognition.gla.alces.network",
+  "time": "2026-08-19T02:51:44",
+  "slurm_job": "1869338",
+  "slurm_array": null,
+  "git_head": "72accecb86b496557734031a1ba1a9e0825f79c6",
+  "git_dirty": "",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda_available": false,
+  "device_name": null,
+  "base_seed": 20260818,
+  "unit": "J1",
+  "smoke": false,
+  "n_subjects": 954
+ },
+ "J1A": [
+  {
+   "source": "RAW",
+   "pc1": 0.9263044791605476,
+   "pc2": 0.07304464104419513,
+   "pc3": 0.000650879795257313,
+   "eff_rank": 1.848547960904496,
+   "pearson": [
+    [
+     1.0,
+     0.8067391129212929,
+     0.9050079191088993
+    ],
+    [
+     0.8067391129212929,
+     1.0,
+     0.9787079319433265
+    ],
+    [
+     0.9050079191088994,
+     0.9787079319433265,
+     1.0
+    ]
+   ],
+   "spearman": [
+    [
+     1.0,
+     0.7933001777031277,
+     0.896160890927482
+    ],
+    [
+     0.7933001777031277,
+     1.0,
+     0.9764365175319291
+    ],
+    [
+     0.896160890927482,
+     0.9764365175319291,
+     1.0
+    ]
+   ],
+   "subj_eff_rank_mean": 1.8694107207527189,
+   "subj_eff_rank_sd": 0.10009576499716615,
+   "subj_eff_rank_min": 1.478965848983641,
+   "subj_eff_rank_max": 2.1531511448916936
+  },
+  {
+   "source": "M1_B",
+   "pc1": 0.8923991770202825,
+   "pc2": 0.10658562033555678,
+   "pc3": 0.0010152026441607011,
+   "eff_rank": 1.955577688646363,
+   "pearson": [
+    [
+     0.9999999999999999,
+     0.7239985700493866,
+     0.8580178562098753
+    ],
+    [
+     0.7239985700493867,
+     1.0,
+     0.9713118469877009
+    ],
+    [
+     0.8580178562098754,
+     0.9713118469877009,
+     1.0
+    ]
+   ],
+   "spearman": [
+    [
+     1.0,
+     0.7211514112625281,
+     0.856645946813019
+    ],
+    [
+     0.721151411262528,
+     1.0,
+     0.9684701923431764
+    ],
+    [
+     0.8566459468130189,
+     0.9684701923431764,
+     1.0
+    ]
+   ],
+   "subj_eff_rank_mean": 1.8694107207527189,
+   "subj_eff_rank_sd": 0.10009576499716615,
+   "subj_eff_rank_min": 1.478965848983641,
+   "subj_eff_rank_max": 2.1531511448916936
+  },
+  {
+   "source": "M1_C",
+   "pc1": 0.902693830984648,
+   "pc2": 0.09310084228252352,
+   "pc3": 0.004205326732828481,
+   "eff_rank": 2.061209789518523,
+   "pearson": [
+    [
+     1.0,
+     0.7323895592491584,
+     0.8629153303991287
+    ],
+    [
+     0.7323895592491584,
+     1.0,
+     0.9619172017260657
+    ],
+    [
+     0.8629153303991286,
+     0.9619172017260657,
+     1.0
+    ]
+   ],
+   "spearman": [
+    [
+     0.9999999999999999,
+     0.7181195981994105,
+     0.8547564002497599
+    ],
+    [
+     0.7181195981994105,
+     0.9999999999999999,
+     0.9597559080900673
+    ],
+    [
+     0.8547564002497599,
+     0.9597559080900673,
+     0.9999999999999999
+    ]
+   ],
+   "subj_eff_rank_mean": 1.8745618442479433,
+   "subj_eff_rank_sd": 0.09738294918357443,
+   "subj_eff_rank_min": 1.4961729353473328,
+   "subj_eff_rank_max": 2.1582408728657594
+  },
+  {
+   "source": "M1_D",
+   "pc1": 0.9193627799405654,
+   "pc2": 0.07927652008440114,
+   "pc3": 0.001360699975033438,
+   "eff_rank": 1.9174096601680988,
+   "pearson": [
+    [
+     1.0,
+     0.7715479118557297,
+     0.8893531441160699
+    ],
+    [
+     0.7715479118557297,
+     1.0,
+     0.9724094978593835
+    ],
+    [
+     0.88935314411607,
+     0.9724094978593835,
+     1.0
+    ]
+   ],
+   "spearman": [
+    [
+     1.0,
+     0.7525433222963823,
+     0.8778687422788201
+    ],
+    [
+     0.7525433222963823,
+     1.0,
+     0.9687641034139785
+    ],
+    [
+     0.8778687422788201,
+     0.9687641034139785,
+     1.0
+    ]
+   ],
+   "subj_eff_rank_mean": 1.8782290392897352,
+   "subj_eff_rank_sd": 0.09812252895561253,
+   "subj_eff_rank_min": 1.4975402863579972,
+   "subj_eff_rank_max": 2.150381503683118
+  }
+ ],
+ "J1B": {
+  "n": 954,
+  "max_abs_err": 9.094947017729282e-13,
+  "max_rel_err": 1.2517314856925554e-15,
+  "total_mismatch": 0,
+  "n_s5": [
+   5,
+   17
+  ],
+  "n_s4": [
+   15,
+   47
+  ],
+  "n_cl": [
+   22,
+   71
+  ],
+  "n_tail": [
+   2,
+   7
+  ],
+  "total_overlap_bins": 0,
+  "total_extra_bins": 0,
+  "bins_on_nominal_edges": 0,
+  "tail_frac_mean": 0.07101114974608594
+ },
+ "J1C": [
+  {
+   "auc": 0.6396573366513247,
+   "bacc": 0.6056772886432205,
+   "fold_auc_sd": 0.04475739682414504,
+   "n_folds": 5,
+   "ci95": [
+    0.6008703316291107,
+    0.6731460223922664
+   ],
+   "branch": "B",
+   "repr": "Q1",
+   "clf": "linsvm"
+  },
+  {
+   "auc": 0.6286198771168711,
+   "bacc": 0.5884494263251778,
+   "fold_auc_sd": 0.021289648645752585,
+   "n_folds": 5,
+   "ci95": [
+    0.5927822375752659,
+    0.6639355984517863
+   ],
+   "branch": "B",
+   "repr": "X",
+   "clf": "linsvm"
+  },
+  {
+   "auc": 0.6399260058578695,
+   "bacc": 0.5990200180580942,
+   "fold_auc_sd": 0.04503757710464612,
+   "n_folds": 5,
+   "ci95": [
+    0.6016536448033072,
+    0.6735740521130205
+   ],
+   "branch": "B",
+   "repr": "Q1",
+   "clf": "logreg"
+  },
+  {
+   "auc": 0.6278447003897906,
+   "bacc": 0.595723314761391,
+   "fold_auc_sd": 0.021208428220159496,
+   "n_folds": 5,
+   "ci95": [
+    0.5920038037473296,
+    0.6632179353727149
+   ],
+   "branch": "B",
+   "repr": "X",
+   "clf": "logreg"
+  },
+  {
+   "auc": 0.6393710497918914,
+   "bacc": 0.6040608689907287,
+   "fold_auc_sd": 0.042808442634654685,
+   "n_folds": 5,
+   "ci95": [
+    0.6016118269631334,
+    0.6723713635808266
+   ],
+   "branch": "C",
+   "repr": "Q1",
+   "clf": "linsvm"
+  },
+  {
+   "auc": 0.6249730229690149,
+   "bacc": 0.5964654583893061,
+   "fold_auc_sd": 0.017095516549654525,
+   "n_folds": 5,
+   "ci95": [
+    0.5902876456276585,
+    0.6584119149377486
+   ],
+   "branch": "C",
+   "repr": "X",
+   "clf": "linsvm"
+  },
+  {
+   "auc": 0.639952432337202,
+   "bacc": 0.6014116144376666,
+   "fold_auc_sd": 0.04310987603698968,
+   "n_folds": 5,
+   "ci95": [
+    0.6021345117586162,
+    0.6731845589043755
+   ],
+   "branch": "C",
+   "repr": "Q1",
+   "clf": "logreg"
+  },
+  {
+   "auc": 0.6322270915457289,
+   "bacc": 0.6111409632451716,
+   "fold_auc_sd": 0.016360759862412543,
+   "n_folds": 5,
+   "ci95": [
+    0.5979550703441242,
+    0.6654625858852893
+   ],
+   "branch": "C",
+   "repr": "X",
+   "clf": "logreg"
+  },
+  {
+   "auc": 0.5988416393226013,
+   "bacc": 0.5642405690501884,
+   "fold_auc_sd": 0.0254166447017292,
+   "n_folds": 5,
+   "ci95": [
+    0.5625323219405969,
+    0.633441846365109
+   ],
+   "branch": "D",
+   "repr": "Q1",
+   "clf": "linsvm"
+  },
+  {
+   "auc": 0.6486026999053051,
+   "bacc": 0.6020568609746966,
+   "fold_auc_sd": 0.01965580654546631,
+   "n_folds": 5,
+   "ci95": [
+    0.6131435842959688,
+    0.6824386618199145
+   ],
+   "branch": "D",
+   "repr": "X",
+   "clf": "linsvm"
+  },
+  {
+   "auc": 0.594005593604792,
+   "bacc": 0.5790129709969389,
+   "fold_auc_sd": 0.02493152226339204,
+   "n_folds": 5,
+   "ci95": [
+    0.5586596022822181,
+    0.6281222179193272
+   ],
+   "branch": "D",
+   "repr": "Q1",
+   "clf": "logreg"
+  },
+  {
+   "auc": 0.6497258252769275,
+   "bacc": 0.6112708934352221,
+   "fold_auc_sd": 0.018973473082662583,
+   "n_folds": 5,
+   "ci95": [
+    0.6145409879414528,
+    0.6836331334172442
+   ],
+   "branch": "D",
+   "repr": "X",
+   "clf": "logreg"
+  }
+ ],
+ "J1D": [
+  {
+   "branch": "B",
+   "clf": "linsvm",
+   "control": "shuffled_FC_trainonly",
+   "perm_seed": 0,
+   "auc": 0.490920302142747,
+   "bacc": 0.48476293245832325
+  },
+  {
+   "branch": "B",
+   "clf": "linsvm",
+   "control": "shuffled_FC_trainonly",
+   "perm_seed": 1,
+   "auc": 0.4991653636944218,
+   "bacc": 0.5230945407298113
+  },
+  {
+   "branch": "B",
+   "clf": "linsvm",
+   "control": "shuffled_FC_trainonly",
+   "perm_seed": 2,
+   "auc": 0.4907881697460856,
+   "bacc": 0.5018278314871502
+  },
+  {
+   "branch": "B",
+   "clf": "linsvm",
+   "control": "training_mean_FC",
+   "perm_seed": null,
+   "auc": 0.6357902618423661,
+   "bacc": 0.5967891827611267
+  }
+ ],
+ "J1E": {
+  "arch": {
+   "P": {
+    "normalize_nodes": false,
+    "message_relu": false,
+    "post_bn_relu": false,
+    "drop_ratio": 0.0,
+    "note": "paper_exact profile / paper-literal Sec 2.2.1"
+   },
+   "O": {
+    "normalize_nodes": true,
+    "message_relu": true,
+    "post_bn_relu": true,
+    "drop_ratio": 0.0,
+    "note": "original qbmizsj hardcoded behaviour; dropout inactive in eval"
+   },
+   "C": {
+    "normalize_nodes": true,
+    "message_relu": true,
+    "post_bn_relu": true,
+    "drop_ratio": 0.3,
+    "note": "current fork 'corrected' argparse defaults"
+   }
+  },
+  "h_dim": 32,
+  "z_dim": 32,
+  "AUDIT_CONSTRUCTOR_ERROR_DETECTED": "A first S7 run (J1 job 1869274, J2 1869275, J3a 1869276) recorded z_dim=300. That was an AUDIT-SIDE constructor error: s7_core.build_model used GInfoMinMax's STANDALONE class default proj_hidden_dim=300 instead of instantiating as the real A-GCL callers do. Corrected 2026-08-19; the affected J2/J3a/J3b outputs were discarded and recomputed.",
+  "proj_dim_ledger": {
+   "class_default": "GInfoMinMax.__init__(self, encoder, proj_hidden_dim=300)  <- standalone default, never used by any A-GCL training script",
+   "actual_call_site_current": "agcl_ABIDE.py:98-102 and agcl_ABIDE_queue.py:229-233 -> GInfoMinMax(TUEncoder(...), args.emb_dim), --emb_dim default 32",
+   "actual_call_site_original": "bed5441:A-GCL/adgcl_edge.py:50-53 -> GInfoMinMax(TUEncoder(...), args.emb_dim), --emb_dim default 32",
+   "standalone_default_z_dim": 300,
+   "actual_agcl_experimental_z_dim": 32,
+   "proj_head": "Linear(32,32) -> ReLU -> Linear(32,32)"
+  },
+  "eval_repr": {
+   "P": "z (paper_exact profile sets eval_representation='z')",
+   "O": "h (original passes model.encoder to the evaluator -> pooled encoder output, PRE-projection)",
+   "C_corrected": "z (argparse default)",
+   "C_paper_exact": "z (profile override)",
+   "paper": "AMBIGUOUS - paper says only that an SVM classifies 'the extracted features'"
+  },
+  "pooling": {
+   "default": "standard",
+   "overridden_anywhere": false,
+   "note": "argparse default 'standard'; no call site sets layerwise in the production mains"
+  },
+  "arch_equivalence": "O and C have IDENTICAL architecture flags; they differ only in drop_ratio (inactive under eval()) and in the h-vs-z readout."
+ }
+}

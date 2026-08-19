@@ -1,0 +1,35 @@
+S7 PRE-REGISTERED INTERPRETATION RULES
+Written 2026-08-19 BEFORE any S7 performance result was computed or observed.
+git HEAD at writing: 72accecb86b496557734031a1ba1a9e0825f79c6
+These rules MUST NOT change after results are seen.
+
+Q1 LINEAR PROBE (J1C)
+  AUC >= 0.70          strong linear diagnostic accessibility survives parameter-free aggregation
+  0.60 <= AUC < 0.70   partial linear accessibility
+  AUC <  0.60          weak linear accessibility
+  A low Q1 AUC MUST NOT be described as irreversible information destruction. The probe
+  measures LINEAR ACCESSIBILITY ONLY, through a fixed parameter-free operator, with linear
+  classifiers. It says nothing about what a trained non-linear model could recover.
+
+RANDOM ENCODER (J3)
+  If the paired mean (O_B_h - P_B_h) >= 0.05 AUC, with the bootstrap 95% CI supporting a
+  consistent effect (CI excluding 0), classify O-specific architecture differences as
+  POTENTIALLY LOAD-BEARING. Otherwise classify as not demonstrated at this sample size.
+  Comparisons are paired by IDENTICAL encoder seed. Independently sampled seed sets must
+  never be compared.
+  Weak random-encoder AUC means weak linear accessibility through RANDOM weights. It does
+  NOT prove training cannot improve the representation.
+
+h VERSUS z
+  If a stable |h - z| >= 0.03 AUC difference holds across encoder seeds (paired, CI
+  excluding 0), carry BOTH h and z forward into later evaluation as an explicit fork
+  rather than choosing one.
+
+REFERENCE POINTS (frozen, external to S7)
+  FC-only nested-CV AUC 0.7565 ; site-held-out 0.7432 (S5.5)
+  ALFF-only best 0.6497 ; ALFF added nothing beyond FC (S5.5)
+
+SCOPE
+  NO A-GCL training, view-learner training, memory-bank training or contrastive
+  optimization is performed in S7. All encoders are RANDOM and UNTRAINED, run under
+  eval(), with requires_grad disabled except in the explicit gradient-flow check.

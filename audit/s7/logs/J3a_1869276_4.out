@@ -1,0 +1,36 @@
+host=node16.cognition.gla.alces.network job=1869315 arr=4 git=72accecb86b496557734031a1ba1a9e0825f79c6 date=2026-08-19T02:44:10+01:00
+total units 330, this task 33, device cpu
+done emb_s000_O_C 1.0s
+done emb_s001_O_D 0.9s
+done emb_s002_C_B 0.9s
+done emb_s003_C_C 0.9s
+done emb_s004_C_D 0.9s
+done emb_s006_P_B 0.8s
+done emb_s007_P_C 0.7s
+done emb_s008_P_D 0.8s
+done emb_s009_O_B 0.9s
+done emb_s010_O_C 0.9s
+done emb_s011_O_D 0.9s
+done emb_s012_C_B 0.9s
+done emb_s013_C_C 0.9s
+done emb_s014_C_D 0.9s
+done emb_s016_P_B 0.7s
+done emb_s017_P_C 0.7s
+done emb_s018_P_D 0.8s
+done emb_s019_O_B 0.9s
+done emb_s020_O_C 0.9s
+done emb_s021_O_D 0.9s
+done emb_s022_C_B 0.9s
+done emb_s023_C_C 0.9s
+done emb_s024_C_D 0.9s
+done emb_s026_P_B 0.7s
+done emb_s027_P_C 0.7s
+done emb_s028_P_D 0.7s
+done emb_s029_O_B 0.9s
+done emb_s031_O_B 1.0s
+done emb_s034_C_B 0.9s
+done emb_s038_P_B 0.7s
+done emb_s041_O_B 0.9s
+done emb_s044_C_B 0.9s
+done emb_s048_P_B 0.7s
+J3a TASK COMPLETE

@@ -1,0 +1,89 @@
+host=node09.cognition.gla.alces.network job=1869337 git=72accecb86b496557734031a1ba1a9e0825f79c6 date=2026-08-19T02:50:10+01:00
+CURRENT call site : agcl_ABIDE.py:98-102 / agcl_ABIDE_queue.py:229-233 -> GInfoMinMax(TUEncoder(...), args.emb_dim)
+ORIGINAL call site: bed5441:A-GCL/adgcl_edge.py:50-53                  -> GInfoMinMax(TUEncoder(...), args.emb_dim)
+--emb_dim default = 32 in BOTH  => second positional argument = 32
+
+  P_B: proj[0] 32->32  proj[-1] 32->32  h(3, 32) z(3, 32)  OK
+  P_C: proj[0] 32->32  proj[-1] 32->32  h(3, 32) z(3, 32)  OK
+  P_D: proj[0] 32->32  proj[-1] 32->32  h(3, 32) z(3, 32)  OK
+  O_B: proj[0] 32->32  proj[-1] 32->32  h(3, 32) z(3, 32)  OK
+  O_C: proj[0] 32->32  proj[-1] 32->32  h(3, 32) z(3, 32)  OK
+  O_D: proj[0] 32->32  proj[-1] 32->32  h(3, 32) z(3, 32)  OK
+  C_B: proj[0] 32->32  proj[-1] 32->32  h(3, 32) z(3, 32)  OK
+  C_C: proj[0] 32->32  proj[-1] 32->32  h(3, 32) z(3, 32)  OK
+  C_D: proj[0] 32->32  proj[-1] 32->32  h(3, 32) z(3, 32)  OK
+
+proj_head: Sequential(
+  (0): Linear(in_features=32, out_features=32, bias=True)
+  (1): ReLU(inplace=True)
+  (2): Linear(in_features=32, out_features=32, bias=True)
+)
+
+CONTRACT_ASSERT_PASS  (h=[N,32], z=[N,32] for all 9 paths)
+J1A done
+J1B done
+J1C done
+J1D done
+J1 COMPLETE
+traced P B
+traced P C
+traced P D
+traced O B
+traced O C
+traced O D
+traced C B
+traced C C
+traced C D
+estimated full-tensor storage: 0.00 GB
+J2 COMPLETE
+total units 21, this task 21, device cpu
+done emb_s000_P_B 0.1s
+done emb_s000_P_C 0.0s
+done emb_s000_P_D 0.0s
+done emb_s000_O_B 0.0s
+done emb_s000_O_C 0.0s
+done emb_s000_O_D 0.0s
+done emb_s000_C_B 0.0s
+done emb_s000_C_C 0.0s
+done emb_s000_C_D 0.0s
+done emb_s001_P_B 0.0s
+done emb_s001_P_C 0.0s
+done emb_s001_P_D 0.0s
+done emb_s001_O_B 0.0s
+done emb_s001_O_C 0.0s
+done emb_s001_O_D 0.0s
+done emb_s001_C_B 0.0s
+done emb_s001_C_C 0.0s
+done emb_s001_C_D 0.0s
+done emb_s002_P_B 0.0s
+done emb_s002_O_B 0.0s
+done emb_s002_C_B 0.0s
+J3a TASK COMPLETE
+21 embeddings, this task 21
+done probe_emb_s000_C_B 1.0
+done probe_emb_s000_C_C 0.7333
+done probe_emb_s000_C_D 0.5333
+done probe_emb_s000_O_B 1.0
+done probe_emb_s000_O_C 0.7333
+done probe_emb_s000_O_D 0.5333
+done probe_emb_s000_P_B 0.8667
+done probe_emb_s000_P_C 1.0
+done probe_emb_s000_P_D 0.6667
+done probe_emb_s001_C_B 1.0
+done probe_emb_s001_C_C 0.8
+done probe_emb_s001_C_D 0.4
+done probe_emb_s001_O_B 1.0
+done probe_emb_s001_O_C 0.8
+done probe_emb_s001_O_D 0.4
+done probe_emb_s001_P_B 0.8667
+done probe_emb_s001_P_C 0.9333
+done probe_emb_s001_P_D 0.7333
+done probe_emb_s002_C_B 1.0
+done probe_emb_s002_O_B 1.0
+done probe_emb_s002_P_B 0.8667
+J3b TASK COMPLETE
+--- determinism: identical rerun of one J3a unit ---
+determinism identical: True
+--- benchmark: ONE FULL 954-subject random-encoder unit on CPU ---
+BENCH_CPU {"device": "cpu", "forward_s": 1.05, "serialize_s": 0.01, "probe_s": 0.62, "total_s": 1.67, "h_shape": [954, 32], "z_shape": [954, 32]}
+SMOKE_CPU_PASS
