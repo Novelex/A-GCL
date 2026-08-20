@@ -1,0 +1,26 @@
+host=node12.cognition.gla.alces.network job=1870213 git=f6c49d49761ef3bf82b3d59798ee1e8ace6b62dc seed=20260818 date=2026-08-20T19:09:44+01:00
+[P s0] ep10 view=5.6356 model=4.5416 keep=0.0173
+[P s0] ep20 view=5.6406 model=4.5107 keep=0.0059
+[P s0] ep30 view=5.6420 model=4.4739 keep=0.0035
+[P s0] ep40 view=5.6431 model=4.4468 keep=0.0021
+[P s0] ep50 view=5.6506 model=4.4450 keep=0.0045
+[P s0] ep60 view=5.6524 model=4.4286 keep=0.0056
+[P s0] ep70 view=5.6501 model=4.4106 keep=0.0051
+[P s0] ep80 view=5.6572 model=4.4217 keep=0.0090
+[P s0] ep90 view=5.6533 model=4.3973 keep=0.0077
+[P s0] ep100 view=5.6777 model=4.4210 keep=0.0162
+[P s0] ep110 view=5.7492 model=4.5110 keep=0.0270
+[P s0] ep120 view=5.7969 model=4.4378 keep=0.0377
+[P s0] ep130 view=5.7631 model=4.4435 keep=0.0360
+[P s0] ep140 view=5.7420 model=4.4153 keep=0.0258
+[P s0] ep150 view=5.7800 model=4.4294 keep=0.0353
+[P s0] ep160 view=5.7270 model=4.4371 keep=0.0376
+[P s0] ep170 view=5.7003 model=4.3942 keep=0.0212
+[P s0] ep180 view=5.7215 model=4.3976 keep=0.0213
+[P s0] ep190 view=5.6827 model=4.3966 keep=0.0223
+[P s0] ep200 view=5.7674 model=4.4028 keep=0.0329
+P h: AUC=0.4764 [0.4417,0.5119] bacc=0.4874 sens=0.3275 spec=0.6473
+P z: AUC=0.4933 [0.4587,0.5286] bacc=0.5011 sens=0.3890 spec=0.6132
+P h_unweighted_origslip: AUC=0.5247 [0.4872,0.5626] bacc=0.5078 sens=0.4044 spec=0.6112
+P z_unweighted_origslip: AUC=0.4973 [0.4595,0.5355] bacc=0.4836 sens=0.3780 spec=0.5892
+PILOT COMPLETE P 3976.5 s

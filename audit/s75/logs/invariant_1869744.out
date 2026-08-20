@@ -1,0 +1,10 @@
+host=node11.cognition.gla.alces.network job=1869744 arr=NA date=2026-08-19T20:36:04+01:00
+sorted_signed_strength_90 90 0.5266
+sorted_absolute_strength_90 90 0.4884
+FC_eigenvalues_90 90 0.5392
+FC_eig_zerodiag_90 90 0.5392
+sorted_Q1_perchannel_270 270 0.4696
+sorted_Q1_nodenorm_90 90 0.4852
+Q1_singular_values_3 3 0.476
+COMBINED_invariant 540 0.5339
+SECTION COMPLETE invariant

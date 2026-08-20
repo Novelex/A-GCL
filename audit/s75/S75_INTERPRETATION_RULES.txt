@@ -1,0 +1,45 @@
+S7.5 INTERPRETATION RULES — written BEFORE any S7.5 result was computed or observed.
+git HEAD at writing: f6c49d49761ef3bf82b3d59798ee1e8ace6b62dc
+These rules must not change after results are seen.
+
+BANNED PHRASES (not provable by these probes, must not appear in the S7.5 report):
+  "hard A-GCL ceiling"
+  "information permanently destroyed"
+  "A-GCL cannot recover this"
+  "A-GCL is only a regional-strength model"
+
+WHAT THE ENCODER-STAGE PROBES MEASURE
+  Every encoder-stage probe uses a RANDOM, UNTRAINED encoder under eval().
+  A low AUC therefore means: WEAK LINEAR ACCESSIBILITY at that representation,
+  through a linear classifier, at random initialization.
+  It does NOT mean information was destroyed, and it places NO bound on what a
+  trained encoder could represent.
+
+WHAT THE PERMUTATION-INVARIANT FEATURES MEASURE
+  Hand-designed permutation-invariant summaries (sorted strengths, FC eigenvalues,
+  sorted Q1 channels) are BASELINES. They estimate how much diagnosis is linearly
+  accessible THROUGH THOSE SPECIFIC SUMMARIES. They do NOT bound the class of all
+  permutation-invariant neural networks, and they are not architectural ceilings.
+
+PRE-POOLING vs POOLING
+  If flattened final nodes beat h, the ONLY permitted statement is:
+  "fixed-ROI regional information is more linearly accessible before
+   permutation-invariant sum pooling at random initialization."
+  No claim about training may be attached to it.
+
+ROI-ALIGNMENT CONTROL
+  Independent per-subject ROI permutation is a DIAGNOSTIC of dependence on consistent
+  anatomical correspondence. It is NOT a biological model and not a claim about A-GCL.
+
+SOURCE-TRUTH STATEMENTS THAT MUST BE MAINTAINED
+  - A-GCL uses trainable edge-level augmentation.
+  - ViewLearner consumes source and destination node embeddings and emits one edge logit,
+    so the trained model CAN learn edge-specific structure, not only strength summaries.
+  - global_add_pool makes the graph representation permutation-invariant.
+  - Any paper ablation percentage not confirmed from the primary text/table is reported as
+    UNKNOWN / NOT VERIFIED.
+
+FROZEN REFERENCES (external to S7.5)
+  aligned full FC, 4005 upper-triangle edges: AUC 0.7565, LOSO 0.7432 (S5.5)
+  Q1 flattened (branch B, linSVM): AUC 0.6397 (S7 J1C)
+  random-encoder h/z: ~0.50 (S7 J3)

@@ -1,0 +1,5 @@
+path,seed,nodes_minus_h,h_minus_z,Q1_minus_nodes
+P,0,0.0,0.0,
+P,1,0.0,0.0,
+O,0,0.0,0.0,
+O,1,-0.1333333333333333,0.0,

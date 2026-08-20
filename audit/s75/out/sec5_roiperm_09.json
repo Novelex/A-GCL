@@ -1,0 +1,23 @@
+{
+ "rows": [
+  {
+   "perm_seed": 9,
+   "auc": 0.5016230262723249,
+   "bacc": 0.488284260829351,
+   "fold_sd": 0.025550390761080614,
+   "ci_lo": NaN,
+   "ci_hi": NaN,
+   "n_feat": 4005
+  },
+  {
+   "perm_seed": 19,
+   "auc": 0.4910216036468541,
+   "bacc": 0.49248607104318526,
+   "fold_sd": 0.011908624175252062,
+   "ci_lo": NaN,
+   "ci_hi": NaN,
+   "n_feat": 4005
+  }
+ ],
+ "common_perm_sanity": null
+}

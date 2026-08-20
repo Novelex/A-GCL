@@ -1,0 +1,4 @@
+host=node12.cognition.gla.alces.network job=1870208 git=f6c49d49761ef3bf82b3d59798ee1e8ace6b62dc seed=20260818 date=2026-08-20T18:57:37+01:00
+[P s0] ep10 view=5.6280 model=4.5509 keep=0.0248
+[P s0] ep20 view=5.6347 model=4.4841 keep=0.0056
+[P s0] ep30 view=5.6325 model=4.4745 keep=0.0111

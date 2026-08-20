@@ -1,0 +1,26 @@
+host=node14.cognition.gla.alces.network job=1870214 git=f6c49d49761ef3bf82b3d59798ee1e8ace6b62dc seed=20260818 date=2026-08-20T19:09:44+01:00
+[O s0] ep10 view=7.5515 model=-0.0493 keep=0.7476
+[O s0] ep20 view=8.6044 model=-5.0531 keep=0.8804
+[O s0] ep30 view=6.5379 model=-4.3289 keep=0.9228
+[O s0] ep40 view=6.0365 model=-3.6739 keep=0.9108
+[O s0] ep50 view=6.5142 model=-4.6180 keep=0.9330
+[O s0] ep60 view=6.6656 model=-4.7667 keep=0.9267
+[O s0] ep70 view=8.2344 model=-5.6403 keep=0.9413
+[O s0] ep80 view=7.9678 model=-4.4113 keep=0.9439
+[O s0] ep90 view=6.8161 model=-4.2043 keep=0.9840
+[O s0] ep100 view=8.0989 model=-5.5174 keep=0.9124
+[O s0] ep110 view=7.8402 model=-5.5667 keep=0.9222
+[O s0] ep120 view=8.0701 model=-5.7367 keep=0.8957
+[O s0] ep130 view=5.8482 model=-2.8219 keep=0.9936
+[O s0] ep140 view=7.4031 model=-4.2498 keep=0.9960
+[O s0] ep150 view=8.2120 model=-5.8609 keep=0.8819
+[O s0] ep160 view=7.3729 model=-5.2837 keep=0.9698
+[O s0] ep170 view=6.2932 model=-4.2483 keep=0.9725
+[O s0] ep180 view=10.0830 model=-4.7437 keep=0.9689
+[O s0] ep190 view=10.6402 model=-5.8642 keep=0.9729
+[O s0] ep200 view=11.1857 model=-6.0848 keep=0.9726
+O h: AUC=0.5289 [0.4933,0.5640] bacc=0.5359 sens=0.4044 spec=0.6673
+O z: AUC=0.4925 [0.4572,0.5305] bacc=0.4987 sens=0.3341 spec=0.6633
+O h_unweighted_origslip: AUC=0.4617 [0.4256,0.4991] bacc=0.4580 sens=0.3648 spec=0.5511
+O z_unweighted_origslip: AUC=0.4831 [0.4492,0.5208] bacc=0.4754 sens=0.3736 spec=0.5772
+PILOT COMPLETE O 2671.6 s

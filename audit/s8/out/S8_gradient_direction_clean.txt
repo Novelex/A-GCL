@@ -1,0 +1,26 @@
+CLEAN GRADIENT-DIRECTION TEST (BN-drift-free: case1 omits the model half entirely;
+probes always eval-mode, fixed noise, bank deep-copied — nothing probe-side mutates)
+
+[P] CASE 1 — freeze encoder, ONE view-learner step (ascends view_obj):
+    view_obj +5.30534 -> +5.30452  d=-0.00082  (own objective WORSENED <<<)
+    InfoNCE  +3.41184 -> +3.41236  d=+0.00052
+    reg 0.0002 -> 0.0325   cr +4.7345 -> +4.8930
+[P] CASE 2 — freeze VL, ONE encoder step (descends model_obj):
+    model_obj +5.30564 -> +5.62346  d=+0.31782  (own objective WORSENED <<<)
+    InfoNCE  +3.41184 -> +3.43231  d=+0.02047
+
+[O] CASE 1 — freeze encoder, ONE view-learner step (ascends view_obj):
+    view_obj +3.60708 -> +3.90279  d=+0.29571  (own objective IMPROVED)
+    InfoNCE  +3.32962 -> +3.32962  d=+0.00000
+    reg 0.5162 -> 0.5069   cr +3.2746 -> +3.9674
+[O] CASE 2 — freeze VL, ONE encoder step (descends model_obj):
+    model_obj +2.01977 -> +1.60210  d=-0.41767  (own objective IMPROVED)
+    InfoNCE  +3.32962 -> +3.21440  d=-0.11521
+
+[C] CASE 1 — freeze encoder, ONE view-learner step (ascends view_obj):
+    view_obj +4.28256 -> +4.31033  d=+0.02777  (own objective IMPROVED)
+    InfoNCE  +3.32932 -> +3.32936  d=+0.00004
+    reg 0.4766 -> 0.4905   cr +0.0000 -> +0.0000
+[C] CASE 2 — freeze VL, ONE encoder step (descends model_obj):
+    model_obj +3.32932 -> +3.38048  d=+0.05117  (own objective WORSENED <<<)
+    InfoNCE  +3.32932 -> +3.21624  d=-0.11308

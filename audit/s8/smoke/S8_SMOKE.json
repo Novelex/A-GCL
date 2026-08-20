@@ -1,0 +1,128 @@
+{
+ "provenance": {
+  "host": "login1.cognition.gla.alces.network",
+  "time": "2026-08-20T19:09:28",
+  "slurm_job": null,
+  "slurm_array": null,
+  "git_head": "f6c49d49761ef3bf82b3d59798ee1e8ace6b62dc",
+  "git_dirty": "",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda_available": false,
+  "device_name": null,
+  "base_seed": 20260818,
+  "unit": "S8_smoke"
+ },
+ "configs": {
+  "P_s0": {
+   "losses_finite": true,
+   "model_params_changed": true,
+   "view_params_changed": true,
+   "max_param_delta_model": 0.0010006800293922424,
+   "max_param_delta_view": 0.0010006800293922424,
+   "final": {
+    "view_loss": 3.1446967124938965,
+    "model_loss": 3.7240867614746094,
+    "infonce_view": 1.9319796562194824,
+    "infonce_model": 1.7321196794509888,
+    "reg": 0.3256374001502991,
+    "cr": 4.659979343414307,
+    "keep_mu": 0.3256373703479767,
+    "keep_sampled": 0.36857572197914124,
+    "epoch": 2
+   }
+  },
+  "P_s1": {
+   "losses_finite": true,
+   "model_params_changed": true,
+   "view_params_changed": true,
+   "max_param_delta_model": 0.0010007023811340332,
+   "max_param_delta_view": 0.0010007023811340332,
+   "final": {
+    "view_loss": 2.4867563247680664,
+    "model_loss": 3.190526247024536,
+    "infonce_view": 1.9344819784164429,
+    "infonce_model": 1.3608261346817017,
+    "reg": 0.6520177721977234,
+    "cr": 4.640774726867676,
+    "keep_mu": 0.6520176529884338,
+    "keep_sampled": 0.6154525876045227,
+    "epoch": 2
+   }
+  },
+  "O_s0": {
+   "losses_finite": true,
+   "model_params_changed": true,
+   "view_params_changed": true,
+   "max_param_delta_model": 0.0010007023811340332,
+   "max_param_delta_view": 0.0010007023811340332,
+   "final": {
+    "view_loss": 1.8190765380859375,
+    "model_loss": 0.25969183444976807,
+    "infonce_view": 1.8912721872329712,
+    "infonce_model": 1.2069917917251587,
+    "reg": 0.5226972103118896,
+    "cr": 2.432996988296509,
+    "keep_mu": NaN,
+    "keep_sampled": 0.477302610874176,
+    "epoch": 2
+   }
+  },
+  "O_s1": {
+   "losses_finite": true,
+   "model_params_changed": true,
+   "view_params_changed": true,
+   "max_param_delta_model": 0.0010006800293922424,
+   "max_param_delta_view": 0.0010006800293922424,
+   "final": {
+    "view_loss": 1.949758768081665,
+    "model_loss": 1.2433371543884277,
+    "infonce_view": 1.8927490711212158,
+    "infonce_model": 1.1426186561584473,
+    "reg": 0.46299290657043457,
+    "cr": 2.457488536834717,
+    "keep_mu": NaN,
+    "keep_sampled": 0.5370069742202759,
+    "epoch": 2
+   }
+  },
+  "C_s0": {
+   "losses_finite": true,
+   "model_params_changed": true,
+   "view_params_changed": true,
+   "max_param_delta_model": 0.0010007023811340332,
+   "max_param_delta_view": 0.0010006800293922424,
+   "final": {
+    "view_loss": 2.036961793899536,
+    "model_loss": -1.4435502290725708,
+    "infonce_view": 1.8778380155563354,
+    "infonce_model": -0.5022264719009399,
+    "reg": 0.46759670972824097,
+    "cr": -1.9401741027832031,
+    "keep_mu": 0.46759679913520813,
+    "keep_sampled": 0.47862541675567627,
+    "epoch": 2
+   }
+  },
+  "C_s1": {
+   "losses_finite": true,
+   "model_params_changed": true,
+   "view_params_changed": true,
+   "max_param_delta_model": 0.0010006800293922424,
+   "max_param_delta_view": 0.0010007023811340332,
+   "final": {
+    "view_loss": 1.2498928308486938,
+    "model_loss": -1.2354214191436768,
+    "infonce_view": 1.8734925985336304,
+    "infonce_model": -0.510236918926239,
+    "reg": 0.5541138052940369,
+    "cr": -4.329568386077881,
+    "keep_mu": 0.5541138052940369,
+    "keep_sampled": 0.5375107526779175,
+    "epoch": 2
+   }
+  }
+ },
+ "deterministic_cpu_rerun": true,
+ "runtime_s": 2.0
+}

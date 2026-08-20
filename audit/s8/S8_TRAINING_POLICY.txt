@@ -1,0 +1,46 @@
+S8 TRAINING POLICY — locked BEFORE any accuracy number was computed or observed.
+written: 2026-08-20 | git HEAD f6c49d49761ef3bf82b3d59798ee1e8ace6b62dc
+No S8 training accuracy exists at the time of writing (smoke printed losses only).
+These rules must not change after results are seen.
+
+DATA
+  cohort: frozen 954 (455 ASD / 499 NC), M1_B graph cache (sha 312266b2...), 90 nodes,
+  8100 signed PCC edges, diagonal retained. data_dense_v3.pt and norm_matrix NOT used.
+
+PRETRAINING (self-supervised, mirrors production protocol)
+  the encoder+view learner train on ALL 954 graphs WITHOUT labels (transductive SSL,
+  exactly as the production script iterates its dataloader over the full dataset).
+  Labels are never visible to training. This is recorded, not hidden.
+
+LOCKED HYPERPARAMETERS (identical across P/O/C unless the contract itself differs)
+  seed              20260818 (single pilot seed; multi-seed comes later if pilot is sane)
+  epochs            200 (paper Sec 2.4) — NO early stopping, NO best-epoch selection
+  optimizer         Adam, lr 5e-4 for BOTH model and view learner (all three contracts)
+  batch_size        32 ; emb_dim 32 ; z dim 32 ; mlp_edge_model_dim 64
+  reg_lambda 2.0 ; cr_lambda 0.4 ; max_length 256
+  per-contract differences (temps, signs, mask, bank, arch flags) are the CONTRACTS
+  THEMSELVES, frozen in S8_START_REPORT.md — they are the experiment, not free knobs.
+  threads pinned to 1 -> bitwise-reproducible CPU training (proven in smoke).
+
+EVALUATION
+  representation: BOTH h [954,32] and z [954,32] extracted at the FINAL epoch only.
+  classifier: linear SVM inside Pipeline(StandardScaler, LinearSVC), C grid
+  {1e-4..1e2} chosen by inner StratifiedKFold(5) on training folds only.
+  splits: the EXACT frozen S3C outer 5-fold splits (sha 28fed44d...). Nested CV only.
+  metrics: pooled OOF ROC-AUC (primary), balanced accuracy, accuracy, sensitivity,
+  specificity, bootstrap 95% CI; loss curves recorded every epoch.
+  NO best-epoch selection, NO representation cherry-picking: h and z BOTH reported for
+  ALL configs regardless of which looks better. NO threshold tuning (decision_function>0).
+  Reference points (frozen): FC-only linear SVM 0.7565 / LOSO 0.7432; M1-only 0.6497;
+  random-encoder h/z ~0.50; Q1 0.6397.
+
+COMPUTE
+  CPU (deterministic, 1 thread) — GPUs are saturated (47/48 busy) and the model is tiny;
+  smoke measured ~0.1 s/step -> 6000 steps ≈ well under a 12 h wall. One SLURM job per
+  contract, run in parallel. GPU is NOT used for the pilot; this is a measured decision.
+
+WHAT THE PILOT CAN AND CANNOT SHOW
+  It compares three faithful contracts on identical data/seed/epochs. One seed cannot
+  establish superiority claims; it establishes training SANITY (losses move, no collapse,
+  no NaN) and first-order effect sizes to size the follow-up. No winner is declared from
+  the pilot alone.

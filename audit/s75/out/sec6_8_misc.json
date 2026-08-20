@@ -1,0 +1,192 @@
+{
+ "perm_invariance": [
+  {
+   "path": "P",
+   "subject": 0,
+   "h_max_abs": 0.00390625,
+   "h_max_rel": 6.31725185940013e-07,
+   "z_max_abs": 0.004150390625,
+   "node_equivar_max_abs": 0.0001068115234375
+  },
+  {
+   "path": "P",
+   "subject": 1,
+   "h_max_abs": 0.00390625,
+   "h_max_rel": 1.3305985930855968e-06,
+   "z_max_abs": 0.00244140625,
+   "node_equivar_max_abs": 0.000102996826171875
+  },
+  {
+   "path": "P",
+   "subject": 2,
+   "h_max_abs": 0.001953125,
+   "h_max_rel": 7.214237029984361e-07,
+   "z_max_abs": 0.0018310546875,
+   "node_equivar_max_abs": 8.7738037109375e-05
+  },
+  {
+   "path": "O",
+   "subject": 0,
+   "h_max_abs": 1.33514404296875e-05,
+   "h_max_rel": 5.839031018695096e-07,
+   "z_max_abs": 7.62939453125e-06,
+   "node_equivar_max_abs": 1.7881393432617188e-07
+  },
+  {
+   "path": "O",
+   "subject": 1,
+   "h_max_abs": 9.5367431640625e-06,
+   "h_max_rel": 2.3026743747323053e-06,
+   "z_max_abs": 5.7220458984375e-06,
+   "node_equivar_max_abs": 1.862645149230957e-07
+  },
+  {
+   "path": "O",
+   "subject": 2,
+   "h_max_abs": 9.5367431640625e-06,
+   "h_max_rel": 5.554870767809916e-07,
+   "z_max_abs": 4.76837158203125e-06,
+   "node_equivar_max_abs": 1.9371509552001953e-07
+  }
+ ],
+ "roi_importance": {
+  "top10": [
+   [
+    "Temporal_Inf_R",
+    0.0374
+   ],
+   [
+    "Heschl_R",
+    0.0317
+   ],
+   [
+    "Precuneus_R",
+    0.0257
+   ],
+   [
+    "Occipital_Inf_R",
+    0.0238
+   ],
+   [
+    "Temporal_Mid_R",
+    0.0234
+   ],
+   [
+    "Fusiform_L",
+    0.0229
+   ],
+   [
+    "Thalamus_L",
+    0.022
+   ],
+   [
+    "Temporal_Mid_L",
+    0.022
+   ],
+   [
+    "Occipital_Mid_R",
+    0.0218
+   ],
+   [
+    "Insula_L",
+    0.0214
+   ]
+  ],
+  "frac_top5": 0.14191756424530813,
+  "frac_top10": 0.2521061442601767,
+  "frac_top20": 0.43544097200867526,
+  "n_for_50pct": 25,
+  "per_roi": {
+   "Precentral_L": 0.0050064875195775915,
+   "Precentral_R": 0.01101159428795359,
+   "Frontal_Sup_L": 0.00921616419787705,
+   "Frontal_Sup_R": 0.021263439064851418,
+   "Frontal_Sup_Orb_L": 0.018207517452293355,
+   "Frontal_Sup_Orb_R": 0.0048856795726420635,
+   "Frontal_Mid_L": 0.011894694032313392,
+   "Frontal_Mid_R": 0.010477292518533517,
+   "Frontal_Mid_Orb_L": 0.006182260411044444,
+   "Frontal_Mid_Orb_R": 0.008304021225042348,
+   "Frontal_Inf_Oper_L": 0.004785472514814024,
+   "Frontal_Inf_Oper_R": 0.00797683088926272,
+   "Frontal_Inf_Tri_L": 0.011756809121453389,
+   "Frontal_Inf_Tri_R": 0.0025145035511079353,
+   "Frontal_Inf_Orb_L": 0.008655214770690887,
+   "Frontal_Inf_Orb_R": 0.004475025157749828,
+   "Rolandic_Oper_L": 0.014932571238196546,
+   "Rolandic_Oper_R": 0.004050535230455397,
+   "Supp_Motor_Area_L": 0.0007705739595522203,
+   "Supp_Motor_Area_R": 0.009985445749087924,
+   "Olfactory_L": 0.0046261422349740235,
+   "Olfactory_R": 0.01603669516344678,
+   "Frontal_Sup_Medial_L": 0.011266001977235983,
+   "Frontal_Sup_Medial_R": 0.009444805535677567,
+   "Frontal_Med_Orb_L": 0.006397815286750607,
+   "Frontal_Med_Orb_R": 0.007360163278920125,
+   "Rectus_L": 0.016457150151006187,
+   "Rectus_R": 0.012925714300682276,
+   "Insula_L": 0.021438855440345597,
+   "Insula_R": 0.005100255098105041,
+   "Cingulum_Ant_L": 0.014986855019151785,
+   "Cingulum_Ant_R": 0.006051105995816205,
+   "Cingulum_Mid_L": 0.009244337129674568,
+   "Cingulum_Mid_R": 0.002896018118512177,
+   "Cingulum_Post_L": 0.0021578120180459357,
+   "Cingulum_Post_R": 0.004095107979014907,
+   "Hippocampus_L": 0.004502317384776725,
+   "Hippocampus_R": 0.010003166884727611,
+   "ParaHippocampal_L": 0.004318709187130274,
+   "ParaHippocampal_R": 0.012426558248819941,
+   "Amygdala_L": 0.008677154427305997,
+   "Amygdala_R": 0.005366402610020816,
+   "Calcarine_L": 0.012910077274555717,
+   "Calcarine_R": 0.009015577300957815,
+   "Cuneus_L": 0.006531508573111532,
+   "Cuneus_R": 0.009508172369998244,
+   "Lingual_L": 0.005323188712816251,
+   "Lingual_R": 0.0058467293306622755,
+   "Occipital_Sup_L": 0.012169674669175177,
+   "Occipital_Sup_R": 0.004253341809811753,
+   "Occipital_Mid_L": 0.012296461445474097,
+   "Occipital_Mid_R": 0.02182380414280198,
+   "Occipital_Inf_L": 0.01564041896137087,
+   "Occipital_Inf_R": 0.02378614197860001,
+   "Fusiform_L": 0.022898504600176877,
+   "Fusiform_R": 0.013977470870467683,
+   "Postcentral_L": 0.011265500734094549,
+   "Postcentral_R": 0.02097257762768652,
+   "Parietal_Sup_L": 0.007695448822136096,
+   "Parietal_Sup_R": 0.015538177053639416,
+   "Parietal_Inf_L": 0.006413041734930558,
+   "Parietal_Inf_R": 0.00672804397735379,
+   "SupraMarginal_L": 0.017544733598992057,
+   "SupraMarginal_R": 0.014152435171951661,
+   "Angular_L": 0.0063640726501254285,
+   "Angular_R": 0.004224841284160142,
+   "Precuneus_L": 0.0076854128290588224,
+   "Precuneus_R": 0.025704849317840735,
+   "Paracentral_Lobule_L": 0.004519547125738131,
+   "Paracentral_Lobule_R": 0.00506163769855381,
+   "Caudate_L": 0.006019051176628629,
+   "Caudate_R": 0.016593396913192168,
+   "Putamen_L": 0.0034902854496591373,
+   "Putamen_R": 0.008108541705137157,
+   "Pallidum_L": 0.01092021303985515,
+   "Pallidum_R": 0.016820267825232486,
+   "Thalamus_L": 0.022035897893144814,
+   "Thalamus_R": 0.020632801888962934,
+   "Heschl_L": 0.008208742806480136,
+   "Heschl_R": 0.03170421764178735,
+   "Temporal_Sup_L": 0.010229838235700955,
+   "Temporal_Sup_R": 0.0020710039304395887,
+   "Temporal_Pole_Sup_L": 0.004671775331079673,
+   "Temporal_Pole_Sup_R": 0.007319050778416086,
+   "Temporal_Mid_L": 0.021991517938399294,
+   "Temporal_Mid_R": 0.02335947201028823,
+   "Temporal_Pole_Mid_L": 0.012025337600381924,
+   "Temporal_Pole_Mid_R": 0.01564678887470496,
+   "Temporal_Inf_L": 0.01880624806283471,
+   "Temporal_Inf_R": 0.03736288329679179
+  }
+ }
+}

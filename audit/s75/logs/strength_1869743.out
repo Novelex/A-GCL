@@ -1,0 +1,8 @@
+host=node09.cognition.gla.alces.network job=1869743 arr=NA date=2026-08-19T20:36:04+01:00
+signed_s 0.6535 loso 0.6253
+absolute_a 0.6223 loso 0.6078
+positive_p 0.6509 loso 0.6217
+negative_n 0.6161 loso 0.6059
+concat_sapn 0.6605 loso 0.643
+FULL_FC_4005 0.7565 loso 0.7432
+SECTION COMPLETE strength

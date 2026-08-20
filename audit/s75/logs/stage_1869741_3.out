@@ -1,0 +1,3 @@
+host=node13.cognition.gla.alces.network job=1869749 arr=3 date=2026-08-19T20:36:04+01:00
+  P s3 WGIN1_preBN AUC=0.6404
+  P s3 BN1 AUC=0.6404

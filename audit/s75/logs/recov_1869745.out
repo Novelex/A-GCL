@@ -1,0 +1,10 @@
+host=node11.cognition.gla.alces.network job=1869745 arr=NA date=2026-08-19T20:36:04+01:00
+P h signed 0.5905
+P h absolute 0.5668
+P z signed 0.6054
+P z absolute 0.6092
+O h signed 0.1384
+O h absolute 0.0888
+O z signed 0.1902
+O z absolute 0.1338
+SECTION COMPLETE recov
