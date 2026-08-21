@@ -1,0 +1,2 @@
+host=node09.cognition.gla.alces.network job=1870506 task=41 git=6b536f3e0fd4890f758e5398f6b87e7d567c7145 date=2026-08-21T19:01:32+01:00
+PLS64_loso: AUC=0.6801 [0.6457,0.7134]

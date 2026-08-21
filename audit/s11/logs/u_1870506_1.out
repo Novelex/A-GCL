@@ -1,0 +1,2 @@
+host=node11.cognition.gla.alces.network job=1870508 task=1 git=6b536f3e0fd4890f758e5398f6b87e7d567c7145 date=2026-08-21T19:00:32+01:00
+RAW_loso: AUC=0.7432 [0.7100,0.7731]

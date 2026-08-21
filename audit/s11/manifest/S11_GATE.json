@@ -1,0 +1,71 @@
+{
+ "provenance": {
+  "host": "login1.cognition.gla.alces.network",
+  "time": "2026-08-21T18:53:50",
+  "slurm_job": null,
+  "slurm_array": null,
+  "git_head": "6b536f3e0fd4890f758e5398f6b87e7d567c7145",
+  "git_dirty": "",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda_available": false,
+  "device_name": null,
+  "base_seed": 20260818,
+  "unit": "S11_gate",
+  "cmd": "w_gate.py"
+ },
+ "checks": {
+  "frozen hashes (dataset/splits/ROI-manifest)": {
+   "pass": true,
+   "detail": ""
+  },
+  "manifest: N=954, 455/499, unique IDs+paths, exclusions absent, labels==S1": {
+   "pass": true,
+   "detail": "sha 4f01b0abc1b160bd"
+  },
+  "row order == split-defining S3C order; S5 permutation recorded (S8-S10 fold-drift finding logged)": {
+   "pass": true,
+   "detail": "authoritative order = s1_audit_table"
+  },
+  "graph cache = frozen 954 (NOT any 956 cache; data_dense_v3.pt never opened)": {
+   "pass": true,
+   "detail": "n=954"
+  },
+  "FC source: shape/finite all 954; symmetric; diag==1; signed": {
+   "pass": true,
+   "detail": "sym 2.2e-16 diag 2.2e-16 min -0.760"
+  },
+  "FC source vs graph round-trip, ALL 954": {
+   "pass": true,
+   "detail": "max_abs 2.98e-08, mismatch subjects 0, entries 0, first None"
+  },
+  "ALFF x == frozen M1_B (exact ID lookup; no M2/OLD/norm_matrix/956 fallback), all 954": {
+   "pass": true,
+   "detail": "max_abs 0.00e+00"
+  },
+  "path audit: exact-manifest lookup only": {
+   "pass": true,
+   "detail": "parents=['/users/3171356m/A-GCL/data/raw/ASD_ADJ', '/users/3171356m/A-GCL/data/raw/NC_ADJ']"
+  },
+  "frozen split membership covers exactly rows 0..953": {
+   "pass": true,
+   "detail": ""
+  },
+  "X_fc_source == X_fc_graph (954x4005)": {
+   "pass": true,
+   "detail": "max_abs 2.98e-08"
+  },
+  "4005 pair-map == frozen S5.5 FC representation": {
+   "pass": true,
+   "detail": "max_abs 0.00e+00"
+  }
+ },
+ "hashes": {
+  "manifest_sha256": "4f01b0abc1b160bde7bba5489f98e457f7f2c1cf485cce5ee3c5a5ec8f0c1810",
+  "pair_map_sha256": "aba8e09f180fe36fe2f96eafbccbf9348b720c94c2454d44ae5a16858fb2d1a7",
+  "X_fc_sha256": "5e0780c9d99b238a4d9969f8ee98bd17b18ea3110c92bc8d8544696d3f29bd28",
+  "dataset_sha256": "312266b23ecf1348ce083cb25d9c5e5a51d5595dab9ce5639875a51c12f1f844",
+  "splits_sha256": "28fed44dc4666066cc0621f329392e58050b39d5ef1371ec5327830518d98916",
+  "roi_manifest_sha256": "a7632cd95f3e7c245d3af73dd1b358fed88d52186891cd197f3407d205e4e989"
+ }
+}

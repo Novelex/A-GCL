@@ -1,0 +1,2 @@
+host=node10.cognition.gla.alces.network job=1870531 task=24 git=6b536f3e0fd4890f758e5398f6b87e7d567c7145 date=2026-08-21T19:01:02+01:00
+RP128_r1_ord: AUC=0.6848 [0.6499,0.7168]

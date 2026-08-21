@@ -1,0 +1,2 @@
+host=node12.cognition.gla.alces.network job=1870549 task=0 git=6b536f3e0fd4890f758e5398f6b87e7d567c7145 date=2026-08-21T19:07:32+01:00
+PLS128_ord: AUC=0.6931 [0.6595,0.7252]

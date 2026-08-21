@@ -1,0 +1,2 @@
+host=node14.cognition.gla.alces.network job=1870532 task=25 git=6b536f3e0fd4890f758e5398f6b87e7d567c7145 date=2026-08-21T19:01:02+01:00
+RP128_r1_loso: AUC=0.6766 [0.6416,0.7099]

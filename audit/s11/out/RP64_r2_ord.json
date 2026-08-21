@@ -1,0 +1,40 @@
+{
+ "auc": 0.6640225505956969,
+ "bacc": 0.6194454843753441,
+ "acc": 0.6205450733752621,
+ "sens": 0.5956043956043956,
+ "spec": 0.6432865731462926,
+ "fold_auc": [
+  0.6547252747252748,
+  0.6774725274725276,
+  0.6375824175824175,
+  0.6841758241758242,
+  0.6708846708846709
+ ],
+ "fold_sd": 0.01880953386277546,
+ "ci_lo": 0.6299608495405531,
+ "ci_hi": 0.6981774794400676,
+ "method": "RP",
+ "dim": 64,
+ "rp_seed": 2,
+ "eval": "ord",
+ "n_folds": 5,
+ "manifest_sha": "4f01b0abc1b160bd",
+ "X_fc_sha": "5e0780c9d99b238a",
+ "pair_map_sha": "aba8e09f180fe36f",
+ "splits_sha": "28fed44dc4666066",
+ "provenance": {
+  "host": "node11.cognition.gla.alces.network",
+  "time": "2026-08-21T19:01:14",
+  "slurm_job": "1870527",
+  "slurm_array": "20",
+  "git_head": "6b536f3e0fd4890f758e5398f6b87e7d567c7145",
+  "git_dirty": "",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda_available": false,
+  "device_name": null,
+  "base_seed": 20260818,
+  "unit": "S11"
+ }
+}
