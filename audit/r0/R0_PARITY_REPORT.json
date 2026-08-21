@@ -1,0 +1,24 @@
+{
+ "atol": 1e-06,
+ "rtol": 1e-05,
+ "n_comparisons": 79,
+ "max_abs_any": 0.0,
+ "mirror_matches_real_train_step": false,
+ "failures": [],
+ "verdict": "PASS",
+ "first_divergent": null,
+ "provenance": {
+  "host": "login1.cognition.gla.alces.network",
+  "time": "2026-08-21T23:25:02",
+  "slurm_job": null,
+  "slurm_array": null,
+  "git_head": "6ec18cda2f0dd8d4dbc774026b43fb164d60cfab",
+  "git_dirty": "",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda_available": false,
+  "device_name": null,
+  "base_seed": 20260818,
+  "unit": "R0_parity"
+ }
+}
