@@ -1,0 +1,32 @@
+[eval 0] ep0 test acc=0.5190+-0.0639 f1=0.4070 sen=0.3515 spe=0.6642 | AUCdiag=0.5339 rng=fdaa122b3dcc7877
+[eval 1] ep5 test acc=0.5157+-0.0471 f1=0.4240 sen=0.3775 spe=0.6453 | AUCdiag=0.5196 rng=9aee598251a1156b
+[eval 2] ep10 test acc=0.5054+-0.0361 f1=0.3937 sen=0.3451 spe=0.6586 | AUCdiag=0.5102 rng=ecff192ffd78a4e5
+ep10 done (133s)
+[eval 3] ep15 test acc=0.5063+-0.0325 f1=0.4309 sen=0.4002 spe=0.6044 | AUCdiag=0.5053 rng=64445928654950a4
+[eval 4] ep20 test acc=0.4968+-0.0418 f1=0.3770 sen=0.3324 spe=0.6455 | AUCdiag=0.5032 rng=1222cdbdfe11f654
+ep20 done (265s)
+[eval 5] ep25 test acc=0.5168+-0.0377 f1=0.4366 sen=0.3977 spe=0.6279 | AUCdiag=0.5116 rng=80cc08b49fbb3ff6
+[eval 6] ep30 test acc=0.5241+-0.0429 f1=0.4299 sen=0.3853 spe=0.6542 | AUCdiag=0.5283 rng=768c0385bdbc9ee5
+ep30 done (398s)
+[eval 7] ep35 test acc=0.5052+-0.0551 f1=0.4149 sen=0.3817 spe=0.6229 | AUCdiag=0.5192 rng=c6e9f2ef23eb2d15
+[eval 8] ep40 test acc=0.4927+-0.0502 f1=0.3823 sen=0.3406 spe=0.6470 | AUCdiag=0.5160 rng=a78f6254822867be
+ep40 done (531s)
+[eval 9] ep45 test acc=0.5084+-0.0269 f1=0.3624 sen=0.3301 spe=0.6833 | AUCdiag=0.5259 rng=1f65007c998cfcc0
+[eval 10] ep50 test acc=0.5043+-0.0495 f1=0.3595 sen=0.2965 spe=0.6893 | AUCdiag=0.5098 rng=4b91c373e0ed85cf
+ep50 done (661s)
+[eval 11] ep55 test acc=0.4989+-0.0359 f1=0.4214 sen=0.3940 spe=0.5958 | AUCdiag=0.5002 rng=144eca72f0829739
+[eval 12] ep60 test acc=0.4949+-0.0468 f1=0.3883 sen=0.3480 spe=0.6246 | AUCdiag=0.4967 rng=ec6fe0d865d58425
+ep60 done (792s)
+[eval 13] ep65 test acc=0.4905+-0.0446 f1=0.3531 sen=0.3026 spe=0.6638 | AUCdiag=0.5065 rng=a234b41f3685c983
+[eval 14] ep70 test acc=0.4884+-0.0288 f1=0.3476 sen=0.3198 spe=0.6724 | AUCdiag=0.5140 rng=8f46a2774e687518
+ep70 done (922s)
+[eval 15] ep75 test acc=0.4822+-0.0455 f1=0.3236 sen=0.2823 spe=0.6711 | AUCdiag=0.4709 rng=8d9e0a8615e988eb
+[eval 16] ep80 test acc=0.5168+-0.0282 f1=0.3769 sen=0.3321 spe=0.6964 | AUCdiag=0.5245 rng=481aaea634b1b041
+ep80 done (1053s)
+[eval 17] ep85 test acc=0.5199+-0.0466 f1=0.3780 sen=0.3218 spe=0.7068 | AUCdiag=0.5012 rng=c3a11768369af146
+[eval 18] ep90 test acc=0.4990+-0.0569 f1=0.3803 sen=0.3325 spe=0.6600 | AUCdiag=0.4988 rng=ee3ae222a7ca0a69
+ep90 done (1183s)
+[eval 19] ep95 test acc=0.5031+-0.0448 f1=0.3833 sen=0.3371 spe=0.6591 | AUCdiag=0.5156 rng=5c8bff6472fe197b
+[eval 20] ep100 test acc=0.4947+-0.0426 f1=0.3748 sen=0.3244 spe=0.6530 | AUCdiag=0.4940 rng=757a6504336bf2be
+ep100 done (1312s)
+R0 FULL RUN COMPLETE: 21 eval events, 1312s training+eval

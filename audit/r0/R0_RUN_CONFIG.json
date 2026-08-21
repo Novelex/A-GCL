@@ -1,0 +1,23 @@
+{
+ "config": "released_code_compat_08339b7",
+ "seed": 123,
+ "epochs": 100,
+ "eval_interval": 5,
+ "released_bug_unweighted_eval": true,
+ "n_eval_events": 21,
+ "runtime_s": 1311.7,
+ "provenance": {
+  "host": "node13.cognition.gla.alces.network",
+  "time": "2026-08-21T23:48:22",
+  "slurm_job": "1870556",
+  "slurm_array": null,
+  "git_head": "1e67191de1b5b4bfbc21992a8d01ca241bc175ed",
+  "git_dirty": "",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda_available": false,
+  "device_name": null,
+  "base_seed": 20260818,
+  "unit": "R0_full_run"
+ }
+}
