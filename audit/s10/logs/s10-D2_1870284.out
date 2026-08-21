@@ -1,0 +1,14 @@
+host=node07.cognition.gla.alces.network job=1870284 arm=D seed=2 git=d671467bce16260c682ff4ebdd466af5535c1b6d date=2026-08-20T22:43:57+01:00
+DATA GATE PASS: N=954, ROI manifest sha a7632cd95f3e7c24..., x==frozen M1_B rows
+  budget test: mean(mu)=0.119 -> ascent pushes keep UP (expect up) OK
+  budget test: mean(mu)=0.881 -> ascent pushes keep DOWN (expect down) OK
+[D_s2] ep1 view=6.804 model=2.678 keep_exp=0.460 keep_smp=0.473 sym=0.0e+00 gf=True
+[D_s2] ep25 view=6.668 model=2.310 keep_exp=0.033 keep_smp=0.064 sym=0.0e+00 gf=True
+[D_s2] ep50 view=5.989 model=1.502 keep_exp=0.027 keep_smp=0.056 sym=0.0e+00 gf=True
+[D_s2] ep75 view=5.427 model=1.365 keep_exp=0.020 keep_smp=0.043 sym=0.0e+00 gf=True
+[D_s2] ep100 view=5.774 model=1.016 keep_exp=0.016 keep_smp=0.040 sym=0.0e+00 gf=True
+[D_s2] ep125 view=6.106 model=0.580 keep_exp=0.018 keep_smp=0.046 sym=0.0e+00 gf=True
+[D_s2] ep150 view=6.122 model=0.300 keep_exp=0.021 keep_smp=0.049 sym=0.0e+00 gf=True
+[D_s2] ep175 view=6.041 model=0.454 keep_exp=0.034 keep_smp=0.058 sym=0.0e+00 gf=True
+[D_s2] ep200 view=6.263 model=0.314 keep_exp=0.032 keep_smp=0.052 sym=0.0e+00 gf=True
+S10 D_s2 COMPLETE 182.4s

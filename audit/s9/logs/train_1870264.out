@@ -1,0 +1,29 @@
+host=node07.cognition.gla.alces.network job=1870264 git=d671467bce16260c682ff4ebdd466af5535c1b6d seed=20260818 date=2026-08-20T21:33:46+01:00
+NVIDIA L40S
+epoch-0 extraction + checkpoint saved (pre-update)
+ep1 view=8.3812 model=2.3934 nce_v=4.1395 cr=8.2852 mu=0.4638 keep=0.4758 grads_finite=True
+ep10 view=7.8666 model=2.5958 nce_v=3.9649 cr=9.2427 mu=0.1023 keep=0.1672 grads_finite=True
+ep20 view=7.0259 model=3.3331 nce_v=3.9546 cr=7.5163 mu=0.0324 keep=0.0627 grads_finite=True
+ep30 view=7.3819 model=2.9582 nce_v=3.9826 cr=8.2416 mu=0.0513 keep=0.0866 grads_finite=True
+ep40 view=7.3800 model=2.7198 nce_v=4.0455 cr=8.0215 mu=0.0629 keep=0.0964 grads_finite=True
+ep50 view=6.8735 model=2.4717 nce_v=3.9078 cr=7.0884 mu=0.0652 keep=0.0964 grads_finite=True
+ep60 view=7.3069 model=2.5722 nce_v=3.9993 cr=7.7464 mu=0.1045 keep=0.1288 grads_finite=True
+ep70 view=6.4755 model=2.3793 nce_v=3.7687 cr=6.3235 mu=0.0887 keep=0.1145 grads_finite=True
+ep80 view=6.6313 model=2.6359 nce_v=3.8395 cr=6.5527 mu=0.0853 keep=0.1002 grads_finite=True
+ep90 view=6.8114 model=2.5348 nce_v=3.8605 cr=6.8655 mu=0.1023 keep=0.1186 grads_finite=True
+ep100 view=6.7580 model=2.7773 nce_v=3.8241 cr=6.7524 mu=0.1165 keep=0.1293 grads_finite=True
+ep110 view=6.6031 model=2.4410 nce_v=3.8089 cr=6.4596 mu=0.1052 keep=0.1151 grads_finite=True
+ep120 view=7.2840 model=3.0760 nce_v=4.0107 cr=7.6854 mu=0.0996 keep=0.1108 grads_finite=True
+ep130 view=6.7428 model=2.5425 nce_v=3.7749 cr=6.7832 mu=0.1273 keep=0.1383 grads_finite=True
+ep140 view=6.6465 model=2.3476 nce_v=3.7382 cr=6.7433 mu=0.1055 keep=0.1143 grads_finite=True
+ep150 view=6.8739 model=2.6499 nce_v=3.8756 cr=6.9033 mu=0.1185 keep=0.1275 grads_finite=True
+ep160 view=6.6595 model=2.4740 nce_v=3.7621 cr=6.5939 mu=0.1299 keep=0.1358 grads_finite=True
+ep170 view=6.9460 model=2.4393 nce_v=3.7454 cr=7.4839 mu=0.1035 keep=0.1124 grads_finite=True
+ep180 view=6.9541 model=2.6801 nce_v=3.9446 cr=6.9049 mu=0.1237 keep=0.1265 grads_finite=True
+ep190 view=7.0531 model=2.1996 nce_v=3.9150 cr=7.3060 mu=0.1078 keep=0.1161 grads_finite=True
+ep200 view=6.7063 model=2.2758 nce_v=3.7870 cr=6.6934 mu=0.1210 keep=0.1288 grads_finite=True
+  reload check pre_norm_nodes: max_abs=1.96e-05 (tol 0.005)
+  reload check h: max_abs=5.34e-05 (tol 0.005)
+  reload check z: max_abs=1.07e-04 (tol 0.005)
+checkpoint reload verified (bitwise state_dict + forward within device tolerance)
+S9 TRAIN COMPLETE 153.9s

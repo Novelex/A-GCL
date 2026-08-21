@@ -1,0 +1,12 @@
+host=node07.cognition.gla.alces.network job=1870279 arm=B seed=1 git=d671467bce16260c682ff4ebdd466af5535c1b6d date=2026-08-20T22:33:57+01:00
+DATA GATE PASS: N=954, ROI manifest sha a7632cd95f3e7c24..., x==frozen M1_B rows
+[B_s1] ep1 view=8.042 model=2.484 keep_exp=0.524 keep_smp=0.516 sym=0.0e+00 gf=True
+[B_s1] ep25 view=7.575 model=1.829 keep_exp=0.021 keep_smp=0.056 sym=0.0e+00 gf=True
+[B_s1] ep50 view=8.276 model=1.224 keep_exp=0.021 keep_smp=0.054 sym=0.0e+00 gf=True
+[B_s1] ep75 view=8.111 model=0.906 keep_exp=0.023 keep_smp=0.060 sym=0.0e+00 gf=True
+[B_s1] ep100 view=6.928 model=0.994 keep_exp=0.012 keep_smp=0.035 sym=0.0e+00 gf=True
+[B_s1] ep125 view=7.225 model=0.488 keep_exp=0.023 keep_smp=0.056 sym=0.0e+00 gf=True
+[B_s1] ep150 view=7.323 model=0.364 keep_exp=0.024 keep_smp=0.060 sym=0.0e+00 gf=True
+[B_s1] ep175 view=7.296 model=0.342 keep_exp=0.019 keep_smp=0.050 sym=0.0e+00 gf=True
+[B_s1] ep200 view=7.315 model=0.102 keep_exp=0.022 keep_smp=0.051 sym=0.0e+00 gf=True
+S10 B_s1 COMPLETE 179.2s

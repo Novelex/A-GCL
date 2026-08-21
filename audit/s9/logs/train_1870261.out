@@ -1,0 +1,24 @@
+host=node07.cognition.gla.alces.network job=1870261 git=d671467bce16260c682ff4ebdd466af5535c1b6d seed=20260818 date=2026-08-20T21:29:47+01:00
+NVIDIA L40S
+epoch-0 extraction + checkpoint saved (pre-update)
+ep1 view=8.3821 model=2.3936 nce_v=4.1408 cr=8.2841 mu=0.4638 keep=0.4758 grads_finite=True
+ep10 view=7.7531 model=3.0558 nce_v=3.8817 cr=9.2067 mu=0.0944 keep=0.1583 grads_finite=True
+ep20 view=7.0232 model=3.1427 nce_v=3.8388 cr=7.8427 mu=0.0237 keep=0.0435 grads_finite=True
+ep30 view=7.3939 model=2.3310 nce_v=4.0128 cr=8.4067 mu=0.0092 keep=0.0231 grads_finite=True
+ep40 view=7.5223 model=2.1958 nce_v=4.0238 cr=8.6742 mu=0.0144 keep=0.0297 grads_finite=True
+ep50 view=7.5172 model=2.2330 nce_v=4.0102 cr=8.6850 mu=0.0165 keep=0.0323 grads_finite=True
+ep60 view=7.3587 model=2.6265 nce_v=3.9133 cr=8.5787 mu=0.0069 keep=0.0146 grads_finite=True
+ep70 view=7.5058 model=2.0003 nce_v=3.9617 cr=8.7683 mu=0.0184 keep=0.0300 grads_finite=True
+ep80 view=7.3030 model=1.8683 nce_v=3.9619 cr=8.2577 mu=0.0190 keep=0.0283 grads_finite=True
+ep90 view=6.9209 model=2.0037 nce_v=3.8570 cr=7.5182 mu=0.0283 keep=0.0379 grads_finite=True
+ep100 view=7.1475 model=1.9924 nce_v=3.8799 cr=7.9253 mu=0.0488 keep=0.0621 grads_finite=True
+ep110 view=6.9516 model=1.6817 nce_v=3.8640 cr=7.4742 mu=0.0490 keep=0.0604 grads_finite=True
+ep120 view=7.2941 model=1.8827 nce_v=3.9446 cr=8.0899 mu=0.0568 keep=0.0725 grads_finite=True
+ep130 view=7.2403 model=1.7075 nce_v=3.8886 cr=8.1070 mu=0.0545 keep=0.0669 grads_finite=True
+ep140 view=7.2832 model=1.7444 nce_v=3.9086 cr=8.1091 mu=0.0655 keep=0.0827 grads_finite=True
+ep150 view=7.2685 model=1.7401 nce_v=3.9564 cr=7.9291 mu=0.0702 keep=0.0876 grads_finite=True
+ep160 view=7.2954 model=1.7027 nce_v=3.9207 cr=8.1210 mu=0.0631 keep=0.0775 grads_finite=True
+ep170 view=7.3649 model=1.5614 nce_v=3.9328 cr=8.1969 mu=0.0767 keep=0.0932 grads_finite=True
+ep180 view=7.4278 model=1.5810 nce_v=3.9136 cr=8.4356 mu=0.0700 keep=0.0852 grads_finite=True
+ep190 view=7.6349 model=1.5790 nce_v=3.8893 cr=9.0324 mu=0.0663 keep=0.0832 grads_finite=True
+ep200 view=7.5319 model=1.5645 nce_v=3.8062 cr=8.8993 mu=0.0830 keep=0.1026 grads_finite=True

@@ -1,0 +1,60 @@
+{
+ "provenance": {
+  "host": "login1.cognition.gla.alces.network",
+  "time": "2026-08-20T22:26:53",
+  "slurm_job": null,
+  "slurm_array": null,
+  "git_head": "d671467bce16260c682ff4ebdd466af5535c1b6d",
+  "git_dirty": "?? audit/s9/",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda_available": false,
+  "device_name": null,
+  "base_seed": 20260818,
+  "unit": "S10",
+  "arm": "D",
+  "seed": 20260818,
+  "cfg": "C80",
+  "roi_manifest_sha256": "a7632cd95f3e7c245d3af73dd1b358fed88d52186891cd197f3407d205e4e989",
+  "dataset_sha": "312266b23ecf1348ce083cb25d9c5e5a51d5595dab9ce5639875a51c12f1f844",
+  "epochs": 2,
+  "runtime_s": 0.3,
+  "cmd": "w_s10.py --arm D --seed 0 --smoke --epochs 2"
+ },
+ "curves": [
+  {
+   "view_loss": 1.6791080236434937,
+   "model_loss": 0.11922833323478699,
+   "infonce_view": 1.9053360223770142,
+   "infonce_model": 0.11922833323478699,
+   "reg": 0.11311397701501846,
+   "cr": 0.0,
+   "mu_mean": 0.4636758267879486,
+   "mu_std": 0.024551399052143097,
+   "mu_min": 0.38091281056404114,
+   "mu_max": 0.5506654381752014,
+   "expected_keep": 0.4636758267879486,
+   "sampled_keep": 0.47775018215179443,
+   "mask_sym_err": 5.960464477539063e-08,
+   "grad_finite": true,
+   "epoch": 1
+  },
+  {
+   "view_loss": 1.1889729499816895,
+   "model_loss": -0.4141665995121002,
+   "infonce_view": 1.9017202854156494,
+   "infonce_model": 0.03046686388552189,
+   "reg": 0.11048656702041626,
+   "cr": -1.2294355630874634,
+   "mu_mean": 0.4676045775413513,
+   "mu_std": 0.02384932152926922,
+   "mu_min": 0.391457736492157,
+   "mu_max": 0.5492579340934753,
+   "expected_keep": 0.4676045775413513,
+   "sampled_keep": 0.47787803411483765,
+   "mask_sym_err": 7.450580596923828e-09,
+   "grad_finite": true,
+   "epoch": 2
+  }
+ ]
+}

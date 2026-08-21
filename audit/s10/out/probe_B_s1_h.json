@@ -1,0 +1,33 @@
+{
+ "auc": 0.5057940055936048,
+ "bacc": 0.504996806800414,
+ "fold_sd": 0.02268045621830663,
+ "ci_lo": 0.4684402112515804,
+ "ci_hi": 0.5453952891357455,
+ "n_feat": 32,
+ "arm": "B",
+ "seed": 1,
+ "representation": "h",
+ "fold_auc": [
+  0.5184818481848185,
+  0.5102632753235163,
+  0.5305494505494506,
+  0.5229430379746836,
+  0.4725775948381355
+ ],
+ "acc": 0.5094339622641509,
+ "provenance": {
+  "host": "node15.cognition.gla.alces.network",
+  "time": "2026-08-20T22:47:14",
+  "slurm_job": "1870299",
+  "slurm_array": "10",
+  "git_head": "d671467bce16260c682ff4ebdd466af5535c1b6d",
+  "git_dirty": "?? audit/s9/",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda_available": false,
+  "device_name": null,
+  "base_seed": 20260818,
+  "unit": "S10_probe"
+ }
+}
