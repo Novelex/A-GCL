@@ -1,0 +1,21 @@
+{
+ "SMOKE_PASS": true,
+ "subjects": 8,
+ "epochs": 1,
+ "forward": true,
+ "backward": true,
+ "shapes": [
+  8,
+  2880,
+  32
+ ],
+ "ckpt_reload_bitwise": true,
+ "arms": [
+  "P",
+  "X",
+  "F",
+  "C(pca path @n=2; PCA-32 impossible at n=8 by math, full run unaffected)"
+ ],
+ "early_stop_metric": "validation AUC only",
+ "production_clean": true
+}

@@ -1,0 +1,30 @@
+{
+ "checks": {
+  "subjects": true,
+  "ASD455": true,
+  "NC499": true,
+  "unique_ids": true,
+  "subject_id_hash": "aca3d945f7d89ccb1cc6fb46ca01f6036ccf036d81d120d2b09fe4bd0d1d68c9",
+  "subject_hash_matches_S3C_frozen": true,
+  "splits_sha_S11": "28fed44dc4666066cc0621f329392e58050b39d5ef1371ec5327830518d98916",
+  "dataset_sha_M1B": "312266b23ecf1348ce083cb25d9c5e5a51d5595dab9ce5639875a51c12f1f844",
+  "X_fc_sha": "5e0780c9d99b238a4d9969f8ee98bd17b18ea3110c92bc8d8544696d3f29bd28",
+  "manifest_sha": "4f01b0abc1b160bde7bba5489f98e457f7f2c1cf485cce5ee3c5a5ec8f0c1810",
+  "no_956_or_v3_possible": "exact-ID S11 manifest loading only"
+ },
+ "PASS": true,
+ "provenance": {
+  "host": "login1.cognition.gla.alces.network",
+  "time": "2026-08-22T16:32:07",
+  "slurm_job": null,
+  "slurm_array": null,
+  "git_head": "990c64b87a07e9daee61036bf66dfd944631f552",
+  "git_dirty": "",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda_available": false,
+  "device_name": null,
+  "base_seed": 20260818,
+  "unit": "S12A2_data_gate"
+ }
+}

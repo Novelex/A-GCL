@@ -1,0 +1,2 @@
+DATA GATE: PASS
+EMBEDDING GATE: PASS  (3 seeds, [954,90,32], finite, order preserved)

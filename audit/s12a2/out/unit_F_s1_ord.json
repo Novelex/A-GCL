@@ -1,0 +1,69 @@
+{
+ "unit": "F_s1_ord",
+ "arm": "F",
+ "seed": 20260819,
+ "kind": "ord",
+ "result": {
+  "auc": 0.6010878900658461,
+  "fold_auc": [
+   0.6152747252747254,
+   0.6082417582417582,
+   0.6147252747252747,
+   0.5442857142857143,
+   0.6220446220446221
+  ],
+  "fold_mean": 0.6009144189144189
+ },
+ "extra": {
+  "head_auc": [
+   0.563076923076923,
+   0.5802197802197802,
+   0.6260439560439561,
+   0.5534065934065934,
+   0.5964035964035964
+  ],
+  "head_mean": 0.5838301698301698,
+  "folds": [
+   {
+    "best_val_auc": 0.6260273972602739,
+    "best_epoch": 11,
+    "epochs_run": 32
+   },
+   {
+    "best_val_auc": 0.6580479452054795,
+    "best_epoch": 2,
+    "epochs_run": 23
+   },
+   {
+    "best_val_auc": 0.6503424657534247,
+    "best_epoch": 19,
+    "epochs_run": 40
+   },
+   {
+    "best_val_auc": 0.6369863013698629,
+    "best_epoch": 8,
+    "epochs_run": 29
+   },
+   {
+    "best_val_auc": 0.7113013698630136,
+    "best_epoch": 3,
+    "epochs_run": 24
+   }
+  ]
+ },
+ "wall_s": 13.5,
+ "provenance": {
+  "host": "node04.cognition.gla.alces.network",
+  "time": "2026-08-22T16:40:13",
+  "slurm_job": "1870929",
+  "slurm_array": "5",
+  "git_head": "990c64b87a07e9daee61036bf66dfd944631f552",
+  "git_dirty": "",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda_available": false,
+  "device_name": null,
+  "base_seed": 20260818,
+  "unit": "S12A2_F_s1_ord"
+ }
+}

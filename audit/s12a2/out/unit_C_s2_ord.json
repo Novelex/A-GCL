@@ -1,0 +1,39 @@
+{
+ "unit": "C_s2_ord",
+ "arm": "C",
+ "seed": 20260820,
+ "kind": "ord",
+ "result": {
+  "auc": 0.5929573432579445,
+  "bacc": 0.567215750181682,
+  "acc": 0.5712788259958071,
+  "sens": 0.47912087912087914,
+  "spec": 0.655310621242485,
+  "fold_auc": [
+   0.5704395604395605,
+   0.6509890109890111,
+   0.597032967032967,
+   0.5390109890109891,
+   0.6122766122766122
+  ],
+  "fold_sd": 0.04233749483169705,
+  "ci_lo": 0.558052209299951,
+  "ci_hi": 0.6277976763268239
+ },
+ "extra": {},
+ "wall_s": 9.5,
+ "provenance": {
+  "host": "node05.cognition.gla.alces.network",
+  "time": "2026-08-22T16:40:09",
+  "slurm_job": "1870933",
+  "slurm_array": "9",
+  "git_head": "990c64b87a07e9daee61036bf66dfd944631f552",
+  "git_dirty": "",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda_available": false,
+  "device_name": null,
+  "base_seed": 20260818,
+  "unit": "S12A2_C_s2_ord"
+ }
+}

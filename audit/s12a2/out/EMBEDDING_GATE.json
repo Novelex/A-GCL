@@ -1,0 +1,50 @@
+{
+ "source": "S12A1 emb_id_s{0,1,2}.npz final_postnorm (identity encoder, corrected-C, eval+no_grad; encoder/WGIN/flags untouched)",
+ "seeds": {
+  "seed0": {
+   "shape": [
+    954,
+    90,
+    32
+   ],
+   "finite": true,
+   "y_matches": true,
+   "sha": "d93caa81d8047109"
+  },
+  "seed1": {
+   "shape": [
+    954,
+    90,
+    32
+   ],
+   "finite": true,
+   "y_matches": true,
+   "sha": "8f49ac89b20bfb8d"
+  },
+  "seed2": {
+   "shape": [
+    954,
+    90,
+    32
+   ],
+   "finite": true,
+   "y_matches": true,
+   "sha": "a61567a1fc14ab89"
+  }
+ },
+ "PASS": true,
+ "provenance": {
+  "host": "login1.cognition.gla.alces.network",
+  "time": "2026-08-22T16:32:07",
+  "slurm_job": null,
+  "slurm_array": null,
+  "git_head": "990c64b87a07e9daee61036bf66dfd944631f552",
+  "git_dirty": "",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda_available": false,
+  "device_name": null,
+  "base_seed": 20260818,
+  "unit": "S12A2_emb_gate"
+ }
+}
