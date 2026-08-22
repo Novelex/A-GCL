@@ -1,0 +1,51 @@
+{
+ "SMOKE_PASS": true,
+ "arms": {
+  "arm1": {
+   "losses": {
+    "ce": 0.4539,
+    "infonce": null,
+    "loss": 0.4539,
+    "grad_finite": true
+   },
+   "ckpt_reload_allclose_1e6": true
+  },
+  "arm2": {
+   "losses": {
+    "ce": 0.6704,
+    "infonce": -0.3991,
+    "loss": 0.2713,
+    "grad_finite": true
+   },
+   "ckpt_reload_allclose_1e6": true
+  },
+  "arm3": {
+   "losses": {
+    "view": 2.6597,
+    "model": 3.5954,
+    "infonce": 2.2616,
+    "cr": 3.3345,
+    "keep": 0.0002,
+    "grad_finite": true
+   },
+   "ckpt_reload_allclose_1e6": true
+  },
+  "arm4": {
+   "losses": {
+    "view": 1.501,
+    "model": -0.383,
+    "infonce": 0.271,
+    "cr": -1.635,
+    "keep": 0.8,
+    "grad_finite": true
+   },
+   "ckpt_reload_allclose_1e6": true
+  }
+ },
+ "identity_features": true,
+ "edge_weight_finite": true,
+ "shapes_ok": true,
+ "train_fold_mini": true,
+ "production_clean": true,
+ "early_stop_metric": "validation AUC only"
+}

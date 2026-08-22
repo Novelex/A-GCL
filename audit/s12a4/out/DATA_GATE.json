@@ -1,0 +1,54 @@
+{
+ "env": {
+  "git_sha": "78862778adb329fe47ceec8fd2154bf8a97cc5c4",
+  "git_status": "(clean)",
+  "branch": "main",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda": "12.1",
+  "cuda_available_login_node": false
+ },
+ "artifacts": {
+  "s12a1": true,
+  "s12a2": true,
+  "s11_manifest": true,
+  "frozen_hashes": true
+ },
+ "checks": {
+  "subjects": true,
+  "ASD455": true,
+  "NC499": true,
+  "ROIs90": true,
+  "unique_ids": true,
+  "id_hash_matches_frozen": true,
+  "labels_bitwise": true,
+  "fold_hash": "28fed44dc4666066cc0621f329392e58050b39d5ef1371ec5327830518d98916",
+  "folds_cover_each_subject_once": true,
+  "fc_vs_canonical_maxabs": 0.0,
+  "fc_lt_1e7": true,
+  "graph_edgeweight_vs_fc_maxabs": 2.9802306289461455e-08,
+  "graph_zero_mismatch": true,
+  "x_vs_canonical_M1B_maxabs": 0.0,
+  "loaded_mat_parents": [
+   "/users/3171356m/A-GCL/data/raw/ASD_ADJ",
+   "/users/3171356m/A-GCL/data/raw/NC_ADJ"
+  ],
+  "m1b_cache": "/users/3171356m/agcl_audit_s0/s5/M1_B/processed/M1_B_v1.pt (sha 312266b2...f844, asserted)",
+  "no_956_cache": "exact-ID S11 manifest load only; 954 rows asserted"
+ },
+ "PASS": true,
+ "provenance": {
+  "host": "login1.cognition.gla.alces.network",
+  "time": "2026-08-22T21:05:45",
+  "slurm_job": null,
+  "slurm_array": null,
+  "git_head": "78862778adb329fe47ceec8fd2154bf8a97cc5c4",
+  "git_dirty": "",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda_available": false,
+  "device_name": null,
+  "base_seed": 20260818,
+  "unit": "S12A4_data_gate"
+ }
+}

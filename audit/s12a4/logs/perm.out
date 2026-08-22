@@ -1,0 +1,17 @@
+[perm/o0] ep10 loss 0.6313 val 0.4952
+[perm/o0] ep20 loss 0.5584 val 0.4902
+perm fold 0 done
+[perm/o1] ep10 loss 0.6257 val 0.4358
+[perm/o1] ep20 loss 0.5337 val 0.4428
+perm fold 1 done
+[perm/o2] ep10 loss 0.6459 val 0.4432
+[perm/o2] ep20 loss 0.5928 val 0.4562
+perm fold 2 done
+[perm/o3] ep10 loss 0.6317 val 0.5108
+[perm/o3] ep20 loss 0.5868 val 0.4675
+perm fold 3 done
+[perm/o4] ep10 loss 0.6463 val 0.4104
+[perm/o4] ep20 loss 0.5899 val 0.4689
+[perm/o4] ep30 loss 0.4910 val 0.3700
+perm fold 4 done
+PERMUTATION: {"perm_auc_head": 0.4808341958642559, "perm_auc_h": 0.47284899469268205, "PASS": true, "permuted_frac_equal": 0.5178197064989518, "folds": [{"fold": 0, "best_val": 0.5705679862306368, "wall_s": 8.3}, 

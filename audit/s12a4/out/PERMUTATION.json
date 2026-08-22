@@ -1,0 +1,47 @@
+{
+ "perm_auc_head": 0.4808341958642559,
+ "perm_auc_h": 0.47284899469268205,
+ "PASS": true,
+ "permuted_frac_equal": 0.5178197064989518,
+ "folds": [
+  {
+   "fold": 0,
+   "best_val": 0.5705679862306368,
+   "wall_s": 8.3
+  },
+  {
+   "fold": 1,
+   "best_val": 0.48339041095890406,
+   "wall_s": 6.3
+  },
+  {
+   "fold": 2,
+   "best_val": 0.51676359904208,
+   "wall_s": 5.4
+  },
+  {
+   "fold": 3,
+   "best_val": 0.5196917808219178,
+   "wall_s": 6.0
+  },
+  {
+   "fold": 4,
+   "best_val": 0.49982894286691754,
+   "wall_s": 7.0
+  }
+ ],
+ "provenance": {
+  "host": "node08.cognition.gla.alces.network",
+  "time": "2026-08-22T22:04:05",
+  "slurm_job": "1871335",
+  "slurm_array": null,
+  "git_head": "78862778adb329fe47ceec8fd2154bf8a97cc5c4",
+  "git_dirty": "",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda_available": true,
+  "device_name": "NVIDIA L40S",
+  "base_seed": 20260818,
+  "unit": "S12A4_perm_control"
+ }
+}
