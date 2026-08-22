@@ -1,0 +1,37 @@
+{
+ "checks": {
+  "git": "c0dd9f2",
+  "subjects": true,
+  "ASD455": true,
+  "NC499": true,
+  "ids_match_S11": true,
+  "labels_unchanged": true,
+  "cohort_hash_ok": true,
+  "dataset_sha": "312266b23ecf1348ce083cb25d9c5e5a51d5595dab9ce5639875a51c12f1f844",
+  "fc_file_sha": "5e0780c9d99b238a4d9969f8ee98bd17b18ea3110c92bc8d8544696d3f29bd28",
+  "fold_sha": "28fed44dc4666066cc0621f329392e58050b39d5ef1371ec5327830518d98916",
+  "feature_order_sha_Xfc_array": "5e0780c9d99b238a(triangle IU order, frozen)",
+  "fc_vs_canonical_bitwise": true,
+  "graph_conv_zero_mismatch": true,
+  "x_bitwise_M1B": true,
+  "folds_partition_ok": true,
+  "loso_sites": 19,
+  "no_global_preproc_leak": "M1_B min-max is per-subject (axes 1,2); FC raw per subject; edge input = raw canonical X_fc, no cross-subject scaler outside folds",
+  "no_956": "exact-ID S11 manifest only"
+ },
+ "PASS": true,
+ "provenance": {
+  "host": "login1.cognition.gla.alces.network",
+  "time": "2026-08-22T23:14:34",
+  "slurm_job": null,
+  "slurm_array": null,
+  "git_head": "c0dd9f20be4841812e517c995c4bcbcb2f23881e",
+  "git_dirty": "",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda_available": false,
+  "device_name": null,
+  "base_seed": 20260818,
+  "unit": "S12A5_gate"
+ }
+}

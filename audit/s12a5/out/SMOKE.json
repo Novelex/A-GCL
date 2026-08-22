@@ -1,0 +1,27 @@
+{
+ "SMOKE_PASS": true,
+ "arms": {
+  "A": {
+   "loss": 0.7509,
+   "grad_enc": 1.623,
+   "grad_clf": 7.651,
+   "reload": true
+  },
+  "B": {
+   "loss": 0.7332,
+   "grad_enc": 1.277,
+   "grad_clf": 5.488,
+   "reload": true
+  },
+  "C": {
+   "loss": 0.7065,
+   "grad_enc": 0.0,
+   "grad_clf": 1.041,
+   "reload": true
+  }
+ },
+ "edge_order": "bitwise at float64 source; f32 cast quantization <=3e-8",
+ "transductive_step": true,
+ "perm_roi_path": true,
+ "production_clean": true
+}

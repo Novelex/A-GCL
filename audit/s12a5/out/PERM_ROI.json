@@ -1,0 +1,20 @@
+{
+ "winner": "C",
+ "perm_roi_auc_head": 0.5019533572639785,
+ "PASS": true,
+ "note": "per-subject ROI permutation of FC rows+cols; edge vector rebuilt from permuted FC",
+ "provenance": {
+  "host": "node03.cognition.gla.alces.network",
+  "time": "2026-08-22T23:45:27",
+  "slurm_job": "1871419",
+  "slurm_array": null,
+  "git_head": "c0dd9f20be4841812e517c995c4bcbcb2f23881e",
+  "git_dirty": "",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda_available": true,
+  "device_name": "NVIDIA L40S",
+  "base_seed": 20260818,
+  "unit": "S12A5_permroi"
+ }
+}
