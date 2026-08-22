@@ -1,0 +1,29 @@
+{
+ "checks": {
+  "git": "91cd7ea",
+  "subjects": true,
+  "ASD": true,
+  "NC": true,
+  "cohort_hash_ok": true,
+  "splits_sha": "28fed44dc4666066cc0621f329392e58050b39d5ef1371ec5327830518d98916",
+  "dataset_sha": "312266b23ecf1348ce083cb25d9c5e5a51d5595dab9ce5639875a51c12f1f844",
+  "no_956": "exact-ID S11 manifest, 954 asserted",
+  "ckpts_verified": 288,
+  "ckpts_total": 288,
+  "mismatches": []
+ },
+ "provenance": {
+  "host": "login1.cognition.gla.alces.network",
+  "time": "2026-08-22T22:30:35",
+  "slurm_job": null,
+  "slurm_array": null,
+  "git_head": "91cd7ea662e5ab3601b3e41f94795f92cabdec2a",
+  "git_dirty": "",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda_available": false,
+  "device_name": null,
+  "base_seed": 20260818,
+  "unit": "S12A4B_integrity"
+ }
+}

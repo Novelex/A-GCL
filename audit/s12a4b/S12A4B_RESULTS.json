@@ -1,0 +1,276 @@
+{
+ "step0": {
+  "integrity": "PASS",
+  "ckpts_verified": "288/288 (arm/seed/fold/config/frozen-fold-indices/labels)",
+  "git": "91cd7ea",
+  "cohort_hash": "aca3d945...d68c9 OK",
+  "no_956_cache": true
+ },
+ "step1": {
+  "arm1": {
+   "n": 72,
+   "max_allowed": 200,
+   "best_epoch": {
+    "mean": 31.430555555555557,
+    "median": 28.0,
+    "min": 5,
+    "max": 83
+   },
+   "stopped_epoch": {
+    "mean": 51.43055555555556,
+    "median": 48.0,
+    "min": 25,
+    "max": 103
+   },
+   "best_epoch_hist_bins_0_10_25_50_100_150_200": [
+    2,
+    24,
+    36,
+    10,
+    0,
+    0
+   ],
+   "frac_best_before_50": 0.8611111111111112
+  },
+  "arm2": {
+   "n": 72,
+   "max_allowed": 200,
+   "best_epoch": {
+    "mean": 33.458333333333336,
+    "median": 28.5,
+    "min": 5,
+    "max": 120
+   },
+   "stopped_epoch": {
+    "mean": 53.458333333333336,
+    "median": 48.5,
+    "min": 25,
+    "max": 140
+   },
+   "best_epoch_hist_bins_0_10_25_50_100_150_200": [
+    4,
+    24,
+    29,
+    14,
+    1,
+    0
+   ],
+   "frac_best_before_50": 0.7916666666666666
+  },
+  "arm3": {
+   "n": 72,
+   "max_allowed": 200,
+   "best_epoch": {
+    "mean": 25.13888888888889,
+    "median": 17.5,
+    "min": 5,
+    "max": 90
+   },
+   "stopped_epoch": {
+    "mean": 45.138888888888886,
+    "median": 37.5,
+    "min": 25,
+    "max": 110
+   },
+   "best_epoch_hist_bins_0_10_25_50_100_150_200": [
+    22,
+    18,
+    19,
+    13,
+    0,
+    0
+   ],
+   "frac_best_before_50": 0.8194444444444444
+  },
+  "arm4": {
+   "n": 72,
+   "max_allowed": 200,
+   "best_epoch": {
+    "mean": 25.833333333333332,
+    "median": 15.0,
+    "min": 5,
+    "max": 175
+   },
+   "stopped_epoch": {
+    "mean": 45.833333333333336,
+    "median": 35.0,
+    "min": 25,
+    "max": 195
+   },
+   "best_epoch_hist_bins_0_10_25_50_100_150_200": [
+    30,
+    13,
+    17,
+    10,
+    1,
+    1
+   ],
+   "frac_best_before_50": 0.8333333333333334
+  }
+ },
+ "step2": {
+  "arm1": {
+   "encoder": {
+    "mean": 0.15342110271255174,
+    "median": 0.15074849128723145
+   },
+   "readout": {
+    "mean": 0.8450746523837248,
+    "median": 0.841270387172699
+   },
+   "head": {
+    "mean": 0.14980783872306347,
+    "median": 0.1483946219086647
+   },
+   "proj": {
+    "mean": 0.0,
+    "median": 0.0
+   },
+   "gin_mlp_weightmatrix_rel_mean": 0.16781731536482564,
+   "encoder_over_readout": 0.18154739617357202
+  },
+  "arm2": {
+   "encoder": {
+    "mean": 0.14822750269538826,
+    "median": 0.13770080357789993
+   },
+   "readout": {
+    "mean": 1.0402048569586542,
+    "median": 1.0073213279247284
+   },
+   "head": {
+    "mean": 0.08084713791807492,
+    "median": 0.0812881775200367
+   },
+   "proj": {
+    "mean": 0.19669365272339848,
+    "median": 0.19787278026342392
+   },
+   "gin_mlp_weightmatrix_rel_mean": 0.16735379722538507,
+   "encoder_over_readout": 0.14249837587643563
+  },
+  "arm3": {
+   "encoder": {
+    "mean": 0.17537682896686924,
+    "median": 0.1600058600306511
+   },
+   "readout": {
+    "mean": 1.0138491114808454,
+    "median": 0.9824302196502686
+   },
+   "proj": {
+    "mean": 0.1738282556956013,
+    "median": 0.15620703250169754
+   },
+   "gin_mlp_weightmatrix_rel_mean": 0.19842575835840157,
+   "encoder_over_readout": 0.1729811931389976
+  },
+  "arm4": {
+   "encoder": {
+    "mean": 0.16009285859763622,
+    "median": 0.1383613422513008
+   },
+   "readout": {
+    "mean": 1.000948621167077,
+    "median": 0.8947010934352875
+   },
+   "proj": {
+    "mean": 0.1836816139726175,
+    "median": 0.17941376566886902
+   },
+   "gin_mlp_weightmatrix_rel_mean": 0.17721384106617835,
+   "encoder_over_readout": 0.1599411350514401
+  }
+ },
+ "step2_note": "Initial aggregate (70-137x) was an artifact of BN running-stat BUFFERS and zero-init biases; superseded by trainable-only table. Per-layer decomposition in step2_perlayer.json.",
+ "step3": {
+  "arm1": {
+   "train_auc": 0.9295597595219883,
+   "val_auc": 0.6918949771689498,
+   "oof_auc": 0.6441961001961001,
+   "gap": 0.23766478235303856
+  },
+  "arm2": {
+   "train_auc": 0.8408047727542041,
+   "val_auc": 0.6747260273972603,
+   "oof_auc": 0.6371919931919929,
+   "gap": 0.16607874535694378
+  },
+  "arm3": {
+   "train_auc": 0.6655331734515435,
+   "val_auc": 0.5917579908675799,
+   "oof_auc": 0.5671228031228032,
+   "gap": 0.07377518258396365
+  },
+  "arm4": {
+   "train_auc": 0.6622440746785309,
+   "val_auc": 0.6108447488584473,
+   "oof_auc": 0.569009287009287,
+   "gap": 0.05139932582008355
+  }
+ },
+ "step4": {
+  "init_flat": [
+   0.6509,
+   0.6565,
+   0.6542
+  ],
+  "trained_flat": [
+   0.6366,
+   0.6298,
+   0.6623
+  ],
+  "delta_mean": -0.011,
+  "note": "init models bitwise-reproduce S12A3 arm-B randoms: exact same-weights comparison, same frozen folds"
+ },
+ "step5": {
+  "arm1": {
+   "best_at_frac_of_run": 0.5785129634799414,
+   "val_tail_slope_last5evals": -0.002808219178082168,
+   "grad_norms": "NOT LOGGED in S12A4 (only per-step finiteness); parameter movement (step2) is the substitute evidence"
+  },
+  "arm2": {
+   "best_at_frac_of_run": 0.5043628618403164,
+   "val_tail_slope_last5evals": -0.014029680365296778,
+   "grad_norms": "NOT LOGGED in S12A4 (only per-step finiteness); parameter movement (step2) is the substitute evidence"
+  },
+  "arm3": {
+   "best_at_frac_of_run": 0.2672919672919673,
+   "val_tail_slope_last5evals": -0.038242009132420124,
+   "grad_norms": "NOT LOGGED in S12A4 (only per-step finiteness); parameter movement (step2) is the substitute evidence"
+  },
+  "arm4": {
+   "best_at_frac_of_run": 0.34781144781144785,
+   "val_tail_slope_last5evals": -0.022682648401826464,
+   "grad_norms": "NOT LOGGED in S12A4 (only per-step finiteness); parameter movement (step2) is the substitute evidence"
+  }
+ },
+ "verdict": "OUTCOME 2: S12A4 is a VALID architecture retention result",
+ "answers": {
+  "a1_integrity": "PASS 288/288",
+  "a2_median_stopping_epoch": {
+   "arm1_best": 28,
+   "arm2_best": 28,
+   "arm3_best": 18,
+   "arm4_best": 15,
+   "stopped_median": {
+    "arm1": 48,
+    "arm2": 48,
+    "arm3": 38,
+    "arm4": 35
+   },
+   "max_allowed": 200
+  },
+  "a3_encoder_movement": "15-18% relative (trainable params; GIN weight matrices 17-20%) \u2014 trained, not frozen",
+  "a4_head_movement": "readout ~100% relative, head 8-15%; readout/encoder ratio ~6-7x",
+  "a5_train_val_gap": {
+   "arm1": 0.238,
+   "arm2": 0.166,
+   "arm3": 0.074,
+   "arm4": 0.051,
+   "reading": "large gap = overfitting, NOT truncated training"
+  },
+  "a6_s12a4_conclusion_valid": true,
+  "a7_recommended_next": "S12A5: architecture-side retention intervention (input-skip: concatenate FC-derived features to the ROI-aware readout, bypassing WGIN propagation) \u2014 NOT more training epochs and NOT objective tuning; curves show additional training only increases overfitting"
+ }
+}

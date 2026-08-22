@@ -1,0 +1,224 @@
+{
+ "step1": {
+  "arm1": {
+   "n": 72,
+   "max_allowed": 200,
+   "best_epoch": {
+    "mean": 31.430555555555557,
+    "median": 28.0,
+    "min": 5,
+    "max": 83
+   },
+   "stopped_epoch": {
+    "mean": 51.43055555555556,
+    "median": 48.0,
+    "min": 25,
+    "max": 103
+   },
+   "best_epoch_hist_bins_0_10_25_50_100_150_200": [
+    2,
+    24,
+    36,
+    10,
+    0,
+    0
+   ],
+   "frac_best_before_50": 0.8611111111111112
+  },
+  "arm2": {
+   "n": 72,
+   "max_allowed": 200,
+   "best_epoch": {
+    "mean": 33.458333333333336,
+    "median": 28.5,
+    "min": 5,
+    "max": 120
+   },
+   "stopped_epoch": {
+    "mean": 53.458333333333336,
+    "median": 48.5,
+    "min": 25,
+    "max": 140
+   },
+   "best_epoch_hist_bins_0_10_25_50_100_150_200": [
+    4,
+    24,
+    29,
+    14,
+    1,
+    0
+   ],
+   "frac_best_before_50": 0.7916666666666666
+  },
+  "arm3": {
+   "n": 72,
+   "max_allowed": 200,
+   "best_epoch": {
+    "mean": 25.13888888888889,
+    "median": 17.5,
+    "min": 5,
+    "max": 90
+   },
+   "stopped_epoch": {
+    "mean": 45.138888888888886,
+    "median": 37.5,
+    "min": 25,
+    "max": 110
+   },
+   "best_epoch_hist_bins_0_10_25_50_100_150_200": [
+    22,
+    18,
+    19,
+    13,
+    0,
+    0
+   ],
+   "frac_best_before_50": 0.8194444444444444
+  },
+  "arm4": {
+   "n": 72,
+   "max_allowed": 200,
+   "best_epoch": {
+    "mean": 25.833333333333332,
+    "median": 15.0,
+    "min": 5,
+    "max": 175
+   },
+   "stopped_epoch": {
+    "mean": 45.833333333333336,
+    "median": 35.0,
+    "min": 25,
+    "max": 195
+   },
+   "best_epoch_hist_bins_0_10_25_50_100_150_200": [
+    30,
+    13,
+    17,
+    10,
+    1,
+    1
+   ],
+   "frac_best_before_50": 0.8333333333333334
+  }
+ },
+ "step2": {
+  "arm1": {
+   "encoder": {
+    "rel_mean": 69.96637423833211,
+    "rel_median": 63.98373031616211
+   },
+   "readout": {
+    "rel_mean": 0.8450746523837248,
+    "rel_median": 0.841270387172699
+   },
+   "head": {
+    "rel_mean": 0.14980783872306347,
+    "rel_median": 0.1483946219086647
+   },
+   "proj": {
+    "rel_mean": 0.0,
+    "rel_median": 0.0
+   },
+   "encoder_over_head_ratio": 467.0408093108717,
+   "encoder_over_readout_ratio": 82.79312844252999
+  },
+  "arm2": {
+   "encoder": {
+    "rel_mean": 135.1104875670539,
+    "rel_median": 111.52384948730469
+   },
+   "readout": {
+    "rel_mean": 1.0402048569586542,
+    "rel_median": 1.0073213279247284
+   },
+   "head": {
+    "rel_mean": 0.08084713791807492,
+    "rel_median": 0.0812881775200367
+   },
+   "proj": {
+    "rel_mean": 0.19669365272339848,
+    "rel_median": 0.19787278026342392
+   },
+   "encoder_over_head_ratio": 1671.184547113663,
+   "encoder_over_readout_ratio": 129.88834522662128
+  },
+  "arm3": {
+   "encoder": {
+    "rel_mean": 123.68732502725389,
+    "rel_median": 81.155517578125
+   },
+   "readout": {
+    "rel_mean": 1.0138491114808454,
+    "rel_median": 0.9824302196502686
+   },
+   "proj": {
+    "rel_mean": 0.1738282556956013,
+    "rel_median": 0.15620703250169754
+   },
+   "encoder_over_readout_ratio": 121.99776438783287
+  },
+  "arm4": {
+   "encoder": {
+    "rel_mean": 137.40930652618408,
+    "rel_median": 86.13132095336914
+   },
+   "readout": {
+    "rel_mean": 1.000948621167077,
+    "rel_median": 0.8947010934352875
+   },
+   "proj": {
+    "rel_mean": 0.1836816139726175,
+    "rel_median": 0.17941376566886902
+   },
+   "encoder_over_readout_ratio": 137.27908068444992
+  }
+ },
+ "step3": {
+  "arm1": {
+   "train_auc": 0.9295597595219883,
+   "val_auc": 0.6918949771689498,
+   "oof_auc": 0.6441961001961001,
+   "gap": 0.23766478235303856
+  },
+  "arm2": {
+   "train_auc": 0.8408047727542041,
+   "val_auc": 0.6747260273972603,
+   "oof_auc": 0.6371919931919929,
+   "gap": 0.16607874535694378
+  },
+  "arm3": {
+   "train_auc": 0.6655331734515435,
+   "val_auc": 0.5917579908675799,
+   "oof_auc": 0.5671228031228032,
+   "gap": 0.07377518258396365
+  },
+  "arm4": {
+   "train_auc": 0.6622440746785309,
+   "val_auc": 0.6108447488584473,
+   "oof_auc": 0.569009287009287,
+   "gap": 0.05139932582008355
+  }
+ },
+ "step5": {
+  "arm1": {
+   "best_at_frac_of_run": 0.5785129634799414,
+   "val_tail_slope_last5evals": -0.002808219178082168,
+   "grad_norms": "NOT LOGGED in S12A4 (only per-step finiteness); parameter movement (step2) is the substitute evidence"
+  },
+  "arm2": {
+   "best_at_frac_of_run": 0.5043628618403164,
+   "val_tail_slope_last5evals": -0.014029680365296778,
+   "grad_norms": "NOT LOGGED in S12A4 (only per-step finiteness); parameter movement (step2) is the substitute evidence"
+  },
+  "arm3": {
+   "best_at_frac_of_run": 0.2672919672919673,
+   "val_tail_slope_last5evals": -0.038242009132420124,
+   "grad_norms": "NOT LOGGED in S12A4 (only per-step finiteness); parameter movement (step2) is the substitute evidence"
+  },
+  "arm4": {
+   "best_at_frac_of_run": 0.34781144781144785,
+   "val_tail_slope_last5evals": -0.022682648401826464,
+   "grad_norms": "NOT LOGGED in S12A4 (only per-step finiteness); parameter movement (step2) is the substitute evidence"
+  }
+ }
+}
