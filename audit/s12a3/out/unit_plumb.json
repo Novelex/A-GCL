@@ -1,0 +1,26 @@
+{
+ "unit": "plumb",
+ "arm": "plumb",
+ "kind": "ord",
+ "result": {
+  "auc": 0.756484397366161,
+  "expected": 0.7565,
+  "delta": 1.5602633838929236e-05
+ },
+ "meta": {},
+ "wall_s": 36.5,
+ "provenance": {
+  "host": "node15.cognition.gla.alces.network",
+  "time": "2026-08-22T17:30:13",
+  "slurm_job": "1871023",
+  "slurm_array": "0",
+  "git_head": "4a651290d09561bc2057c1a72cb893ab2730b111",
+  "git_dirty": "",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda_available": false,
+  "device_name": null,
+  "base_seed": 20260818,
+  "unit": "S12A3_plumb"
+ }
+}

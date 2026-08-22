@@ -1,0 +1,62 @@
+{
+ "SMOKE_PASS": true,
+ "arms": {
+  "A": {
+   "shape": [
+    8,
+    90,
+    32
+   ],
+   "finite": true,
+   "det_reload_and_batchsize": true
+  },
+  "B": {
+   "shape": [
+    8,
+    90,
+    32
+   ],
+   "finite": true,
+   "det_reload_and_batchsize": true
+  },
+  "C": {
+   "shape": [
+    8,
+    90,
+    32
+   ],
+   "finite": true,
+   "det_reload_and_batchsize": true
+  },
+  "D": {
+   "shape": [
+    8,
+    90,
+    32
+   ],
+   "finite": true,
+   "det_reload_and_batchsize": true
+  },
+  "E": {
+   "shape": [
+    8,
+    90,
+    64
+   ],
+   "finite": true,
+   "det_reload_and_batchsize": true
+  },
+  "F": {
+   "shape": [
+    8,
+    90,
+    128
+   ],
+   "finite": true,
+   "det_reload_and_batchsize": true
+  }
+ },
+ "A_sentinel_subset": true,
+ "probe_path": true,
+ "production_clean": true
+}

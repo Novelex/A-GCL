@@ -1,0 +1,35 @@
+{
+ "unit": "D_s0",
+ "arm": "D",
+ "seed": 20260818,
+ "cfg": {
+  "emb_dim": 32,
+  "normalize_nodes": false,
+  "post_bn_relu": false
+ },
+ "sd_hash": "821ad0149e40b212",
+ "nodes_sha": "e2486bea1b94a4982350393b7fa871cf97eb6d33d1b19aad5ad6840f5fbd6881",
+ "flat_sha": "e2486bea1b94a4982350393b7fa871cf97eb6d33d1b19aad5ad6840f5fbd6881",
+ "shape": [
+  954,
+  90,
+  32
+ ],
+ "finite": true,
+ "deterministic_reload": true,
+ "wall_s": 7.1,
+ "provenance": {
+  "host": "node03.cognition.gla.alces.network",
+  "time": "2026-08-22T17:17:19",
+  "slurm_job": "1870989",
+  "slurm_array": "9",
+  "git_head": "4a651290d09561bc2057c1a72cb893ab2730b111",
+  "git_dirty": "",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda_available": false,
+  "device_name": null,
+  "base_seed": 20260818,
+  "unit": "S12A3_extract_D_s0"
+ }
+}

@@ -1,0 +1,35 @@
+{
+ "unit": "E_s2",
+ "arm": "E",
+ "seed": 20260820,
+ "cfg": {
+  "emb_dim": 64,
+  "normalize_nodes": true,
+  "post_bn_relu": true
+ },
+ "sd_hash": "93cb51a2c3cf0771",
+ "nodes_sha": "4e2d1ee51edb3ee73e6c80885f5764c7a9bbf2a9ab772378929f922bf3503b96",
+ "flat_sha": "4e2d1ee51edb3ee73e6c80885f5764c7a9bbf2a9ab772378929f922bf3503b96",
+ "shape": [
+  954,
+  90,
+  64
+ ],
+ "finite": true,
+ "deterministic_reload": true,
+ "wall_s": 7.9,
+ "provenance": {
+  "host": "node03.cognition.gla.alces.network",
+  "time": "2026-08-22T17:17:19",
+  "slurm_job": "1870994",
+  "slurm_array": "14",
+  "git_head": "4a651290d09561bc2057c1a72cb893ab2730b111",
+  "git_dirty": "",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda_available": false,
+  "device_name": null,
+  "base_seed": 20260818,
+  "unit": "S12A3_extract_E_s2"
+ }
+}

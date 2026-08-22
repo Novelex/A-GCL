@@ -1,0 +1,47 @@
+{
+ "unit": "E_s2_ord",
+ "arm": "E",
+ "kind": "ord",
+ "result": {
+  "auc": 0.6591160342663349,
+  "bacc": 0.61062124248497,
+  "sens": 0.6,
+  "spec": 0.6212424849699398,
+  "fold_auc": [
+   0.6246153846153846,
+   0.6892307692307693,
+   0.6665934065934066,
+   0.6706593406593406,
+   0.6484626484626484
+  ],
+  "fold_sd": 0.02447792608799066,
+  "ci_lo": 0.6251799015275404,
+  "ci_hi": 0.6948285354994324
+ },
+ "meta": {
+  "cfg": {
+   "emb_dim": 64,
+   "normalize_nodes": true,
+   "post_bn_relu": true
+  },
+  "seed": 20260820,
+  "sd_hash": "93cb51a2c3cf0771",
+  "flat_dim": 5760,
+  "flat_sha": "4e2d1ee51edb3ee73e6c80885f5764c7a9bbf2a9ab772378929f922bf3503b96"
+ },
+ "wall_s": 713.1,
+ "provenance": {
+  "host": "node13.cognition.gla.alces.network",
+  "time": "2026-08-22T18:05:00",
+  "slurm_job": "1871057",
+  "slurm_array": "8",
+  "git_head": "4a651290d09561bc2057c1a72cb893ab2730b111",
+  "git_dirty": "",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda_available": false,
+  "device_name": null,
+  "base_seed": 20260818,
+  "unit": "S12A3_E_s2_ord"
+ }
+}
