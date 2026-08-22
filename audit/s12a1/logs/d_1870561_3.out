@@ -1,0 +1,3 @@
+host=node12.cognition.gla.alces.network job=1870615 git=1ece8166421fe83c97c0500573216704be0a88fc date=2026-08-22T00:51:18+01:00
+fold done C=0.01 auc=0.5208
+fold done C=0.01 auc=0.7980

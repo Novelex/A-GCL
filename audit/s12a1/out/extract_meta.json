@@ -1,0 +1,33 @@
+{
+ "provenance": {
+  "host": "node15.cognition.gla.alces.network",
+  "time": "2026-08-22T00:35:52",
+  "slurm_job": "1870559",
+  "slurm_array": null,
+  "git_head": "1ece8166421fe83c97c0500573216704be0a88fc",
+  "git_dirty": "",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda_available": false,
+  "device_name": null,
+  "base_seed": 20260818,
+  "unit": "S12A1_extract"
+ },
+ "q1_proof": {
+  "max_abs": 0.0,
+  "max_rel": 0.0,
+  "mismatching_subjects": 0,
+  "diag_min": 2.0,
+  "diag_max": 2.0,
+  "note_message_relu": "message_relu=True is a layer-1 no-op: M1_B in [0,1] and I90 in {0,1} are non-negative, so relu(x_j)=x_j before edge weighting (S6-proven property, re-verified by the exactness of Q1 above)."
+ },
+ "recovered_fc_max_abs": 2.9802306289461455e-08,
+ "state_dict_hashes": {
+  "id_s0": "821ad0149e40b212",
+  "old_s0": "a6fe87c41602df53",
+  "id_s1": "2fd50ace204619db",
+  "old_s1": "5f7e469cb90d5211",
+  "id_s2": "704fc87b9d297306",
+  "old_s2": "748e35739cc15d04"
+ }
+}

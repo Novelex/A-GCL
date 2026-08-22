@@ -1,0 +1,36 @@
+{
+ "auc": 0.611715739170649,
+ "bacc": 0.5949459358276994,
+ "acc": 0.5964360587002097,
+ "sens": 0.5626373626373626,
+ "spec": 0.627254509018036,
+ "fold_auc": [
+  0.6046153846153847,
+  0.654945054945055,
+  0.6484615384615384,
+  0.5736263736263736,
+  0.5833055833055834
+ ],
+ "fold_sd": 0.037145829280636145,
+ "ci_lo": 0.5731100248297305,
+ "ci_hi": 0.6461433573317096,
+ "condition": "old",
+ "stage": "H1_to_layer2",
+ "seed": 0,
+ "eval": "ord",
+ "n_feat": 2880,
+ "provenance": {
+  "host": "node09.cognition.gla.alces.network",
+  "time": "2026-08-22T00:48:08",
+  "slurm_job": "1870565",
+  "slurm_array": "3",
+  "git_head": "1ece8166421fe83c97c0500573216704be0a88fc",
+  "git_dirty": "",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda_available": false,
+  "device_name": null,
+  "base_seed": 20260818,
+  "unit": "S12A1_probe"
+ }
+}

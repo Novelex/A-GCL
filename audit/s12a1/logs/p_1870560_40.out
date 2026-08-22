@@ -1,0 +1,2 @@
+host=node15.cognition.gla.alces.network job=1870602 git=1ece8166421fe83c97c0500573216704be0a88fc date=2026-08-22T00:41:48+01:00
+probe_id_final_postnorm_s2_ord: AUC=0.6381

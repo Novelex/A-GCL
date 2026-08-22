@@ -1,0 +1,11 @@
+  [PASS] N=954/455/499/90
+  [PASS] duplicates=0 missing=0 extras=0
+  [PASS] x==canonical M1_B all 954 (max_abs)
+  [PASS] FC symmetric (S4 tol)
+  [PASS] FC diag==1 (S4 tol)
+  [PASS] FC source==graph all 954
+  [PASS] no 956/v3/OLD/M2/norm_matrix path
+  max FC source<->graph abs err: 2.98e-08
+  max ALFF source<->graph abs err: 0.00e+00
+  parents: ['/users/3171356m/A-GCL/data/raw/ASD_ADJ', '/users/3171356m/A-GCL/data/raw/NC_ADJ']
+S12A1 DATA GATE: ALL PASS

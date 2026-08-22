@@ -1,0 +1,2 @@
+host=node14.cognition.gla.alces.network job=1870592 git=1ece8166421fe83c97c0500573216704be0a88fc date=2026-08-22T00:37:18+01:00
+probe_old_H1_BN_s2_ord: AUC=0.5947
