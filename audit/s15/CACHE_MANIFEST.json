@@ -1,0 +1,26 @@
+{
+ "h_source_manifest": "4f01b0abc1b160bd",
+ "h_fc": "174183531a998da0",
+ "h_alff": "de63049c08ac023c",
+ "h_labels": "c3389e38c0f87793",
+ "h_subject_order": "3b7c7993707e74a1",
+ "h_folds_lab": "3bf974acd7331c87",
+ "h_folds_site": "52eda79f7292dcff",
+ "h_folds_loso": "59d6030196460ee7",
+ "h_fc_edge_order": "5e0780c9d99b238a",
+ "h_alff_band_order": "de63049c08ac023c",
+ "git_sha": "7970caa",
+ "builder_version": "s15_data v1.0",
+ "build_timestamp": "2026-08-24 00:35:39",
+ "cache_file": "s15_data_4f01b0abc1b160bd.npz",
+ "n_folds": {
+  "lab": 5,
+  "site": 5,
+  "loso": 19
+ },
+ "small_sites_pooled": [],
+ "host": "login1.cognition.gla.alces.network",
+ "fc_sym_max": 0.0,
+ "fc_diag_dev": 0.0,
+ "fc_absmax": 1.0
+}
