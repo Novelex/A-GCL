@@ -1,0 +1,15 @@
+{
+ "cache": "/users/3171356m/A-GCL/audit/s13/cache/data_s13_4f01b0abc1b160bd.pt",
+ "cache_sha": "f74fe2c087f61a86210e80950d8056727881d93cd1b0aaa2b362c743eb0370e6",
+ "provenance": {
+  "git": "9ea8e5f",
+  "host": "login1.cognition.gla.alces.network",
+  "time": "2026-08-23 19:11:05",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "numpy": "1.26.4",
+  "cores": 32,
+  "omp": "4",
+  "sklearn": "1.9.0"
+ }
+}
