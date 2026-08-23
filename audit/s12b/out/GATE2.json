@@ -1,0 +1,83 @@
+{
+ "checks": [
+  [
+   "toy_wgin mrelu=True h.float64",
+   true,
+   "max_err=0.00e+00"
+  ],
+  [
+   "toy_wgin mrelu=True h.float32",
+   true,
+   "max_err=0.00e+00"
+  ],
+  [
+   "toy_wgin mrelu=False h.float64",
+   true,
+   "max_err=0.00e+00"
+  ],
+  [
+   "toy_wgin mrelu=False h.float32",
+   true,
+   "max_err=0.00e+00"
+  ],
+  [
+   "selfloop_fork",
+   true,
+   "90 self-edges, FC diag=1 -> own features counted TWICE (kept, logged, all arms)"
+  ],
+  [
+   "armC_fcrow_bitwise",
+   true,
+   "8x8 spot checks exact"
+  ],
+  [
+   "A1_identity",
+   true,
+   "max_err=1.34e-05 (f32 90-term sums)"
+  ],
+  [
+   "finiteness_all_arms",
+   true,
+   "6 arms x 6 stages x 8 subjects"
+  ],
+  [
+   "gpu_available_for_gate2",
+   true,
+   "Gate 2 must run on a GPU node so the GPU determinism leg executes"
+  ],
+  [
+   "determinism_cpu",
+   true,
+   "2 runs bitwise equal (incl. BN calibration)"
+  ],
+  [
+   "determinism_cuda",
+   true,
+   "2 runs bitwise equal (incl. BN calibration)"
+  ],
+  [
+   "determinism_cpu_vs_gpu_tol",
+   true,
+   "max|CPU-GPU|=2.29e-05 (<1e-4; bitwise cross-device equality not claimed)"
+  ],
+  [
+   "save_reload_bitwise",
+   true,
+   ""
+  ],
+  [
+   "production_parity",
+   true,
+   "node_err=8.94e-08 pool_err=3.81e-06"
+  ]
+ ],
+ "provenance": {
+  "git": "3047cf7",
+  "host": "node10.cognition.gla.alces.network",
+  "time": "2026-08-23 03:08:11",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda": "12.1",
+  "gpu": "NVIDIA H100 NVL"
+ }
+}

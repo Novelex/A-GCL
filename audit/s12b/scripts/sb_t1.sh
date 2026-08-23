@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=s12bt1
 #SBATCH --partition=gpu-l40s,gpu-h100
-#SBATCH --array=0-17%12
+#SBATCH --array=5,9,10,11,17%5
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=48G

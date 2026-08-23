@@ -10,4 +10,4 @@ Probe (frozen for the audit): per-fold Scaler -> PCA(min(200,d,n-1), randomized,
 
 RETENTION RATIO denominator: CEILING_PROBE = 0.7481 (above-chance 0.2481).
 Old FC benchmark 0.7565 is NOT compared to Arm D directly; R1 defines the new measurement ceiling (validation rule 12).
-- wall 211.9s | folds (computed from the frozen authority): 5 ordinary + 19 LOSO
+- wall 210.4s | folds (computed from the frozen authority): 5 ordinary + 19 LOSO

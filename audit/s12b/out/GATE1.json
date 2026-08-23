@@ -1623,11 +1623,11 @@
   "R3_mean_in_range_and_max_le_055": true
  },
  "verdict": "PASS",
- "wall_s": 211.9,
+ "wall_s": 210.4,
  "provenance": {
   "git": "3047cf7",
   "host": "node10.cognition.gla.alces.network",
-  "time": "2026-08-23 03:01:08",
+  "time": "2026-08-23 03:08:06",
   "python": "3.12.13",
   "torch": "2.5.0+cu121",
   "cuda": "12.1",

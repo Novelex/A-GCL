@@ -33,8 +33,11 @@ def run_family(arm, emb, norm, mrelu, sidx, X, FC, y, XFC, conf, scodes, folds):
     jp = f"{B.S12B}jobs/t1_{tag}.json"
     if os.path.exists(jp): return f"skip {tag}"
     t0 = time.time(); torch.set_num_threads(1)
-    dev = "cuda" if torch.cuda.is_available() else "cpu"
-    if dev == "cuda": torch.cuda.reset_peak_memory_stats()
+    # CPU forward (2026-08-23 fix): N joblib workers each opened a CUDA context on
+    # one shared GPU -> OOM on the largest configs (emb128 / arm D). The forward is
+    # seconds; the probing dominates. Gate 2 proved CPU is bitwise deterministic, so
+    # this removes contention AND strengthens reproducibility.
+    dev = "cpu"
     seed = B.BASE + sidx; d_in = X.shape[2]
     evs, res = {}, {}
     if norm == "bn":                                       # fold-calibrated running stats
@@ -60,7 +63,7 @@ def run_family(arm, emb, norm, mrelu, sidx, X, FC, y, XFC, conf, scodes, folds):
             evs[st] = B.StageEval(y, XFC=XFC, conf=conf, keep_proj=True)
             for t, tr, te in folds:
                 evs[st].fold_fit(Xs, tr, te, t, njobs=1, site_codes=scodes)
-    gpu_mb = (torch.cuda.max_memory_allocated() / 1e6) if dev == "cuda" else 0.0
+    gpu_mb = 0.0                      # CPU forward: no GPU allocation
     npz = {}
     for st, ev in evs.items():
         res[st] = ev.finalize(scodes)

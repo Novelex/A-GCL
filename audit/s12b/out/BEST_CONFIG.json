@@ -1,0 +1,115 @@
+{
+ "best": {
+  "arm": "C",
+  "emb_dim": 128,
+  "norm_type": "ln",
+  "message_relu": true,
+  "normalize_nodes": true,
+  "auc": 0.6579523882930697,
+  "r2": 0.465203759543234,
+  "sd": 0.006963465336049838
+ },
+ "top10": [
+  {
+   "arm": "C",
+   "emb_dim": 128,
+   "norm_type": "ln",
+   "message_relu": true,
+   "normalize_nodes": true,
+   "auc": 0.6579523882930697,
+   "r2": 0.465203759543234,
+   "sd": 0.006963465336049838
+  },
+  {
+   "arm": "C",
+   "emb_dim": 128,
+   "norm_type": "ln",
+   "message_relu": true,
+   "normalize_nodes": false,
+   "auc": 0.6579479838798477,
+   "r2": 0.465204043690054,
+   "sd": 0.0069596693386724555
+  },
+  {
+   "arm": "C",
+   "emb_dim": 128,
+   "norm_type": "ln",
+   "message_relu": false,
+   "normalize_nodes": false,
+   "auc": 0.655534365434165,
+   "r2": 0.45994311413280087,
+   "sd": 0.0040325637070854035
+  },
+  {
+   "arm": "C",
+   "emb_dim": 128,
+   "norm_type": "ln",
+   "message_relu": false,
+   "normalize_nodes": true,
+   "auc": 0.6555308419035875,
+   "r2": 0.4599429197868763,
+   "sd": 0.004004513961559378
+  },
+  {
+   "arm": "C",
+   "emb_dim": 64,
+   "norm_type": "none",
+   "message_relu": true,
+   "normalize_nodes": false,
+   "auc": 0.6449761060582704,
+   "r2": 0.5500681069135668,
+   "sd": 0.007684890567224902
+  },
+  {
+   "arm": "C",
+   "emb_dim": 128,
+   "norm_type": "none",
+   "message_relu": true,
+   "normalize_nodes": true,
+   "auc": 0.6443414301129733,
+   "r2": 0.43770793386189827,
+   "sd": 0.004534876552196422
+  },
+  {
+   "arm": "B",
+   "emb_dim": 64,
+   "norm_type": "ln",
+   "message_relu": false,
+   "normalize_nodes": true,
+   "auc": 0.6429897156951265,
+   "r2": 0.42635100864071057,
+   "sd": 0.01091348168130458
+  },
+  {
+   "arm": "B",
+   "emb_dim": 64,
+   "norm_type": "ln",
+   "message_relu": true,
+   "normalize_nodes": true,
+   "auc": 0.6429897156951265,
+   "r2": 0.42635100864071057,
+   "sd": 0.01091348168130458
+  },
+  {
+   "arm": "B",
+   "emb_dim": 64,
+   "norm_type": "ln",
+   "message_relu": false,
+   "normalize_nodes": false,
+   "auc": 0.6429580039199279,
+   "r2": 0.4263515506607553,
+   "sd": 0.010925829744348935
+  },
+  {
+   "arm": "B",
+   "emb_dim": 64,
+   "norm_type": "ln",
+   "message_relu": true,
+   "normalize_nodes": false,
+   "auc": 0.6429580039199279,
+   "r2": 0.4263515506607553,
+   "sd": 0.010925829744348935
+  }
+ ],
+ "ceiling": 0.7480719681120483
+}

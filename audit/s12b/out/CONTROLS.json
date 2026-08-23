@@ -1,0 +1,26 @@
+{
+ "best_config": {
+  "arm": "C",
+  "emb_dim": 128,
+  "norm_type": "ln",
+  "message_relu": true,
+  "normalize_nodes": true,
+  "auc": 0.6579523882930697,
+  "r2": 0.465203759543234,
+  "sd": 0.006963465336049838
+ },
+ "P_lab_auc": 0.4884934704573983,
+ "P_roi_auc": 0.49738157633949215,
+ "PASS_P_lab": true,
+ "PASS_P_roi": true,
+ "wall_s": 56.8,
+ "provenance": {
+  "git": "3047cf7",
+  "host": "node08.cognition.gla.alces.network",
+  "time": "2026-08-23 07:30:25",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda": "12.1",
+  "gpu": "NVIDIA L40S"
+ }
+}
