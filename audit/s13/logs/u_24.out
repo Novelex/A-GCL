@@ -1,0 +1,14 @@
+[T5_K4_wd0.0001_s0] arm=T5 K=4 wd=0.0001 seed=20260818 folds=24 host=node04.cognition.gla.alces.network cores=4
+skip T5_K4_wd0.0001_s0 o0
+[T5_K4_wd0.0001_s0/o1] ep20 vl 0.6901 va 0.5180 clip 6/10
+DONE T5_K4_wd0.0001_s0 o1 head 0.4923 probe 0.5489 val 0.5622 ep1 UNDERFIT 130.2s
+[T5_K4_wd0.0001_s0/o2] ep20 vl 0.7025 va 0.5483 clip 10/10
+[T5_K4_wd0.0001_s0/o2] ep40 vl 0.9324 va 0.5158 clip 10/10
+DONE T5_K4_wd0.0001_s0 o2 head 0.5104 probe 0.4834 val 0.5634 ep36 OVERFIT 83.0s
+[T5_K4_wd0.0001_s0/o3] ep20 vl 0.6923 va 0.5183 clip 7/10
+[T5_K4_wd0.0001_s0/o3] ep40 vl 0.7922 va 0.5166 clip 10/10
+DONE T5_K4_wd0.0001_s0 o3 head 0.5222 probe 0.5165 val 0.5637 ep24 HEALTHY 124.7s
+[T5_K4_wd0.0001_s0/o4] ep20 vl 0.7288 va 0.4921 clip 10/10
+DONE T5_K4_wd0.0001_s0 o4 head 0.5011 probe 0.5115 val 0.5478 ep1 UNDERFIT 110.7s
+[T5_K4_wd0.0001_s0/l0] ep20 vl 0.6986 va 0.5640 clip 10/12
+[T5_K4_wd0.0001_s0/l0] ep40 vl 0.8292 va 0.5714 clip 12/12

@@ -1,0 +1,88 @@
+[T1_K4_wd0.0001_s2] arm=T1 K=4 wd=0.0001 seed=20260820 folds=24 host=node15.cognition.gla.alces.network cores=4
+[T1_K4_wd0.0001_s2/o0] ep20 vl 0.6892 va 0.6459 clip 10/10
+DONE T1_K4_wd0.0001_s2 o0 head 0.6264 probe 0.6387 val 0.6652 ep8 UNDERFIT 69.0s
+[T1_K4_wd0.0001_s2/o1] ep20 vl 0.7328 va 0.5878 clip 10/10
+[T1_K4_wd0.0001_s2/o1] ep40 vl 0.9647 va 0.6103 clip 10/10
+DONE T1_K4_wd0.0001_s2 o1 head 0.7056 probe 0.7164 val 0.6103 ep40 OVERFIT 71.3s
+[T1_K4_wd0.0001_s2/o2] ep20 vl 0.7295 va 0.6503 clip 10/10
+[T1_K4_wd0.0001_s2/o2] ep40 vl 0.9085 va 0.6661 clip 10/10
+[T1_K4_wd0.0001_s2/o2] ep60 vl 0.9031 va 0.6841 clip 10/10
+[T1_K4_wd0.0001_s2/o2] ep80 vl 1.0900 va 0.6866 clip 10/10
+DONE T1_K4_wd0.0001_s2 o2 head 0.6464 probe 0.6537 val 0.7003 ep68 OVERFIT 93.2s
+[T1_K4_wd0.0001_s2/o3] ep20 vl 0.6548 va 0.6652 clip 10/10
+DONE T1_K4_wd0.0001_s2 o3 head 0.6030 probe 0.6096 val 0.6772 ep16 HEALTHY 78.9s
+[T1_K4_wd0.0001_s2/o4] ep20 vl 0.7527 va 0.5932 clip 10/10
+[T1_K4_wd0.0001_s2/o4] ep40 vl 0.8796 va 0.5991 clip 10/10
+[T1_K4_wd0.0001_s2/o4] ep60 vl 1.0288 va 0.6180 clip 10/10
+[T1_K4_wd0.0001_s2/o4] ep80 vl 1.0477 va 0.6118 clip 10/10
+DONE T1_K4_wd0.0001_s2 o4 head 0.6368 probe 0.6813 val 0.6377 ep66 OVERFIT 99.9s
+[T1_K4_wd0.0001_s2/l0] ep20 vl 0.6808 va 0.6550 clip 12/12
+DONE T1_K4_wd0.0001_s2 l0 head 0.5469 probe 0.4844 val 0.6687 ep19 HEALTHY 93.8s
+[T1_K4_wd0.0001_s2/l1] ep20 vl 0.6789 va 0.6574 clip 12/12
+[T1_K4_wd0.0001_s2/l1] ep40 vl 0.8595 va 0.6520 clip 12/12
+DONE T1_K4_wd0.0001_s2 l1 head 0.7576 probe 0.8081 val 0.6638 ep33 OVERFIT 106.9s
+[T1_K4_wd0.0001_s2/l2] ep20 vl 0.6319 va 0.7109 clip 12/12
+[T1_K4_wd0.0001_s2/l2] ep40 vl 0.7557 va 0.7400 clip 12/12
+[T1_K4_wd0.0001_s2/l2] ep60 vl 0.9109 va 0.7103 clip 12/12
+DONE T1_K4_wd0.0001_s2 l2 head 0.4962 probe 0.4831 val 0.7489 ep43 OVERFIT 93.0s
+[T1_K4_wd0.0001_s2/l3] ep20 vl 0.6779 va 0.6325 clip 12/12
+[T1_K4_wd0.0001_s2/l3] ep40 vl 0.8316 va 0.6634 clip 12/12
+[T1_K4_wd0.0001_s2/l3] ep60 vl 0.8067 va 0.6623 clip 12/12
+DONE T1_K4_wd0.0001_s2 l3 head 0.5459 probe 0.5153 val 0.6701 ep50 OVERFIT 113.9s
+[T1_K4_wd0.0001_s2/l4] ep20 vl 0.6833 va 0.6341 clip 12/12
+DONE T1_K4_wd0.0001_s2 l4 head 0.6815 probe 0.7185 val 0.6466 ep16 HEALTHY 89.1s
+[T1_K4_wd0.0001_s2/l5] ep20 vl 0.6960 va 0.6288 clip 12/12
+[T1_K4_wd0.0001_s2/l5] ep40 vl 0.7998 va 0.6744 clip 12/12
+[T1_K4_wd0.0001_s2/l5] ep60 vl 0.9127 va 0.6537 clip 12/12
+DONE T1_K4_wd0.0001_s2 l5 head 0.5970 probe 0.6154 val 0.6814 ep41 OVERFIT 107.1s
+[T1_K4_wd0.0001_s2/l6] ep20 vl 0.6707 va 0.6719 clip 10/10
+DONE T1_K4_wd0.0001_s2 l6 head 0.6398 probe 0.6325 val 0.6849 ep18 HEALTHY 79.4s
+[T1_K4_wd0.0001_s2/l7] ep20 vl 0.6874 va 0.6592 clip 12/12
+[T1_K4_wd0.0001_s2/l7] ep40 vl 0.7267 va 0.6992 clip 12/12
+[T1_K4_wd0.0001_s2/l7] ep60 vl 0.8515 va 0.7052 clip 12/12
+DONE T1_K4_wd0.0001_s2 l7 head 0.6593 probe 0.6963 val 0.7174 ep52 OVERFIT 109.8s
+[T1_K4_wd0.0001_s2/l8] ep20 vl 0.7880 va 0.6386 clip 12/12
+[T1_K4_wd0.0001_s2/l8] ep40 vl 0.7933 va 0.6718 clip 12/12
+DONE T1_K4_wd0.0001_s2 l8 head 0.6300 probe 0.6499 val 0.6718 ep40 OVERFIT 111.6s
+[T1_K4_wd0.0001_s2/l9] ep20 vl 0.6774 va 0.6852 clip 12/12
+[T1_K4_wd0.0001_s2/l9] ep40 vl 0.8039 va 0.7048 clip 12/12
+[T1_K4_wd0.0001_s2/l9] ep60 vl 0.7848 va 0.6961 clip 12/12
+DONE T1_K4_wd0.0001_s2 l9 head 0.5619 probe 0.5333 val 0.7119 ep50 OVERFIT 113.8s
+[T1_K4_wd0.0001_s2/l10] ep20 vl 0.7122 va 0.6127 clip 12/12
+[T1_K4_wd0.0001_s2/l10] ep40 vl 0.8391 va 0.6533 clip 12/12
+[T1_K4_wd0.0001_s2/l10] ep60 vl 1.0047 va 0.6344 clip 12/12
+DONE T1_K4_wd0.0001_s2 l10 head 0.6409 probe 0.6909 val 0.6701 ep44 OVERFIT 94.4s
+[T1_K4_wd0.0001_s2/l11] ep20 vl 0.6793 va 0.6628 clip 12/12
+[T1_K4_wd0.0001_s2/l11] ep40 vl 0.8224 va 0.6794 clip 12/12
+DONE T1_K4_wd0.0001_s2 l11 head 0.4737 probe 0.4895 val 0.6974 ep37 OVERFIT 103.5s
+[T1_K4_wd0.0001_s2/l12] ep20 vl 0.7002 va 0.6125 clip 12/12
+[T1_K4_wd0.0001_s2/l12] ep40 vl 0.7721 va 0.6765 clip 12/12
+[T1_K4_wd0.0001_s2/l12] ep60 vl 1.0160 va 0.6363 clip 12/12
+DONE T1_K4_wd0.0001_s2 l12 head 0.7123 probe 0.6687 val 0.6807 ep45 OVERFIT 124.1s
+[T1_K4_wd0.0001_s2/l13] ep20 vl 0.7296 va 0.6253 clip 12/12
+[T1_K4_wd0.0001_s2/l13] ep40 vl 0.8768 va 0.6469 clip 12/12
+[T1_K4_wd0.0001_s2/l13] ep60 vl 0.9101 va 0.6415 clip 12/12
+DONE T1_K4_wd0.0001_s2 l13 head 0.5750 probe 0.5918 val 0.6611 ep53 OVERFIT 107.6s
+[T1_K4_wd0.0001_s2/l14] ep20 vl 0.7047 va 0.6110 clip 12/12
+[T1_K4_wd0.0001_s2/l14] ep40 vl 0.8030 va 0.6477 clip 12/12
+[T1_K4_wd0.0001_s2/l14] ep60 vl 0.8353 va 0.6887 clip 12/12
+[T1_K4_wd0.0001_s2/l14] ep80 vl 0.9206 va 0.6620 clip 12/12
+DONE T1_K4_wd0.0001_s2 l14 head 0.6231 probe 0.6692 val 0.6930 ep61 OVERFIT 108.1s
+[T1_K4_wd0.0001_s2/l15] ep20 vl 0.6738 va 0.6130 clip 11/11
+[T1_K4_wd0.0001_s2/l15] ep40 vl 0.7570 va 0.6388 clip 11/11
+[T1_K4_wd0.0001_s2/l15] ep60 vl 0.9264 va 0.6351 clip 11/11
+DONE T1_K4_wd0.0001_s2 l15 head 0.7128 probe 0.7266 val 0.6524 ep51 OVERFIT 90.7s
+[T1_K4_wd0.0001_s2/l16] ep20 vl 0.7077 va 0.6548 clip 12/12
+[T1_K4_wd0.0001_s2/l16] ep40 vl 0.7506 va 0.6753 clip 12/12
+[T1_K4_wd0.0001_s2/l16] ep60 vl 0.8881 va 0.7004 clip 12/12
+DONE T1_K4_wd0.0001_s2 l16 head 0.6231 probe 0.6269 val 0.7062 ep53 OVERFIT 116.3s
+[T1_K4_wd0.0001_s2/l17] ep20 vl 0.6639 va 0.6245 clip 12/12
+[T1_K4_wd0.0001_s2/l17] ep40 vl 0.8339 va 0.6476 clip 12/12
+[T1_K4_wd0.0001_s2/l17] ep60 vl 0.8391 va 0.6707 clip 12/12
+[T1_K4_wd0.0001_s2/l17] ep80 vl 0.8932 va 0.6485 clip 12/12
+DONE T1_K4_wd0.0001_s2 l17 head 0.7927 probe 0.8045 val 0.7081 ep66 OVERFIT 117.2s
+[T1_K4_wd0.0001_s2/l18] ep20 vl 0.6850 va 0.6320 clip 12/12
+[T1_K4_wd0.0001_s2/l18] ep40 vl 0.7985 va 0.6351 clip 12/12
+[T1_K4_wd0.0001_s2/l18] ep60 vl 0.9380 va 0.6519 clip 12/12
+DONE T1_K4_wd0.0001_s2 l18 head 0.7249 probe 0.7487 val 0.6676 ep50 OVERFIT 90.5s
+UNIT_COMPLETE T1_K4_wd0.0001_s2 total 2386s

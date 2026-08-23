@@ -1,0 +1,26 @@
+[T2_K2_wd0.001_s0] arm=T2 K=2 wd=0.001 seed=20260818 folds=24 host=node04.cognition.gla.alces.network cores=4
+skip T2_K2_wd0.001_s0 o0
+skip T2_K2_wd0.001_s0 o1
+[T2_K2_wd0.001_s0/o2] ep20 vl 0.6962 va 0.6365 clip 10/10
+DONE T2_K2_wd0.001_s0 o2 head 0.5060 probe 0.6123 val 0.6531 ep1 UNDERFIT 29.2s
+[T2_K2_wd0.001_s0/o3] ep20 vl 0.6752 va 0.6539 clip 10/10
+[T2_K2_wd0.001_s0/o3] ep40 vl 0.8390 va 0.6438 clip 10/10
+DONE T2_K2_wd0.001_s0 o3 head 0.6158 probe 0.6286 val 0.6639 ep23 OVERFIT 47.6s
+[T2_K2_wd0.001_s0/o4] ep20 vl 0.6686 va 0.6611 clip 10/10
+[T2_K2_wd0.001_s0/o4] ep40 vl 0.8081 va 0.6620 clip 10/10
+DONE T2_K2_wd0.001_s0 o4 head 0.6089 probe 0.6187 val 0.6745 ep24 HEALTHY 47.5s
+[T2_K2_wd0.001_s0/l0] ep20 vl 0.6534 va 0.6868 clip 12/12
+DONE T2_K2_wd0.001_s0 l0 head 0.3906 probe 0.5365 val 0.7106 ep19 HEALTHY 49.0s
+[T2_K2_wd0.001_s0/l1] ep20 vl 0.6754 va 0.6406 clip 12/12
+[T2_K2_wd0.001_s0/l1] ep40 vl 0.8058 va 0.6620 clip 12/12
+[T2_K2_wd0.001_s0/l1] ep60 vl 0.9287 va 0.6660 clip 12/12
+[T2_K2_wd0.001_s0/l1] ep80 vl 1.0873 va 0.6528 clip 12/12
+DONE T2_K2_wd0.001_s0 l1 head 0.7778 probe 0.7475 val 0.6768 ep77 OVERFIT 117.2s
+[T2_K2_wd0.001_s0/l2] ep20 vl 0.6758 va 0.6684 clip 12/12
+[T2_K2_wd0.001_s0/l2] ep40 vl 0.7414 va 0.6777 clip 12/12
+DONE T2_K2_wd0.001_s0 l2 head 0.6447 probe 0.6297 val 0.7033 ep31 OVERFIT 58.8s
+[T2_K2_wd0.001_s0/l3] ep20 vl 0.6748 va 0.6788 clip 12/12
+DONE T2_K2_wd0.001_s0 l3 head 0.7194 probe 0.7347 val 0.6823 ep19 HEALTHY 47.4s
+[T2_K2_wd0.001_s0/l4] ep20 vl 0.7421 va 0.6238 clip 12/12
+[T2_K2_wd0.001_s0/l4] ep40 vl 0.8917 va 0.6152 clip 12/12
+[T2_K2_wd0.001_s0/l4] ep60 vl 0.9912 va 0.6162 clip 12/12

@@ -1,0 +1,7 @@
+/users/3171356m/A-GCL/.venv/lib/python3.12/site-packages/sklearn/svm/_base.py:1298: ConvergenceWarning: Liblinear failed to converge, increase the number of iterations.
+  warnings.warn(
+Traceback (most recent call last):
+  File "/users/3171356m/A-GCL/audit/s13/scripts/w_s13.py", line 73, in <module>
+  File "/users/3171356m/A-GCL/audit/s13/scripts/w_s13.py", line 59, in run
+  File "/users/3171356m/A-GCL/audit/s13/scripts/bnt_core.py", line 395, in atomic_json
+FileNotFoundError: [Errno 2] No such file or directory: '/users/3171356m/A-GCL/audit/s13/jobs/T6_K4_wd0.0001_s0/fold_l4.json.tmp'
