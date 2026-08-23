@@ -147,16 +147,30 @@ def gate2():
         f"row-sum err {rowsum:.2e}; shape {tuple(A0.shape)}; layers {len(m.blocks)};"
         f" heads {m.blocks[0].attn.h}")
 
-    # 4 ROI-permutation equivariance (catches a transposed connection profile)
+    # 4 (amended A1) profile identity + symmetry proof + TRUE equivariance
     rng = np.random.default_rng(B.BASE); pi = rng.permutation(90)
-    FCp = FC[:8][:, pi][:, :, pi]; ALFFp = ALFF[:8][:, pi]
-    Xp = np.concatenate([FCp, B.alff_scaled(ALFF, tr0, "z")[:8][:, pi]], 2)
+    prof_ok = all(np.array_equal(X[s, i, :90], FC[s, i])
+                  for s in rng.integers(0, 954, 8) for i in rng.integers(0, 90, 8))
+    chk("4a_profile_is_the_row", prof_ok,
+        "X[s,i,:90] == FC[s,i,:] bitwise, 8 subjects x 8 ROIs")
+    symm = float(np.abs(FC - FC.transpose(0, 2, 1)).max())
+    chk("4b_fc_symmetry_proof", symm == 0.0,
+        f"max|FC-FC^T| = {symm:.1e} EXACTLY 0 -> row and column profiles are the same"
+        " vector, so a transposed profile is provably a no-op on this data")
+    import copy as _copy
+    m2p = _copy.deepcopy(m)
+    with torch.no_grad():
+        idx = np.concatenate([pi, np.arange(90, D)])      # ALFF columns unchanged
+        m2p.inp.weight.copy_(m.inp.weight.clone()[:, idx])
+    Xp = np.concatenate([FC[:8][:, pi][:, :, pi],
+                         B.alff_scaled(ALFF, tr0, "z")[:8][:, pi]], 2)
     with torch.no_grad():
         Z1 = m.encode(B.make_batch(X[:8], range(8)).X)
-        Z2 = m.encode(B.make_batch(Xp, range(8)).X)
+        Z2 = m2p.encode(B.make_batch(Xp, range(8)).X)
     eq = float((Z2 - Z1[:, pi]).abs().max())
-    chk("4_roi_permutation_equivariance", eq < 1e-4,
-        f"max|Z_L(perm) - perm(Z_L)| = {eq:.2e} (< 1e-4); profile is NOT transposed")
+    chk("4c_true_roi_equivariance", eq < 1e-4,
+        f"permute data AND inp.weight columns -> max|Z_L(perm)-perm(Z_L)| = {eq:.2e}"
+        " (<1e-4): the node axis IS the sequence axis, no [B,D,90] axis swap")
 
     # 5 K=1 degenerate == MEAN readout (P all-ones -> Z_G = 90 * mean; declared)
     m1 = B.BNTModel("T2", B.BASE, 1, D); m1.eval()
