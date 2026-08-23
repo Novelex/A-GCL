@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=s13bnt
 #SBATCH --partition=gpu-l40s,gpu-h100
-#SBATCH --array=0-29%30
+#SBATCH --array=0,3,24-29%8
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=8G
 #SBATCH --time=12:00:00

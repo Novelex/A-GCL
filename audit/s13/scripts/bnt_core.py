@@ -373,10 +373,17 @@ def train_fold(arm, K_clusters, wd, seed, tr, X, y, log=None, max_epochs=MAX_EPO
     gap = bl["train_auc"] - bl["val_auc"]
     verdict = ("OVERFIT" if gap > 0.15 else
                "UNDERFIT" if bl["train_auc"] < 0.65 else "HEALTHY")
-    integ = dict(loss_finite=True, grads_finite=True,
-                 loss_decreased=bool(bl["train_loss"] < curve[0]["train_loss"]),
+    # A3: recorded, not fatal. At best_epoch==1 the comparison is self-referential
+    # and is declared N/A. Hard kill is reserved for genuine corruption (non-finite
+    # loss/grads, checkpoint mismatch), which is asserted above.
+    ld = ("N/A (best_epoch==1, self-comparison)" if best[2] == 1
+          else bool(bl["train_loss"] < curve[0]["train_loss"]))
+    integ = dict(loss_finite=True, grads_finite=True, loss_decreased=ld,
+                 loss_decreased_violation=bool(ld is False),
+                 best_epoch_is_1=bool(best[2] == 1),
+                 min_train_loss=float(min(c["train_loss"] for c in curve)),
+                 train_loss_ep1=float(curve[0]["train_loss"]),
                  selection_val_only=True, ckpt_reload_bitwise=True)
-    assert integ["loss_decreased"], "loss did not decrease to the selected epoch"
     info = dict(best_val_auc=best[0], best_epoch=best[2], epochs_run=len(curve),
                 train_val_gap=float(gap), verdict=verdict, integrity=integ,
                 movement=movement(init, model), n_params=n_params(model),

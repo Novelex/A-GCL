@@ -42,3 +42,40 @@ technically possible, but it would derive NEW unfrozen data — and the standing
 instruction for S13 is to use only what already exists. CONSEQUENCE, STATED
 PLAINLY: the 116-vs-90 ROI contribution (the pre-registered T3 - T2 contrast) is
 NOT MEASURED by this audit and no claim about it will be made.
+
+## A3 — 2026-08-23 — TRAINING_INTEGRITY: recorded, not fatal (BEFORE any result read)
+OBSERVED: 8 of 30 units died on `assert integ["loss_decreased"]`; 545/720 folds
+completed. Units affected: T2_K2_wd1e-4_s0, T2_K2_wd1e-3_s0, and ALL of T5 (x3)
+and T6 (x3).
+
+DIAGNOSIS (reproduced exactly, fold o2 of T2_K2_wd1e-4_s0):
+ (i) THE ASSERTION IS ILL-FORMED AT best_epoch == 1. It tests
+     curve[best_epoch-1]["train_loss"] < curve[0]["train_loss"]; when best_epoch
+     is 1 this compares epoch 1's loss TO ITSELF (0.90407 < 0.90407 = False). It
+     can NEVER pass in that case, whatever the model does. Measured trace: val AUC
+     peaks at epoch 1 (0.6531) and training then DEGRADES it (0.5224-0.6051 over
+     the next epochs) while train_loss falls monotonically to 0.45027 by epoch 44.
+     The model is training correctly; validation simply peaks immediately.
+ (ii) FOR NEGATIVE CONTROLS THE ASSERT INVERTS THE CONTROL'S PURPOSE. T5
+     (columns shuffled) and T6 (labels permuted) are DESIGNED to carry no signal;
+     a model that fails to improve on them is the EXPECTED, REQUIRED result. All
+     six control units were killed for behaving exactly as pre-registered.
+ (iii) KILLING A 24-FOLD UNIT OVER ONE FOLD DESTROYS VALID EVIDENCE from the
+     other 23 folds, which had already been computed.
+
+SELECTION BIAS DISCLOSED: because the assert crashed the unit at the first
+violating fold, the 545 completed folds SYSTEMATICALLY EXCLUDE folds whose best
+epoch was 1. An earlier inspection reading "zero T2 folds with best_epoch <= 2"
+was therefore an artifact of that censoring, not a property of training. All
+affected units are re-run under the amended rule and the count of best_epoch==1
+folds is reported as a first-class diagnostic in RESULTS.md.
+
+AMENDMENT:
+ - ALL integrity flags are still COMPUTED AND RECORDED for every fold.
+ - `loss_decreased` is evaluated only when best_epoch > 1; at best_epoch == 1 it is
+   recorded as "N/A (self-comparison)" — declared, not silently skipped.
+ - HARD KILL is retained ONLY for genuine corruption: non-finite loss, non-finite
+   gradients, and checkpoint-reload mismatch. These still abort the run.
+ - Integrity violations and best_epoch==1 counts are COUNTED AND REPORTED
+   PROMINENTLY in RESULTS.md instead of silently removing folds.
+No threshold, arm, decision rule, model setting or training setting is changed.
