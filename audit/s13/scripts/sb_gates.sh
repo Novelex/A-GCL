@@ -1,5 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=s13gate
+#SBATCH --partition=gpu-l40s,gpu-h100
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=16G
 #SBATCH --time=02:00:00
