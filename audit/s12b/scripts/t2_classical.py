@@ -27,7 +27,9 @@ def lr_probe(X, y, folds, grid, tag):
 def main():
     jp = B.S12B + "jobs/t2_classical.json"
     if os.path.exists(jp): print("skip"); return
-    d = B.load_all(); y = d["y"]; X = d["X_fc"].astype(np.float64)
+    d = B.load_all(); y = d["y"]
+    X, _y, _i, _m = K.load_Xfc()                     # frozen f64 source (review R2)
+    assert np.array_equal(X, d["X_fc"])
     folds = B.folds_all(y); t0 = time.time()
     os.environ.setdefault("S11_NJOBS", str(NJ))
     svc, _ = K.probe_pipe(X, y, [(tr, te) for t, tr, te in folds if t.startswith("o")], [])

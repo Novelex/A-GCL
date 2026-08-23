@@ -1,14 +1,15 @@
 #!/bin/bash
 #SBATCH --job-name=s12bgate
-#SBATCH --partition=gpu-l40s
+#SBATCH --partition=gpu-l40s,gpu-h100
 #SBATCH --gres=gpu:1
-#SBATCH --cpus-per-task=10
+#SBATCH --cpus-per-task=4
 #SBATCH --mem=48G
 #SBATCH --time=03:00:00
 #SBATCH --output=/users/3171356m/agcl_audit_s0/s12b/logs/gates.out
 #SBATCH --error=/users/3171356m/agcl_audit_s0/s12b/logs/gates.err
 set -euo pipefail
-export PYTHONPYCACHEPREFIX=/users/3171356m/agcl_audit_s0/pycache S11_NJOBS=10 OMP_NUM_THREADS=10
+export CUBLAS_WORKSPACE_CONFIG=:4096:8
+export PYTHONPYCACHEPREFIX=/users/3171356m/agcl_audit_s0/pycache S11_NJOBS=4 OMP_NUM_THREADS=4
 PY=/users/3171356m/A-GCL/.venv/bin/python
 S=/users/3171356m/agcl_audit_s0/s12b/scripts
 $PY $S/gate0.py

@@ -62,10 +62,12 @@ def train_fold(h, wd, seed, tr, Xe, y, dev, tag):
         with torch.no_grad():
             st = model(Xt[itr]).cpu().numpy(); sv = model(Xt[iva]).cpu().numpy()
             vloss = float(lossf(torch.tensor(sv), torch.tensor(y[iva], dtype=torch.float32)))
+        mv = movement(init, model)                    # per-epoch, per-group (review R9)
         row = dict(epoch=ep, lr=LR, train_loss=float(np.mean(tl)), val_loss=vloss,
                    train_auc=float(roc_auc_score(y[itr], st)),
                    val_auc=float(roc_auc_score(y[iva], sv)),
-                   grad_net=float(np.mean(gn)), grad_head=float(np.mean(gh)))
+                   grad_net=float(np.mean(gn)), grad_head=float(np.mean(gh)),
+                   move_net=mv["net"], move_head=mv["head"])
         curve.append(row)
         if row["val_auc"] > best[0] + 1e-6:
             best = (row["val_auc"],

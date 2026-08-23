@@ -15,7 +15,7 @@ def main():
         if torch.cuda.is_available() else "no GPU on this node"
     pf = subprocess.run([sys.executable, "-m", "pip", "freeze"],
                         capture_output=True, text=True).stdout
-    open(B.S12B + "out/pip_freeze.txt", "w").write(pf)
+    B.atomic_text(pf, B.S12B + "out/pip_freeze.txt")
     meta = pd.DataFrame(dict(site=d["site"], y=d["y"], age=d["age"], sex=d["sex"],
                              fd=d["fd"]))
     site_tab = meta.groupby("site").agg(n=("y", "size"), asd=("y", "sum"),
@@ -24,7 +24,11 @@ def main():
     F = B.folds_all(d["y"]); n_ord = sum(1 for t, _, _ in F if t.startswith("o"))
     n_loso = sum(1 for t, _, _ in F if t.startswith("l"))
     lines = [
-        "# S12B GATE 0 — DATA / CACHE INTEGRITY: **PASS** (every assert below raised on failure)",
+        "# S12B GATE 0 — DATA / CACHE INTEGRITY: **PASS** (every item below is an"
+        " executed assert; the run dies on any failure)",
+        "- ASSERTED (review R7): FC rebuilt from .mat == frozen X_fc bitwise;"
+        " .mat-vs-S5-graph-cache mismatches == 0; FC symmetric and diag==1;"
+        " node features == canonical M1_B bitwise; X_fc sha256 == frozen S11 sha",
         f"- cache (fresh namespace, delete-and-rebuilt): `{os.path.basename(cp)}`"
         f" sha256={K.sha(cp)[:16]}  ({os.path.getsize(cp)/1e6:.1f} MB)",
         f"- n=954 (ASD 455 / NC 499); 90 nodes and 8100 directed edges per graph"
@@ -51,7 +55,7 @@ def main():
         "",
         f"- wall {time.time()-t0:.1f}s",
     ]
-    open(B.S12B + "GATE0_DATA.md", "w").write("\n".join(lines) + "\n")
+    B.atomic_text("\n".join(lines) + "\n", B.S12B + "GATE0_DATA.md")
     B.atomic_json(dict(cache=cp, cache_sha=K.sha(cp),
                        provenance=B.provenance()), B.S12B + "out/GATE0.json")
     print("GATE0 PASS", cp, flush=True)

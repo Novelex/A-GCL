@@ -82,10 +82,13 @@ def main():
             assert np.isfinite(v).all(), f"{arm}/{k} non-finite"
     check("finiteness_all_arms", True, "6 arms x 6 stages x 8 subjects")
 
-    # (5) determinism: same seed -> bitwise-identical stage tensors, CPU and GPU
+    # (5) determinism: same seed -> bitwise-identical stage tensors, CPU and GPU.
+    # GPU leg must not be silently skipped (review R10).
+    check("gpu_available_for_gate2", dev == "cuda",
+          "Gate 2 must run on a GPU node so the GPU determinism leg executes")
     X = B.arm_features("B", M1B, FC)
     outs = {}
-    for device in (["cpu", "cuda"] if dev == "cuda" else ["cpu"]):
+    for device in ["cpu", "cuda"]:
         pair = []
         for rep in range(2):
             enc = B.S12BEncoder(93, 32, "bn", True, B.BASE)
@@ -95,6 +98,11 @@ def main():
         same = all(np.array_equal(pair[0][i], pair[1][i]) for i in (0, 1))
         check(f"determinism_{device}", same, "2 runs bitwise equal (incl. BN calibration)")
         outs[device] = pair[0]
+    # cross-device: bitwise equality is NOT expected across CPU/GPU kernels — declared
+    # fork, checked at f32 tolerance so a real divergence still fails the gate.
+    xd = max(float(np.abs(outs["cpu"][i] - outs["cuda"][i]).max()) for i in (0, 1))
+    check("determinism_cpu_vs_gpu_tol", xd < 1e-4,
+          f"max|CPU-GPU|={xd:.2e} (<1e-4; bitwise cross-device equality not claimed)")
 
     # (6) save/reload bitwise
     enc = B.S12BEncoder(93, 64, "ln", False, B.BASE + 1)
@@ -136,7 +144,7 @@ def main():
            " A1 := X + FC^T@X (diag included) matches conv.propagate to f32 tolerance.",
            f"- device: {dev}; cudnn.deterministic=True",
            f"- wall {time.time()-t0:.1f}s"]
-    open(B.S12B + "GATE2_SMOKE.md", "w").write("\n".join(md) + "\n")
+    B.atomic_text("\n".join(md) + "\n", B.S12B + "GATE2_SMOKE.md")
     B.atomic_json(dict(checks=[(n, ok, det) for n, ok, det in R],
                        provenance=B.provenance()), B.S12B + "out/GATE2.json")
     print("GATE2 PASS all", len(R), "checks", flush=True)

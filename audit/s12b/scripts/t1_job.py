@@ -118,7 +118,7 @@ def main(task):
         delayed(run_family)(arm, emb, norm, mr, s, X, FC, y, XFC, conf, scodes, folds)
         for norm, mr, s in fams)
     for m in msgs: print(m, flush=True)
-    open(f"{B.S12B}jobs/T1_{arm}_e{emb}.done", "w").write("done")
+    B.atomic_text("done", f"{B.S12B}jobs/T1_{arm}_e{emb}.done")   # review R3
 
 if __name__ == "__main__":
     main(int(sys.argv[1]))

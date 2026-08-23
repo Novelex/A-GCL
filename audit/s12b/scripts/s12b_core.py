@@ -18,6 +18,15 @@ from sklearn.metrics import (roc_auc_score, average_precision_score, accuracy_sc
 
 S12B = "/users/3171356m/agcl_audit_s0/s12b/"
 BASE = 20260818
+
+# Determinism (Gate-2 finding, 2026-08-23): PyG propagate's CUDA scatter-add is
+# atomicAdd-ordered and gave run-to-run drift ~6e-7 relative. Deterministic
+# algorithms + the cuBLAS workspace pin make every stage tensor BITWISE
+# reproducible on GPU (measured 0.0). Set at import so EVERY job inherits it.
+os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
+torch.use_deterministic_algorithms(True, warn_only=True)
+torch.backends.cudnn.deterministic = True
+torch.backends.cudnn.benchmark = False
 SEEDS = [BASE + i for i in range(5)]
 EMBS = [32, 64, 128]
 NORMS = ["bn", "ln", "none"]
@@ -50,9 +59,17 @@ def build_cache():
     assert fold_sha == K.SPLITS_SHA
     assert len(ids) == 954 and int((y == 1).sum()) == 455 and int((y == 0).sum()) == 499
     assert FC.shape == (954, 90, 90) and M1B.shape == (954, 90, 3)
+    # HARD ASSERTS (review R7): the .mat-derived FC must BE the frozen X_fc, and the
+    # .mat-vs-graph-cache mismatch counter must be zero — previously only reported.
+    fc_tri = FC[:, K.IU[0], K.IU[1]]
+    assert np.abs(fc_tri - X_fc.astype(np.float64)).max() == 0.0, "FC(.mat) != frozen X_fc"
+    assert stats["mism"] == 0, f"FC .mat vs S5 graph cache mismatches: {stats['mism']}"
+    assert stats["sym"] < 1e-9 and stats["diag"] < 1e-9, "FC not symmetric / diag != 1"
+    assert stats["x_max"] == 0.0, "node features != canonical M1_B"
     n_edges = 90 * 90
     obj = dict(FC=FC.astype(np.float32), M1B=M1B, M1raw=M1raw,
-               X_fc=X_fc.astype(np.float32), y=y.astype(np.int64), ids=ids,
+               X_fc=X_fc.astype(np.float64),        # f64 canonical (review R2/R4/R11)
+               y=y.astype(np.int64), ids=ids,
                site=list(meta.site), age=meta.age.values.astype(np.float64),
                sex=meta.sex.values.astype(np.float64),
                fd=meta.func_mean_fd.values.astype(np.float64),
@@ -73,11 +90,14 @@ def load_all():
     d = torch.load(cp, weights_only=False)
     assert len(d["ids"]) == 954 and d["manifest_sha"] == manifest_sha()
     assert d["splits_sha"] == K.SPLITS_SHA
-    a = hashlib.sha256(np.ascontiguousarray(d["X_fc"].astype(np.float64)).tobytes()).hexdigest()
-    # X_fc stored f32; canonical sha is over the f64 source — reverify against live load
+    # X_fc stored f64 == canonical: the sha is now genuinely ASSERTED (review R4)
+    a = hashlib.sha256(np.ascontiguousarray(d["X_fc"]).tobytes()).hexdigest()
+    assert a == d["xfc_sha"], "X_fc drift in s12b cache"
     Xf, y, ids, meta = K.load_Xfc()
-    assert np.abs(Xf.astype(np.float32) - d["X_fc"]).max() == 0.0
+    assert np.array_equal(Xf, d["X_fc"]), "cached X_fc != live frozen X_fc"
     assert list(ids) == list(d["ids"]) and np.array_equal(y, d["y"])
+    fc_tri = d["FC"].astype(np.float64)[:, K.IU[0], K.IU[1]]
+    assert np.abs(fc_tri - d["X_fc"]).max() < 1e-6, "FC tensor vs X_fc drift"
     return d
 
 def folds_all(y):
@@ -237,6 +257,8 @@ class StageEval:
         self.site_pred = np.full(n, -1, dtype=int)
         self.proj = np.full((n, 200), np.nan, dtype=np.float32) if keep_proj else None
         self.dims = None; self.best_C = {}
+        self.n_components = {}                    # per-fold PCA width (review R15)
+        self.fc_r2_fold = {}                      # per-fold I2 R2 (review R18)
 
     def fold_fit(self, Xf, tr, te, tag, njobs=1, site_codes=None):
         y = self.y; self.dims = Xf.shape[1]
@@ -254,14 +276,19 @@ class StageEval:
         gs.fit(Ptr, y[tr])
         p = gs.predict_proba(Pte)[:, 1]
         self.best_C[tag] = float(gs.best_params_["C"])
+        self.n_components[tag] = int(nc)
         (self.p_ord if tag.startswith("o") else self.p_loso)[te] = p
         self.fold_metrics[tag] = metric_block(y[te], p, boot=2000)
         if tag.startswith("o"):
             if self.keep_proj:
                 self.proj[te, :Pte.shape[1]] = Pte
             if self.XFC is not None:
-                rr = RidgeCV(alphas=ALPHAS).fit(Ptr, self.XFC[tr])
+                # alpha_per_target: the per-edge R2 distribution is the instrument,
+                # so each edge gets its own alpha (review R14)
+                rr = RidgeCV(alphas=ALPHAS, alpha_per_target=True).fit(Ptr, self.XFC[tr])
                 self.fc_pred[te] = rr.predict(Pte)
+                self.fc_r2_fold[tag] = float(r2_score(
+                    self.XFC[te], self.fc_pred[te], multioutput="variance_weighted"))
             if self.conf:
                 for k, v in self.conf.items():
                     m = np.isfinite(v[tr])
@@ -281,15 +308,19 @@ class StageEval:
               if t.startswith("o") and np.isfinite(m.get("auc", np.nan))]
         out["fold_auc_sd"] = float(np.std(fa, ddof=1)) if len(fa) > 1 else 0.0
         out["best_C"] = self.best_C; out["dim"] = int(self.dims or 0)
+        out["pca_n_components"] = self.n_components
         if self.XFC is not None:
             P = self.fc_pred[co]; T = self.XFC[co]
             r2w = r2_score(T, P, multioutput="variance_weighted")
             r2e = r2_score(T, P, multioutput="raw_values")
+            fr = list(self.fc_r2_fold.values())
             out["fc_recon"] = dict(r2=float(r2w),
                 mse=float(np.mean((T - P) ** 2)),
                 frac_edges_r2_gt_0p5=float((r2e > 0.5).mean()),
                 per_edge_r2_pcts={q: float(np.percentile(r2e, q))
-                                  for q in (5, 25, 50, 75, 95)})
+                                  for q in (5, 25, 50, 75, 95)},
+                per_fold_r2=self.fc_r2_fold,          # review R18: pooled vs per-fold
+                per_fold_r2_mean=float(np.mean(fr)) if fr else float("nan"))
         if self.conf:
             out["confounds"] = {k: float(r2_score(v[co & np.isfinite(v)],
                 self.cpred[k][co & np.isfinite(v)])) for k, v in self.conf.items()}
@@ -313,6 +344,17 @@ def site_codes(d):
 def atomic_json(obj, path):
     json.dump(obj, open(path + ".tmp", "w"), indent=1, default=str)
     json.load(open(path + ".tmp")); os.replace(path + ".tmp", path)
+
+def atomic_text(text, path):
+    """TEMP->validate->rename for reports and sentinels (review R3)."""
+    open(path + ".tmp", "w").write(text)
+    assert open(path + ".tmp").read() == text
+    os.replace(path + ".tmp", path)
+
+def fold_counts(y):
+    F = folds_all(y)
+    return (sum(1 for t, _, _ in F if t.startswith("o")),
+            sum(1 for t, _, _ in F if t.startswith("l")))
 
 def provenance(extra=None):
     p = dict(git=GIT, host=socket.gethostname(), time=time.strftime("%F %T"),

@@ -65,7 +65,7 @@ def main(sidx):
         oof = np.full(954, np.nan)
         for t, tr, te in folds:
             p, _ = probe_fold(H, y, tr, te); oof[te] = p
-        a = B.metric_block(y, oof, boot=200)["auc"]
+        a = B.metric_block(y, oof)["auc"]             # boot=2000 as registered (review R5)
         trans_evals.append(dict(epoch=ep, pooled_auc=float(a)))
         print(f"[{tag}] trans ep{ep} pooled {a:.4f}", flush=True)
     _, trans_curves = ssl_train(seed, dl, dev, cb_trans)

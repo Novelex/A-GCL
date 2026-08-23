@@ -1,0 +1,13 @@
+{
+ "cache": "/users/3171356m/agcl_audit_s0/s12b/cache/data_s12b_4f01b0abc1b160bd.pt",
+ "cache_sha": "9a851d47003ee327d08f6308946da9e177352189c73a9f5b3995e94ab3949521",
+ "provenance": {
+  "git": "3047cf7",
+  "host": "node10.cognition.gla.alces.network",
+  "time": "2026-08-23 03:04:32",
+  "python": "3.12.13",
+  "torch": "2.5.0+cu121",
+  "cuda": "12.1",
+  "gpu": "NVIDIA H100 NVL"
+ }
+}
