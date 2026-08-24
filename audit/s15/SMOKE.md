@@ -1,6 +1,6 @@
 # S15 SMOKE SUITE
 
-host node04.cognition.gla.alces.network | 2026-08-24 00:58:11 | wall 484s | CEILING_PROBE 0.7565
+host node02.cognition.gla.alces.network | 2026-08-24 15:06:15 | wall 514s | CEILING_PROBE 0.7565
 
 ## FROZEN REFERENCE LINES (never recomputed)
 | reference | F-LAB | LOSO |
