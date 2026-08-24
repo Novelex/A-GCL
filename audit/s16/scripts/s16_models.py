@@ -125,6 +125,32 @@ class WGINR(nn.Module):
     def forward(self, b, edge_vec=None):
         r = self.repr_of(b); return r, self.head(r).squeeze(-1)
 
+class EdgeMLP(nn.Module):
+    """S12A5 arm C: the 4005 FC upper triangle -> hidden -> 32. Best learned model on
+    the honest scale (0.7046). Included as the C6 bridge arm."""
+    ARCH="EDGEMLP"
+    ARCH_PARITY = ("BITWISE-IDENTICAL to s12a5_core.EdgeMLP + ArmModel(arm='C'): "
+                   "Linear(4005,256)-ReLU-Dropout(0.3)-Linear(256,32), head = plain "
+                   "Linear(32,1). Dropout is HARDCODED 0.3 (NOT S16's 0.10) and the "
+                   "head has NO LayerNorm, so the only difference from S12A5 arm C is "
+                   "the training-set size. See C6_SHORT.md for the residual recipe "
+                   "confound, which architecture parity does NOT remove.")
+    def __init__(self, D_edges=4005, hidden=256, p=None, seed=20260818,
+                 freeze_encoder=False, **kw):
+        super().__init__(); torch.manual_seed(seed); np.random.seed(seed%2**32)
+        # p is IGNORED: parity with S12A5 arm C requires dropout 0.3 exactly.
+        self.net=nn.Sequential(nn.Linear(D_edges,hidden),nn.ReLU(),nn.Dropout(0.3),
+                               nn.Linear(hidden,32))
+        self.repr_dim=32
+        self.head=nn.Linear(32,1)                    # plain Linear, as S12A5 arm C
+        xavier_init(self)
+        if freeze_encoder:
+            for n,q in self.named_parameters():
+                if not n.startswith("head."): q.requires_grad_(False)
+    def repr_of(self,b,edge_vec=None): return self.net(b.X)
+    def forward(self,b,edge_vec=None):
+        r=self.repr_of(b); return r, self.head(r).squeeze(-1)
+
 # ---------------------------------------------------------------- batching
 def n_trainable(m): return int(sum(p.numel() for p in m.parameters() if p.requires_grad))
 
@@ -168,6 +194,8 @@ class EMA:
         return sd
 
 def build_model(arch, D, seed, kh, freeze_encoder=False, readout="roi", p=0.10, H=128):
+    if arch=="EDGEMLP": return EdgeMLP(D_edges=D, hidden=kh, p=p, seed=seed,
+                                       freeze_encoder=freeze_encoder)
     if arch=="BNT":  return BNTR(D, K_clusters=kh, H=H, seed=seed, p=p,
                                  freeze_encoder=freeze_encoder)
     if arch=="WGIN": return WGINR(D, hidden=kh, seed=seed, p=p, readout=readout,

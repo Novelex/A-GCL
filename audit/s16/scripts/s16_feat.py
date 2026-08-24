@@ -57,12 +57,59 @@ def probe_honest(R, y, tr_probe, te):
                           [(np.asarray(tr_probe), np.asarray(te))], [])
     return d, oof
 
-# ---------------------------------------------------------------- C4 fusion
-def fuse(R_learned, X_fc_raw):
-    """repr = concat( raw FC edges (4005) , learned(d) ). The floor is 0.7565 BY
-    CONSTRUCTION: zeroing the learned block leaves exactly the SVM's input.
-    StandardScaler standardises EACH COLUMN independently, so the two blocks'
-    different scales cannot distort one another and the FC block is reproduced
-    column-for-column as the SVM would see it."""
-    return np.concatenate([np.asarray(X_fc_raw, dtype=np.float64),
-                           np.asarray(R_learned, dtype=np.float64)], axis=1)
+# ------------------------------------------------- SCORE-LEVEL FUSION (item 3)
+# NOTE: this REPLACES the earlier feature-concatenation fusion. s_FC and s_learned
+# live on different scales, so an unstandardised alpha would measure scale, not
+# information. Both are z-scored using mean/sd from the INNER VALIDATION SPLIT ONLY.
+ALPHA_GRID = np.round(np.arange(0.0, 1.0001, 0.05), 4)
+
+def zfit(v, idx):
+    """mean/sd from idx (the inner validation split) only."""
+    mu = float(np.mean(v[idx])); sd = float(np.std(v[idx]))
+    return mu, (sd if sd > 1e-12 else 1.0)
+
+def zapply(v, mu, sd): return (np.asarray(v, dtype=np.float64) - mu) / sd
+
+def fuse_scores(s_fc, s_learned, alpha, inner_idx):
+    """alpha*z(s_FC) + (1-alpha)*z(s_learned). At alpha=1.0 the result is z(s_FC),
+    a strictly increasing transform of s_FC, so the AUC equals the FC-only AUC
+    EXACTLY and the ranking is bitwise identical."""
+    mf, sf = zfit(s_fc, inner_idx); ml, sl = zfit(s_learned, inner_idx)
+    return alpha * zapply(s_fc, mf, sf) + (1.0 - alpha) * zapply(s_learned, ml, sl)
+
+def scores_for_fusion(R, Xfc, y, tr_enc, tr_prb, te):
+    """Produce s_FC and s_learned DEFINED ON BOTH tr_prb AND te, both OUT-OF-SAMPLE.
+
+    Why this is not trivial: K.probe_pipe returns an OOF vector that is NaN outside
+    the fold it scored, and the learned probe is FITTED on tr_prb — so its scores on
+    tr_prb would be IN-SAMPLE. In-sample scores have inflated spread, which would
+    shrink the learned block's z-scored magnitude and bias alpha toward FC. Both
+    sides are therefore made out-of-sample on tr_prb:
+      s_FC       : SVM fitted on tr_enc -> tr_prb and te are both unseen. Clean.
+      s_learned  : 2-fold cross-fit WITHIN tr_prb for the tr_prb values; fitted on
+                   the whole of tr_prb for the te values.
+    Returns (s_fc, s_learned), each a length-954 array finite on tr_prb and te."""
+    from sklearn.model_selection import StratifiedKFold
+    n = len(y)
+    s_fc = np.full(n, np.nan); s_le = np.full(n, np.nan)
+    both = np.concatenate([np.asarray(tr_prb), np.asarray(te)])
+    _, o = K.probe_pipe(np.asarray(Xfc, dtype=np.float64), y, [(tr_enc, both)], [])
+    s_fc[both] = o[both]
+    _, ol = K.probe_pipe(np.asarray(R, dtype=np.float64), y,
+                         [(np.asarray(tr_prb), np.asarray(te))], [])
+    s_le[np.asarray(te)] = ol[np.asarray(te)]
+    tp = np.asarray(tr_prb)
+    for a, b in StratifiedKFold(2, shuffle=True, random_state=20260818).split(
+            np.zeros(len(tp)), y[tp]):
+        _, oi = K.probe_pipe(np.asarray(R, dtype=np.float64), y, [(tp[a], tp[b])], [])
+        s_le[tp[b]] = oi[tp[b]]
+    return s_fc, s_le
+
+def stack_scores(s_fc, s_learned, y, inner_idx, score_idx):
+    """Stacking variant: logistic regression on [s_FC, s_learned], fitted on the
+    INNER SPLIT ONLY, scored on score_idx."""
+    from sklearn.linear_model import LogisticRegression
+    mf, sf = zfit(s_fc, inner_idx); ml, sl = zfit(s_learned, inner_idx)
+    Z = np.column_stack([zapply(s_fc, mf, sf), zapply(s_learned, ml, sl)])
+    lr = LogisticRegression(max_iter=5000).fit(Z[inner_idx], y[inner_idx])
+    return lr.decision_function(Z[score_idx]), lr.coef_[0].tolist()

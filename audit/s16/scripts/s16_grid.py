@@ -1,10 +1,14 @@
 """S16 C6 unit table. Index order STABLE — never reorder."""
 SEEDS = [20260818, 20260819, 20260820]
 E_LEVELS = ["signed", "abs", "pos_zero", "shift"]
-KH = {"BNT": 32, "WGIN": 128}
-ARCH = {"A1":"WGIN","A3":"WGIN","A4":"WGIN","A5":"BNT","A6":"BNT"}
+KH = {"BNT": 32, "WGIN": 128, "EDGEMLP": 256}
+ARCH = {"A1":"WGIN","A3":"WGIN","A4":"WGIN","A5":"BNT","A6":"BNT","A7":"EDGEMLP"}
 # 17 configs: A1,A4,A5,A6 x 4 E = 16, plus A3 at signed as reference
-CONFIGS = [(a,e) for a in ("A1","A4","A5","A6") for e in E_LEVELS] + [("A3","signed")]
+# A7 = the edge MLP (S12A5 arm C), best learned model on the honest scale (0.7046).
+# Its C6 value vs its C2 value measures the tr_enc(~610) vs full-tr(~763) cost and
+# BRIDGES the two scales. Run at all four E.
+CONFIGS = ([(a,e) for a in ("A1","A4","A5","A6") for e in E_LEVELS]
+           + [("A3","signed")] + [("A7",e) for e in E_LEVELS])
 CTRL_REF = [("A6","BNT"), ("A4","WGIN")]          # one reference per architecture
 CONTROLS = ["C-RAND","C-PERM","C-SHUF","C-ROI"]
 ALFF_ABL = ["raw","perband","joint"]              # z is the default, already in MAIN
@@ -23,7 +27,7 @@ def abl_units():
             for am in ALFF_ABL for s in range(3)]
 MAIN, CTRL, ABL = main_units(), ctrl_units(), abl_units()
 # Step-4 split by SPEED so fast tasks cannot leave slots idle behind slow WGIN folds.
-BNTU  = [u for u in MAIN if u["arch"]=="BNT"]                    # array A, ~2.7 min/fold
+BNTU  = [u for u in MAIN if u["arch"] in ("BNT","EDGEMLP")]      # array A, fast
 WGINU = [u for u in MAIN if u["arch"]=="WGIN"] + ABL             # array B, ~6-8 min/fold
 CTRLU = CTRL                                                     # array C, absorbs spare
 def unit_id(u):

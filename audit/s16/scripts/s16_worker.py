@@ -8,6 +8,7 @@ sys.path.insert(0,"/users/3171356m/agcl_audit_s0/s11"); import s11_core as K
 from sklearn.metrics import (roc_auc_score, average_precision_score, accuracy_score,
     balanced_accuracy_score, f1_score, matthews_corrcoef, confusion_matrix, brier_score_loss)
 from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import roc_auc_score as _ras
 
 S16 = DAT.S16; _STOP={"f":False}
 signal.signal(signal.SIGUSR1, lambda s,f: _STOP.update(f=True))
@@ -77,22 +78,58 @@ def run(branch, idx):
         t0=time.time()
         try:
             X,FCu = FT.build_X(spec,FC,ALFF,tr,control=ctrl,alff_mode=u["alff_mode"])
-            tr_enc,tr_prb = FT.honest_split(tr,y_use)     # C2c: encoder sees tr_enc ONLY
-            model,ema_sd,curve,info = TR.train_fold(arch,X,FCu,y_use,tr_enc,cfg,seed,
+            tr_enc,tr_prb = FT.honest_split(tr,y_use)     # encoder sees tr_enc ONLY
+            Xin = Xfc.astype(np.float32) if arch=="EDGEMLP" else X
+            model,ema_sd,curve,info = TR.train_fold(arch,Xin,FCu,y_use,tr_enc,cfg,seed,
                                                     log=f"{uid}/{tag}",sparse=sparse)
-            R,S = TR.extract(model,X,FCu,np.arange(954),arch=="WGIN",sparse=sparse)
-            Rp = FT.fuse(R,Xfc) if u["mode"]=="fused" else R
-            dh,ph = FT.probe_honest(Rp,y_use,tr_prb,te)   # honest: both sides OOS
-            do,po = K.probe_pipe(np.asarray(Rp,dtype=np.float64),y_use,
-                                 [(np.asarray(tr),np.asarray(te))],[])  # old, for delta
+            R,S = TR.extract(model,Xin,FCu,np.arange(954),arch=="WGIN",sparse=sparse)
+            # ---- learned score, honest probe (both sides out-of-sample) ----
+            dh,ph_oof = FT.probe_honest(R,y_use,tr_prb,te)
+            do,po = K.probe_pipe(np.asarray(R,dtype=np.float64),y_use,
+                                 [(np.asarray(tr),np.asarray(te))],[])   # old_full
+            # ---- C6 FLOOR ANCHOR: SVM trained on tr_enc, the SAME data the encoder
+            #      saw. 0.7565 is a full-tr HISTORICAL reference, kept separate.
+            # ONE expensive FC probe per fold: fitted on tr_enc, scored on tr_prb+te.
+            # svm_tr_enc is derived from it, so fused arms pay no second FC fit.
+            s_fc,s_le = FT.scores_for_fusion(R,Xfc,y_use,tr_enc,tr_prb,te)
+            svm_tr_enc = float(_ras(y_use[te], s_fc[te]))
+            fusion=None
+            if u["mode"]=="fused":
+                curve_a=[dict(alpha=float(a),
+                    auc=float(_ras(y_use[te],FT.fuse_scores(s_fc,s_le,a,tr_prb)[te])))
+                    for a in FT.ALPHA_GRID]
+                inner=[dict(alpha=float(a),
+                    auc=float(_ras(y_use[tr_prb],FT.fuse_scores(s_fc,s_le,a,tr_prb)[tr_prb])))
+                    for a in FT.ALPHA_GRID]
+                a_sel=max(inner,key=lambda r:r["auc"])["alpha"]     # selected on INNER only
+                f_sel=FT.fuse_scores(s_fc,s_le,a_sel,tr_prb)
+                # alpha=1.0 IDENTITY: fused must be z(s_FC) bitwise on the scored
+                # indices, and its AUC must equal svm_tr_enc EXACTLY.
+                f1=FT.fuse_scores(s_fc,s_le,1.0,tr_prb)
+                mu,sd=FT.zfit(s_fc,tr_prb)
+                a1_bitwise=bool(np.array_equal(f1[te],FT.zapply(s_fc,mu,sd)[te]))
+                a1_auc=float(_ras(y_use[te],f1[te]))
+                a1_exact=bool(abs(a1_auc-svm_tr_enc)<1e-12)
+                st_sc,st_coef=FT.stack_scores(s_fc,s_le,y_use,tr_prb,te)
+                fused_auc=float(_ras(y_use[te],f_sel[te]))
+                fusion=dict(alpha_curve=curve_a,alpha_curve_inner=inner,
+                    alpha_selected=a_sel,fused_auc=fused_auc,
+                    stack_auc=float(_ras(y_use[te],st_sc)),stack_coef=st_coef,
+                    alpha1_bitwise_equals_zsFC=a1_bitwise,alpha1_auc=a1_auc,
+                    alpha1_equals_svm_tr_enc=a1_exact,
+                    delta_vs_svm_tr_enc=float(fused_auc-svm_tr_enc),
+                    delta_vs_0p7565_SECONDARY=float(fused_auc-0.7565))
+            ph = ph_oof
             ck=f"{S16}ckpt/{uid}__{tag}.pt"
             torch.save(model.state_dict(),ck+".tmp"); os.replace(ck+".tmp",ck)
             rec={**u, **dict(status="OK",unit=uid,branch=branch,fold=tag,
                  fold_protocol=tag.rstrip("0123456789"),seed=seed,
                  head=metrics(y_use[te],S[te]),
                  probe_honest=metrics(y_use[te],ph[te]),
-                 probe_old=metrics(y_use[te],po[te]),
-                 probe_bias=float(do["auc"]-dh["auc"]),
+                 probe_old_full=metrics(y_use[te],po[te]),
+                 probe_bias_uncorrected=float(do["auc"]-dh["auc"]),
+                 svm_tr_enc=svm_tr_enc, fusion=fusion,
+                 n_tr=int(len(tr)), n_tr_enc=int(len(tr_enc)), n_tr_probe=int(len(tr_prb)),
                  repr_dim_used=int(Rp.shape[1]), sparse=sparse,
                  **{k:v for k,v in info.items() if k!="movement"},
                  movement=info["movement"],
