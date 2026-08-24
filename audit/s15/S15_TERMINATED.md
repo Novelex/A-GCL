@@ -2,10 +2,16 @@
 
 ## What completed
 - **1325 fold-runs** of a planned 9570 (13.8%), salvaged to `audit/s15/PARTIAL/`.
-- Arms reached: **{'B1': 1240, 'B2': 85}** — the array never got past arm B1 (BNT, FC-row nodes).
-  Arms B2, B3, W1, W2, W3 produced **nothing**. All controls and all transductive
-  units produced **nothing**.
-- Fold protocols: {'lab': 278, 'site': 258, 'loso': 463, 'loso1': 326}.
+- Arms reached: **{'B1': 1240, 'B2': 85}** — B1 (BNT, FC-row nodes) essentially complete for the
+  configs it started, B2 (BNT, FC-row+ALFF) only just begun.
+  Arms **B3, W1, W2, W3 produced NOTHING**, and so did **all controls and all
+  transductive units** — no C-RAND, C-PERM, C-SHUF, C-ROI, T1, T2 or T3 result exists.
+- Fold protocols (recomputed correctly): **{'lab': 278, 'site': 258, 'loso': 789}**.
+  NOTE a defect in the S15 worker, found while writing this record: it derived the
+  protocol as `tag[:-1] if tag[-1].isdigit() else tag`, which maps "loso10".."loso18"
+  to "loso1" instead of "loso". The counts above strip ALL trailing digits and are the
+  correct ones; any S15 table grouped by the worker's own field would have split LOSO
+  into two spurious groups. S16's worker uses `rstrip("0123456789")` and is unaffected.
 
 ## Reason for termination
 Superseded by S16, which fixes two things S15 structurally cannot:
