@@ -79,7 +79,8 @@ def run(branch, idx):
         try:
             X,FCu = FT.build_X(spec,FC,ALFF,tr,control=ctrl,alff_mode=u["alff_mode"])
             tr_enc,tr_prb = FT.honest_split(tr,y_use)     # encoder sees tr_enc ONLY
-            Xin = Xfc.astype(np.float32) if arch=="EDGEMLP" else X
+            Xin = X            # for A7 build_X already returns the E-transformed triangle
+            D_in = Xin.shape[-1]
             model,ema_sd,curve,info = TR.train_fold(arch,Xin,FCu,y_use,tr_enc,cfg,seed,
                                                     log=f"{uid}/{tag}",sparse=sparse)
             R,S = TR.extract(model,Xin,FCu,np.arange(954),arch=="WGIN",sparse=sparse)

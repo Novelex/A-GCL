@@ -193,11 +193,12 @@ class EMA:
         for k in self.shadow: sd[k] = self.shadow[k].to(sd[k].dtype)
         return sd
 
-def build_model(arch, D, seed, kh, freeze_encoder=False, readout="roi", p=0.10, H=128):
+def build_model(arch, D, seed, kh, freeze_encoder=False, readout="roi", p=0.10,
+                H=128, scaled_softmax=True):
     if arch=="EDGEMLP": return EdgeMLP(D_edges=D, hidden=kh, p=p, seed=seed,
                                        freeze_encoder=freeze_encoder)
     if arch=="BNT":  return BNTR(D, K_clusters=kh, H=H, seed=seed, p=p,
-                                 freeze_encoder=freeze_encoder)
+                                 scaled=scaled_softmax, freeze_encoder=freeze_encoder)
     if arch=="WGIN": return WGINR(D, hidden=kh, seed=seed, p=p, readout=readout,
                                   freeze_encoder=freeze_encoder)
     raise ValueError(arch)

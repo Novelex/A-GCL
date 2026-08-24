@@ -6,7 +6,16 @@ from sklearn.model_selection import train_test_split
 
 # arm -> (arch, node spec). E acts on FC EVERYWHERE it appears (decision Q1).
 ARMS = {"A1": ("WGIN","alff"), "A3": ("WGIN","fcrow"), "A4": ("WGIN","fcrow+alff"),
-        "A5": ("BNT","fcrow"),  "A6": ("BNT","fcrow+alff")}
+        "A5": ("BNT","fcrow"),  "A6": ("BNT","fcrow+alff"),
+        # A7 = the S12A5 arm C edge MLP. Its input is the FC UPPER TRIANGLE, taken
+        # from the E-TRANSFORMED matrix so that E is meaningful for this arm too.
+        # At E=signed the triangle is bitwise the frozen X_fc, giving parity with
+        # S12A5 arm C.
+        "A7": ("EDGEMLP","edgetri")}
+
+def edge_triangle(FCt):
+    """[954,4005] upper triangle (k=1) of the E-transformed FC, in K.IU order."""
+    return FCt[:, K.IU[0], K.IU[1]].astype(np.float32)
 
 def alff_scaled(ALFF, tr, mode="z"):
     A = ALFF.astype(np.float64)
@@ -32,6 +41,8 @@ def build_X(spec, FCt, ALFF, tr, control=None, alff_mode="z"):
         R = Rs
     A = alff_scaled(ALFF, tr, alff_mode)
     I90 = np.repeat(np.eye(90,dtype=np.float32)[None], len(R), 0)
+    if spec=="edgetri":                      # A7: 2-D [954,4005], no node axis
+        return edge_triangle(R), FCt
     X = {"alff":A, "fcrow":R, "fcrow+alff":np.concatenate([R,A],2),
          "alff+onehot":np.concatenate([A,I90],2)}[spec]
     FCu = FCt
