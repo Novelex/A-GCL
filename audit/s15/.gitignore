@@ -5,3 +5,4 @@ logs/
 *.tmp
 *.tmp.npz
 jobs/
+PARTIAL/
