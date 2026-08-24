@@ -17,42 +17,86 @@ def edge_triangle(FCt):
     """[954,4005] upper triangle (k=1) of the E-transformed FC, in K.IU order."""
     return FCt[:, K.IU[0], K.IU[1]].astype(np.float32)
 
-def alff_scaled(ALFF, tr, mode="z"):
+def alff_scaled(ALFF, tr_enc, mode="z"):
+    """ALFF scaling.
+
+    COHORT-LEVEL (estimates statistics across subjects) — must see tr_enc ONLY:
+      'z'        z-score across subjects per (ROI, band); mean/SD FITTED ON tr_enc,
+                 then applied UNCHANGED to tr_enc, tr_prb and te.
+    PER-SUBJECT (estimate NOTHING from the cohort; tr_enc is irrelevant to them and
+    they are therefore leak-free by construction):
+      'raw'      identity.
+      'joint'    per-subject min-max over all 90x3 values of THAT subject.
+      'perband'  per-subject min-max within each band of THAT subject.
+    """
     A = ALFF.astype(np.float64)
-    if mode=="z":
-        mu,sd = A[tr].mean(0,keepdims=True), A[tr].std(0,keepdims=True)
-        return ((A-mu)/np.maximum(sd,1e-6)).astype(np.float32)
-    if mode=="perband":
-        mn,mx = A.min(1,keepdims=True), A.max(1,keepdims=True); sp = mx-mn
-        return np.where(sp>0,(A-mn)/np.where(sp>0,sp,1.0),A).astype(np.float32)
-    if mode=="joint":
-        mn,mx = A.min((1,2),keepdims=True), A.max((1,2),keepdims=True)
-        return ((A-mn)/np.maximum(mx-mn,1e-12)).astype(np.float32)
-    if mode=="raw": return A.astype(np.float32)
+    if mode == "z":
+        idx = np.asarray(tr_enc)
+        mu, sd = A[idx].mean(0, keepdims=True), A[idx].std(0, keepdims=True)
+        return ((A - mu) / np.maximum(sd, 1e-6)).astype(np.float32)
+    if mode == "perband":
+        mn, mx = A.min(1, keepdims=True), A.max(1, keepdims=True); sp = mx - mn
+        return np.where(sp > 0, (A - mn) / np.where(sp > 0, sp, 1.0), A).astype(np.float32)
+    if mode == "joint":
+        mn, mx = A.min((1, 2), keepdims=True), A.max((1, 2), keepdims=True)
+        return ((A - mn) / np.maximum(mx - mn, 1e-12)).astype(np.float32)
+    if mode == "raw":
+        return A.astype(np.float32)
     raise ValueError(mode)
 
-def build_X(spec, FCt, ALFF, tr, control=None, alff_mode="z"):
-    """FCt is ALREADY E-transformed. Controls act on the feature pathway."""
+COHORT_LEVEL_MODES = ("z",)          # the only modes that estimate cohort statistics
+
+def roi_perm(subject_index):
+    """Independent, deterministic per-subject ROI relabeling."""
+    return np.random.default_rng(DAT.BASE + 7000 + int(subject_index)).permutation(90)
+
+def apply_c_roi(X, FCt, n_profile):
+    """C-ROI: independent subjectwise ROI RELABELING.
+
+    Destroys cross-subject ROI correspondence while leaving each subject's graph
+    internally consistent. For a subject with permutation p:
+        adjacency          FC[p][:, p]
+        node rows          X[p]
+        FC-profile columns X[:, :n_profile][:, p]      (n_profile = 90, or 0 if none)
+        ALFF band columns  X[:, n_profile:]            UNCHANGED (bands are not ROIs)
+    Applied AFTER all preprocessing, so the control differs from its main arm by the
+    relabeling ALONE."""
+    Xs = np.empty_like(X); Fs = np.empty_like(FCt)
+    for si in range(len(X)):
+        p = roi_perm(si)
+        Fs[si] = FCt[si][p][:, p]
+        row = X[si][p]                                   # permute node rows
+        if n_profile:                                    # permute profile columns too
+            row = np.concatenate([row[:, :n_profile][:, p], row[:, n_profile:]], axis=1)
+        Xs[si] = row
+    return Xs, Fs
+
+def build_X(spec, FCt, ALFF, tr_enc, control=None, alff_mode="z"):
+    """FCt is ALREADY E-transformed. tr_enc is the ENCODER's training index set —
+    the split is made BEFORE this call, and cohort statistics see tr_enc only."""
     R = FCt.astype(np.float32)
-    if control=="C-SHUF":
-        Rs = np.empty_like(R)
-        for s in range(len(R)):
-            Rs[s] = R[s][:, np.random.default_rng(DAT.BASE+s).permutation(90)]
+    if control == "C-SHUF":            # destroys WHICH-PAIR identity, keeps the value
+        Rs = np.empty_like(R)          # distribution; acts on the profile only
+        for si in range(len(R)):
+            Rs[si] = R[si][:, np.random.default_rng(DAT.BASE + si).permutation(90)]
         R = Rs
-    A = alff_scaled(ALFF, tr, alff_mode)
-    I90 = np.repeat(np.eye(90,dtype=np.float32)[None], len(R), 0)
-    if spec=="edgetri":                      # A7: 2-D [954,4005], no node axis
-        return edge_triangle(R), FCt
-    X = {"alff":A, "fcrow":R, "fcrow+alff":np.concatenate([R,A],2),
-         "alff+onehot":np.concatenate([A,I90],2)}[spec]
-    FCu = FCt
-    if control=="C-ROI":
-        Xs = np.empty_like(X); Fs = np.empty_like(FCt)
-        for s in range(len(X)):
-            p = np.random.default_rng(DAT.BASE+7000+s).permutation(90)
-            Xs[s] = X[s][p]; Fs[s] = FCt[s][p][:,p]
-        X, FCu = Xs, Fs
-    return X, FCu
+    A = alff_scaled(ALFF, tr_enc, alff_mode)
+    I90 = np.repeat(np.eye(90, dtype=np.float32)[None], len(R), 0)
+    if spec == "alff":         X, n_profile = A, 0
+    elif spec == "fcrow":      X, n_profile = R, 90
+    elif spec == "fcrow+alff":                        # two blocks, built explicitly
+        X, n_profile = np.concatenate([R, A], axis=2), 90
+    elif spec == "alff+onehot":X, n_profile = np.concatenate([A, I90], axis=2), 0
+    elif spec == "edgetri":                            # A7: 2-D, no node axis
+        Rp = R
+        if control == "C-ROI":
+            Rp = np.stack([R[si][roi_perm(si)][:, roi_perm(si)] for si in range(len(R))])
+        return edge_triangle(Rp), (Rp if control == "C-ROI" else FCt)
+    else: raise ValueError(spec)
+    if control == "C-ROI":
+        X, FCu = apply_c_roi(X, FCt, n_profile)
+        return X, FCu
+    return X, FCt
 
 # ---------------------------------------------------------------- C2c probe_honest
 def honest_split(tr, y, seed=DAT.BASE):

@@ -126,8 +126,9 @@ class WGINR(nn.Module):
         r = self.repr_of(b); return r, self.head(r).squeeze(-1)
 
 class EdgeMLP(nn.Module):
-    """S12A5 arm C: the 4005 FC upper triangle -> hidden -> 32. Best learned model on
-    the honest scale (0.7046). Included as the C6 bridge arm."""
+    """EdgeMLP: 4005 FC upper triangle -> hidden -> 32. Architecturally identical to
+    S12A5 arm C, but an ORDINARY C6 arm — the bridge role is withdrawn because the
+    training recipes differ (see AGGREGATION_SPEC.md section 6)."""
     ARCH="EDGEMLP"
     ARCH_PARITY = ("BITWISE-IDENTICAL to s12a5_core.EdgeMLP + ArmModel(arm='C'): "
                    "Linear(4005,256)-ReLU-Dropout(0.3)-Linear(256,32), head = plain "

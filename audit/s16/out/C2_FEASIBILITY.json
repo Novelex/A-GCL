@@ -1,0 +1,1782 @@
+{
+ "per_fold": [
+  {
+   "fold": "lab0",
+   "n_te": 191,
+   "n_tr": 763,
+   "halves_checked": 40,
+   "halves_feasible": 40,
+   "fold_feasible": true
+  },
+  {
+   "fold": "lab1",
+   "n_te": 191,
+   "n_tr": 763,
+   "halves_checked": 40,
+   "halves_feasible": 40,
+   "fold_feasible": true
+  },
+  {
+   "fold": "lab2",
+   "n_te": 191,
+   "n_tr": 763,
+   "halves_checked": 40,
+   "halves_feasible": 40,
+   "fold_feasible": true
+  },
+  {
+   "fold": "lab3",
+   "n_te": 191,
+   "n_tr": 763,
+   "halves_checked": 40,
+   "halves_feasible": 40,
+   "fold_feasible": true
+  },
+  {
+   "fold": "lab4",
+   "n_te": 190,
+   "n_tr": 764,
+   "halves_checked": 40,
+   "halves_feasible": 40,
+   "fold_feasible": true
+  }
+ ],
+ "cells": [
+  {
+   "fold": "lab0",
+   "site": "CALTECH",
+   "label": 0,
+   "req_max": 4,
+   "avail_min": 12,
+   "n_checks": 37,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "CALTECH",
+   "label": 1,
+   "req_max": 2,
+   "avail_min": 10,
+   "n_checks": 29,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "CMU",
+   "label": 0,
+   "req_max": 1,
+   "avail_min": 10,
+   "n_checks": 20,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "CMU",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 6,
+   "n_checks": 31,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "KKI",
+   "label": 0,
+   "req_max": 6,
+   "avail_min": 22,
+   "n_checks": 39,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "KKI",
+   "label": 1,
+   "req_max": 5,
+   "avail_min": 13,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "LEUVEN_1",
+   "label": 0,
+   "req_max": 1,
+   "avail_min": 13,
+   "n_checks": 20,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "LEUVEN_1",
+   "label": 1,
+   "req_max": 2,
+   "avail_min": 12,
+   "n_checks": 30,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "LEUVEN_2",
+   "label": 0,
+   "req_max": 1,
+   "avail_min": 17,
+   "n_checks": 20,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "LEUVEN_2",
+   "label": 1,
+   "req_max": 1,
+   "avail_min": 14,
+   "n_checks": 20,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "MAX_MUN",
+   "label": 0,
+   "req_max": 5,
+   "avail_min": 21,
+   "n_checks": 39,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "MAX_MUN",
+   "label": 1,
+   "req_max": 7,
+   "avail_min": 16,
+   "n_checks": 39,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "NYU",
+   "label": 0,
+   "req_max": 18,
+   "avail_min": 76,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "NYU",
+   "label": 1,
+   "req_max": 14,
+   "avail_min": 54,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "OLIN",
+   "label": 0,
+   "req_max": 4,
+   "avail_min": 11,
+   "n_checks": 39,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "OLIN",
+   "label": 1,
+   "req_max": 4,
+   "avail_min": 14,
+   "n_checks": 36,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "PITT",
+   "label": 0,
+   "req_max": 5,
+   "avail_min": 21,
+   "n_checks": 38,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "PITT",
+   "label": 1,
+   "req_max": 6,
+   "avail_min": 22,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "SBL",
+   "label": 0,
+   "req_max": 2,
+   "avail_min": 12,
+   "n_checks": 32,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "SBL",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 12,
+   "n_checks": 32,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "SDSU",
+   "label": 0,
+   "req_max": 5,
+   "avail_min": 15,
+   "n_checks": 39,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "SDSU",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 8,
+   "n_checks": 36,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "STANFORD",
+   "label": 0,
+   "req_max": 4,
+   "avail_min": 16,
+   "n_checks": 38,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "STANFORD",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 16,
+   "n_checks": 31,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "TRINITY",
+   "label": 0,
+   "req_max": 4,
+   "avail_min": 20,
+   "n_checks": 38,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "TRINITY",
+   "label": 1,
+   "req_max": 2,
+   "avail_min": 19,
+   "n_checks": 30,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "UCLA_1",
+   "label": 0,
+   "req_max": 8,
+   "avail_min": 21,
+   "n_checks": 39,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "UCLA_1",
+   "label": 1,
+   "req_max": 5,
+   "avail_min": 31,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "UCLA_2",
+   "label": 0,
+   "req_max": 1,
+   "avail_min": 12,
+   "n_checks": 20,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "UCLA_2",
+   "label": 1,
+   "req_max": 2,
+   "avail_min": 8,
+   "n_checks": 29,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "UM_1",
+   "label": 0,
+   "req_max": 8,
+   "avail_min": 44,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "UM_1",
+   "label": 1,
+   "req_max": 5,
+   "avail_min": 39,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "UM_2",
+   "label": 0,
+   "req_max": 4,
+   "avail_min": 16,
+   "n_checks": 38,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "UM_2",
+   "label": 1,
+   "req_max": 2,
+   "avail_min": 11,
+   "n_checks": 25,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "USM",
+   "label": 0,
+   "req_max": 5,
+   "avail_min": 18,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "USM",
+   "label": 1,
+   "req_max": 6,
+   "avail_min": 37,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "YALE",
+   "label": 0,
+   "req_max": 6,
+   "avail_min": 22,
+   "n_checks": 39,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab0",
+   "site": "YALE",
+   "label": 1,
+   "req_max": 4,
+   "avail_min": 22,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "CALTECH",
+   "label": 0,
+   "req_max": 1,
+   "avail_min": 15,
+   "n_checks": 20,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "CALTECH",
+   "label": 1,
+   "req_max": 2,
+   "avail_min": 10,
+   "n_checks": 27,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "CMU",
+   "label": 0,
+   "req_max": 3,
+   "avail_min": 8,
+   "n_checks": 37,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "CMU",
+   "label": 1,
+   "req_max": 1,
+   "avail_min": 8,
+   "n_checks": 20,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "KKI",
+   "label": 0,
+   "req_max": 7,
+   "avail_min": 20,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "KKI",
+   "label": 1,
+   "req_max": 1,
+   "avail_min": 18,
+   "n_checks": 20,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "LEUVEN_1",
+   "label": 0,
+   "req_max": 1,
+   "avail_min": 13,
+   "n_checks": 20,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "LEUVEN_1",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 11,
+   "n_checks": 36,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "LEUVEN_2",
+   "label": 0,
+   "req_max": 5,
+   "avail_min": 13,
+   "n_checks": 39,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "LEUVEN_2",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 12,
+   "n_checks": 32,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "MAX_MUN",
+   "label": 0,
+   "req_max": 2,
+   "avail_min": 24,
+   "n_checks": 30,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "MAX_MUN",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 20,
+   "n_checks": 36,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "NYU",
+   "label": 0,
+   "req_max": 18,
+   "avail_min": 75,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "NYU",
+   "label": 1,
+   "req_max": 11,
+   "avail_min": 61,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "OLIN",
+   "label": 0,
+   "req_max": 1,
+   "avail_min": 14,
+   "n_checks": 20,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "OLIN",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 15,
+   "n_checks": 36,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "PITT",
+   "label": 0,
+   "req_max": 3,
+   "avail_min": 23,
+   "n_checks": 34,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "PITT",
+   "label": 1,
+   "req_max": 7,
+   "avail_min": 22,
+   "n_checks": 39,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "SBL",
+   "label": 0,
+   "req_max": 4,
+   "avail_min": 10,
+   "n_checks": 38,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "SBL",
+   "label": 1,
+   "req_max": 2,
+   "avail_min": 13,
+   "n_checks": 28,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "SDSU",
+   "label": 0,
+   "req_max": 3,
+   "avail_min": 17,
+   "n_checks": 36,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "SDSU",
+   "label": 1,
+   "req_max": 1,
+   "avail_min": 10,
+   "n_checks": 20,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "STANFORD",
+   "label": 0,
+   "req_max": 5,
+   "avail_min": 14,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "STANFORD",
+   "label": 1,
+   "req_max": 4,
+   "avail_min": 15,
+   "n_checks": 39,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "TRINITY",
+   "label": 0,
+   "req_max": 5,
+   "avail_min": 18,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "TRINITY",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 17,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "UCLA_1",
+   "label": 0,
+   "req_max": 4,
+   "avail_min": 25,
+   "n_checks": 36,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "UCLA_1",
+   "label": 1,
+   "req_max": 9,
+   "avail_min": 27,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "UCLA_2",
+   "label": 0,
+   "req_max": 2,
+   "avail_min": 11,
+   "n_checks": 31,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "UCLA_2",
+   "label": 1,
+   "req_max": 2,
+   "avail_min": 8,
+   "n_checks": 30,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "UM_1",
+   "label": 0,
+   "req_max": 10,
+   "avail_min": 41,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "UM_1",
+   "label": 1,
+   "req_max": 9,
+   "avail_min": 32,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "UM_2",
+   "label": 0,
+   "req_max": 3,
+   "avail_min": 16,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "UM_2",
+   "label": 1,
+   "req_max": 2,
+   "avail_min": 11,
+   "n_checks": 32,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "USM",
+   "label": 0,
+   "req_max": 3,
+   "avail_min": 22,
+   "n_checks": 38,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "USM",
+   "label": 1,
+   "req_max": 7,
+   "avail_min": 35,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "YALE",
+   "label": 0,
+   "req_max": 7,
+   "avail_min": 20,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab1",
+   "site": "YALE",
+   "label": 1,
+   "req_max": 7,
+   "avail_min": 19,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "CALTECH",
+   "label": 0,
+   "req_max": 2,
+   "avail_min": 14,
+   "n_checks": 28,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "CALTECH",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 9,
+   "n_checks": 37,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "CMU",
+   "label": 0,
+   "req_max": 4,
+   "avail_min": 7,
+   "n_checks": 39,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "CMU",
+   "label": 1,
+   "req_max": 1,
+   "avail_min": 8,
+   "n_checks": 20,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "KKI",
+   "label": 0,
+   "req_max": 3,
+   "avail_min": 25,
+   "n_checks": 38,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "KKI",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 16,
+   "n_checks": 37,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "LEUVEN_1",
+   "label": 0,
+   "req_max": 4,
+   "avail_min": 10,
+   "n_checks": 39,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "LEUVEN_1",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 11,
+   "n_checks": 36,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "LEUVEN_2",
+   "label": 0,
+   "req_max": 4,
+   "avail_min": 14,
+   "n_checks": 37,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "LEUVEN_2",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 12,
+   "n_checks": 37,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "MAX_MUN",
+   "label": 0,
+   "req_max": 7,
+   "avail_min": 18,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "MAX_MUN",
+   "label": 1,
+   "req_max": 2,
+   "avail_min": 21,
+   "n_checks": 31,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "NYU",
+   "label": 0,
+   "req_max": 13,
+   "avail_min": 80,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "NYU",
+   "label": 1,
+   "req_max": 11,
+   "avail_min": 59,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "OLIN",
+   "label": 0,
+   "req_max": 4,
+   "avail_min": 11,
+   "n_checks": 39,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "OLIN",
+   "label": 1,
+   "req_max": 2,
+   "avail_min": 16,
+   "n_checks": 34,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "PITT",
+   "label": 0,
+   "req_max": 5,
+   "avail_min": 21,
+   "n_checks": 38,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "PITT",
+   "label": 1,
+   "req_max": 7,
+   "avail_min": 21,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "SBL",
+   "label": 0,
+   "req_max": 3,
+   "avail_min": 11,
+   "n_checks": 35,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "SBL",
+   "label": 1,
+   "req_max": 4,
+   "avail_min": 11,
+   "n_checks": 38,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "SDSU",
+   "label": 0,
+   "req_max": 3,
+   "avail_min": 17,
+   "n_checks": 36,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "SDSU",
+   "label": 1,
+   "req_max": 2,
+   "avail_min": 9,
+   "n_checks": 29,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "STANFORD",
+   "label": 0,
+   "req_max": 1,
+   "avail_min": 19,
+   "n_checks": 20,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "STANFORD",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 16,
+   "n_checks": 28,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "TRINITY",
+   "label": 0,
+   "req_max": 6,
+   "avail_min": 18,
+   "n_checks": 39,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "TRINITY",
+   "label": 1,
+   "req_max": 6,
+   "avail_min": 14,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "UCLA_1",
+   "label": 0,
+   "req_max": 4,
+   "avail_min": 25,
+   "n_checks": 37,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "UCLA_1",
+   "label": 1,
+   "req_max": 9,
+   "avail_min": 26,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "UCLA_2",
+   "label": 0,
+   "req_max": 4,
+   "avail_min": 8,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "UCLA_2",
+   "label": 1,
+   "req_max": 2,
+   "avail_min": 8,
+   "n_checks": 31,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "UM_1",
+   "label": 0,
+   "req_max": 8,
+   "avail_min": 42,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "UM_1",
+   "label": 1,
+   "req_max": 8,
+   "avail_min": 37,
+   "n_checks": 39,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "UM_2",
+   "label": 0,
+   "req_max": 4,
+   "avail_min": 16,
+   "n_checks": 38,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "UM_2",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 10,
+   "n_checks": 37,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "USM",
+   "label": 0,
+   "req_max": 4,
+   "avail_min": 21,
+   "n_checks": 39,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "USM",
+   "label": 1,
+   "req_max": 7,
+   "avail_min": 36,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "YALE",
+   "label": 0,
+   "req_max": 5,
+   "avail_min": 22,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab2",
+   "site": "YALE",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 24,
+   "n_checks": 35,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "CALTECH",
+   "label": 0,
+   "req_max": 3,
+   "avail_min": 13,
+   "n_checks": 37,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "CALTECH",
+   "label": 1,
+   "req_max": 2,
+   "avail_min": 10,
+   "n_checks": 32,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "CMU",
+   "label": 1,
+   "req_max": 2,
+   "avail_min": 7,
+   "n_checks": 25,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "KKI",
+   "label": 0,
+   "req_max": 8,
+   "avail_min": 20,
+   "n_checks": 39,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "KKI",
+   "label": 1,
+   "req_max": 5,
+   "avail_min": 14,
+   "n_checks": 38,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "LEUVEN_1",
+   "label": 0,
+   "req_max": 5,
+   "avail_min": 8,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "LEUVEN_1",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 11,
+   "n_checks": 36,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "LEUVEN_2",
+   "label": 0,
+   "req_max": 4,
+   "avail_min": 13,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "LEUVEN_2",
+   "label": 1,
+   "req_max": 1,
+   "avail_min": 14,
+   "n_checks": 20,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "MAX_MUN",
+   "label": 0,
+   "req_max": 4,
+   "avail_min": 22,
+   "n_checks": 35,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "MAX_MUN",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 20,
+   "n_checks": 36,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "NYU",
+   "label": 0,
+   "req_max": 11,
+   "avail_min": 85,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "NYU",
+   "label": 1,
+   "req_max": 8,
+   "avail_min": 65,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "OLIN",
+   "label": 0,
+   "req_max": 3,
+   "avail_min": 12,
+   "n_checks": 36,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "OLIN",
+   "label": 1,
+   "req_max": 4,
+   "avail_min": 13,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "PITT",
+   "label": 0,
+   "req_max": 7,
+   "avail_min": 18,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "PITT",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 26,
+   "n_checks": 37,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "SBL",
+   "label": 0,
+   "req_max": 4,
+   "avail_min": 10,
+   "n_checks": 37,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "SBL",
+   "label": 1,
+   "req_max": 4,
+   "avail_min": 11,
+   "n_checks": 37,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "SDSU",
+   "label": 0,
+   "req_max": 4,
+   "avail_min": 16,
+   "n_checks": 39,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "SDSU",
+   "label": 1,
+   "req_max": 2,
+   "avail_min": 9,
+   "n_checks": 32,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "STANFORD",
+   "label": 0,
+   "req_max": 6,
+   "avail_min": 13,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "STANFORD",
+   "label": 1,
+   "req_max": 6,
+   "avail_min": 12,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "TRINITY",
+   "label": 0,
+   "req_max": 2,
+   "avail_min": 22,
+   "n_checks": 26,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "TRINITY",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 18,
+   "n_checks": 29,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "UCLA_1",
+   "label": 0,
+   "req_max": 5,
+   "avail_min": 23,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "UCLA_1",
+   "label": 1,
+   "req_max": 6,
+   "avail_min": 31,
+   "n_checks": 38,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "UCLA_2",
+   "label": 0,
+   "req_max": 3,
+   "avail_min": 10,
+   "n_checks": 37,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "UCLA_2",
+   "label": 1,
+   "req_max": 1,
+   "avail_min": 9,
+   "n_checks": 20,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "UM_1",
+   "label": 0,
+   "req_max": 8,
+   "avail_min": 44,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "UM_1",
+   "label": 1,
+   "req_max": 8,
+   "avail_min": 35,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "UM_2",
+   "label": 0,
+   "req_max": 5,
+   "avail_min": 14,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "UM_2",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 9,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "USM",
+   "label": 0,
+   "req_max": 5,
+   "avail_min": 19,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "USM",
+   "label": 1,
+   "req_max": 9,
+   "avail_min": 31,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "YALE",
+   "label": 0,
+   "req_max": 2,
+   "avail_min": 26,
+   "n_checks": 30,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab3",
+   "site": "YALE",
+   "label": 1,
+   "req_max": 7,
+   "avail_min": 19,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "CALTECH",
+   "label": 0,
+   "req_max": 5,
+   "avail_min": 10,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "CALTECH",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 9,
+   "n_checks": 37,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "CMU",
+   "label": 0,
+   "req_max": 3,
+   "avail_min": 8,
+   "n_checks": 35,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "CMU",
+   "label": 1,
+   "req_max": 2,
+   "avail_min": 7,
+   "n_checks": 25,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "KKI",
+   "label": 0,
+   "req_max": 3,
+   "avail_min": 25,
+   "n_checks": 36,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "KKI",
+   "label": 1,
+   "req_max": 4,
+   "avail_min": 15,
+   "n_checks": 37,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "LEUVEN_1",
+   "label": 0,
+   "req_max": 2,
+   "avail_min": 12,
+   "n_checks": 32,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "LEUVEN_1",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 11,
+   "n_checks": 36,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "LEUVEN_2",
+   "label": 0,
+   "req_max": 3,
+   "avail_min": 15,
+   "n_checks": 36,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "LEUVEN_2",
+   "label": 1,
+   "req_max": 7,
+   "avail_min": 8,
+   "n_checks": 39,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "MAX_MUN",
+   "label": 0,
+   "req_max": 6,
+   "avail_min": 19,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "MAX_MUN",
+   "label": 1,
+   "req_max": 6,
+   "avail_min": 15,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "NYU",
+   "label": 0,
+   "req_max": 14,
+   "avail_min": 80,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "NYU",
+   "label": 1,
+   "req_max": 12,
+   "avail_min": 57,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "OLIN",
+   "label": 0,
+   "req_max": 3,
+   "avail_min": 12,
+   "n_checks": 36,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "OLIN",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 14,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "PITT",
+   "label": 0,
+   "req_max": 5,
+   "avail_min": 21,
+   "n_checks": 38,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "PITT",
+   "label": 1,
+   "req_max": 4,
+   "avail_min": 25,
+   "n_checks": 36,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "SBL",
+   "label": 0,
+   "req_max": 1,
+   "avail_min": 13,
+   "n_checks": 20,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "SBL",
+   "label": 1,
+   "req_max": 2,
+   "avail_min": 13,
+   "n_checks": 27,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "SDSU",
+   "label": 0,
+   "req_max": 5,
+   "avail_min": 15,
+   "n_checks": 39,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "SDSU",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 8,
+   "n_checks": 36,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "STANFORD",
+   "label": 0,
+   "req_max": 2,
+   "avail_min": 18,
+   "n_checks": 29,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "STANFORD",
+   "label": 1,
+   "req_max": 2,
+   "avail_min": 17,
+   "n_checks": 30,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "TRINITY",
+   "label": 0,
+   "req_max": 5,
+   "avail_min": 18,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "TRINITY",
+   "label": 1,
+   "req_max": 5,
+   "avail_min": 16,
+   "n_checks": 38,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "UCLA_1",
+   "label": 0,
+   "req_max": 7,
+   "avail_min": 22,
+   "n_checks": 38,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "UCLA_1",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 33,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "UCLA_2",
+   "label": 0,
+   "req_max": 2,
+   "avail_min": 11,
+   "n_checks": 31,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "UCLA_2",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 7,
+   "n_checks": 37,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "UM_1",
+   "label": 0,
+   "req_max": 10,
+   "avail_min": 41,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "UM_1",
+   "label": 1,
+   "req_max": 7,
+   "avail_min": 37,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "UM_2",
+   "label": 0,
+   "req_max": 2,
+   "avail_min": 18,
+   "n_checks": 35,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "UM_2",
+   "label": 1,
+   "req_max": 2,
+   "avail_min": 11,
+   "n_checks": 28,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "USM",
+   "label": 0,
+   "req_max": 4,
+   "avail_min": 20,
+   "n_checks": 40,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "USM",
+   "label": 1,
+   "req_max": 7,
+   "avail_min": 37,
+   "n_checks": 39,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "YALE",
+   "label": 0,
+   "req_max": 6,
+   "avail_min": 22,
+   "n_checks": 39,
+   "n_infeasible": 0
+  },
+  {
+   "fold": "lab4",
+   "site": "YALE",
+   "label": 1,
+   "req_max": 3,
+   "avail_min": 24,
+   "n_checks": 38,
+   "n_infeasible": 0
+  }
+ ],
+ "overall_feasible": true,
+ "n_checks": 6671,
+ "n_infeasible": 0,
+ "seeds": [
+  20260818,
+  20260819,
+  20260820,
+  20260821,
+  20260822,
+  20260823,
+  20260824,
+  20260825,
+  20260826,
+  20260827,
+  20260828,
+  20260829,
+  20260830,
+  20260831,
+  20260832,
+  20260833,
+  20260834,
+  20260835,
+  20260836,
+  20260837
+ ],
+ "band": [
+  -0.01,
+  0.01
+ ],
+ "residual_confounds": [
+  "sex",
+  "age",
+  "mean framewise displacement (motion)",
+  "TR"
+ ]
+}

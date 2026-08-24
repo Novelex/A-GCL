@@ -3,10 +3,10 @@ SEEDS = [20260818, 20260819, 20260820]
 E_LEVELS = ["signed", "abs", "pos_zero", "shift"]
 KH = {"BNT": 32, "WGIN": 128, "EDGEMLP": 256}
 ARCH = {"A1":"WGIN","A3":"WGIN","A4":"WGIN","A5":"BNT","A6":"BNT","A7":"EDGEMLP"}
-# 17 configs: A1,A4,A5,A6 x 4 E = 16, plus A3 at signed as reference
-# A7 = the edge MLP (S12A5 arm C), best learned model on the honest scale (0.7046).
-# Its C6 value vs its C2 value measures the tr_enc(~610) vs full-tr(~763) cost and
-# BRIDGES the two scales. Run at all four E.
+# 21 configs: A1,A4,A5,A6 x 4 E = 16, plus A3 at signed, plus A7 x 4 E
+# A7 = the edge MLP, architecturally identical to S12A5 arm C. It is an ORDINARY
+# ARM: the bridge interpretation is WITHDRAWN because the S12A5 and S16 training
+# recipes differ, so any C6-vs-C2 gap reflects training size AND recipe jointly.
 CONFIGS = ([(a,e) for a in ("A1","A4","A5","A6") for e in E_LEVELS]
            + [("A3","signed")] + [("A7",e) for e in E_LEVELS])
 CTRL_REF = [("A6","BNT"), ("A4","WGIN")]          # one reference per architecture

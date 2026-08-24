@@ -5,3 +5,8 @@ logs/
 jobs/
 *.tmp
 *.tmp.npz
+runs/
+QUARANTINE/
+*.pred.json
+*.prov.json
+__pycache__/

@@ -15,9 +15,10 @@
 
 ## Reason for termination
 Superseded by S16, which fixes two things S15 structurally cannot:
-1. **Fusion floor.** S16's `-fused` arms set repr = concat(raw FC 4005, learned), so
-   the probe can always recover the SVM answer by zeroing the learned block. The
-   floor is 0.7565 BY CONSTRUCTION (verified bitwise in S16 C4: learned-block-zeroed
+1. **FC fallback endpoint.** S16's fused arms blend the FC and learned scores, with
+   alpha=1 recovering standardised FC exactly. NOTE (Gate 6): this is an ENDPOINT, not
+   a guaranteed floor — the selected alpha's outer-test delta may be negative. The
+   endpoint's AUC equals that fold's own svm_tr_enc (verified bitwise in S16 C4: learned-block-zeroed
    reads 0.7490109890 vs FC-alone 0.7490109890, diff 0.00e+00; pooled 5-fold exactly
    0.7565). S15 has no floor, so a compressing encoder scores below baseline and the
    result is uninformative.

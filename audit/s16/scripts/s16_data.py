@@ -12,7 +12,15 @@ S16 = "/users/3171356m/A-GCL/audit/s16/"
 BASE = M.BASE                      # 20260818
 E_LEVELS = ["signed", "abs", "pos_zero", "shift"]
 BUILDER_VERSION = "s16_data v1.0"
-GIT = "d52798c"
+def _runtime_sha():
+    """Runtime git SHA. A hard-coded constant here was stale (defect D11): it read
+    d52798c while HEAD had moved on, misattributing every provenance record."""
+    import subprocess
+    try:
+        return subprocess.run(["git","-C","/users/3171356m/A-GCL","rev-parse","HEAD"],
+                              capture_output=True,text=True).stdout.strip()[:12] or "unknown"
+    except Exception: return "unknown"
+GIT = _runtime_sha()
 SMALL_SITE_MIN = 10
 
 def h(x):

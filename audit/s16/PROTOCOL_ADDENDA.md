@@ -27,15 +27,21 @@ and on the complete graph the second term is identical for every node, so a
 following linear layer plus LayerNorm absorbs it. If |shift - signed| > 0.01,
 STOP and report — something is wired wrong.
 
-## REVISED C6 GRID AND ARITHMETIC (for checking before any submission)
-configs   = A1,A4,A5,A6 x 4 E = 16, plus A3 at E=signed = **17**
-runs      = 17 x {plain, fused} = **34**
+## REVISED C6 GRID AND ARITHMETIC
+> **SUPERSEDED BY AMENDMENT A5 (2026-08-25).** The arithmetic below predates the
+> addition of arm A7 (EdgeMLP) at all four E. CURRENT: **21 configs**, 126 MAIN +
+> 24 CTRL + 9 ABL = **159 units**, 9 folds each = **1,431 fold-runs**
+> (ledger hash `8587b1ca36553408`). The figures in this section are retained only as
+> the record of what was agreed at the time.
+
+configs   = A1,A4,A5,A6 x 4 E = 16, plus A3 at E=signed = **17**  [now 21 with A7]
+runs      = 17 x {plain, fused} = **34**  [now 42]
 folds     = ordinary 0-2 + site-strat 0-2 + LOSO 0-2 = **9**
 seeds     = 20260818/19/20 = **3**
 MAIN fold-runs = 34 x 9 x 3 = **918**
 CONTROLS  = 4 (random-encoder twin, permuted labels, shuffled columns, shuffled
             ROI order) x 2 architectures x 9 folds x 3 seeds = **216**
-TOTAL     = **1,134 fold-runs**
+TOTAL     = **1,134 fold-runs**  [SUPERSEDED: now 1,431]
 All submitted in ONE wave, no dependencies between arms.
 
 ## OPEN QUESTIONS — I CANNOT PROCEED PAST THESE WITHOUT AN ANSWER (RULE 1)

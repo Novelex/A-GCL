@@ -17,7 +17,30 @@ LABEL_SMOOTH, EMA_DECAY = 0.05, 0.999
 CLIP_WARMUP_STEPS, CLIP_WINDOW, CLIP_PCTL = 50, 200, 90
 MOVEMENT_UNTRAINED = 0.10
 GROUPS = {"BNT": {"inp": ("inp.",), "enc": ("blocks.", "norm_f."), "head": ("head.",)},
-          "WGIN": {"inp": ("inp.",), "enc": ("convs.", "norms."), "head": ("head.",)}}
+          "WGIN": {"inp": ("inp.",), "enc": ("convs.", "norms."), "head": ("head.",)},
+          # EDGEMLP (A7) = s12a5_core EdgeMLP + ArmModel(arm='C'):
+          #   net.0 Linear(4005,256) | net.1 ReLU | net.2 Dropout(0.3) | net.3 Linear(256,32)
+          #   head  Linear(32,1)
+          # Groups are NON-OVERLAPPING and exhaustive over trainable parameters;
+          # net.1/net.2 hold none. Schema matches BNT/WGIN so the result columns
+          # movement_inp / movement_enc / movement_head are populated identically.
+          "EDGEMLP": {"inp": ("net.0.",), "enc": ("net.3.",), "head": ("head.",)}}
+
+def assert_groups_cover(model, arch):
+    """Every trainable parameter belongs to exactly ONE group. Raises on a gap or
+    an overlap, so a missing/duplicated instrumentation key cannot pass silently."""
+    pref = GROUPS[arch]
+    owners = {}
+    for k, p_ in model.named_parameters():
+        if not p_.requires_grad: continue
+        hit = [g for g, ps in pref.items() if any(k.startswith(x) for x in ps)]
+        if len(hit) != 1:
+            raise AssertionError(f"{arch}: parameter {k} maps to {len(hit)} groups {hit}")
+        owners[k] = hit[0]
+    for g in pref:
+        if not any(v == g for v in owners.values()):
+            raise AssertionError(f"{arch}: group '{g}' is empty")
+    return owners
 
 # ------------------------------------------------------------------ losses
 def loss_bce(logits, y, smooth=LABEL_SMOOTH):

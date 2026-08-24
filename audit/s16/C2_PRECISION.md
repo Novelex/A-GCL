@@ -1,3 +1,23 @@
+> # ⚠️ SUPERSEDED — DO NOT QUOTE
+>
+> These figures come from an estimator whose **calibration point FAILED**: the
+> random (epoch-0) encoder, which cannot memorise anything and must therefore read
+> zero, produced a mean paired difference of **+0.0231**, outside the predeclared
+> equivalence band **[-0.01, +0.01]** (declared in `s16_c2_bounded.py`).
+>
+> The estimator was also **unmatched**: its biased comparator drew ~95 subjects from
+> all 763 training subjects spanning every site, while its honest comparator drew ~95
+> from a single test fold. The more diverse draw generalises better regardless of
+> memorisation, which is the most likely source of the +0.0231 floor.
+>
+> **All retrospective pure-bias estimates in this file are UNRESOLVED.** No arm may be
+> described as memorising on the strength of these numbers, and in particular the
+> earlier claim that "only the two BNTs show real memorisation bias" is **withdrawn**
+> pending a calibration that passes.
+>
+> Replacement: the site x label matched estimator in `s16_c2_bounded.py`
+> (feasibility confirmed in `C2_FEASIBILITY.md`; **not yet executed**).
+
 # S16 C2 — PRECISION REFIT (20 repeats of BOTH random draws)
 
 Every pure-bias value in the first C2 pass rested on ONE draw of the te

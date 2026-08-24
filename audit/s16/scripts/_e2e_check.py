@@ -1,7 +1,7 @@
 """E2E assertions: read every row from disk and check SUBSTANCE."""
 import sys, os, json, glob, numpy as np
 sys.path.insert(0,'/users/3171356m/A-GCL/audit/s16/scripts')
-import s16_data as DAT, s16_feat as FT, s16_grid as G, _e2e_run as R
+import s16_data as DAT, s16_feat as FT, s16_grid as G, _e2e_run as R, s16_prov as P
 sys.path.insert(0,"/users/3171356m/agcl_audit_s0/s11"); import s11_core as K
 S16=DAT.S16; F=[]
 def ck(n,ok,d=""):
@@ -23,7 +23,7 @@ ck("A7_parity_f32_bitwise", tri.shape==(954,4005) and _b32 and _d64 < 3e-8,
 T=R.targets(); rows=[]
 for b,i,label in T:
     uid=G.unit_id({"main":G.MAIN,"ctrl":G.CTRL,"abl":G.ABL}[b][i])
-    fs=sorted(glob.glob(f"{S16}jobs/{uid}/fold_*.json"))
+    fs=sorted(glob.glob(P.jobs_dir("e2e")+f"{uid}/fold_*.json"))
     if not fs: ck(f"row_{label}",False,"no results row on disk"); continue
     rec=json.load(open(fs[0]))["rec"]; rows.append((label,rec))
     ok=rec.get("status")=="OK"
@@ -31,7 +31,10 @@ for b,i,label in T:
     if not ok: continue
     for pt in ("probe_honest","probe_old_full","head"):
         a=rec.get(pt,{}).get("auc")
-        ck(f"{pt}_{label}", a is not None and np.isfinite(a) and 0.0<a<1.0 and abs(a-0.5)>1e-9,
+        # AUC EXACTLY 0.5 IS VALID (defect D9). C-PERM on permuted labels can legitimately
+        # produce it, and a correct control was previously reported as a gate failure.
+        # Require only: present, finite, and within [0,1].
+        ck(f"{pt}_{label}", a is not None and np.isfinite(a) and 0.0<=a<=1.0,
            f"AUC {a}")
     sv=rec.get("svm_tr_enc")
     ck(f"svm_tr_enc_{label}", sv is not None and np.isfinite(sv) and 0.0<sv<1.0, f"{sv}")
