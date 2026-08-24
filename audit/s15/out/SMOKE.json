@@ -1,0 +1,292 @@
+{
+ "checks": [
+  [
+   "S1_gate_c",
+   true,
+   "954 subjects, ASD 455/NC 499, FC sym 0.0e+00, diag dev 0.0e+00, |FC|max 1.000000, folds lab 5/site 5/loso 19 = 29; all S11 hashes match",
+   true
+  ],
+  [
+   "S2_instrument",
+   true,
+   "R1/R2 F-LAB 0.7565 (need 0.7565+-0.015), LOSO 0.7432 (need 0.7432+-0.015); R3 permuted 0.4802 (need 0.50+-0.03); R4 ALFF floor 0.6286",
+   true
+  ],
+  [
+   "S3_capacity_sweep",
+   true,
+   "16 configs; S13 POST-MORTEM K=2/H=128 repr_dim 256 FC-recon R2 0.5102; best BNT R2 0.5560",
+   false
+  ],
+  [
+   "S4_overfit_BNT",
+   true,
+   "train AUC 1.0000 (need 1.000), loss 0.000001 (need <0.01), 500 steps, dropout 0, wd 0, no clip",
+   true
+  ],
+  [
+   "S4_overfit_WGIN",
+   true,
+   "train AUC 1.0000 (need 1.000), loss 0.000003 (need <0.01), 500 steps, dropout 0, wd 0, no clip",
+   true
+  ],
+  [
+   "S5a_orthonormal_buffer",
+   true,
+   "max|EE^T-I| 4.17e-07; E in state_dict, buffer, requires_grad False",
+   true
+  ],
+  [
+   "S5b_soft_assignment",
+   true,
+   "P sums to 1 (1.8e-07); Z_G (8, 32, 128); repr (8, 4096); entropy 3.4627 (max 3.4657)",
+   true
+  ],
+  [
+   "S5c_attention",
+   true,
+   "rows sum to 1 (2.4e-07); shape (8, 4, 90, 90); 2 layers x 4 heads; FC NEVER injected into scores",
+   true
+  ],
+  [
+   "S5d_roi_equivariance",
+   true,
+   "profile==FC row bitwise (True); FC symmetry EXACTLY 0.0e+00 so a transposed profile is provably a no-op; permuting data AND inp.weight cols -> max|Z_L(perm)-perm(Z_L)| 1.73e-06 <1e-4 (guards a [B,D,90] axis swap)",
+   true
+  ],
+  [
+   "S5e_K1_equals_mean",
+   true,
+   "max|Z_G/90 - mean| 7.15e-07 (declared factor 90; P==1)",
+   true
+  ],
+  [
+   "S5f_gradient_flow",
+   true,
+   "0 dead trainable params; E.grad is None (True)",
+   true
+  ],
+  [
+   "S5g_determinism_reload",
+   true,
+   "same seed bitwise identical; checkpoint reload bitwise identical (CPU)",
+   true
+  ],
+  [
+   "S6a_wgin_hand_h.float64",
+   true,
+   "max err 0.00e+00 < 1e-06 (negative edge weight and sign-flip node included)",
+   true
+  ],
+  [
+   "S6a_wgin_hand_h.float32",
+   true,
+   "max err 0.00e+00 < 1e-04 (negative edge weight and sign-flip node included)",
+   true
+  ],
+  [
+   "S6b_wgin_features_selfloop",
+   true,
+   "x[i,:90]==FC[i,:] bitwise (8x8); LOGGED FORK: 90 self-loops with FC[i,i]=1.0 AND (1+eps)x_r -> own features counted TWICE, kept as S12A5 ran it",
+   true
+  ],
+  [
+   "S7_clip_calibration",
+   true,
+   "BNT: p50 6.291 p90 13.379 p95 15.233 p99 22.338 max 26.96, 100% above S13's fixed 1.0 | WGIN: p50 10.388 p90 22.954 p95 26.882 p99 33.978 max 42.84, 100% above S13's fixed 1.0",
+   false
+  ],
+  [
+   "S8_determinism_env",
+   true,
+   "use_deterministic_algorithms(True); OMP_NUM_THREADS=8; torch threads 8",
+   true
+  ]
+ ],
+ "capacity": [
+  {
+   "arch": "BNT",
+   "K": 2,
+   "H": 128,
+   "repr_dim": 256,
+   "n_trainable": 277249,
+   "fc_recon_r2": 0.5102311581320141,
+   "entropy": 0.6914817690849304,
+   "entropy_max": 0.6931471805599453
+  },
+  {
+   "arch": "BNT",
+   "K": 2,
+   "H": 256,
+   "repr_dim": 512,
+   "n_trainable": 1078785,
+   "fc_recon_r2": 0.55062825261231,
+   "entropy": 0.692920466264089,
+   "entropy_max": 0.6931471805599453
+  },
+  {
+   "arch": "BNT",
+   "K": 4,
+   "H": 128,
+   "repr_dim": 512,
+   "n_trainable": 278017,
+   "fc_recon_r2": 0.5062368501903171,
+   "entropy": 1.3817886511484783,
+   "entropy_max": 1.3862943611198906
+  },
+  {
+   "arch": "BNT",
+   "K": 4,
+   "H": 256,
+   "repr_dim": 1024,
+   "n_trainable": 1080321,
+   "fc_recon_r2": 0.5556915871183951,
+   "entropy": 1.3848464091618855,
+   "entropy_max": 1.3862943611198906
+  },
+  {
+   "arch": "BNT",
+   "K": 8,
+   "H": 128,
+   "repr_dim": 1024,
+   "n_trainable": 279553,
+   "fc_recon_r2": 0.5055529447617616,
+   "entropy": 2.077357371648153,
+   "entropy_max": 2.0794415416798357
+  },
+  {
+   "arch": "BNT",
+   "K": 8,
+   "H": 256,
+   "repr_dim": 2048,
+   "n_trainable": 1083393,
+   "fc_recon_r2": 0.5532126308699996,
+   "entropy": 2.0778721968332925,
+   "entropy_max": 2.0794415416798357
+  },
+  {
+   "arch": "BNT",
+   "K": 16,
+   "H": 128,
+   "repr_dim": 2048,
+   "n_trainable": 282625,
+   "fc_recon_r2": 0.5123882274458041,
+   "entropy": 2.7694979508717856,
+   "entropy_max": 2.772588722239781
+  },
+  {
+   "arch": "BNT",
+   "K": 16,
+   "H": 256,
+   "repr_dim": 4096,
+   "n_trainable": 1089537,
+   "fc_recon_r2": 0.5511663835386823,
+   "entropy": 2.77088197072347,
+   "entropy_max": 2.772588722239781
+  },
+  {
+   "arch": "BNT",
+   "K": 32,
+   "H": 128,
+   "repr_dim": 4096,
+   "n_trainable": 288769,
+   "fc_recon_r2": 0.5038067551537324,
+   "entropy": 3.462193330128988,
+   "entropy_max": 3.4657359027997265
+  },
+  {
+   "arch": "BNT",
+   "K": 32,
+   "H": 256,
+   "repr_dim": 8192,
+   "n_trainable": 1101825,
+   "fc_recon_r2": 0.5559653123612512,
+   "entropy": 3.463805357615153,
+   "entropy_max": 3.4657359027997265
+  },
+  {
+   "arch": "BNT",
+   "K": 64,
+   "H": 128,
+   "repr_dim": 8192,
+   "n_trainable": 301057,
+   "fc_recon_r2": 0.510972207014951,
+   "entropy": 4.154794534047444,
+   "entropy_max": 4.1588830833596715
+  },
+  {
+   "arch": "BNT",
+   "K": 64,
+   "H": 256,
+   "repr_dim": 16384,
+   "n_trainable": 1126401,
+   "fc_recon_r2": 0.5538635560860593,
+   "entropy": 4.157127857208252,
+   "entropy_max": 4.1588830833596715
+  },
+  {
+   "arch": "WGIN",
+   "hidden": 128,
+   "readout": "sum",
+   "repr_dim": 128,
+   "n_trainable": 78977,
+   "fc_recon_r2": 0.390916581549775,
+   "entropy": NaN,
+   "entropy_max": NaN
+  },
+  {
+   "arch": "WGIN",
+   "hidden": 128,
+   "readout": "roi",
+   "repr_dim": 11520,
+   "n_trainable": 113153,
+   "fc_recon_r2": 0.429178825368965,
+   "entropy": NaN,
+   "entropy_max": NaN
+  },
+  {
+   "arch": "WGIN",
+   "hidden": 256,
+   "readout": "sum",
+   "repr_dim": 256,
+   "n_trainable": 289025,
+   "fc_recon_r2": 0.453387751528113,
+   "entropy": NaN,
+   "entropy_max": NaN
+  },
+  {
+   "arch": "WGIN",
+   "hidden": 256,
+   "readout": "roi",
+   "repr_dim": 23040,
+   "n_trainable": 357377,
+   "fc_recon_r2": 0.46834603256372315,
+   "entropy": NaN,
+   "entropy_max": NaN
+  }
+ ],
+ "grad_survey": [
+  {
+   "p50": 6.2913124561309814,
+   "p90": 13.378938579559328,
+   "p95": 15.233153295516967,
+   "p99": 22.33778429031368,
+   "max": 26.958908081054688,
+   "arch": "BNT",
+   "n_steps": 480,
+   "frac_above_1.0": 1.0
+  },
+  {
+   "p50": 10.388365268707275,
+   "p90": 22.954347610473643,
+   "p95": 26.881869888305637,
+   "p99": 33.978406867980944,
+   "max": 42.84003448486328,
+   "arch": "WGIN",
+   "n_steps": 480,
+   "frac_above_1.0": 1.0
+  }
+ ],
+ "ceiling_probe": 0.756484397366161,
+ "blocking_failures": []
+}

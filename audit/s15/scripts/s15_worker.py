@@ -143,7 +143,7 @@ def run(branch, idx):
             pd_, poof = K.probe_pipe(R.astype(np.float64), y_use, [(tr, te)], [])
             ck = f"{S15}ckpt/{uid}__{tag}.pt"
             torch.save(model.state_dict(), ck + ".tmp"); os.replace(ck + ".tmp", ck)
-            rec = dict(status="OK", unit=uid, branch=branch, **{k: v for k, v in u.items()},
+            rec = {**u, **dict(status="OK", unit=uid, branch=branch,
                        fold=tag, fold_protocol=tag[:-1] if tag[-1].isdigit() else tag,
                        seed=seed, head=metrics(y_use[te], S[te]),
                        head_ema=metrics(y_use[te], S_ema[te]),
@@ -162,7 +162,7 @@ def run(branch, idx):
                        ckpt_sha=hashlib.sha256(open(ck, "rb").read()).hexdigest()[:16],
                        wall_s=round(time.time() - t0, 1),
                        peak_rss_mb=round(__import__("resource").getrusage(
-                           __import__("resource").RUSAGE_SELF).ru_maxrss / 1024.0, 1))
+                           __import__("resource").RUSAGE_SELF).ru_maxrss / 1024.0, 1))}
             atomic_json(dict(rec=rec, curve=curve), f"{jd}/fold_{tag}.json")  # JSON FIRST
             tmp = fp + ".tmp.npz"
             np.savez_compressed(tmp[:-4], repr=R.astype(np.float32),
@@ -176,10 +176,9 @@ def run(branch, idx):
                   f"mv {info['movement_max']:.3f} clip {info['clip_rate']:.2f} "
                   f"{info['verdict']} {rec['wall_s']}s", flush=True)
         except Exception as e:                                   # J3: never abort
-            rec = dict(status="FAILED", unit=uid, branch=branch, fold=tag,
+            rec = {**u, **dict(status="FAILED", unit=uid, branch=branch, fold=tag,
                        error=repr(e), traceback=traceback.format_exc(),
-                       node=socket.gethostname(), wall_s=round(time.time() - t0, 1),
-                       **{k: v for k, v in u.items()})
+                       node=socket.gethostname(), wall_s=round(time.time() - t0, 1))}
             atomic_json(dict(rec=rec, curve=[]), f"{jd}/fold_{tag}.json")
             print(f"FAILED {uid} {tag}: {e}", flush=True)
         done += 1
