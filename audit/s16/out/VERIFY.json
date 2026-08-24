@@ -1,0 +1,113 @@
+{
+ "checks": [
+  [
+   "C2a_ruler",
+   true,
+   "FC ord 0.7565 (need 0.7565+-0.015); FC LOSO 0.7432 (need 0.7432+-0.015); permuted 0.4802 (need 0.50+-0.03); ALFF floor 0.6286",
+   true
+  ],
+  [
+   "C4_floor_exact",
+   true,
+   "learned block zeroed -> 0.7490109890 vs FC-alone 0.7490109890 on the SAME fold; diff 0.00e+00 (need bitwise). StandardScaler standardises each column independently, so the two blocks' different scales cannot distort one another.",
+   true
+  ],
+  [
+   "C4_blocks_independent",
+   true,
+   "FC block zeroed, random learned block -> 0.5576 (chance-like, confirms the blocks are separate and correctly positioned)",
+   false
+  ],
+  [
+   "C4_floor_pooled",
+   true,
+   "pooled 5-fold, learned block zeroed -> 0.7565 (need 0.7565)",
+   true
+  ],
+  [
+   "T1_orthonormal",
+   true,
+   "max|EE^T-I| 4.17e-07; buffer in state_dict, requires_grad False",
+   true
+  ],
+  [
+   "T2_ocread",
+   true,
+   "P sums to 1 (1.8e-07); Z_G (8, 32, 128); repr (8, 4096); entropy 3.4627 / max 3.4657",
+   true
+  ],
+  [
+   "T3_attention",
+   true,
+   "rows sum to 1; shape (8, 4, 90, 90); 2 layers x 4 heads; FC never in scores",
+   true
+  ],
+  [
+   "T4_roi_equivariance",
+   true,
+   "permute data AND inp.weight cols -> max|Z_L(perm)-perm(Z_L)| 1.73e-06 (<1e-4); FC symmetry EXACTLY 0.0e+00 so a transposed profile is provably a no-op; guards a [B,D,90] axis swap",
+   true
+  ],
+  [
+   "T5_K1_mean",
+   true,
+   "max|Z_G/90 - mean| 7.15e-07 (declared factor 90)",
+   true
+  ],
+  [
+   "T6_wgin_hand_h.float64",
+   true,
+   "max err 0.00e+00 (negative edge weight + sign-flip node; self-loop double count is a LOGGED FORK, not fixed)",
+   true
+  ],
+  [
+   "T6_wgin_hand_h.float32",
+   true,
+   "max err 0.00e+00 (negative edge weight + sign-flip node; self-loop double count is a LOGGED FORK, not fixed)",
+   true
+  ],
+  [
+   "T7_sparse_positive_only",
+   true,
+   "8 subjects: every sparse edge has FC>0 and equals the original value bitwise; retained 91.0% of 8100, min degree 3, isolated nodes 0",
+   true
+  ],
+  [
+   "T8_profile_is_row",
+   true,
+   "x[i,:90] == FC[i,:] bitwise, 8 subjects x 8 ROIs",
+   true
+  ],
+  [
+   "T9_gradients",
+   true,
+   "0 dead trainable params; E.grad is None",
+   true
+  ],
+  [
+   "T10_determinism_reload",
+   true,
+   "same seed bitwise identical; checkpoint reload bitwise identical (CPU)",
+   true
+  ],
+  [
+   "T11_overfit_BNT",
+   true,
+   "train AUC 1.0000 (need 1.000), loss 0.000001 (need <0.01)",
+   true
+  ],
+  [
+   "T11_overfit_WGIN",
+   true,
+   "train AUC 1.0000 (need 1.000), loss 0.000003 (need <0.01)",
+   true
+  ],
+  [
+   "T12_params",
+   true,
+   "A1(WGIN,D=3) 101,633 repr 11520 | A3(WGIN,D=90) 112,769 repr 11520 | A4(WGIN,D=93) 113,153 repr 11520 | A5(BNT,D=90) 288,385 repr 4096 | A6(BNT,D=93) 288,769 repr 4096",
+   false
+  ]
+ ],
+ "blocking_failures": []
+}

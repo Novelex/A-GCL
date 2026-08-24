@@ -1,0 +1,7 @@
+feat/
+ckpt/
+cache/
+logs/
+jobs/
+*.tmp
+*.tmp.npz

@@ -1,0 +1,116 @@
+{
+ "git_sha": "d52798c",
+ "builder_version": "s16_data v1.0",
+ "build_timestamp": "2026-08-24 17:21:47",
+ "host": "login1.cognition.gla.alces.network",
+ "h_source_manifest": "4f01b0abc1b160bd",
+ "h_alff": "de63049c08ac023c",
+ "h_labels": "c3389e38c0f87793",
+ "h_subject_order": "3b7c7993707e74a1",
+ "h_folds_lab": "3bf974acd7331c87",
+ "h_folds_site": "52eda79f7292dcff",
+ "h_folds_loso": "59d6030196460ee7",
+ "h_fc_edge_order": "5e0780c9d99b238a",
+ "h_alff_band_order": "de63049c08ac023c",
+ "small_sites_pooled": [],
+ "n_folds": {
+  "lab": 5,
+  "site": 5,
+  "loso": 19
+ },
+ "first5_ids": [
+  "CMU_a_0050642",
+  "CMU_a_0050646",
+  "CMU_a_0050647",
+  "CMU_a_0050649",
+  "CMU_a_0050654"
+ ],
+ "last5_ids": [
+  "Yale_0050624",
+  "Yale_0050625",
+  "Yale_0050626",
+  "Yale_0050627",
+  "Yale_0050628"
+ ],
+ "site_counts": {
+  "CALTECH": 28,
+  "CMU": 20,
+  "KKI": 47,
+  "LEUVEN_1": 28,
+  "LEUVEN_2": 33,
+  "MAX_MUN": 49,
+  "NYU": 173,
+  "OLIN": 33,
+  "PITT": 55,
+  "SBL": 29,
+  "SDSU": 31,
+  "STANFORD": 39,
+  "TRINITY": 45,
+  "UCLA_1": 66,
+  "UCLA_2": 23,
+  "UM_1": 98,
+  "UM_2": 33,
+  "USM": 69,
+  "YALE": 55
+ },
+ "caches": {
+  "signed": {
+   "E": "signed",
+   "sparse": false,
+   "cache_file": "s16_signed_4f01b0abc1b160bd.npz",
+   "h_fc": "174183531a998da0",
+   "fc_sym_max": 0.0,
+   "fc_diag_dev": 0.0,
+   "fc_absmax": 1.0,
+   "fc_min": -0.7600311636924744,
+   "sha256_file": "c3642de55b6e2f54",
+   "size_mb": 23.7
+  },
+  "abs": {
+   "E": "abs",
+   "sparse": false,
+   "cache_file": "s16_abs_4f01b0abc1b160bd.npz",
+   "h_fc": "be1f6498e753137b",
+   "fc_sym_max": 0.0,
+   "fc_diag_dev": 0.0,
+   "fc_absmax": 1.0,
+   "fc_min": 2.9062888984299207e-07,
+   "sha256_file": "87003dd3d17377c9",
+   "size_mb": 23.6
+  },
+  "pos_zero": {
+   "E": "pos_zero",
+   "sparse": true,
+   "cache_file": "s16_pos_zero_4f01b0abc1b160bd.npz",
+   "h_fc": "420c8919f7c10d4e",
+   "fc_sym_max": 0.0,
+   "fc_diag_dev": 0.0,
+   "fc_absmax": 1.0,
+   "fc_min": 0.0,
+   "sparse_stats": {
+    "edges_min": 5014,
+    "edges_med": 7525,
+    "edges_max": 8100,
+    "pct_of_8100": 90.9666123146207,
+    "subjects_under_90_edges": 0,
+    "isolated_nodes_total": 0,
+    "subjects_with_isolated_node": 0,
+    "min_node_degree": 3
+   },
+   "sha256_file": "fdbea99ca7c562b2",
+   "size_mb": 22.3
+  },
+  "shift": {
+   "E": "shift",
+   "sparse": false,
+   "cache_file": "s16_shift_4f01b0abc1b160bd.npz",
+   "h_fc": "18151118370fe736",
+   "fc_sym_max": 0.0,
+   "fc_diag_dev": 0.0,
+   "fc_absmax": 1.0,
+   "fc_min": 0.11998441815376282,
+   "sha256_file": "d03629b3cc7014f5",
+   "size_mb": 23.0
+  }
+ }
+}
