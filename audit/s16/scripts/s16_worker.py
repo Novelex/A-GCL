@@ -71,7 +71,8 @@ def run(branch, idx):
     seed=G.SEEDS[u["seed_idx"]]
     cfg=dict(K_or_hidden=u["kh"],lr=3e-4,wd=1e-3,loss="L-BCE",
              freeze_encoder=(ctrl=="C-RAND"),readout="roi",dropout=0.10,H=128)
-    done=0
+    done=0; n_fail=0; n_attempt=0
+    POISON_FRAC=0.05                 # >5% of folds attempted -> the wave is broken
     for tag,tr,te in folds:
         fp=f"{S16}feat/{uid}__{tag}.npz"
         if os.path.exists(fp): done+=1; status(jd,"running",done,len(folds)); continue
@@ -131,7 +132,7 @@ def run(branch, idx):
                  probe_bias_uncorrected=float(do["auc"]-dh["auc"]),
                  svm_tr_enc=svm_tr_enc, fusion=fusion,
                  n_tr=int(len(tr)), n_tr_enc=int(len(tr_enc)), n_tr_probe=int(len(tr_prb)),
-                 repr_dim_used=int(Rp.shape[1]), sparse=sparse,
+                 repr_dim_used=int(R.shape[1]), sparse=sparse,
                  **{k:v for k,v in info.items() if k!="movement"},
                  movement=info["movement"],
                  label_convention="ASD=1 NC=0 (A-GCL uses ASD=0/HC=1: AUC same, SENS/SPEC SWAPPED)",
@@ -148,19 +149,41 @@ def run(branch, idx):
                 tr=np.asarray(tr),tr_enc=tr_enc,tr_prb=tr_prb,te=np.asarray(te))
             zz=np.load(tmp); assert np.isfinite(zz["repr"]).all(); os.replace(tmp,fp)
             print(f"DONE {uid} {tag} honest {rec['probe_honest']['auc']:.4f} "
-                  f"old {rec['probe_old']['auc']:.4f} head {rec['head']['auc']:.4f} "
+                  f"old {rec['probe_old_full']['auc']:.4f} head {rec['head']['auc']:.4f} "
                   f"mv {info['movement_max']:.3f} clip {info['clip_rate']:.2f} "
                   f"{info['verdict']} {rec['wall_s']}s",flush=True)
         except Exception as e:
+            n_fail+=1
             rec={**u, **dict(status="FAILED",unit=uid,branch=branch,fold=tag,
                  error=repr(e),traceback=traceback.format_exc(),
                  node=socket.gethostname(),wall_s=round(time.time()-t0,1))}
             aj(dict(rec=rec,curve=[]), f"{jd}/fold_{tag}.json")
             print(f"FAILED {uid} {tag}: {e}",flush=True)
-        done+=1; status(jd,"running",done,len(folds))
+        done+=1; n_attempt+=1
+        status(jd,"running",done,len(folds),dict(failed=n_fail,attempted=n_attempt))
+        # MASS FAILURE ABORTS THE WHOLE ARRAY. The per-fold try/except exists to
+        # survive ONE anomalous fold, not to let a systematic bug report COMPLETED.
+        if n_attempt>=4 and n_fail > POISON_FRAC*n_attempt:
+            aid=os.environ.get("SLURM_ARRAY_JOB_ID") or os.environ.get("SLURM_JOB_ID")
+            msg=(f"POISON {uid}: {n_fail}/{n_attempt} folds failed "
+                 f"(>{POISON_FRAC:.0%}). Cancelling array {aid}.")
+            open(f"{S16}jobs/POISON","a").write(msg+"\n")
+            open(f"{jd}/POISON","w").write(msg+"\n")
+            status(jd,"poisoned",done,len(folds),dict(failed=n_fail,attempted=n_attempt))
+            print("ERROR "+msg, file=sys.stderr, flush=True); print("ERROR "+msg, flush=True)
+            ev.set()
+            if aid: os.system(f"scancel {aid}")
+            sys.exit(2)
         if _STOP["f"]: status(jd,"requeued",done,len(folds)); ev.set(); sys.exit(0)
-    ev.set(); status(jd,"done",done,len(folds),dict(wall_s=round(time.time()-t_unit,1)))
+    ev.set()
+    n_ok=n_attempt-n_fail
+    status(jd,"done",done,len(folds),dict(wall_s=round(time.time()-t_unit,1),
+           attempted=n_attempt,succeeded=n_ok,failed=n_fail))
+    json.dump(dict(unit=uid,attempted=n_attempt,succeeded=n_ok,failed=n_fail),
+              open(f"{jd}/TALLY.json","w"),indent=1)
     open(f"{jd}/UNIT.done","w").write("done")
-    print(f"UNIT_COMPLETE {uid} {time.time()-t_unit:.0f}s",flush=True)
+    line=f"UNIT_COMPLETE {uid}: {n_attempt} attempted, {n_ok} succeeded, {n_fail} failed"
+    print(line+f" ({time.time()-t_unit:.0f}s)",flush=True)
+    if n_fail>0: print("ERROR "+line, file=sys.stderr, flush=True)
 
 if __name__=="__main__": run(sys.argv[1], int(sys.argv[2]))

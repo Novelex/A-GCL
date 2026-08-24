@@ -83,7 +83,7 @@ def train_fold(arch, X, FC, y, tr, cfg, seed, log=None, sparse=False):
                                 stratify=y[tr], random_state=BASE)
     itr, iva = np.asarray(tr)[itr], np.asarray(tr)[iva]
     torch.manual_seed(seed); np.random.seed(seed % 2**32)
-    model = MO.build_model(arch, X.shape[2], seed, cfg["K_or_hidden"],
+    model = MO.build_model(arch, X.shape[-1], seed, cfg["K_or_hidden"],
                            freeze_encoder=cfg.get("freeze_encoder", False),
                            readout=cfg.get("readout", "roi"),
                            scaled_softmax=cfg.get("scaled_softmax", True),
