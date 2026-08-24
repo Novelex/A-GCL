@@ -22,6 +22,10 @@ def abl_units():
                  mode="plain", seed_idx=s, alff_mode=am)
             for am in ALFF_ABL for s in range(3)]
 MAIN, CTRL, ABL = main_units(), ctrl_units(), abl_units()
+# Step-4 split by SPEED so fast tasks cannot leave slots idle behind slow WGIN folds.
+BNTU  = [u for u in MAIN if u["arch"]=="BNT"]                    # array A, ~2.7 min/fold
+WGINU = [u for u in MAIN if u["arch"]=="WGIN"] + ABL             # array B, ~6-8 min/fold
+CTRLU = CTRL                                                     # array C, absorbs spare
 def unit_id(u):
     p=[u["branch"],u["arm"],u["E"],u["mode"],f"s{u['seed_idx']}"]
     if "control" in u: p.insert(2,u["control"])

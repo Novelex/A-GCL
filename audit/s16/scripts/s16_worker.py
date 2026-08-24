@@ -52,7 +52,8 @@ def aj(o,p):
     os.replace(p+".tmp",p)
 
 def run(branch, idx):
-    u = {"main":G.MAIN,"ctrl":G.CTRL,"abl":G.ABL}[branch][idx]
+    u = {"main":G.MAIN,"ctrl":G.CTRL,"abl":G.ABL,
+         "bnt":G.BNTU,"wgin":G.WGINU,"ctrlu":G.CTRLU}[branch][idx]
     uid = G.unit_id(u); jd=f"{S16}jobs/{uid}"; os.makedirs(jd,exist_ok=True)
     torch.set_num_threads(int(os.environ.get("OMP_NUM_THREADS","4")))
     torch.use_deterministic_algorithms(True)
