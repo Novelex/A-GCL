@@ -7,6 +7,7 @@ J1: NO training-dynamics observation may raise. All become recorded flags."""
 import sys, os, math, time, copy, json, collections, numpy as np, torch, torch.nn as nn
 sys.path.insert(0, "/users/3171356m/A-GCL/audit/s16/scripts")
 import s16_models as MO
+import s16_policy as PL
 from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import train_test_split
 
@@ -44,7 +45,9 @@ def assert_groups_cover(model, arch):
 
 # ------------------------------------------------------------------ losses
 def loss_bce(logits, y, smooth=LABEL_SMOOTH):
-    t = y * (1 - smooth) + smooth / 2                 # y*0.95 + 0.025 at 0.05
+    # t = y*(1-s) + s/2. At s=0.05 -> y*0.95 + 0.025. See s16_policy.target_from()
+    # for why S15 PROTOCOL.md:188's 't=y*0.90+0.05' is the stale S13 formula.
+    t = y * (1 - smooth) + smooth / 2
     return nn.functional.binary_cross_entropy_with_logits(logits, t)
 
 def loss_auc(logits, y):
@@ -57,12 +60,14 @@ def loss_auc(logits, y):
 LOSSES = {"L-BCE": loss_bce, "L-AUC": loss_auc}
 
 # ------------------------------------------------------------------ helpers
-def lr_at(step, total, base_lr):
-    """Linear warmup over the first 10% of steps, then cosine decay to 0.05*lr."""
-    w = max(1, int(WARMUP_FRAC * total))
+def lr_at(step, total, base_lr, policy=None):
+    """Linear warmup, then cosine decay — both governed by the POLICY."""
+    policy = policy or PL.PROD
+    w = max(1, int(policy.warmup_frac * total))
     if step < w: return base_lr * (step + 1) / w
     p = (step - w) / max(1, total - w)
-    return base_lr * (COSINE_FLOOR + (1 - COSINE_FLOOR) * 0.5 * (1 + math.cos(math.pi * p)))
+    cf = policy.cosine_floor
+    return base_lr * (cf + (1 - cf) * 0.5 * (1 + math.cos(math.pi * p)))
 
 def group_grad_norms(model, arch):
     out = {}
@@ -98,9 +103,13 @@ def extract(model, X, FC, idxs, need_graph, bs=128, sparse=False):
     return np.concatenate(R), np.concatenate(S)
 
 # ------------------------------------------------------------------ train
-def train_fold(arch, X, FC, y, tr, cfg, seed, log=None, sparse=False):
-    """cfg: dict(K_or_hidden, lr, wd, loss, freeze_encoder, readout, scaled_softmax,
-    dropout, H, max_epochs, min_epochs). Returns (model, ema_sd, curve, info)."""
+def train_fold(arch, X, FC, y, tr, cfg, seed, log=None, sparse=False, policy=None):
+    """cfg: dict(K_or_hidden, lr, wd, loss, freeze_encoder, readout, dropout, H).
+    policy: an IMMUTABLE s16_policy.ExecPolicy. It — not module globals — decides the
+    epoch budget, stopping rule, schedule, clipping and smoothing, and the SAME object
+    is recorded in provenance, so training and the record cannot disagree.
+    Returns (model, ema_sd, curve, info)."""
+    policy = policy or PL.PROD
     need_graph = (arch == "WGIN")
     itr, iva = train_test_split(np.arange(len(tr)), test_size=0.20,
                                 stratify=y[tr], random_state=BASE)
@@ -111,38 +120,40 @@ def train_fold(arch, X, FC, y, tr, cfg, seed, log=None, sparse=False):
                            readout=cfg.get("readout", "roi"),
                            scaled_softmax=cfg.get("scaled_softmax", True),
                            p=cfg.get("dropout", 0.10), H=cfg.get("H", 128))
+    assert_groups_cover(model, arch)      # B5: enforced in the REAL path
     init = {k: v.cpu().clone() for k, v in model.state_dict().items()}
     params = [p for p in model.parameters() if p.requires_grad]
     opt = torch.optim.AdamW(params, lr=cfg["lr"], betas=(0.9, 0.999), eps=1e-8,
                             weight_decay=cfg["wd"])
-    ema = MO.EMA(model, EMA_DECAY)
+    ema = MO.EMA(model, policy.ema_decay)
     lossf = LOSSES[cfg["loss"]]
     gen = torch.Generator().manual_seed(seed)
     yt = torch.tensor(y, dtype=torch.float32)
-    max_ep = cfg.get("max_epochs", MAX_EPOCHS); min_ep = cfg.get("min_epochs", MIN_EPOCHS)
-    steps_per_epoch = max(1, math.ceil(len(itr) / BATCH))
+    max_ep, min_ep = policy.max_epochs, policy.min_epochs
+    steps_per_epoch = max(1, math.ceil(len(itr) / policy.batch))
     total_steps = steps_per_epoch * max_ep
-    gnorms = collections.deque(maxlen=CLIP_WINDOW)
+    gnorms = collections.deque(maxlen=policy.clip_window)
     curve, best, bad, step = [], (-1.0, None, None, 0), 0, 0
     n_clipped, n_steps = 0, 0
     for ep in range(1, max_ep + 1):
         t_ep = time.time(); model.train()
         perm = torch.randperm(len(itr), generator=gen).numpy()
         tl, gg, ep_clip, ep_steps, thr_last = [], [], 0, 0, float("nan")
-        for lo in range(0, len(perm), BATCH):
-            ii = itr[perm[lo:lo + BATCH]]
+        for lo in range(0, len(perm), policy.batch):
+            ii = itr[perm[lo:lo + policy.batch]]
             if len(ii) < 2: continue
-            for pg in opt.param_groups: pg["lr"] = lr_at(step, total_steps, cfg["lr"])
+            for pg in opt.param_groups:
+                pg["lr"] = lr_at(step, total_steps, cfg["lr"], policy)
             opt.zero_grad()
             _, lg = model(MO.make_batch(X, FC, ii, need_graph, sparse), None)
-            loss = lossf(lg, yt[ii])
+            loss = lossf(lg, yt[ii], policy.label_smooth)
             loss.backward()
             gg.append(group_grad_norms(model, arch))
             raw = float(torch.nn.utils.clip_grad_norm_(params, float("inf")))  # measure
             gnorms.append(raw)
             # ADAPTIVE CLIP: steps 1-50 record only; then threshold = p90 of last 200
-            if step >= CLIP_WARMUP_STEPS and len(gnorms) >= 10:
-                thr = float(np.percentile(gnorms, CLIP_PCTL)); thr_last = thr
+            if step >= policy.clip_warmup_steps and len(gnorms) >= 10:
+                thr = float(np.percentile(gnorms, policy.clip_pctl)); thr_last = thr
                 if raw > thr:
                     torch.nn.utils.clip_grad_norm_(params, thr)
                     ep_clip += 1; n_clipped += 1
@@ -152,7 +163,7 @@ def train_fold(arch, X, FC, y, tr, cfg, seed, log=None, sparse=False):
         with torch.no_grad():
             _, st = extract(model, X, FC, itr, need_graph, sparse=sparse)
             _, sv = extract(model, X, FC, iva, need_graph, sparse=sparse)
-            vloss = float(lossf(torch.tensor(sv), yt[iva]))
+            vloss = float(lossf(torch.tensor(sv), yt[iva], policy.label_smooth))
         row = dict(epoch=ep, lr=float(opt.param_groups[0]["lr"]),
                    train_loss=float(np.mean(tl)) if tl else float("nan"),
                    val_loss=vloss,
@@ -165,7 +176,7 @@ def train_fold(arch, X, FC, y, tr, cfg, seed, log=None, sparse=False):
                    clip_rate=float(ep_clip / max(1, ep_steps)),
                    steps=int(ep_steps), epoch_s=round(time.time() - t_ep, 2))
         curve.append(row)
-        if row["val_auc"] > best[0] + MIN_DELTA:
+        if row["val_auc"] > best[0] + policy.min_delta:
             best = (row["val_auc"],
                     copy.deepcopy({k: v.cpu() for k, v in model.state_dict().items()}),
                     copy.deepcopy(ema.state_dict(model)), ep)
@@ -173,7 +184,7 @@ def train_fold(arch, X, FC, y, tr, cfg, seed, log=None, sparse=False):
         else:
             bad += 1
         # EARLY STOPPING CANNOT FIRE BEFORE min_epochs (kills epoch-1 selection)
-        if ep >= min_ep and bad >= PATIENCE: break
+        if ep >= min_ep and bad >= policy.patience: break
         if log and ep % 40 == 0:
             print(f"[{log}] ep{ep} vl {vloss:.4f} va {row['val_auc']:.4f} "
                   f"clip {row['clip_rate']:.2f} lr {row['lr']:.2e}", flush=True)
@@ -185,7 +196,9 @@ def train_fold(arch, X, FC, y, tr, cfg, seed, log=None, sparse=False):
     mv_max = max(mv.values()) if mv else 0.0
     clip_rate = n_clipped / max(1, n_steps)
     # J1: every observation below is a RECORDED FLAG, never an exception
-    info = dict(best_val_auc=best[0], best_epoch=best_ep, epochs_run=len(curve),
+    info = dict(policy_name=policy.name, policy_hash=policy.policy_hash(),
+                epoch_manifest=policy.epoch_manifest(),
+                best_val_auc=best[0], best_epoch=best_ep, epochs_run=len(curve),
                 total_steps=n_steps, train_val_gap=float(gap),
                 verdict=("OVERFIT" if gap > 0.15 else
                          "UNDERFIT" if bl["train_auc"] < 0.65 else "HEALTHY"),

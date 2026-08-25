@@ -11,10 +11,14 @@ import s16_worker as W, s16_grid as G
 # the process. That silently collapsed the expected ledger from 9 folds to 1
 # (hash 8587b1ca36553408 -> 2dfbce8b946e4a17). They are now applied ONLY inside
 # apply_e2e_overrides(), called from __main__.
-def apply_e2e_overrides():
-    TR.MAX_EPOCHS, TR.MIN_EPOCHS, TR.PATIENCE = 4, 2, 2
-    if not hasattr(DAT, "folds_orig"): DAT.folds_orig = DAT.folds
-    DAT.folds = lambda d,p: (DAT.folds_orig(d,p)[:1] if p=='lab' else [])
+E2E_NAMESPACE = "e2e"          # HARD-CODED. Never inherited from the environment.
+
+def e2e_policy():
+    """The E2E ExecPolicy. The worker derives BOTH the training budget AND the
+    provenance record from this same object, so a record can no longer claim 400
+    epochs while 4 were run."""
+    import s16_policy as PL
+    return PL.get(E2E_NAMESPACE)
 
 def targets():
     T=[]
@@ -23,11 +27,15 @@ def targets():
             i=next((k for k,u in enumerate(G.MAIN) if u["arm"]==arm and u["mode"]==mode
                     and u["E"]=="signed" and u["seed_idx"]==0), None)
             if i is not None: T.append(("main",i,f"{arm}-{mode}"))
+    # controls for BOTH architectures: C-SHUF/C-ROI act on the graph for WGIN and on
+    # node features only for BNT, so their behaviour IS architecture-dependent.
     for c in ("C-RAND","C-PERM","C-SHUF","C-ROI"):
-        i=next((k for k,u in enumerate(G.CTRL) if u["control"]==c and u["seed_idx"]==0), None)
-        if i is not None: T.append(("ctrl",i,c))
-    i=next((k for k,u in enumerate(G.ABL) if u["seed_idx"]==0), None)
-    if i is not None: T.append(("abl",i,"ALFF-abl"))
+        for arm,archname in (("A6","BNT"),("A4","WGIN")):
+            i=next((k for k,u in enumerate(G.CTRL) if u["control"]==c
+                    and u["arm"]==arm and u["seed_idx"]==0), None)
+            if i is not None: T.append(("ctrl",i,f"{c}-{archname}"))
+    # NOTE: no generic "ALFF-abl" entry — it selected the SAME unit as ALFF-raw,
+    # giving 26 labels over 25 unique unit IDs. The ALFF modes are enumerated below.
     # A7 under ALL FOUR E (its input is the E-transformed edge triangle)
     for e in ("abs","pos_zero","shift"):
         i=next((k for k,u in enumerate(G.MAIN) if u["arm"]=="A7" and u["E"]==e
@@ -45,11 +53,30 @@ def targets():
     # ALL ALFF branches (raw / perband / joint via the ABL units; z is the default)
     for k,u in enumerate(G.ABL):
         if u["seed_idx"]==0: T.append(("abl",k,f"ALFF-{u['alff_mode']}"))
+    assert_targets_unique(T)
     return T
 
+def assert_targets_unique(T):
+    """Labels, (branch,index) pairs, unit IDs and output paths must all be unique.
+    A duplicate silently halves coverage while appearing to add a target."""
+    import collections
+    labels=[l for _,_,l in T]; pairs=[(b,i) for b,i,_ in T]
+    uids=[G.unit_id({"main":G.MAIN,"ctrl":G.CTRL,"abl":G.ABL}[b][i]) for b,i,_ in T]
+    for name,seq in (("labels",labels),("(branch,index)",pairs),("unit IDs",uids)):
+        dup=[x for x,c in collections.Counter(seq).items() if c>1]
+        if dup: raise AssertionError(f"duplicate E2E {name}: {dup}")
+    paths=[f"{u}__lab0" for u in uids]
+    dup=[x for x,c in collections.Counter(paths).items() if c>1]
+    if dup: raise AssertionError(f"duplicate E2E output paths: {dup}")
+    return True
+
 if __name__=="__main__":
-    apply_e2e_overrides()
+    os.environ["S16_NS"] = E2E_NAMESPACE          # explicit, not inherited
     T=targets(); k=int(sys.argv[1])
     if k>=len(T): print(f"no target {k}"); sys.exit(0)
-    b,i,label=T[k]; print(f"E2E target {k}: {label} [ns=e2e]",flush=True)
-    W.run(b,i,ns="e2e")
+    b,i,label=T[k]
+    pol=e2e_policy()
+    print(f"E2E target {k}: {label} [ns={E2E_NAMESPACE} policy={pol.name} "
+          f"max_epochs={pol.max_epochs} folds=({pol.n_lab},{pol.n_site},{pol.n_loso})]",
+          flush=True)
+    W.run(b,i,ns=E2E_NAMESPACE)

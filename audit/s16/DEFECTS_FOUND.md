@@ -53,3 +53,28 @@ Artifacts on disk: 18 fold JSONs, 18 UNIT.done, 18 TALLY.json, 18 STATUS.json, 1
 **All 18 rows show `epochs_run` <= 4 and fold `lab0` only — they are FOUR-EPOCH E2E
 artifacts, not C6 output.** 16 of them occupy filenames C6 will look for (D2+D3).
 Cluster: CPU idle 151/512, GPU idle 4/48, partitions `gpu-l40s` and `gpu-h100` only.
+
+---
+
+# FINAL PRE-SUBMISSION PASS (from f2c237f) — NEW DEFECTS D22-D31
+
+| ID | file / function | symptom | severity | affected | scope | required test | disposition |
+|---|---|---|---|---|---|---|---|
+| D22 | `s16_collect.py` | consumed `delta_vs_0p7565_SECONDARY`, a key the worker had already STOPPED producing at Gate 6 — table construction would have raised `KeyError` on the first fused cell | **BLOCKER** | any C6 CSV | INSIDE | realistic fused fixture builds a CSV; stale key absent from the schema | **FIXED** — collector consumes `delta_vs_svm_tr_enc` / `delta_vs_svm_tr_full`; H14-H17 pass |
+| D23 | `s16_worker.py` resume | `exp["repr_dim"]` was read **out of the manifest being validated** — a circular check that could never fail | **BLOCKER** | every resume decision | INSIDE | wrong repr_dim must be rejected | **FIXED** — `P.expected_repr_dim(arch,kh,H,readout)` computes it independently (EDGEMLP 32, BNT K*H, WGIN 90*hidden); H27 passes |
+| D24 | `_e2e_run.py` | imported `s16_worker` BEFORE applying the 4-epoch overrides, so training ran 4 epochs while `TRAIN_CONSTS` and provenance recorded **400** — the record was FALSE | **BLOCKER** | every E2E provenance record | INSIDE | E2E record must say 4 and production 400 | **FIXED** — immutable `s16_policy.ExecPolicy` drives training, config hash, epoch manifest, resume and record from ONE object; H5 proves both |
+| D25 | `_e2e_run.py` targets | 26 labels over **25 unique unit IDs**: `ALFF-abl` and `ALFF-raw` selected the SAME unit, silently halving that coverage | HIGH | E2E coverage claims | INSIDE | labels, (branch,index), unit IDs and output paths all unique | **FIXED** — duplicate removed, `assert_targets_unique()` enforces all four; 29 unique targets; H3/H4/H33 pass |
+| D26 | `s16_prov.validate_reuse` | validated only feature+checkpoint. A feature/checkpoint pair with **no result and no prediction** would have been counted as a valid reuse | **BLOCKER** | resume and collection | INSIDE | missing/corrupt prediction or result must reject | **FIXED** — `validate_bundle()` seals result + manifest + feature + checkpoint + prediction, each hash-checked; H20-H22 pass |
+| D27 | `s16_prov` / `s16_collect` | `worktree_clean` was BOTH a guard ("must be True") AND a compared field ("must equal the live tree"). With a dirty tree **no bundle could ever validate**: `True` mismatches, `False` trips the guard | **BLOCKER** | all validation while uncommitted | INSIDE | a clean-tree artifact validates regardless of the tree's current state | **FIXED** — guard only; removed from `MATCH_KEYS`. The artifact's provenance is what matters, not the tree's later state |
+| D28 | `s16_prov.build_manifest` vs `s16_collect` | both built `optimizer_recipe` independently and **diverged** (manifest omitted `batch`), rejecting all 1,431 cells | **BLOCKER** | every cell | INSIDE | fixture accepted | **FIXED** — both now call `policy.optimizer_manifest()`; single source of truth |
+| D29 | `s16_c2_bounded.matched_draw` | crashed with `IndexError` on a malformed/empty pool instead of refusing | MEDIUM | C2 infeasibility handling | INSIDE | must return None, never raise | **FIXED** — casts to int and returns None; H35 passes |
+| D30 | launchers | `sb_main.sh`, `sb_abl.sh`, `sb_ctrl.sh` overlapped the canonical three-array wave and could DUPLICATE units; resources lived only on the sbatch command line | HIGH | reproducibility, possible double-running | INSIDE | deprecated launchers refuse; canonical ones self-contained | **FIXED** — all three exit 2; canonical scripts embed partition/array/throttle/CPU/mem/time/requeue/signal/threads/namespace and assert the frozen unit counts; H11-H13 pass |
+| D31 | validity gate wording | "each arm's own C-RAND twin" — **no such twin exists**. The grid has ONE C-RAND per architecture and NONE for EDGEMLP | HIGH | every validity verdict | INSIDE | mapping predeclared; A7 limitation stated | **FIXED** — `CRAND_MAPPING.md`: exact reference only for A4/A6; A1/A3/A5 flagged INPUT-MISMATCHED; **A7 cannot satisfy C-RAND and is descriptive only**; no control added silently; H39 passes |
+
+## Corrected dispositions of earlier entries
+- **D8** — reporting was described as "spec exists, unimplemented". `s16_report.py` NOW EXISTS and enforces protocol separation, the validity gate, C-PERM checks, per-architecture shift-vs-signed, unchanged negative deltas and exploratory C7 marking. **FIXED.**
+- **D9** — E2E rejected AUC exactly 0.5. **FIXED**: only finite and within [0,1] is required.
+- **D11** — `s16_data.GIT` hard-coded. **FIXED**: read at runtime; builder SHA recorded separately.
+- **D12** — C2 supersession. **FIXED**: both reports carry a SUPERSEDED banner; superseded launchers refuse; bounded runner exists.
+- **D13** — SLURM resources on the command line. **FIXED** (see D30).
+- **Earlier claim corrected:** the Gate-4 ledger said the collector checked `UNIT.done`. It did not — it only counted files. It now checks per unit, with terminal STATUS and exact accounting. H19 proves it.

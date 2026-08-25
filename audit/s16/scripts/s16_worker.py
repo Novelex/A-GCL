@@ -5,6 +5,7 @@ import numpy as np, torch
 sys.path.insert(0,"/users/3171356m/A-GCL/audit/s16/scripts")
 import s16_data as DAT, s16_models as MO, s16_train as TR, s16_feat as FT, s16_grid as G
 import s16_prov as P
+import s16_policy as PL
 sys.path.insert(0,"/users/3171356m/agcl_audit_s0/s11"); import s11_core as K
 from sklearn.metrics import (roc_auc_score, average_precision_score, accuracy_score,
     balanced_accuracy_score, f1_score, matthews_corrcoef, confusion_matrix, brier_score_loss)
@@ -12,11 +13,15 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score as _ras
 
 S16 = DAT.S16; _STOP={"f":False}
-TRAIN_CONSTS = dict(max_epochs=TR.MAX_EPOCHS, min_epochs=TR.MIN_EPOCHS,
-                    patience=TR.PATIENCE, min_delta=TR.MIN_DELTA,
-                    warmup_frac=TR.WARMUP_FRAC, cosine_floor=TR.COSINE_FLOOR,
-                    label_smooth=TR.LABEL_SMOOTH, batch=TR.BATCH,
-                    ema_decay=TR.EMA_DECAY)
+def train_consts(policy):
+    """Derived from the POLICY OBJECT. Never from module globals — that is exactly
+    how the 4-vs-400 epoch lie arose."""
+    return dict(max_epochs=policy.max_epochs, min_epochs=policy.min_epochs,
+                patience=policy.patience, min_delta=policy.min_delta,
+                warmup_frac=policy.warmup_frac, cosine_floor=policy.cosine_floor,
+                label_smooth=policy.label_smooth, batch=policy.batch,
+                ema_decay=policy.ema_decay, policy_name=policy.name,
+                policy_hash=policy.policy_hash())
 signal.signal(signal.SIGUSR1, lambda s,f: _STOP.update(f=True))
 
 def _boot(y,s,B=2000,seed=DAT.BASE):
@@ -62,6 +67,9 @@ def run(branch, idx, ns=None):
     """ns: 'prod' or 'e2e'. Namespaces are FULLY disjoint — a poison marker or
     artifact in one can never affect or satisfy the other."""
     ns = ns or os.environ.get("S16_NS","prod")
+    policy = PL.get(ns)                      # namespace SELECTS the immutable policy
+    assert policy.namespace == ns, f"policy/namespace mismatch {policy.namespace}!={ns}"
+    TRAIN_CONSTS = train_consts(policy)
     P.ensure(ns)
     u = {"main":G.MAIN,"ctrl":G.CTRL,"abl":G.ABL,
          "bnt":G.BNTU,"wgin":G.WGINU,"ctrlu":G.CTRLU}[branch][idx]
@@ -73,7 +81,8 @@ def run(branch, idx, ns=None):
     FC,ALFF,y_true = d["FC"],d["ALFF"],d["y"].astype(np.int64)
     sparse = bool(ent["sparse"])
     Xfc,_y,_i,_m = K.load_Xfc()
-    folds = DAT.folds(d,"lab")[:3]+DAT.folds(d,"site")[:3]+DAT.folds(d,"loso")[:3]
+    folds = (DAT.folds(d,"lab")[:policy.n_lab] + DAT.folds(d,"site")[:policy.n_site]
+             + DAT.folds(d,"loso")[:policy.n_loso])       # POLICY decides the folds
     ev=threading.Event(); threading.Thread(target=heartbeat,args=(jd,ev),daemon=True).start()
     status(jd,"running",0,len(folds),dict(unit=uid,config=u))
     arch=u["arch"]; spec=FT.ARMS[u["arm"]][1]; ctrl=u.get("control")
@@ -89,7 +98,6 @@ def run(branch, idx, ns=None):
         mfp=fp+".prov.json"
         # PROVENANCE-SAFE RESUME. Filename existence is NEVER sufficient.
         exp=dict(schema="s16-prov-1", namespace=ns, git_sha=P.git_sha(),
-                 worktree_clean=P.worktree_clean()[0],
                  worker_version=P.WORKER_VERSION,
                  config_hash=P.cfg_hash(u,cfg,TRAIN_CONSTS),
                  h_fc=ent["h_fc"], h_alff=MAN["h_alff"],
@@ -112,11 +120,15 @@ def run(branch, idx, ns=None):
                      "evaluated alongside and reported with the delta; selection by "
                      "VALIDATION only (S15 PROTOCOL.md:186)"),
                  repr_dim=None)
-        okr, why = (False, "no manifest")
-        if os.path.exists(mfp):
-            import json as _j
-            _m=_j.load(open(mfp)); exp["repr_dim"]=_m.get("repr_dim")
-            okr, why = P.validate_reuse(mfp, exp, fp, ckp)
+        # B1: expected repr dim computed INDEPENDENTLY from architecture + config.
+        # It must NEVER be read back out of the manifest being validated.
+        exp["repr_dim"] = P.expected_repr_dim(u["arch"], u["kh"], cfg.get("H",128),
+                                              cfg.get("readout","roi"))
+        exp["policy_hash"] = policy.policy_hash()
+        exp["h_labels"] = MAN["h_labels"]; exp["h_subject_order"] = MAN["h_subject_order"]
+        okr, why = P.validate_bundle(ns, uid, tag, exp, fp, ckp, mfp,
+                                     jd+f"/fold_{tag}.json",
+                                     P.feat_dir(ns)+f"{uid}__{tag}.pred.json")
         if okr:
             n_reused+=1; done+=1
             print(f"REUSE {uid} {tag} (provenance validated)",flush=True)
@@ -133,7 +145,8 @@ def run(branch, idx, ns=None):
             Xin = X            # for A7 build_X already returns the E-transformed triangle
             D_in = Xin.shape[-1]
             model,ema_sd,curve,info = TR.train_fold(arch,Xin,FCu,y_use,tr_enc,cfg,seed,
-                                                    log=f"{uid}/{tag}",sparse=sparse)
+                                                    log=f"{uid}/{tag}",sparse=sparse,
+                                                    policy=policy)
             R,S = TR.extract(model,Xin,FCu,np.arange(954),arch=="WGIN",sparse=sparse)
             # FROZEN RULE (S15 PROTOCOL.md:186,200): "EMA of weights decay 0.999, EMA
             # and raw both evaluated, selection by VALIDATION only, both reported with
@@ -151,7 +164,8 @@ def run(branch, idx, ns=None):
             dh,ph_oof = FT.probe_honest(R,y_use,tr_prb,te)
             do,po = K.probe_pipe(np.asarray(R,dtype=np.float64),y_use,
                                  [(np.asarray(tr),np.asarray(te))],[])   # old_full
-            # ---- C6 FLOOR ANCHOR: SVM trained on tr_enc, the SAME data the encoder
+            # ---- FOLD-SPECIFIC FC COMPARATOR (NOT a floor): SVM trained on tr_enc,
+            #      the SAME data the encoder
             #      saw. 0.7565 is a full-tr HISTORICAL reference, kept separate.
             # ONE expensive FC probe per fold: fitted on tr_enc, scored on tr_prb+te.
             # svm_tr_enc is derived from it, so fused arms pay no second FC fit.
@@ -254,9 +268,14 @@ def run(branch, idx, ns=None):
                 h_fc=ent["h_fc"], h_alff=MAN["h_alff"], cache_file=ent["cache_file"],
                 ckpt_sha=rec["ckpt_sha"], feat_sha=P.sha_file(fp))
             P.atomic_json(pred, P.feat_dir(ns)+f"{uid}__{tag}.pred.json")
+            # manifest LAST: it records hashes of the result and prediction files,
+            # so the whole bundle is sealed together (B2).
             P.atomic_json(P.build_manifest(ns,u,cfg,uid,tag,seed,
                 tag.rstrip("0123456789"),MAN,ent,int(R.shape[1]),fp,ck,"OK",
-                TRAIN_CONSTS), mfp)
+                TRAIN_CONSTS, policy=policy,
+                result_path=f"{jd}/fold_{tag}.json",
+                pred_path=P.feat_dir(ns)+f"{uid}__{tag}.pred.json",
+                effective_cfg=P.effective_config(u,cfg)), mfp)
             n_new+=1
             print(f"DONE {uid} {tag} honest {rec['probe_honest']['auc']:.4f} "
                   f"old {rec['probe_old_full']['auc']:.4f} head {rec['head']['auc']:.4f} "

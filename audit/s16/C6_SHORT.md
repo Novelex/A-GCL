@@ -59,7 +59,7 @@ recipe involved.
 ## THE GRID
 | array | contents | units | fold-runs |
 |---|---|---|---|
-| A `1873487` | BNT (A5,A6) x 4 E + **EdgeMLP bridge (A7) x 4 E** | 72 | 648 |
+| A `1873487` | BNT (A5,A6) x 4 E + **EdgeMLP A7 x 4 E (ordinary arm)** | 72 | 648 |
 | B `1873488` | WGIN (A1,A4) x 4 E + A3 signed + ALFF ablation | 63 | 567 |
 | C `1873497` | controls: C-RAND, C-PERM, C-SHUF, C-ROI x 2 arch x 3 seeds | 24 | 216 |
 | | | **159** | **1431** |
@@ -70,7 +70,8 @@ CPU only; `--gres` absent from every submit script.
 ## WHAT EACH FOLD REPORTS
 `probe_honest` (encoder on tr_enc, probe on tr_prb, scored on te — both sides
 out-of-sample) · `probe_old_full` (the historical biased reading, for the delta) ·
-**`svm_tr_enc`** (the C6 floor anchor) · the full pooled **alpha curve**, 21 points
+**`svm_tr_enc`** (the fold-specific FC comparator; NOT a floor) and **`svm_tr_full`**
+with the paired `size_delta_paired` · the full pooled **alpha curve**, 21 points
 0->1 in 0.05 steps, on BOTH te and the inner split · alpha selected on the INNER SPLIT
 ONLY · the **stacking** variant (logistic regression on [s_FC, s_learned] fitted on the
 inner split) with coefficients · the alpha=1.0 bitwise and exact-AUC assertions ·
@@ -83,7 +84,10 @@ weights produced the reported numbers.
 **HEADLINE:  delta = AUC(fused at chosen alpha) - svm_tr_enc(THAT FOLD)**
 **alpha=1 is the FC FALLBACK ENDPOINT, not a guaranteed floor. The outer-test delta
 MAY BE NEGATIVE and is never clamped or replaced after evaluation.**
-**SECONDARY, clearly labelled:  AUC(fused) - 0.7565**  (0.7565 is a full-tr HISTORICAL
+**SECONDARY:  delta_vs_svm_tr_full**, the same fold's full-tr comparator.
+**WITHDRAWN (final preflight): `AUC(fused) - 0.7565` is NOT reported per cell.**
+0.7565 must never be subtracted from an individual fold or site; it survives only as a
+labelled historical reference line on a pooled E-LAB plot.  (0.7565 is a full-tr HISTORICAL
 reference; it is NOT the floor for C6 arms, whose encoders saw only tr_enc.)
 
 ## PRECISION

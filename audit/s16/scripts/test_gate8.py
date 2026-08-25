@@ -21,12 +21,13 @@ cov = {
  "A7 all four E": all(any(f"A7-{e}" in l for l in labels) for e in ("abs","pos_zero","shift"))
         and any(l=="A7-plain" for l in labels),
  "sparse WGIN": sum("pos_zero-SPARSE-WGIN" in l for l in labels)>=2,
- "all controls": all(c in labels for c in ("C-RAND","C-PERM","C-SHUF","C-ROI")),
+ "all controls": all(f"{c}-{a}" in labels for c in ("C-RAND","C-PERM","C-SHUF","C-ROI")
+                     for a in ("BNT","WGIN")),
  "all ALFF branches": all(any(f"ALFF-{m}" in l for l in labels)
         for m in ("raw","perband","joint")),
 }
 for k,v in cov.items(): ck(f"A2_cov::{k}", v)
-ck("A3_target_count", len(T)==26, f"{len(T)} targets")
+ck("A3_target_count", len(T)==29, f"{len(T)} targets")
 
 print("\n--- serialization round-trip / save-reload ---")
 d,MAN,ent = DAT.load("signed", where="gate8"); y=d["y"].astype(np.int64)

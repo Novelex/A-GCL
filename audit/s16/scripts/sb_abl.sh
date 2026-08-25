@@ -1,10 +1,9 @@
 #!/bin/bash
-#SBATCH --job-name=s16abl
-#SBATCH --partition=gpu-l40s,gpu-h100
-#SBATCH --output=/users/3171356m/A-GCL/audit/s16/logs/abl_%a.out
-#SBATCH --error=/users/3171356m/A-GCL/audit/s16/logs/abl_%a.err
-#SBATCH --signal=B:USR1@300
-set -euo pipefail
-export PYTHONPYCACHEPREFIX=/users/3171356m/agcl_audit_s0/pycache
-export OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 S11_NJOBS=4
-/users/3171356m/A-GCL/.venv/bin/python /users/3171356m/A-GCL/audit/s16/scripts/s16_worker.py abl $SLURM_ARRAY_TASK_ID
+# DEPRECATED overlapping launcher. REFUSES TO RUN.
+# The canonical production wave is exactly three arrays, split by speed:
+#   sb_bnt.sh   (0-71)   BNT + EDGEMLP
+#   sb_wgin.sh  (0-62)   WGIN + ALFF ablation
+#   sb_ctrlu.sh (0-23)   controls
+# Running sb_abl.sh could DUPLICATE units already covered by those arrays.
+echo "REFUSED: sb_abl.sh is deprecated; use sb_bnt.sh / sb_wgin.sh / sb_ctrlu.sh" >&2
+exit 2

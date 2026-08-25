@@ -68,7 +68,9 @@ def matched_draw(te_a, tr, y, sites, rng):
     """Draw from tr reproducing te_a's site x label counts EXACTLY, WITHOUT
     replacement. Returns None if any cell is infeasible — never repairs."""
     req = cell_counts(te_a, y, sites)
-    tr = np.asarray(tr); out = []
+    tr = np.asarray(tr, dtype=int)      # refuse, never crash, on a malformed pool
+    if tr.size == 0: return None
+    out = []
     for (st, lab), n in sorted(req.items()):
         pool = tr[(sites[tr] == st) & (y[tr] == lab)]
         if len(pool) < n: return None

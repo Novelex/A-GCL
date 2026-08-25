@@ -18,7 +18,9 @@ _b32 = np.array_equal(tri, Xfc.astype(np.float32))
 _d64 = float(np.abs(tri.astype(np.float64)-Xfc).max())
 ck("A7_parity_f32_bitwise", tri.shape==(954,4005) and _b32 and _d64 < 3e-8,
    f"A7 input at E=signed == X_fc.astype(float32) BITWISE (what S12A5 arm C consumed); "
-   f"f64 residual {_d64:.2e} is pure float32 quantisation — validates the C6<->C2 bridge")
+   f"f64 residual {_d64:.2e} is pure float32 quantisation. NOTE: this checks A7's\n"
+   f"   INPUT parity only. It does NOT validate a C6<->C2 bridge — that claim is\n"
+   f"   WITHDRAWN because the training recipes differ (AGGREGATION_SPEC.md section 6).")
 
 T=R.targets(); rows=[]
 for b,i,label in T:
