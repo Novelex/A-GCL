@@ -4,6 +4,19 @@ NOT RUN during the correction pass. Writes ONLY new outputs; never overwrites th
 superseded historical reports."""
 import sys, os, json, glob, time, numpy as np
 sys.path.insert(0,"/users/3171356m/A-GCL/audit/s16/scripts")
+
+# RUNTIME OUTPUT DIR (defect D36). These were written to audit/s16/out/, which is
+# NOT gitignored, so a C2 run dirtied the worktree — and a dirty tree is exactly
+# what the provenance guard refuses. Runtime products belong under runs/, which is
+# ignored; only curated documents are ever committed.
+OUT = "/users/3171356m/A-GCL/audit/s16/runs/c2/"
+def _out(name):
+    os.makedirs(OUT, exist_ok=True); return OUT + name
+def _atomic(obj, name):
+    """TEMP -> validate -> rename, so a killed run never leaves a half-written file."""
+    p_ = _out(name); t_ = p_ + ".tmp"
+    with open(t_, "w") as fh: json.dump(obj, fh, indent=1, default=str)
+    json.load(open(t_)); os.replace(t_, p_); return p_
 import s16_c2_bounded as CB, s16_data as DAT
 sys.path.insert(0,"/users/3171356m/agcl_audit_s0/s11"); import s11_core as K
 S16 = DAT.S16
@@ -33,8 +46,13 @@ SOURCES = [
 ]
 
 def validate_source(name, pat, ykey, rkey, exp_dim, y_ref, ids_ref):
-    """Every saved source is validated BEFORE any fitting."""
-    fs = sorted(glob.glob(pat)); prob=[]
+    """Validate ONE source. The caller validates ALL of them before ANY fitting.
+
+    Defect D42: sources were validated and fitted in the same loop, so sources one
+    to six were already fitted by the time source seven was found to be invalid.
+    A run could therefore burn hours and then report a partial source set, which
+    invites choosing the estimate after seeing it."""
+    fs = sorted(glob.glob(pat)); prob=[]; no_ids=[]
     if not fs: return None, [f"{name}: no saved folds match {pat}"]
     folds=[]
     for f in fs:
@@ -45,13 +63,42 @@ def validate_source(name, pat, ykey, rkey, exp_dim, y_ref, ids_ref):
         if R.shape[1]!=exp_dim: prob.append(f"{f}: repr dim {R.shape[1]} != expected {exp_dim}")
         yy=z[ykey].astype(np.int64)
         if not np.array_equal(yy,y_ref): prob.append(f"{f}: labels differ from the frozen cohort")
+        # ids_ref is USED, not decorative (defect D43): when a source records its
+        # subject order, it must equal the frozen cohort order exactly. Equal labels
+        # are NOT sufficient — two different orderings can share a label vector.
+        idk = next((k for k in ("ids","subject_ids","subjects") if k in z.files), None)
+        if idk is not None:
+            try: got=[str(x) for x in z[idk].tolist()]
+            except Exception as e:
+                prob.append(f"{f}: subject-id array unreadable ({e.__class__.__name__}); "
+                            f"an id array that cannot be read cannot be verified")
+                got=None
+        if idk is not None and got is not None:
+            if got != [str(x) for x in ids_ref]:
+                prob.append(f"{f}: subject order differs from the frozen cohort "
+                            f"(first mismatch at "
+                            f"{next((i for i,(a,b) in enumerate(zip(got,ids_ref)) if str(a)!=str(b)), 'length')})")
+        if idk is None:
+            no_ids.append(os.path.basename(f))
+        # EXACT PARTITION of 0..953 (defect D44). Disjointness plus a total of 954
+        # does not prove a partition: a duplicate inside tr can offset a missing
+        # subject, so a subject could be scored twice and another never scored.
         tr,te=z["tr"],z["te"]
-        if len(set(tr.tolist())&set(te.tolist())): prob.append(f"{f}: tr and te overlap")
-        if len(tr)+len(te)!=954: prob.append(f"{f}: tr+te = {len(tr)+len(te)} != 954")
+        tl,el=tr.tolist(),te.tolist()
+        if len(set(tl))!=len(tl): prob.append(f"{f}: duplicate indices inside tr")
+        if len(set(el))!=len(el): prob.append(f"{f}: duplicate indices inside te")
+        if set(tl)&set(el): prob.append(f"{f}: tr and te overlap")
+        if set(tl)|set(el) != set(range(954)):
+            miss=sorted(set(range(954))-(set(tl)|set(el)))
+            prob.append(f"{f}: tr|te is not an exact partition of 0..953 "
+                        f"({len(miss)} subjects never appear, e.g. {miss[:5]})")
         folds.append((f,R,yy,tr,te))
     tags=[os.path.basename(f) for f,_,_,_,_ in folds]
     if len(set(tags))!=len(tags): prob.append(f"{name}: duplicate fold files")
     if len(folds)!=5: prob.append(f"{name}: {len(folds)} ordinary folds, expected 5")
+    if no_ids:
+        print(f"NOTE {name}: {len(no_ids)} fold file(s) carry no subject-id array; "
+              f"order is verified by label vector only", flush=True)
     return folds, prob
 
 def run_source(name, folds, sites, y):
@@ -85,34 +132,54 @@ def main():
     t0=time.time()
     y, sites, ids = CB.cohort()
     all_res=[]; all_led=[]; problems=[]
+
+    # ---- PHASE 1: validate ALL seven sources. Nothing is fitted in this phase.
+    validated=[]
     for name,pat,ykey,rkey,dim in SOURCES:
         folds, prob = validate_source(name,pat,ykey,rkey,dim,y,ids)
         if prob: problems.extend(prob)
-        if prob or folds is None:
-            all_res.append(dict(source=name, status="SOURCE_VALIDATION_FAILED",
-                                problems=prob)); continue
+        validated.append((name, folds, prob))
+        print(f"validate {name}: {'OK' if not prob and folds else str(len(prob))+' problems'}",
+              flush=True)
+    bad=[n for n,f_,p_ in validated if p_ or f_ is None]
+    if bad:
+        # NOTHING is fitted. A partial source set is not reported, because choosing
+        # which sources to believe after seeing which ones failed is a selection.
+        for name,f_,p_ in validated:
+            all_res.append(dict(source=name,
+                status=("SOURCE_VALIDATION_FAILED" if (p_ or f_ is None) else "NOT_RUN"),
+                problems=p_))
+        _atomic(dict(primary=PRIMARY, primary_definition=PRIMARY_DEF, results=all_res,
+                     problems=problems, halted=(
+                        f"{len(bad)} of {len(SOURCES)} sources failed validation; NO "
+                        f"source was fitted and NO estimate is reported"),
+                     wall_s=round(time.time()-t0,1)), "C2_BOUNDED.json")
+        print(f"HALTED before fitting: {len(bad)} invalid source(s): {bad}", file=sys.stderr)
+        for pr_ in problems[:10]: print("  "+pr_, file=sys.stderr)
+        sys.exit(6)
+
+    # ---- PHASE 2: every source is valid; fit them.
+    for name, folds, _ in validated:
         res, led = run_source(name, folds, sites, y)
         res["status"]="OK"; all_res.append(res); all_led.extend(led)
-        s=res["summary"]
-        print(f"== {name}: mean {s.get('mean_paired_difference')} "
-              f"MCse {s.get('monte_carlo_se_of_mean')} flips "
-              f"{s.get('sign_flips_descriptive')}/{s.get('n_seeds')}", flush=True)
+        s_=res["summary"]
+        print(f"== {name}: mean {s_.get('mean_paired_difference')} "
+              f"MCse {s_.get('monte_carlo_se_of_mean')} flips "
+              f"{s_.get('sign_flips_descriptive')}/{s_.get('n_seeds')}", flush=True)
         # CALIBRATION GATE: the random encoder runs FIRST and must pass
         if "CALIBRATION" in name:
-            v = CB.calibration_verdict(s.get("mean_paired_difference"))
+            v = CB.calibration_verdict(s_.get("mean_paired_difference"))
             print("CALIBRATION:", v["consequence"], flush=True)
             if not v["passed"]:
-                json.dump(dict(primary=PRIMARY, primary_definition=PRIMARY_DEF,
+                _atomic(dict(primary=PRIMARY, primary_definition=PRIMARY_DEF,
                     calibration=v, results=all_res, problems=problems,
                     halted="calibration failed; the other six sources were NOT "
-                           "interpreted and are NOT reported"),
-                    open(S16+"out/C2_BOUNDED.json","w"), indent=1, default=str)
+                           "interpreted and are NOT reported"), "C2_BOUNDED.json")
                 print("HALTED: retrospective estimates remain UNRESOLVED", file=sys.stderr)
                 sys.exit(5)
-    json.dump(dict(primary=PRIMARY, primary_definition=PRIMARY_DEF, results=all_res,
-                   problems=problems, wall_s=round(time.time()-t0,1)),
-              open(S16+"out/C2_BOUNDED.json","w"), indent=1, default=str)
-    json.dump(all_led, open(S16+"out/C2_BOUNDED_LEDGER.json","w"), indent=1, default=str)
-    print("wrote C2_BOUNDED.json + C2_BOUNDED_LEDGER.json", flush=True)
+    a=_atomic(dict(primary=PRIMARY, primary_definition=PRIMARY_DEF, results=all_res,
+                   problems=problems, wall_s=round(time.time()-t0,1)), "C2_BOUNDED.json")
+    b=_atomic(all_led, "C2_BOUNDED_LEDGER.json")
+    print(f"wrote {a} + {b}", flush=True)
 
 if __name__=="__main__": main()

@@ -23,34 +23,101 @@ ck("A7_parity_f32_bitwise", tri.shape==(954,4005) and _b32 and _d64 < 3e-8,
    f"   WITHDRAWN because the training recipes differ (AGGREGATION_SPEC.md section 6).")
 
 T=R.targets(); rows=[]
+R.assert_targets_unique(T)
+POL=R.e2e_policy()
+ck("e2e_policy_identity", POL.name=="e2e" and POL.max_epochs==4
+   and (POL.n_lab,POL.n_site,POL.n_loso)==(1,0,0),
+   f"policy={POL.name} max_epochs={POL.max_epochs} hash={POL.policy_hash()} "
+   f"folds=({POL.n_lab},{POL.n_site},{POL.n_loso})")
+EXPECTED_FOLDS = ["lab0"]            # n_lab=1, n_site=0, n_loso=0
+BRANCHES={"main":G.MAIN,"ctrl":G.CTRL,"abl":G.ABL}
+
 for b,i,label in T:
-    uid=G.unit_id({"main":G.MAIN,"ctrl":G.CTRL,"abl":G.ABL}[b][i])
-    fs=sorted(glob.glob(P.jobs_dir("e2e")+f"{uid}/fold_*.json"))
-    if not fs: ck(f"row_{label}",False,"no results row on disk"); continue
-    rec=json.load(open(fs[0]))["rec"]; rows.append((label,rec))
-    ok=rec.get("status")=="OK"
-    ck(f"status_{label}", ok, "OK" if ok else rec.get("error","")[:130])
-    if not ok: continue
-    for pt in ("probe_honest","probe_old_full","head"):
-        a=rec.get(pt,{}).get("auc")
-        # AUC EXACTLY 0.5 IS VALID (defect D9). C-PERM on permuted labels can legitimately
-        # produce it, and a correct control was previously reported as a gate failure.
-        # Require only: present, finite, and within [0,1].
-        ck(f"{pt}_{label}", a is not None and np.isfinite(a) and 0.0<=a<=1.0,
-           f"AUC {a}")
-    sv=rec.get("svm_tr_enc")
-    ck(f"svm_tr_enc_{label}", sv is not None and np.isfinite(sv) and 0.0<sv<1.0, f"{sv}")
-    if rec.get("mode")=="fused":
-        fu=rec.get("fusion")
-        ck(f"fusion_{label}", isinstance(fu,dict) and len(fu.get("alpha_curve",[]))==21,
-           f"{len(fu.get('alpha_curve',[])) if fu else 0} alpha points")
-        if fu:
-            ck(f"alpha1_exact_{label}", fu["alpha1_equals_svm_tr_enc"] is True,
-               f"|{fu['alpha1_auc']:.10f} - {sv:.10f}| = {abs(fu['alpha1_auc']-sv):.2e} (<1e-12)")
-            ck(f"alpha1_bitwise_{label}", fu["alpha1_bitwise_equals_zsFC"] is True, "z(s_FC) on te")
-            ck(f"fused_{label}", np.isfinite(fu["fused_auc"]) and 0<fu["fused_auc"]<1,
-               f"AUC {fu['fused_auc']:.4f} alpha={fu['alpha_selected']} "
-               f"delta_vs_svm_tr_enc={fu['delta_vs_svm_tr_enc']:+.4f}")
+    u=BRANCHES[b][i]; uid=G.unit_id(u)
+    jd=P.jobs_dir("e2e")+uid
+    fs=sorted(glob.glob(jd+"/fold_*.json"))
+    # FULL CONTRACT (defect D41): the checker previously read fs[0] and looked at a
+    # few AUC fields. A unit could carry the wrong fold, an extra fold, a broken
+    # sealed bundle, a PROD policy hash or a missing prediction file and still be
+    # reported as PASS. Every target is now checked against the whole contract.
+    got=[os.path.basename(f)[len("fold_"):-len(".json")] for f in fs]
+    ck(f"folds_{label}", got==EXPECTED_FOLDS,
+       f"folds on disk {got} expected {EXPECTED_FOLDS}")
+    if not fs: continue
+    for fpath, tag in zip(fs, got):
+        rec=json.load(open(fpath))["rec"]
+        if tag==EXPECTED_FOLDS[0]: rows.append((label,rec))
+        ok=rec.get("status")=="OK"
+        ck(f"status_{label}", ok, "OK" if ok else str(rec.get("error",""))[:130])
+        if not ok: continue
+        # --- identity and namespace
+        ck(f"namespace_{label}", rec.get("namespace")=="e2e",
+           f"record namespace {rec.get('namespace')!r} (must be an explicit 'e2e')")
+        ck(f"policy_{label}", rec.get("policy_hash")==POL.policy_hash()
+           and rec.get("policy_name")=="e2e",
+           f"policy_name={rec.get('policy_name')!r} hash={rec.get('policy_hash')!r} "
+           f"expected e2e/{POL.policy_hash()}")
+        ck(f"identity_{label}", all(rec.get(k)==v for k,v in
+              (("unit",uid),("fold",tag),("arm",u["arm"]),("arch",u["arch"]),
+               ("E",u["E"]),("mode",u["mode"]),("control",u.get("control")),
+               ("alff_mode",u.get("alff_mode")),("seed",G.SEEDS[u["seed_idx"]]))),
+           f"unit/arm/arch/E/mode/control/alff_mode/seed all match the grid entry")
+        # --- the 4-epoch budget was ACTUALLY honoured
+        be, ts = rec.get("best_epoch"), rec.get("total_steps")
+        ck(f"epochs_{label}", isinstance(be,int) and 1<=be<=POL.max_epochs,
+           f"best_epoch {be} within 1..{POL.max_epochs}; total_steps {ts}")
+        # --- representation width is what the architecture must produce
+        exp_rd=P.expected_repr_dim(u["arch"],u["kh"],128,"roi")
+        ck(f"repr_dim_{label}", rec.get("repr_dim_used")==exp_rd,
+           f"repr_dim_used {rec.get('repr_dim_used')} expected {exp_rd}")
+        # --- the SEALED 5-FILE BUNDLE must validate, not merely exist
+        cfg=P.model_cfg(u)
+        MAN_E, ent_E = (MAN, ent) if u["E"]=="signed" else DAT.load(u["E"],
+                                                        where="e2echeck")[1:]
+        exp=P.contract_fields("e2e", u, cfg, uid, tag, G.SEEDS[u["seed_idx"]],
+                              tag.rstrip("0123456789"), MAN_E, ent_E, exp_rd,
+                              POL, POL.train_consts())
+        fp=P.feat_dir("e2e")+f"{uid}__{tag}.npz"
+        okb,why=P.validate_bundle("e2e", uid, tag, exp, fp,
+            P.ckpt_dir("e2e")+f"{uid}__{tag}.pt", fp+".prov.json", fpath,
+            P.feat_dir("e2e")+f"{uid}__{tag}.pred.json")
+        ck(f"bundle_{label}", okb, why)
+        # --- predictions exist and are subject-resolved
+        pf=P.feat_dir("e2e")+f"{uid}__{tag}.pred.json"
+        try:
+            pr=json.load(open(pf))
+            n_ok=(len(pr.get("subject_ids",[]))==len(pr.get("label_used",[]))
+                  >0 and len(pr["subject_ids"])==len(set(pr["subject_ids"])))
+            ck(f"pred_{label}", n_ok and pr.get("namespace")=="e2e",
+               f"{len(pr.get('subject_ids',[]))} unique test subjects, ns="
+               f"{pr.get('namespace')!r}")
+        except Exception as e: ck(f"pred_{label}", False, f"unreadable: {e!r}")
+        # --- metrics
+        for pt in ("probe_honest","probe_old_full","head"):
+            a=rec.get(pt,{}).get("auc")
+            # AUC EXACTLY 0.5 IS VALID (defect D9). C-PERM on permuted labels can
+            # legitimately produce it; a correct control was previously reported
+            # as a gate failure. Require only: present, finite, within [0,1].
+            ck(f"{pt}_{label}", a is not None and np.isfinite(a) and 0.0<=a<=1.0,
+               f"AUC {a}")
+        sv=rec.get("svm_tr_enc")
+        ck(f"svm_tr_enc_{label}", sv is not None and np.isfinite(sv) and 0.0<sv<1.0, f"{sv}")
+        if rec.get("mode")=="fused":
+            fu=rec.get("fusion")
+            ck(f"fusion_{label}", isinstance(fu,dict) and len(fu.get("alpha_curve",[]))==21,
+               f"{len(fu.get('alpha_curve',[])) if fu else 0} alpha points")
+            if fu:
+                ck(f"alpha1_exact_{label}", fu["alpha1_equals_svm_tr_enc"] is True,
+                   f"|{fu['alpha1_auc']:.10f} - {sv:.10f}| = {abs(fu['alpha1_auc']-sv):.2e} (<1e-12)")
+                ck(f"alpha1_bitwise_{label}", fu["alpha1_bitwise_equals_zsFC"] is True, "z(s_FC) on te")
+                ck(f"unclamped_{label}", fu.get("delta_is_unclamped") is True,
+                   "the selected-alpha delta is reported unclamped, negative or not")
+                ck(f"fused_{label}", np.isfinite(fu["fused_auc"]) and 0<fu["fused_auc"]<1,
+                   f"AUC {fu['fused_auc']:.4f} alpha={fu['alpha_selected']} "
+                   f"delta_vs_svm_tr_enc={fu['delta_vs_svm_tr_enc']:+.4f}")
+
+ck("all_targets_present", len(rows)==len(T),
+   f"{len(rows)} of {len(T)} targets produced the expected fold")
 if rows:
     lbl,rec=next(((l,r) for l,r in rows if r.get("mode")=="fused"), rows[0])
     print(f"\n=== ONE FULL RESULTS ROW, VERBATIM ({lbl}) ===")

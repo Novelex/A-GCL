@@ -26,4 +26,17 @@ n={'bnt':len(G.BNTU),'wgin':len(G.WGINU),'ctrlu':len(G.CTRLU)}['wgin']
 exp=63
 assert n==exp, f'FROZEN GRID CHANGED: wgin has {n} units, expected {exp}. STOP.'
 "
-/users/3171356m/A-GCL/.venv/bin/python -u $S/s16_worker.py wgin $SLURM_ARRAY_TASK_ID prod
+# SIGNAL FORWARDING (defect D45). --signal=B:USR1 delivers to the BATCH SHELL,
+# not to the python child, so the worker's SIGUSR1 handler could never fire and the
+# graceful-stop path was dead code. Run python in the background, forward the signal
+# to it explicitly, and propagate its real exit status.
+_fwd() { [ -n "${PY_PID:-}" ] && kill -USR1 "$PY_PID" 2>/dev/null || true; }
+trap _fwd USR1
+/users/3171356m/A-GCL/.venv/bin/python -u $S/s16_worker.py wgin $SLURM_ARRAY_TASK_ID prod &
+PY_PID=$!
+# `wait` returns early when a trap fires; keep waiting until the child is really gone.
+while :; do
+  if wait "$PY_PID"; then RC=0; else RC=$?; fi
+  kill -0 "$PY_PID" 2>/dev/null || break
+done
+exit "$RC"

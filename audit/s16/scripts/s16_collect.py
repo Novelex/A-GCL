@@ -15,37 +15,17 @@ REJECTIONS = ("grid_shape","poison_marker","missing_unit","missing_fold",
               "unit_done_missing","status_not_terminal","accounting_mismatch")
 
 def _cfg_for(u, policy):
-    return dict(K_or_hidden=u["kh"], lr=3e-4, wd=1e-3, loss="L-BCE",
-                freeze_encoder=(u.get("control")=="C-RAND"), readout="roi",
-                dropout=0.10, H=128)
+    return P.model_cfg(u)   # single source (defect D34)
 
 def expected_contract(ns, uid, u, tag, seed, MAN, ent, policy):
     """Reconstructed from grid + ledger + policy + data manifest. NEVER from the
     manifest under validation."""
     cfg = _cfg_for(u, policy)
-    tc = dict(max_epochs=policy.max_epochs, min_epochs=policy.min_epochs,
-              patience=policy.patience, min_delta=policy.min_delta,
-              warmup_frac=policy.warmup_frac, cosine_floor=policy.cosine_floor,
-              label_smooth=policy.label_smooth, batch=policy.batch,
-              ema_decay=policy.ema_decay, policy_name=policy.name,
-              policy_hash=policy.policy_hash())
-    return dict(schema="s16-prov-1", namespace=ns, git_sha=P.git_sha(),
-        worker_version=P.WORKER_VERSION,
-        config_hash=P.cfg_hash(u, cfg, tc),
-        h_fc=ent["h_fc"], h_alff=MAN["h_alff"], h_labels=MAN["h_labels"],
-        h_subject_order=MAN["h_subject_order"], h_folds_lab=MAN["h_folds_lab"],
-        h_folds_site=MAN["h_folds_site"], h_folds_loso=MAN["h_folds_loso"],
-        cache_file=ent["cache_file"], unit=uid, arm=u["arm"], arch=u["arch"],
-        E=u["E"], mode=u["mode"], control=u.get("control"),
-        alff_mode=u.get("alff_mode"), seed=int(seed), fold=tag,
-        protocol=tag.rstrip("0123456789"),
-        epoch_policy=policy.epoch_manifest(),
-        optimizer_recipe=policy.optimizer_manifest(cfg["lr"], cfg["wd"], cfg["loss"]),
-        model_state_rule=("raw = validation-best checkpoint; EMA(0.999) evaluated "
-            "alongside and reported with the delta; selection by VALIDATION only "
-            "(S15 PROTOCOL.md:186)"),
-        repr_dim=P.expected_repr_dim(u["arch"], u["kh"], cfg["H"], cfg["readout"]),
-        policy_hash=policy.policy_hash())
+    return P.contract_fields(ns, u, cfg, uid, tag, seed,
+                             tag.rstrip("0123456789"), MAN, ent,
+                             P.expected_repr_dim(u["arch"], u["kh"], cfg["H"],
+                                                 cfg["readout"]),
+                             policy, policy.train_consts())
 
 REQUIRED_FINITE = ("svm_tr_enc","svm_tr_full","size_delta_paired")
 
@@ -59,10 +39,20 @@ def audit(ns=NS, data=None):
     for t in sorted(glob.glob(P.jobs_dir(ns)+"*/POISON")):
         prob["poison_marker"].append(os.path.basename(os.path.dirname(t)))
     umap = {uid:(br,u) for uid,br,u in units}
-    if data is None:
-        import s16_data as DAT
-        _d, MAN, ent = DAT.load("signed", where="collect")
-    else: MAN, ent = data
+    # PER-E METADATA (defect D35). This loaded the "signed" cache ONCE and then
+    # validated every unit against it, so h_fc and cache_file were structurally
+    # wrong for all 810 abs / pos_zero / shift cells: the entire non-signed two
+    # thirds of the study would have been rejected as provenance failures.
+    # `data` may be a {E: (MAN, ent)} map, or a bare (MAN, ent) pair meaning signed.
+    _meta_cache = {}
+    if isinstance(data, dict): _meta_cache.update(data)
+    elif data is not None:     _meta_cache["signed"] = data
+    def meta_for(E):
+        if E not in _meta_cache:
+            import s16_data as DAT
+            _d, m, e = DAT.load(E, where="collect")
+            _meta_cache[E] = (m, e)
+        return _meta_cache[E]
     seen = collections.Counter(); rows=[]; per_unit_ok = collections.Counter()
 
     for f in sorted(glob.glob(P.jobs_dir(ns)+"*/fold_*.json")):
@@ -77,7 +67,10 @@ def audit(ns=NS, data=None):
         if rec.get("unit") != dir_uid:
             prob["identity_mismatch"].append(f"{dir_uid}: record unit {rec.get('unit')!r} != directory")
             continue
-        if rec.get("namespace", ns) != ns:
+        if "namespace" not in rec:
+            prob["wrong_namespace"].append(f"{dir_uid}/{tag}: field ABSENT "
+                "(a record without an explicit namespace is not attributable)"); continue
+        if rec["namespace"] != ns:
             prob["wrong_namespace"].append(f"{dir_uid}/{tag}: {rec.get('namespace')!r}"); continue
         if rec.get("status") != "OK":
             prob["failed_record"].append(f"{dir_uid}/{tag}: status={rec.get('status')!r}"); continue
@@ -93,7 +86,9 @@ def audit(ns=NS, data=None):
                        ("fold_protocol",tag.rstrip("0123456789"))):
             if rec.get(k) != want:
                 prob["identity_mismatch"].append(f"{dir_uid}/{tag}: {k}={rec.get(k)!r} expected {want!r}")
-        exp = expected_contract(ns, dir_uid, u, tag, G.SEEDS[u["seed_idx"]], MAN, ent, policy)
+        MAN_E, ent_E = meta_for(u["E"])          # metadata for THIS unit's E level
+        exp = expected_contract(ns, dir_uid, u, tag, G.SEEDS[u["seed_idx"]],
+                                MAN_E, ent_E, policy)
         okb, why = P.validate_bundle(ns, dir_uid, tag, exp,
             P.feat_dir(ns)+f"{dir_uid}__{tag}.npz", P.ckpt_dir(ns)+f"{dir_uid}__{tag}.pt",
             P.feat_dir(ns)+f"{dir_uid}__{tag}.npz.prov.json", f,
@@ -136,7 +131,8 @@ def audit(ns=NS, data=None):
         try: d=json.load(open(tl[0]))
         except Exception as e: prob["malformed_json"].append(f"{tl[0]}: {e!r}"); continue
         if d.get("unit")!=uid: prob["tally_disagreement"].append(f"{uid}: tally unit {d.get('unit')!r}")
-        if d.get("namespace") not in (None,ns): prob["wrong_namespace"].append(f"tally {uid}")
+        if d.get("namespace") != ns:
+            prob["wrong_namespace"].append(f"tally {uid}: {d.get('namespace')!r}")
         exp_u = len(tags)
         got = dict(expected=d.get("expected"), reused=d.get("validated_reused",0),
                    new=d.get("newly_successful", d.get("newly_succeeded",0)),
@@ -199,7 +195,8 @@ def validate_fusion(fu, rec, ns, uid, tag):
 CSV_REQUIRED = ["svm_tr_enc","svm_tr_full","size_delta_paired","delta_vs_svm_tr_enc",
                 "delta_vs_svm_tr_full","alpha_selected","alpha1_equals_svm_tr_enc",
                 "alpha1_bitwise_equals_zsFC","fold_protocol","seed","arm","E","mode",
-                "control","alff_mode","eval_point","evaluated_state"]
+                "control","alff_mode","eval_point","evaluated_state",
+                "ocread_entropy"]
 
 def build_rows(rows):
     R=[]
@@ -209,6 +206,7 @@ def build_rows(rows):
               "svm_tr_full","size_delta_paired","n_tr","n_tr_enc","n_tr_probe",
               "movement_max","clip_rate","verdict","best_epoch","total_steps",
               "repr_dim_used","sparse","ema_delta","evaluated_state","policy_name",
+              "ocread_entropy","flag_best_epoch_1","integrity_loss_decreased",
               "h_fc","cache_file","node","wall_s")}
         for g,v in (rec.get("movement") or {}).items(): base["movement_"+g]=v
         fu=rec.get("fusion")

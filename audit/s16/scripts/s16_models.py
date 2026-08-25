@@ -68,10 +68,23 @@ class BNTR(nn.Module):
         xavier_init(self)
         C = torch.empty(K_clusters,H); nn.init.xavier_uniform_(C)
         self.register_buffer("E", gram_schmidt(C))
-        self.repr_dim = K_clusters*H; self._entropy = float("nan")
+        self._frozen_encoder = bool(freeze_encoder)
+        self.repr_dim = K_clusters*H
+        # CANONICAL name, read by s16_train/s16_worker. A second private name
+        # (_last_entropy) meant BNT entropy was always reported as NaN.
+        self.ocread_entropy = float("nan")
         if freeze_encoder:
             for n,q in self.named_parameters():
                 if not n.startswith("head."): q.requires_grad_(False)
+    def train(self, mode=True):
+        """C-RAND correctness: a FROZEN encoder must also be in EVAL mode, or its
+        dropout keeps resampling and the 'fixed random encoder' is not fixed.
+        requires_grad=False alone does NOT disable dropout. The head still trains."""
+        super().train(mode)
+        if getattr(self, "_frozen_encoder", False):
+            self.inp.eval(); self.blocks.eval(); self.norm_f.eval()
+        return self
+
     def encode(self, X, keep=False):
         Z = self.inp(X)
         for b in self.blocks: Z = b(Z, keep)
@@ -82,7 +95,7 @@ class BNTR(nn.Module):
         P = torch.softmax(lg, dim=-1)
         ZG = P.transpose(1,2) @ Z
         with torch.no_grad():
-            self._entropy = float(-(P.clamp_min(1e-12).log()*P).sum(-1).mean())
+            self.ocread_entropy = float(-(P.clamp_min(1e-12).log()*P).sum(-1).mean())
         return ZG, P
     def repr_of(self, b, edge_vec=None):
         ZG,_ = self.ocread(self.encode(b.X)); return ZG.reshape(ZG.shape[0],-1)
@@ -108,9 +121,17 @@ class WGINR(nn.Module):
         self.head = nn.Sequential(nn.LayerNorm(self.repr_dim), nn.Dropout(p),
                                   nn.Linear(self.repr_dim,1))
         xavier_init(self)
+        self._frozen_encoder = bool(freeze_encoder)
         if freeze_encoder:
             for n,q in self.named_parameters():
                 if not n.startswith("head."): q.requires_grad_(False)
+    def train(self, mode=True):
+        """See BNTR.train — a frozen encoder must be in eval mode so its dropout is
+        disabled and its representation is bitwise reproducible."""
+        super().train(mode)
+        if getattr(self, "_frozen_encoder", False):
+            self.inp.eval(); self.convs.eval(); self.norms.eval(); self.drop.eval()
+        return self
     def encode(self, b):
         B,N,_ = b.X.shape
         x = self.inp(b.X).reshape(B*N, self.hidden)
@@ -145,9 +166,14 @@ class EdgeMLP(nn.Module):
         self.repr_dim=32
         self.head=nn.Linear(32,1)                    # plain Linear, as S12A5 arm C
         xavier_init(self)
+        self._frozen_encoder = bool(freeze_encoder)
         if freeze_encoder:
             for n,q in self.named_parameters():
                 if not n.startswith("head."): q.requires_grad_(False)
+    def train(self, mode=True):
+        super().train(mode)
+        if getattr(self, "_frozen_encoder", False): self.net.eval()
+        return self
     def repr_of(self,b,edge_vec=None): return self.net(b.X)
     def forward(self,b,edge_vec=None):
         r=self.repr_of(b); return r, self.head(r).squeeze(-1)

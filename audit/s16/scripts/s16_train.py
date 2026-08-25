@@ -27,21 +27,39 @@ GROUPS = {"BNT": {"inp": ("inp.",), "enc": ("blocks.", "norm_f."), "head": ("hea
           # movement_inp / movement_enc / movement_head are populated identically.
           "EDGEMLP": {"inp": ("net.0.",), "enc": ("net.3.",), "head": ("head.",)}}
 
-def assert_groups_cover(model, arch):
-    """Every trainable parameter belongs to exactly ONE group. Raises on a gap or
-    an overlap, so a missing/duplicated instrumentation key cannot pass silently."""
+def assert_groups_cover(model, arch, frozen_ok=("inp","enc"), head_group="head"):
+    """Parameter-group contract.
+
+    EVERY parameter — frozen ones included — must map to exactly ONE declared group,
+    so an unknown, overlapping or missing prefix is still caught. Only the TRAINABLE
+    census is allowed to be empty, and only for groups that are INTENTIONALLY frozen
+    (C-RAND freezes `inp` and `enc`). The head must always be trainable and nonempty.
+
+    Previously this ignored frozen parameters and then demanded every group be
+    nonempty, so real C-RAND training raised "group 'inp' is empty" and no C-RAND
+    unit could run at all.
+    Returns (owners_all, owners_trainable)."""
     pref = GROUPS[arch]
-    owners = {}
+    owners_all, owners_train = {}, {}
     for k, p_ in model.named_parameters():
-        if not p_.requires_grad: continue
         hit = [g for g, ps in pref.items() if any(k.startswith(x) for x in ps)]
         if len(hit) != 1:
-            raise AssertionError(f"{arch}: parameter {k} maps to {len(hit)} groups {hit}")
-        owners[k] = hit[0]
+            raise AssertionError(f"{arch}: parameter {k} maps to {len(hit)} groups {hit} "
+                                 f"(unknown or overlapping prefix)")
+        owners_all[k] = hit[0]
+        if p_.requires_grad: owners_train[k] = hit[0]
     for g in pref:
-        if not any(v == g for v in owners.values()):
-            raise AssertionError(f"{arch}: group '{g}' is empty")
-    return owners
+        if not any(v == g for v in owners_all.values()):
+            raise AssertionError(f"{arch}: group '{g}' has NO parameters at all")
+    n_train = {g: sum(1 for v in owners_train.values() if v == g) for g in pref}
+    if n_train.get(head_group, 0) == 0:
+        raise AssertionError(f"{arch}: head group '{head_group}' has no TRAINABLE "
+                             f"parameters — the head must always train")
+    for g, n in n_train.items():
+        if n == 0 and g not in frozen_ok:
+            raise AssertionError(f"{arch}: group '{g}' has no trainable parameters and "
+                                 f"is not an intentionally frozen group {frozen_ok}")
+    return owners_all, owners_train
 
 # ------------------------------------------------------------------ losses
 def loss_bce(logits, y, smooth=LABEL_SMOOTH):
@@ -211,7 +229,7 @@ def train_fold(arch, X, FC, y, tr, cfg, seed, log=None, sparse=False, policy=Non
                 integrity_loss_decreased=("n/a" if best_ep == 1 else
                     ("pass" if bl["train_loss"] < curve[0]["train_loss"] else "fail")),
                 min_train_loss=float(min(c["train_loss"] for c in curve)),
-                ocread_entropy=float(getattr(model, "_last_entropy", float("nan"))),
+                ocread_entropy=float(getattr(model, "ocread_entropy", float("nan"))),
                 n_params=MO.n_trainable(model), repr_dim=int(model.repr_dim),
                 n_train=len(itr), n_val=len(iva))
     return model, ema_sd, curve, info
