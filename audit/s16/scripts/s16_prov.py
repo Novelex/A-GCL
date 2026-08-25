@@ -90,45 +90,65 @@ def effective_config(unit, cfg):
     eff["alff_mode"] = unit.get("alff_mode"); eff["kh"] = unit["kh"]
     return eff
 
-def build_manifest(ns, unit, cfg, uid, fold, seed, protocol, data_man, data_ent,
-                   repr_dim, feat_path, ckpt_path, status, train_consts,
-                   policy=None, result_path=None, pred_path=None, effective_cfg=None):
-    clean, dirt = worktree_clean()
+def model_cfg(unit):
+    """THE model/optimizer config for a unit. Worker and collector both call this;
+    duplicating the literals in two files was the same drift risk as D34."""
+    return dict(K_or_hidden=unit["kh"], lr=3e-4, wd=1e-3, loss="L-BCE",
+                freeze_encoder=(unit.get("control") == "C-RAND"), readout="roi",
+                dropout=0.10, H=128)
+
+MODEL_STATE_RULE = ("raw = validation-best checkpoint; EMA(0.999) evaluated "
+                    "alongside and reported with the delta; selection by "
+                    "VALIDATION only (S15 PROTOCOL.md:186)")
+
+def contract_fields(ns, unit, cfg, uid, fold, seed, protocol, data_man, data_ent,
+                    repr_dim, policy, train_consts):
+    """THE contractual subset — exactly the MATCH_KEYS, built in ONE place.
+
+    Defect D34: the worker's resume path reconstructed `epoch_policy` and
+    `optimizer_recipe` inline, and its inline `optimizer_recipe` omitted `batch`,
+    so a worker-built expectation could NEVER equal a build_manifest() record.
+    Resume validation was therefore guaranteed to fail on every cell. Both callers
+    now derive these fields from the SAME policy object that drives training."""
     return dict(
-        schema="s16-prov-1", namespace=ns,
-        git_sha=git_sha(), worktree_clean=bool(clean),
-        worktree_dirt=dirt[:400], worker_version=WORKER_VERSION,
-        collector_version=COLLECTOR_VERSION, builder_sha=builder_sha(),
-        environment=environment(),
+        schema="s16-prov-1", namespace=ns, git_sha=git_sha(),
+        worker_version=WORKER_VERSION,
         config_hash=cfg_hash(unit, cfg, train_consts),
         h_fc=data_ent["h_fc"], h_alff=data_man["h_alff"],
+        h_labels=data_man["h_labels"], h_subject_order=data_man["h_subject_order"],
         h_folds_lab=data_man["h_folds_lab"], h_folds_site=data_man["h_folds_site"],
         h_folds_loso=data_man["h_folds_loso"], cache_file=data_ent["cache_file"],
         unit=uid, arm=unit["arm"], arch=unit["arch"], E=unit["E"], mode=unit["mode"],
         control=unit.get("control"), alff_mode=unit.get("alff_mode"),
         seed=int(seed), fold=fold, protocol=protocol,
-        # SINGLE SOURCE OF TRUTH: both of these come from the POLICY object, the same
-        # one that drives training. Constructing them inline here diverged from the
-        # collector's expectation (a missing `batch` key) and rejected every cell.
         epoch_policy=(policy.epoch_manifest() if policy else
-                      dict(max_epochs=train_consts["max_epochs"],
-                           min_epochs=train_consts["min_epochs"],
-                           patience=train_consts["patience"],
-                           min_delta=train_consts["min_delta"])),
+                      {k: train_consts[k] for k in
+                       ("max_epochs","min_epochs","patience","min_delta")}),
         optimizer_recipe=(policy.optimizer_manifest(cfg["lr"], cfg["wd"], cfg["loss"])
                           if policy else None),
-        model_state_rule=("raw = validation-best checkpoint; EMA(0.999) evaluated "
-                          "alongside and reported with the delta; selection by "
-                          "VALIDATION only (S15 PROTOCOL.md:186)"),
-        repr_dim=int(repr_dim), status=status,
+        model_state_rule=MODEL_STATE_RULE,
+        repr_dim=int(repr_dim),
+        policy_hash=(policy.policy_hash() if policy else None))
+
+def build_manifest(ns, unit, cfg, uid, fold, seed, protocol, data_man, data_ent,
+                   repr_dim, feat_path, ckpt_path, status, train_consts,
+                   policy=None, result_path=None, pred_path=None, effective_cfg=None):
+    clean, dirt = worktree_clean()
+    m = contract_fields(ns, unit, cfg, uid, fold, seed, protocol, data_man, data_ent,
+                        repr_dim, policy, train_consts)
+    # INFORMATIONAL fields — recorded for forensics, deliberately NOT in MATCH_KEYS.
+    # worktree_clean is a GUARD (must be True), never a compared field (defect D27).
+    m.update(
+        worktree_clean=bool(clean), worktree_dirt=dirt[:400],
+        collector_version=COLLECTOR_VERSION, builder_sha=builder_sha(),
+        environment=environment(), status=status,
         policy_name=(policy.name if policy else None),
-        policy_hash=(policy.policy_hash() if policy else None),
         effective_config=effective_cfg,
-        h_labels=data_man["h_labels"], h_subject_order=data_man["h_subject_order"],
         feat_sha=sha_file(feat_path) if os.path.exists(feat_path) else None,
         ckpt_sha=sha_file(ckpt_path) if os.path.exists(ckpt_path) else None,
         result_sha=sha_file(result_path) if result_path and os.path.exists(result_path) else None,
         pred_sha=sha_file(pred_path) if pred_path and os.path.exists(pred_path) else None)
+    return m
 
 MATCH_KEYS = ("schema","namespace","git_sha","worker_version",
               "config_hash","h_fc","h_alff","h_labels","h_subject_order",

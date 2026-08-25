@@ -14,15 +14,38 @@ from sklearn.metrics import roc_auc_score as _ras
 
 S16 = DAT.S16; _STOP={"f":False}
 def train_consts(policy):
-    """Derived from the POLICY OBJECT. Never from module globals — that is exactly
-    how the 4-vs-400 epoch lie arose."""
-    return dict(max_epochs=policy.max_epochs, min_epochs=policy.min_epochs,
-                patience=policy.patience, min_delta=policy.min_delta,
-                warmup_frac=policy.warmup_frac, cosine_floor=policy.cosine_floor,
-                label_smooth=policy.label_smooth, batch=policy.batch,
-                ema_decay=policy.ema_decay, policy_name=policy.name,
-                policy_hash=policy.policy_hash())
+    """Delegates to the POLICY OBJECT — the single owner. Never module globals:
+    that is exactly how the 4-vs-400 epoch lie arose."""
+    return policy.train_consts()
 signal.signal(signal.SIGUSR1, lambda s,f: _STOP.update(f=True))
+
+def requeue_self(jd, done, total, status_fn):
+    """Defect D45: on SIGUSR1 the worker wrote status 'requeued' and exited 0.
+    SLURM does not requeue a job that exited 0 — --requeue covers node failure and
+    preemption, not a clean exit — so the unit simply stopped while the record
+    claimed it would resume. The requeue is now EXPLICIT, and its real outcome is
+    recorded: a requeue that did not happen is never reported as one."""
+    jid = os.environ.get("SLURM_JOB_ID") or os.environ.get("SLURM_JOBID")
+    if not jid:
+        status_fn(jd, "stopped_not_requeued", done, total,
+                  dict(reason="SIGUSR1 received outside SLURM (no SLURM_JOB_ID); "
+                              "no requeue was attempted"))
+        return False
+    import subprocess
+    try:
+        r = subprocess.run(["scontrol", "requeue", jid], capture_output=True,
+                           text=True, timeout=60)
+        ok = (r.returncode == 0)
+    except Exception as e:
+        ok, r = False, type("R", (), {"returncode": -1, "stderr": repr(e)})()
+    status_fn(jd, ("requeued" if ok else "stopped_not_requeued"), done, total,
+              dict(slurm_job_id=jid, scontrol_rc=r.returncode,
+                   scontrol_stderr=(r.stderr or "")[:300],
+                   reason=("explicit scontrol requeue succeeded; completed folds are "
+                           "reused on restart via the sealed-bundle validator" if ok
+                           else "explicit scontrol requeue FAILED; this unit is "
+                                "INCOMPLETE and must be resubmitted by hand")))
+    return ok
 
 def _boot(y,s,B=2000,seed=DAT.BASE):
     from scipy.stats import rankdata
@@ -88,8 +111,8 @@ def run(branch, idx, ns=None):
     arch=u["arch"]; spec=FT.ARMS[u["arm"]][1]; ctrl=u.get("control")
     y_use = np.random.default_rng(DAT.BASE).permutation(y_true) if ctrl=="C-PERM" else y_true
     seed=G.SEEDS[u["seed_idx"]]
-    cfg=dict(K_or_hidden=u["kh"],lr=3e-4,wd=1e-3,loss="L-BCE",
-             freeze_encoder=(ctrl=="C-RAND"),readout="roi",dropout=0.10,H=128)
+    cfg=P.model_cfg(u)          # shared with the collector (defect D34)
+    assert cfg["freeze_encoder"] == (ctrl=="C-RAND"), "C-RAND freeze disagreement"
     done=0; n_fail=0; n_attempt=0; n_reused=0; n_new=0
     POISON_FRAC=0.05                 # >5% of folds attempted -> the wave is broken
     for tag,tr,te in folds:
@@ -97,35 +120,17 @@ def run(branch, idx, ns=None):
         ckp=P.ckpt_dir(ns)+f"{uid}__{tag}.pt"
         mfp=fp+".prov.json"
         # PROVENANCE-SAFE RESUME. Filename existence is NEVER sufficient.
-        exp=dict(schema="s16-prov-1", namespace=ns, git_sha=P.git_sha(),
-                 worker_version=P.WORKER_VERSION,
-                 config_hash=P.cfg_hash(u,cfg,TRAIN_CONSTS),
-                 h_fc=ent["h_fc"], h_alff=MAN["h_alff"],
-                 h_folds_lab=MAN["h_folds_lab"], h_folds_site=MAN["h_folds_site"],
-                 h_folds_loso=MAN["h_folds_loso"], cache_file=ent["cache_file"],
-                 unit=uid, arm=u["arm"], arch=u["arch"], E=u["E"], mode=u["mode"],
-                 control=u.get("control"), alff_mode=u.get("alff_mode"),
-                 seed=int(seed), fold=tag, protocol=tag.rstrip("0123456789"),
-                 epoch_policy=dict(max_epochs=TRAIN_CONSTS["max_epochs"],
-                     min_epochs=TRAIN_CONSTS["min_epochs"],
-                     patience=TRAIN_CONSTS["patience"],
-                     min_delta=TRAIN_CONSTS["min_delta"]),
-                 optimizer_recipe=dict(opt="AdamW", lr=cfg["lr"], wd=cfg["wd"],
-                     betas=[0.9,0.999], eps=1e-8,
-                     warmup_frac=TRAIN_CONSTS["warmup_frac"],
-                     cosine_floor=TRAIN_CONSTS["cosine_floor"],
-                     clip="adaptive p90 of last 200, no clip for first 50 steps",
-                     label_smooth=TRAIN_CONSTS["label_smooth"], loss=cfg["loss"]),
-                 model_state_rule=("raw = validation-best checkpoint; EMA(0.999) "
-                     "evaluated alongside and reported with the delta; selection by "
-                     "VALIDATION only (S15 PROTOCOL.md:186)"),
-                 repr_dim=None)
-        # B1: expected repr dim computed INDEPENDENTLY from architecture + config.
-        # It must NEVER be read back out of the manifest being validated.
-        exp["repr_dim"] = P.expected_repr_dim(u["arch"], u["kh"], cfg.get("H",128),
-                                              cfg.get("readout","roi"))
-        exp["policy_hash"] = policy.policy_hash()
-        exp["h_labels"] = MAN["h_labels"]; exp["h_subject_order"] = MAN["h_subject_order"]
+        # SINGLE SOURCE OF TRUTH (defect D34): the expectation is built by the SAME
+        # function that builds the manifest, from the SAME policy that drives
+        # training, so worker / manifest / collector cannot disagree. repr_dim is
+        # still computed INDEPENDENTLY from arch+config and is NEVER read back out
+        # of the manifest under validation (B1).
+        exp = P.contract_fields(ns, u, cfg, uid, tag, seed, tag.rstrip("0123456789"),
+                                MAN, ent,
+                                P.expected_repr_dim(u["arch"], u["kh"],
+                                                    cfg.get("H",128),
+                                                    cfg.get("readout","roi")),
+                                policy, TRAIN_CONSTS)
         okr, why = P.validate_bundle(ns, uid, tag, exp, fp, ckp, mfp,
                                      jd+f"/fold_{tag}.json",
                                      P.feat_dir(ns)+f"{uid}__{tag}.pred.json")
@@ -231,6 +236,11 @@ def run(branch, idx, ns=None):
                  svm_tr_enc=svm_tr_enc, svm_tr_full=svm_tr_full,
                  size_delta_paired=size_delta_paired, fusion=fusion,
                  n_tr=int(len(tr)), n_tr_enc=int(len(tr_enc)), n_tr_probe=int(len(tr_prb)),
+                 # namespace is recorded EXPLICITLY (defect D34): the collector must
+                 # not have to infer it. policy_hash/policy_name already arrive from
+                 # `info`, emitted by train_fold from the SAME policy object — adding
+                 # them again here is a duplicate keyword and raises TypeError.
+                 namespace=ns,
                  repr_dim_used=int(R.shape[1]), sparse=sparse,
                  **{k:v for k,v in info.items() if k!="movement"},
                  movement=info["movement"],
@@ -303,7 +313,12 @@ def run(branch, idx, ns=None):
             ev.set()
             if aid: os.system(f"scancel {aid}")
             sys.exit(2)
-        if _STOP["f"]: status(jd,"requeued",done,len(folds)); ev.set(); sys.exit(0)
+        if _STOP["f"]:
+            ok = requeue_self(jd, done, len(folds), status)
+            ev.set()
+            # exit 0 only when the requeue actually took; otherwise fail loudly so
+            # the stop is visible in sacct instead of looking like a clean finish.
+            sys.exit(0 if ok else 3)
     ev.set()
     n_ok=n_attempt-n_fail
     status(jd,"done",done,len(folds),dict(wall_s=round(time.time()-t_unit,1),

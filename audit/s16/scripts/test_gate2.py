@@ -20,7 +20,9 @@ tr_enc,tr_prb = FT.honest_split(tr,y)
 print("\n--- A. A7 instrumentation mapping ---")
 X,FCu = FT.build_X("edgetri", FC, ALFF, tr_enc)
 m = MO.build_model("EDGEMLP", X.shape[-1], DAT.BASE, 256)
-owners = TR.assert_groups_cover(m, "EDGEMLP")
+# assert_groups_cover now returns TWO censuses (all params, trainable params):
+# the frozen-parameter blind spot was defect D32.
+owners_all, owners = TR.assert_groups_cover(m, "EDGEMLP")
 ck("A1_every_key_exists", set(TR.GROUPS["EDGEMLP"])=={"inp","enc","head"},
    f"groups {sorted(TR.GROUPS['EDGEMLP'])}")
 by={}

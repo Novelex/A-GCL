@@ -51,6 +51,15 @@ for f,label in (("sb_e2e.sh","H8_legacy_e2e_sh"),("sb_c2.sh","H9_old_c2"),
 print("\n--- realistic fixture: complete wave, plain + fused ---")
 import s16_data as DAT
 d,MAN,ent = DAT.load("signed", where="testfix")
+# PER-E METADATA (defect D35). The fixture previously built EVERY unit's manifest
+# from the signed cache, which encoded the very bug the collector now rejects: the
+# 810 abs/pos_zero/shift cells carried signed h_fc and cache_file values.
+META = {"signed": (MAN, ent)}
+def meta_of(E):
+    if E not in META:
+        _dd, _m, _e = DAT.load(E, where="testfix")
+        META[E] = (_m, _e)
+    return META[E]
 y=d["y"].astype(np.int64); Xfc=np.zeros((954,4005))
 TAGS=L.fold_tags(); UNITS=L.all_units(); pol=PL.get(NS)
 
@@ -83,15 +92,17 @@ def write_cell(uid,u,tag,ns=NS,status="OK",fusion=True,**over):
         evaluated_state="raw=validation-best; EMA alongside",movement_max=0.2,
         clip_rate=0.05,verdict="HEALTHY",best_epoch=100,total_steps=2000,
         repr_dim_used=P.expected_repr_dim(u["arch"],u["kh"]),fusion=fu,
-        movement={"inp":0.2,"enc":0.2,"head":0.2}, ckpt_sha="x", h_fc=ent["h_fc"],
-        cache_file=ent["cache_file"], node="test", wall_s=1.0, n_tr=763)
+        movement={"inp":0.2,"enc":0.2,"head":0.2}, ckpt_sha="x",
+        h_fc=meta_of(u["E"])[1]["h_fc"],
+        cache_file=meta_of(u["E"])[1]["cache_file"], node="test", wall_s=1.0, n_tr=763)
     rec.update(over)
     json.dump(dict(rec=rec,curve=[]), open(rp,"w"), default=str)
     cfg=W._cfg_for_test(u) if hasattr(W,"_cfg_for_test") else dict(
         K_or_hidden=u["kh"],lr=3e-4,wd=1e-3,loss="L-BCE",
         freeze_encoder=(u.get("control")=="C-RAND"),readout="roi",dropout=0.10,H=128)
     tc=W.train_consts(pol)
-    man=P.build_manifest(ns,u,cfg,uid,tag,seed,tag.rstrip("0123456789"),MAN,ent,
+    MAN_E, ent_E = meta_of(u["E"])
+    man=P.build_manifest(ns,u,cfg,uid,tag,seed,tag.rstrip("0123456789"),MAN_E,ent_E,
         P.expected_repr_dim(u["arch"],u["kh"]),fp,ckp,"OK",tc,policy=pol,
         result_path=rp,pred_path=predp,effective_cfg=P.effective_config(u,cfg))
     man["worktree_clean"]=True                       # fixture: pretend a clean tree

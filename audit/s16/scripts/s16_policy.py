@@ -58,6 +58,16 @@ class ExecPolicy:
                           f"no clip for first {self.clip_warmup_steps} steps"),
                     label_smooth=self.label_smooth, batch=self.batch, loss=loss)
 
+    def train_consts(self):
+        """The config-hash inputs. Lives HERE so worker, manifest and collector
+        cannot drift (defect D34)."""
+        return dict(max_epochs=self.max_epochs, min_epochs=self.min_epochs,
+                    patience=self.patience, min_delta=self.min_delta,
+                    warmup_frac=self.warmup_frac, cosine_floor=self.cosine_floor,
+                    label_smooth=self.label_smooth, batch=self.batch,
+                    ema_decay=self.ema_decay, policy_name=self.name,
+                    policy_hash=self.policy_hash())
+
     def policy_hash(self):
         return hashlib.sha256(json.dumps(self.as_dict(), sort_keys=True)
                               .encode()).hexdigest()[:16]
