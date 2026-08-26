@@ -28,7 +28,7 @@ clean tree, 0 jobs in queue.
 
 **D35 — 810 of 1,431 cells.** The collector loaded the `signed` cache once and
 validated every unit against it. Every `abs`, `pos_zero` and `shift` cell — the
-entire non-signed two thirds of the four-level E factor — carried the wrong `h_fc`
+three non-signed levels of the four-level E factor — carried the wrong `h_fc`
 and `cache_file` and would have been rejected as a provenance failure. A real
 159-unit fixture with distinct per-E hashes now collects all 1,431 cells; replaying
 the old binding rejects exactly 810, every one an `h_fc`/`cache_file` mismatch.

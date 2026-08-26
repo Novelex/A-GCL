@@ -67,8 +67,10 @@ df=synth_csv()
 r=run_report(df)
 check(r.returncode==0, f"report exits 0 (was ValueError on the unpack); rc={r.returncode}")
 check(len(r.stdout) > 500, f"report is nonempty ({len(r.stdout)} chars)")
+# Pass 3 renamed the C-PERM header (D50: hold-and-investigate, not proven leakage)
+# and demoted the shift block to a descriptive diagnostic (D49).
 for want in ("ESTIMAND E-LAB","ESTIMAND E-SITE","ESTIMAND E-LOSO","VALIDITY",
-             "C-PERM GATE","shift vs signed, PAIRED"):
+             "C-PERM OPERATIONAL GATE","shift vs signed, PAIRED"):
     check(want in r.stdout, f"section present: {want}")
 
 print("\n=== 2. P7: validity is decided PER PROTOCOL ===")
@@ -100,19 +102,29 @@ print("\n=== 4. P9: C-PERM is a HARD GATE ===")
 r2=run_report(synth_csv(cperm_auc=0.62))     # a leaking permutation control
 check(r2.returncode==4, f"leaking C-PERM (0.62) exits 4, not 0 (got {r2.returncode})")
 check("HARD GATE FAILURE" in r2.stderr, "stderr names the hard-gate failure")
-check("permuted labels are being predicted" in r2.stderr,
-      f"reason is explicit: {[l.strip() for l in r2.stderr.splitlines() if 'C-PERM' in l][:1]}")
+# D50: the message must NOT assert proven leakage; it must direct an investigation.
+check("does NOT prove leakage" in r2.stderr and "STOP headline generation" in r2.stderr
+      and "means the pipeline leaks" not in r2.stderr,
+      f"hold-and-investigate wording: {[l.strip()[:90] for l in r2.stderr.splitlines() if 'C-PERM' in l][:1]}")
 r3=run_report(synth_csv(cperm_auc=0.50))
 check(r3.returncode==0, f"C-PERM at exactly 0.500 PASSES (got {r3.returncode}) "
                         f"— an exact 0.5 is the expected outcome, not a failure")
 
-print("\n=== 5. P9: the BNT shift identity is a HARD GATE ===")
-r4=run_report(synth_csv(shift_delta=0.05))   # identity violated by 0.05
-check(r4.returncode==4, f"violated identity exits 4 (got {r4.returncode})")
-check("affine-absorption claim is false" in r4.stderr,
-      f"reason is explicit: {[l.strip() for l in r4.stderr.splitlines() if 'BNT' in l][:1]}")
-r5=run_report(synth_csv(shift_delta=0.005)) # inside +/-0.01
-check(r5.returncode==0, f"a 0.005 difference stays inside the band (got {r5.returncode})")
+print("\n=== 5. D49: the shift AUC magnitude is NO LONGER a hard gate ===")
+# Pass 3 WITHDREW the +/-0.01 AUC tolerance. Affine equivalence does not require two
+# independently trained models to match in AUC — measured seed-to-seed noise is
+# ~0.08, eight times the old tolerance, so the gate would have failed correct runs.
+# The identity is now tested deterministically by affine transport in test_pass3.py.
+r4=run_report(synth_csv(shift_delta=0.05))
+check(r4.returncode==0, f"a 0.05 shift-signed AUC difference NO LONGER stops the "
+                        f"report (got {r4.returncode}) — it is descriptive, not a gate")
+check("affine-absorption claim is false" not in r4.stderr,
+      "the old semantics-violation claim is gone")
+check("DESCRIPTIVE DIAGNOSTIC ONLY" in r4.stdout,
+      "the shift block is labelled descriptive in the report body")
+rsrc=open(f"{HERE}/s16_report.py").read()
+check("SHIFT_BNT_TOL = 0.01" not in rsrc, "the AUC tolerance constant is withdrawn")
+check("not well posed" in rsrc, "pair completeness is still a hard gate")
 
 if os.path.exists(P.results_path(NS)): os.remove(P.results_path(NS))
 print(f"\n{sum(OK)}/{len(OK)} checks passed")

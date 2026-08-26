@@ -116,39 +116,30 @@ def audit(ns=NS, data=None):
                validated_reused=0, remaining=0)
     for uid,_,_ in units:
         jd = P.jobs_dir(ns)+uid
+        # SHARED unit-completion contract (defect D48) — the same function the E2E
+        # checker calls, so "this unit finished" means one thing in both places.
+        okc, whyc = P.validate_unit_completion(ns, uid, len(tags))
+        if not okc:
+            for w in whyc:
+                key = ("poison_marker" if "POISON" in w else
+                       "tally_missing" if "TALLY.json absent" in w else
+                       "malformed_json" if "unreadable" in w else
+                       "unit_done_missing" if "UNIT.done" in w else
+                       "status_not_terminal" if "STATUS" in w else
+                       "accounting_mismatch")
+                prob[key].append(f"{uid}: {w}")
         tl = glob.glob(jd+"/TALLY.json")
-        if len(tl)==0: prob["tally_missing"].append(uid); continue
+        if len(tl)==0: continue
         if len(tl)>1: prob["tally_duplicate"].append(uid); continue
-        if not os.path.exists(jd+"/UNIT.done"): prob["unit_done_missing"].append(uid)
-        st = jd+"/STATUS.json"
-        if os.path.exists(st):
-            try:
-                sj=json.load(open(st))
-                if sj.get("state") not in ("done",):
-                    prob["status_not_terminal"].append(f"{uid}: {sj.get('state')!r}")
-            except Exception as e: prob["malformed_json"].append(f"{st}: {e!r}")
-        else: prob["status_not_terminal"].append(f"{uid}: STATUS.json absent")
         try: d=json.load(open(tl[0]))
-        except Exception as e: prob["malformed_json"].append(f"{tl[0]}: {e!r}"); continue
+        except Exception: continue
         if d.get("unit")!=uid: prob["tally_disagreement"].append(f"{uid}: tally unit {d.get('unit')!r}")
-        if d.get("namespace") != ns:
-            prob["wrong_namespace"].append(f"tally {uid}: {d.get('namespace')!r}")
         exp_u = len(tags)
-        got = dict(expected=d.get("expected"), reused=d.get("validated_reused",0),
-                   new=d.get("newly_successful", d.get("newly_succeeded",0)),
-                   failed=d.get("failed",0), remaining=d.get("remaining"))
+        got = dict(reused=d.get("validated_reused",0),
+                   new=d.get("newly_successful", d.get("newly_succeeded",0)))
         tot["newly_attempted"]  += d.get("newly_attempted", d.get("attempted",0))
-        tot["newly_successful"] += got["new"]; tot["failed"] += got["failed"]
+        tot["newly_successful"] += got["new"]; tot["failed"] += d.get("failed",0)
         tot["validated_reused"] += got["reused"]
-        if got["expected"] != exp_u:
-            prob["accounting_mismatch"].append(f"{uid}: expected {got['expected']} != {exp_u}")
-        if got["failed"] != 0:
-            prob["accounting_mismatch"].append(f"{uid}: failed={got['failed']} (must be 0)")
-        if got["remaining"] not in (0,None) :
-            prob["accounting_mismatch"].append(f"{uid}: remaining={got['remaining']} (must be 0)")
-        if got["reused"]+got["new"] != exp_u:
-            prob["accounting_mismatch"].append(
-                f"{uid}: reused {got['reused']} + new {got['new']} != expected {exp_u}")
         if got["reused"]+got["new"] != per_unit_ok.get(uid,0):
             prob["tally_disagreement"].append(
                 f"{uid}: tally claims {got['reused']+got['new']} ok, {per_unit_ok.get(uid,0)} valid rows")

@@ -53,7 +53,7 @@ def validate_source(name, pat, ykey, rkey, exp_dim, y_ref, ids_ref):
     A run could therefore burn hours and then report a partial source set, which
     invites choosing the estimate after seeing it."""
     fs = sorted(glob.glob(pat)); prob=[]; no_ids=[]
-    if not fs: return None, [f"{name}: no saved folds match {pat}"]
+    if not fs: return None, [f"{name}: no saved folds match {pat}"], None
     folds=[]
     for f in fs:
         z=np.load(f)
@@ -96,10 +96,44 @@ def validate_source(name, pat, ykey, rkey, exp_dim, y_ref, ids_ref):
     tags=[os.path.basename(f) for f,_,_,_,_ in folds]
     if len(set(tags))!=len(tags): prob.append(f"{name}: duplicate fold files")
     if len(folds)!=5: prob.append(f"{name}: {len(folds)} ordinary folds, expected 5")
+
+    # ---- CROSS-FOLD STRUCTURE (defect D47). Every fold above was validated in
+    # ISOLATION, so five files each holding the SAME te passed: each one is a legal
+    # partition on its own. The consequence is severe and silent — the same 154
+    # subjects are "held out" five times and 800 subjects are never scored once,
+    # while the source reports five valid folds.
+    sigs = [tuple(sorted(int(x) for x in te)) for _,_,_,_,te in folds]
+    if len(set(sigs)) != len(sigs):
+        from collections import Counter
+        dup = [n for n,c in Counter(sigs).items() if c>1]
+        prob.append(f"{name}: the 5 folds do NOT have 5 distinct test sets "
+                    f"({len(set(sigs))} distinct); {len(dup)} test set(s) repeat")
+    if len(folds)==5:
+        allte=[set(g) for g in sigs]
+        for i in range(5):
+            for j in range(i+1,5):
+                ov=allte[i]&allte[j]
+                if ov:
+                    prob.append(f"{name}: folds {i} and {j} overlap in {len(ov)} test "
+                                f"subjects (e.g. {sorted(ov)[:5]}) - test sets must be "
+                                f"pairwise disjoint")
+                    break
+            else: continue
+            break
+        uni=set().union(*allte)
+        if uni != set(range(954)):
+            miss=sorted(set(range(954))-uni); extra=sorted(uni-set(range(954)))
+            prob.append(f"{name}: the union of the 5 test sets is not exactly 0..953 "
+                        f"({len(miss)} subjects never tested e.g. {miss[:5]}, "
+                        f"{len(extra)} out of range)")
+        for k,(f_,_,_,tr_,te_) in enumerate(folds):
+            if set(int(x) for x in tr_) != set(range(954)) - allte[k]:
+                prob.append(f"{name}: fold {k} tr is not exactly the complement of its te")
+                break
     if no_ids:
         print(f"NOTE {name}: {len(no_ids)} fold file(s) carry no subject-id array; "
               f"order is verified by label vector only", flush=True)
-    return folds, prob
+    return folds, prob, sigs
 
 def run_source(name, folds, sites, y):
     per_seed=[]; ledger=[]
@@ -134,14 +168,34 @@ def main():
     all_res=[]; all_led=[]; problems=[]
 
     # ---- PHASE 1: validate ALL seven sources. Nothing is fitted in this phase.
-    validated=[]
+    validated=[]; sig_map={}
     for name,pat,ykey,rkey,dim in SOURCES:
-        folds, prob = validate_source(name,pat,ykey,rkey,dim,y,ids)
+        folds, prob, sigs = validate_source(name,pat,ykey,rkey,dim,y,ids)
         if prob: problems.extend(prob)
         validated.append((name, folds, prob))
+        if sigs: sig_map[name]=tuple(sorted(sigs))
         print(f"validate {name}: {'OK' if not prob and folds else str(len(prob))+' problems'}",
               flush=True)
+
+    # ---- CANONICAL FOLD MEMBERSHIP ACROSS SOURCES (defect D47). The seven sources
+    # are compared to one another, so they must be the SAME five test partitions. If
+    # two sources disagree, the paired difference is computed over different subjects
+    # and the comparison is meaningless.
+    if len(set(sig_map.values())) > 1:
+        ref_name = next(iter(sig_map))
+        ref = sig_map[ref_name]
+        for nm, sg in sig_map.items():
+            if sg != ref:
+                d = [i for i in range(min(len(sg),len(ref))) if sg[i]!=ref[i]]
+                problems.append(f"{nm}: fold membership differs from {ref_name!r} "
+                                f"(first differing fold index {d[0] if d else 'n/a'}) - "
+                                f"all seven sources must share the SAME five test sets")
+    # The halt must consider BOTH per-source problems AND cross-source problems.
+    # Looking only at per-source problems let a cross-source fold-membership mismatch
+    # through to fitting (found by test_pass3.py while testing the D47 fix itself).
     bad=[n for n,f_,p_ in validated if p_ or f_ is None]
+    cross=[p for p in problems if "fold membership differs" in p]
+    if cross: bad = bad + [f"<cross-source: {len(cross)} mismatch(es)>"]
     if bad:
         # NOTHING is fitted. A partial source set is not reported, because choosing
         # which sources to believe after seeing which ones failed is a selection.
@@ -151,8 +205,10 @@ def main():
                 problems=p_))
         _atomic(dict(primary=PRIMARY, primary_definition=PRIMARY_DEF, results=all_res,
                      problems=problems, halted=(
-                        f"{len(bad)} of {len(SOURCES)} sources failed validation; NO "
-                        f"source was fitted and NO estimate is reported"),
+                        f"{len(bad)} validation failure(s) across {len(SOURCES)} "
+                        f"sources ({len(cross)} cross-source fold-membership "
+                        f"mismatch(es)); NO source was fitted and NO estimate is "
+                        f"reported"),
                      wall_s=round(time.time()-t0,1)), "C2_BOUNDED.json")
         print(f"HALTED before fitting: {len(bad)} invalid source(s): {bad}", file=sys.stderr)
         for pr_ in problems[:10]: print("  "+pr_, file=sys.stderr)

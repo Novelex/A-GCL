@@ -190,6 +190,62 @@ def atomic_json(o, p):
     json.load(open(p+".tmp")); os.replace(p+".tmp", p)
 
 
+def validate_unit_completion(ns, uid, expected_folds):
+    """THE unit-completion contract, shared by the collector and the E2E checker
+    (defect D48) so the two definitions cannot drift apart.
+
+    A sealed five-file bundle proves ONE FOLD was produced correctly. It says nothing
+    about whether the UNIT finished: the E2E checker approved targets on bundle
+    evidence alone, with no reference to POISON, TALLY.json, STATUS.json or UNIT.done,
+    so a unit that was poisoned, or that recorded failures, or that never reached a
+    terminal state, was still reported PASS.
+
+    Returns (ok, [reasons])."""
+    import json as _j
+    why = []
+    jd = jobs_dir(ns) + uid
+    if os.path.exists(poison_path(ns)):
+        why.append(f"GLOBAL POISON marker present for namespace {ns!r}")
+    if os.path.exists(jd + "/POISON"):
+        why.append(f"unit POISON marker: {open(jd+'/POISON').read().strip()[:120]}")
+    tp = jd + "/TALLY.json"
+    if not os.path.exists(tp):
+        why.append("TALLY.json absent")
+    else:
+        try:
+            t = _j.load(open(tp))
+            exp = t.get("expected")
+            reused = int(t.get("validated_reused", 0) or 0)
+            new = int(t.get("newly_successful", t.get("newly_succeeded", 0)) or 0)
+            failed = int(t.get("failed", 0) or 0)
+            rem = t.get("remaining")
+            if t.get("unit") != uid: why.append(f"TALLY unit {t.get('unit')!r} != {uid!r}")
+            if t.get("namespace") != ns: why.append(f"TALLY namespace {t.get('namespace')!r} != {ns!r}")
+            if exp != expected_folds: why.append(f"TALLY expected {exp} != {expected_folds}")
+            if failed != 0: why.append(f"TALLY failed={failed} (must be 0)")
+            if rem not in (0, None): why.append(f"TALLY remaining={rem} (must be 0)")
+            if reused + new != expected_folds:
+                # Wording preserves the pre-existing collector contract
+                # ("reused N + new M != expected K") so test_final's H49 expectation
+                # holds unchanged, while naming the identity explicitly.
+                why.append(f"accounting identity violated: reused {reused} + new {new} "
+                           f"!= expected {expected_folds} (validated_reused + "
+                           f"newly_succeeded must equal expected_folds)")
+        except Exception as e:
+            why.append(f"TALLY.json unreadable: {e!r}")
+    sp = jd + "/STATUS.json"
+    if not os.path.exists(sp):
+        why.append("STATUS.json absent")
+    else:
+        try:
+            st = _j.load(open(sp)).get("state")
+            if st != "done": why.append(f"STATUS state {st!r} is not the terminal 'done'")
+        except Exception as e:
+            why.append(f"STATUS.json unreadable: {e!r}")
+    if not os.path.exists(jd + "/UNIT.done"):
+        why.append("UNIT.done absent")
+    return (not why), why
+
 # ------------------------------------------------------------------ bundle validator
 BUNDLE = ("result JSON", "provenance manifest", "feature npz", "checkpoint", "prediction JSON")
 

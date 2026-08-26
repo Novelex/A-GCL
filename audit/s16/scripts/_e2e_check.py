@@ -43,6 +43,12 @@ for b,i,label in T:
     got=[os.path.basename(f)[len("fold_"):-len(".json")] for f in fs]
     ck(f"folds_{label}", got==EXPECTED_FOLDS,
        f"folds on disk {got} expected {EXPECTED_FOLDS}")
+    # UNIT-COMPLETION CONTRACT (defect D48). A sealed bundle proves one FOLD is
+    # correct; it does not prove the UNIT finished. Shared with the collector so the
+    # two definitions cannot diverge.
+    okc, whyc = P.validate_unit_completion("e2e", uid, len(EXPECTED_FOLDS))
+    ck(f"completion_{label}", okc, "; ".join(whyc) if whyc else
+       "POISON absent, TALLY accounting identity holds, STATUS terminal, UNIT.done present")
     if not fs: continue
     for fpath, tag in zip(fs, got):
         rec=json.load(open(fpath))["rec"]
@@ -93,13 +99,21 @@ for b,i,label in T:
                f"{pr.get('namespace')!r}")
         except Exception as e: ck(f"pred_{label}", False, f"unreadable: {e!r}")
         # --- metrics
-        for pt in ("probe_honest","probe_old_full","head"):
+        for pt in ("probe_honest","probe_old_full","head","head_ema"):
             a=rec.get(pt,{}).get("auc")
             # AUC EXACTLY 0.5 IS VALID (defect D9). C-PERM on permuted labels can
             # legitimately produce it; a correct control was previously reported
             # as a gate failure. Require only: present, finite, within [0,1].
             ck(f"{pt}_{label}", a is not None and np.isfinite(a) and 0.0<=a<=1.0,
                f"AUC {a}")
+        # FROZEN EVALUATED STATE. raw = validation-best checkpoint; EMA reported
+        # ALONGSIDE. Selection is by VALIDATION only and is fixed in the protocol:
+        # raw-versus-EMA must never be chosen after seeing test results.
+        es=str(rec.get("evaluated_state",""))
+        ck(f"evaluated_state_{label}",
+           es.startswith("raw=validation-best checkpoint") and "EMA(0.999)" in es
+           and "selection by VALIDATION only" in es,
+           es[:110] if es else "evaluated_state ABSENT")
         sv=rec.get("svm_tr_enc")
         ck(f"svm_tr_enc_{label}", sv is not None and np.isfinite(sv) and 0.0<sv<1.0, f"{sv}")
         if rec.get("mode")=="fused":

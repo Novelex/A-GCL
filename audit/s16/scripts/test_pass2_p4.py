@@ -3,7 +3,7 @@
 Defect D35: audit() did `DAT.load("signed")` ONCE and validated every unit against
 it, so h_fc and cache_file were structurally wrong for every abs / pos_zero / shift
 cell — 810 of 1,431 (56.6%) would have been rejected as provenance failures, i.e.
-the entire non-signed two thirds of the study.
+every cell of the three non-signed E levels (3 of 4 levels).
 
 This builds a REAL mixed-E fixture: all 159 units x 9 folds, complete 5-file sealed
 bundles, in the isolated `test` namespace, and runs the REAL audit()."""

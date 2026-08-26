@@ -15,7 +15,16 @@ MOVEMENT_MIN, CLIP_MAX, CRAND_MIN = 0.10, 0.30, 0.03
 # shift-vs-signed identity were PRINTED as diagnostics and never enforced, so a
 # broken control or a violated identity could not stop the report.
 CPERM_BAND    = (0.45, 0.55)   # protocol-level mean AUC under permuted labels
-SHIFT_BNT_TOL = 0.01           # |shift - signed|, paired, BNT only
+# SHIFT_BNT_TOL IS WITHDRAWN AS A SCIENTIFIC GATE (defect D49). Affine
+# representational equivalence — Linear(D,H) can express x -> (x+1)/2 — says the two
+# PARAMETERISATIONS are equivalent. It does NOT say two INDEPENDENTLY initialised and
+# independently optimised models must reach nearly the same AUC. Measured seed-to-seed
+# noise on identical data at a fixed E level is ~0.08 AUC, EIGHT TIMES the old +/-0.01
+# tolerance, so the gate could not distinguish a broken identity from ordinary
+# optimisation variance and would have failed a CORRECT run. The claim is now tested
+# deterministically by transporting the first affine layer
+# (W' = 2W, b' = b - W.1) in test_pass3.py, and the trained AUC difference is reported
+# as a DESCRIPTIVE diagnostic only.
 SHIFT_EXCLUDE_ARMS = ("A3",)   # A3's node features ARE the FC rows, so E rewrites
                                # the inputs themselves rather than only the graph
                                # weights; the affine-absorption argument does not
@@ -152,7 +161,8 @@ def shift_vs_signed(df):
             expectation=("EXACT: Linear(D,H) can represent the affine map"
                 if arch=="BNT" else
                 "APPROXIMATE: per-subject constant not absorbed by LayerNorm"),
-            within_tol=(bool(abs(md)<=SHIFT_BNT_TOL) if arch=="BNT" else None)))
+            interpretation="DESCRIPTIVE ONLY - independently trained models; see "
+                           "test_pass3.py for the deterministic affine-transport test"))
     return pd.DataFrame(rows), unpaired
 
 def cperm_gate(df):
@@ -170,25 +180,33 @@ def cperm_gate(df):
         rows.append(dict(arch=arch,protocol=proto,mean_auc=mu,n_seeds=n,
                          n_cells=int(len(g)),band=f"[{lo},{hi}]",passed=ok))
         if not ok:
-            fails.append(f"C-PERM {arch}/{proto}: mean AUC {mu:.4f} outside "
-                         f"[{lo},{hi}] — permuted labels are being predicted, which "
-                         f"means the pipeline leaks")
+            fails.append(
+                f"C-PERM {arch}/{proto}: mean AUC {mu:.4f} is outside the predeclared "
+                f"operational band [{lo},{hi}]. STOP headline generation and "
+                f"investigate permutation variance, "
+                f"class balance, "
+                f"aggregation, "
+                f"optimisation and possible leakage. "
+                f"This result alone does NOT prove leakage - it proves that "
+                f"investigation is required (defect D50)")
     return pd.DataFrame(rows), fails
 
-def shift_gate(tab):
-    """HARD GATE. For BNT the shift identity is EXACT, so a paired difference
-    beyond +/-0.01 falsifies the stated model semantics."""
+def shift_gate(tab, unpaired):
+    """PAIR-COMPLETENESS gate only (defect D49).
+
+    The AUC magnitude no longer decides headline validity. What is still mandatory is
+    that the comparison be well posed: the paired table must exist and rest on real
+    pairs. Whether two independently trained models land within any particular AUC
+    distance is a DESCRIPTIVE observation, not a semantics test — the semantics are
+    tested deterministically by affine transport in test_pass3.py."""
     fails=[]
-    if not len(tab): return ["shift identity produced no rows — UNTESTED"]
-    b=tab[tab.arch=="BNT"]
-    if not len(b):
-        return ["no BNT shift/signed pairs — the exact identity is UNTESTED"]
-    for _,r in b.iterrows():
-        if abs(r["paired_diff"])>SHIFT_BNT_TOL:
-            fails.append(f"BNT/{r['protocol']}: paired shift-signed "
-                         f"{r['paired_diff']:+.4f} exceeds +/-{SHIFT_BNT_TOL} over "
-                         f"{int(r['n_pairs'])} pairs — the affine-absorption claim "
-                         f"is false as implemented")
+    if not len(tab):
+        fails.append("shift-vs-signed produced no rows - the diagnostic is UNTESTED")
+        return fails
+    z=tab[tab.n_pairs<=0]
+    if len(z):
+        fails.append(f"{len(z)} arch x protocol group(s) have zero pairs - the "
+                     f"shift/signed comparison is not well posed")
     return fails
 
 def main():
@@ -210,17 +228,20 @@ def main():
         print(b.round(4).to_string(index=False)); print()
     print("=== VALIDITY ==="); print(vt.round(4).to_string(index=False)); print()
     gate_failures=[]
-    print("=== C-PERM GATE (pre-registered band "
-          f"[{CPERM_BAND[0]}, {CPERM_BAND[1]}]) ===")
+    print("=== C-PERM OPERATIONAL GATE (predeclared band "
+          f"[{CPERM_BAND[0]}, {CPERM_BAND[1]}]; hold-and-investigate, "
+          "not a proof of leakage) ===")
     ct, cfails = cperm_gate(df)
     if len(ct): print(ct.round(4).to_string(index=False))
     gate_failures += cfails
 
-    print("\n=== shift vs signed, PAIRED, BY ARCHITECTURE ===")
+    print("\n=== shift vs signed, PAIRED — DESCRIPTIVE DIAGNOSTIC ONLY ===")
+    print("    (affine equivalence is tested deterministically in test_pass3.py;")
+    print("     independently trained models are NOT required to match in AUC)")
     st, unpaired = shift_vs_signed(df)
     if len(st): print(st.round(4).to_string(index=False))
     for u in unpaired: print("  NOTE: "+u)
-    gate_failures += shift_gate(st)
+    gate_failures += shift_gate(st, unpaired)
 
     if gate_failures:
         print("\n*** NO HEADLINE: HARD GATE FAILURE ***", file=sys.stderr)
