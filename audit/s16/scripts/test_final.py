@@ -89,7 +89,11 @@ def write_cell(uid,u,tag,ns=NS,status="OK",fusion=True,**over):
         fold_protocol=tag.rstrip("0123456789"),svm_tr_enc=svm_enc,svm_tr_full=svm_full,
         size_delta_paired=svm_full-svm_enc,head=dict(auc=0.6),head_ema=dict(auc=0.59),
         probe_honest=dict(auc=0.61),probe_old_full=dict(auc=0.62),ema_delta=-0.01,
-        evaluated_state="raw=validation-best; EMA alongside",movement_max=0.2,
+        # the exact evaluated_state string the worker writes (Pass-4 D55 contract)
+        evaluated_state=("raw=validation-best checkpoint; EMA(0.999) reported "
+                         "alongside; selection by VALIDATION only "
+                         "(S15 PROTOCOL.md:186)"),
+        movement_max=0.2,
         clip_rate=0.05,verdict="HEALTHY",best_epoch=100,total_steps=2000,
         repr_dim_used=P.expected_repr_dim(u["arch"],u["kh"]),fusion=fu,
         movement={"inp":0.2,"enc":0.2,"head":0.2}, ckpt_sha="x",

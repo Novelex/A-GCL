@@ -132,7 +132,8 @@ resolved before submission.
 
 Branch `s16-pass3`, parent `02cb94c` (`origin/main`, which merged the Pass-2 commit
 `dd43503` via PR #2). Every defect below was REPRODUCED by a failing test before any
-repair; `test_pass3_repro.py` is that evidence and now exits 1 with all six lines
+repair; `repro_pass3_historical.py` (renamed from `test_pass3_repro.py` in Pass 4,
+defect D56) is that evidence and now exits 1 with all six lines
 reading NOT REPRODUCED, which is the inversion proof the repairs landed.
 
 | ID | file / function | symptom | severity | affected | scope | required test | disposition |
@@ -143,3 +144,39 @@ reading NOT REPRODUCED, which is the inversion proof the repairs landed.
 | D50 | `s16_report.cperm_gate` | the failure message asserted "permuted labels are being predicted, which means the pipeline leaks" — stating leakage as a PROVEN cause when an out-of-band permutation result only establishes that investigation is required | MEDIUM | the scientific claim attached to a hold | INSIDE | the message must not assert proven leakage | **FIXED** — the `[0.45, 0.55]` band remains an operational hold-and-investigate gate (legitimate because no C6 result exists). The message now reads: outside the predeclared operational band; STOP headline generation and investigate permutation variance, class balance, aggregation, optimisation and possible leakage; this result alone does NOT prove leakage |
 | D51 | `DEFECTS_FOUND.md`, `CORRECTION_PASS2_2026-08-25.md`, `test_pass2_p4.py` | stale arithmetic: the 810 non-signed cells were described as a larger share of the grid than the ledger supports — they are 56.6% of 1,431, whereas a 66.7% share would be 954 cells — and D32 said "all 24 C-RAND control cells", conflating the 24 CONTROL UNITS with C-RAND's own cell count | LOW | the accuracy of the record | INSIDE | every count recomputed from the frozen ledger | **FIXED** — derived mechanically: C-RAND **6 units × 9 folds = 54 cells**; all controls **24 units × 9 = 216 cells**; non-signed is **3 of 4 E levels** = 810 cells = **56.6%** of 1,431 |
 | D52 | `s16_c2_bounded_run.main` (introduced by the D47 fix) | the cross-source membership problem was appended to the global `problems` list, but the halt condition inspected only PER-SOURCE problems, so a cross-source mismatch fell through to fitting and exited 5 at calibration instead of 6 before any fit | **HIGH** | would have defeated the D47 fix | INSIDE | a cross-source mismatch must exit 6 with zero probe calls | **FIXED** — the halt now covers both per-source and cross-source problems. Found by `test_pass3.py` while testing the D47 fix itself |
+
+---
+
+## Pass 4 — surgical false-pass correction (2026-08-26)
+
+Branch `s16-pass4`, parent `b9a6025`. Every defect was REPRODUCED before repair by
+`repro_pass4.py` (14/14, exit 0); that file now exits 1 with every line NOT
+REPRODUCED. It is deliberately named `repro_*`, not `test_*` — that naming is D56.
+
+| ID | file / function | symptom | severity | affected | scope | required test | disposition |
+|---|---|---|---|---|---|---|---|
+| D53 | `s16_prov.validate_unit_completion` | `remaining` was accepted when it was `0` **or `None`**, and `dict.get` returns `None` for an ABSENT key — so a TALLY that never recorded how much work was left passed as complete. `False` also passed every numeric test because in Python `False == 0`, and string counts passed untouched | **HIGH** | any unit whose tally is truncated or malformed could be certified complete; the E2E gate and the collector both trusted it | INSIDE | absent, null, boolean, string, negative and nonzero `remaining`, plus the same for `expected`, `validated_reused`, `newly_successful`/`newly_succeeded` and `failed` | **FIXED** — every count must be PRESENT, a real non-boolean `int`, and nonnegative; `remaining` must be exactly 0; `failed` must be 0; counts may not exceed `expected_folds`; the identity `validated_reused + newly_succeeded == expected_folds` is preserved, and its message still contains the pre-existing "reused N + new M != expected K" wording so `test_final`'s H49 holds unchanged. 19 negative cases in `test_pass4.py` |
+| D54 | `s16_report.shift_gate` | took `unpaired` as a parameter and never referenced it. A table built from a partly-unpaired set reported a clean paired difference computed over whichever cells happened to match, and nothing stopped the headline | **HIGH** | the shift-vs-signed diagnostic and, through it, headline release | INSIDE | nonempty `unpaired` must stop; zero pairs must stop; fully paired must pass at ANY AUC magnitude | **FIXED** — a nonempty `unpaired` list and any zero-pair group are hard failures exiting 4. The withdrawn ±0.01 AUC gate is **not** restored: a fully paired 0.30 AUC difference still exits 0 and is labelled descriptive |
+| D55 | `s16_collect.audit`, `s16_report.refusals` | the collector validated the sealed bundle and three scalar fields; `eval_point` existed only as a CSV column name inside `build_rows`, and `evaluated_state` was only ever copied into the CSV, never compared to anything. The report checked only that `(unit, fold)` appeared SOMEWHERE in the CSV. A cell missing three of its four evaluation rows, or carrying a NaN AUC, or a plain cell smuggling a fusion block, passed both | **CRITICAL** | any headline could rest on cells that were never fully evaluated | INSIDE | hash-consistent bundles with each metric removed, each AUC set NaN/Inf/out-of-range, movement and clip NaN, and CSV rows removed, duplicated or invented | **FIXED** — `P.validate_eval_contract()` is one shared contract: all four metric dictionaries present with finite AUC in `[0,1]`; fused cells carry exactly one finite `fused_auc` in `[0,1]`; plain cells carry none; `movement_max` and `clip_rate` finite; `evaluated_state` matches the frozen raw/EMA protocol. The report independently verifies the EXACT per-cell evaluation-point set with new rejection classes `eval_point_set_wrong` and `duplicate_eval_point`. 34 adversarial cases |
+| D56 | `test_pass3_repro.py` | an intentionally-failing file carried the `test_` prefix, so standard discovery reported a permanent failure and trained reviewers to ignore red | MEDIUM | the credibility of the whole suite | INSIDE | every `test_*.py` must exit 0 on correct code | **FIXED** — renamed to `repro_pass3_historical.py` (git mv, history preserved) with a docstring stating that exit 1 means the fixes are in place. `repro_pass4.py` follows the same convention. A SECOND instance of the same defect was found during Pass-4 verification: `test_gate4.py` was a retired stub that deliberately exited 2 "so it can never be reported as a silent pass" — also renamed, to `retired_gate4_superseded.py`. All 15 remaining `test_*.py` files exit 0 |
+| D57 | `s16_report.shift_vs_signed` | **found in Pass 4 while fixing D54.** The pairing key omitted `alff_mode`, so the ABLATION units (A1 with `alff-raw` / `alff-joint`) collided with the main A1 units on `(arch, arm, mode, seed, fold)`. The inner join went many-to-one and produced **351 "pairs" out of only 270 shift cells** — signed ablation rows were silently duplicated against main shift rows, and the unpaired count went negative | **HIGH** | every shift-vs-signed number reported since the Pass-3 D39 fix | INSIDE | the pair count must never exceed either side | **FIXED** — `alff_mode` added to `PAIR_KEY` and `UNIT_KEY`. Separately, the pairing DOMAIN is now the set of unit-keys present at BOTH E levels: only 30 of the 69 signed unit-keys have a shift twin in the frozen grid (controls and ablations exist at `signed` only, by design), so counting those as unpaired would have made the D54 gate fire on every correct run — the same over-strictness that made the ±0.01 AUC gate unusable |
+
+### E2E wall-time evidence (requested; not changed blindly)
+
+| | |
+|---|---|
+| source | `sacct` array `1873735` (`s16e2a`), 2026-08-24, **22 COMPLETED** tasks |
+| maximum observed elapsed | **00:17:51** (1,071 s) |
+| current limit `sb_e2e_arr.sh` | `--time=02:00:00` (7,200 s) |
+| **safety margin** | **6.7×** — the required 2× is satisfied |
+| partition maximum | `gpu-l40s` and `gpu-h100` both `7-00:00:00` |
+
+The wall time is **left unchanged at 2 hours**. Two caveats stated rather than
+assumed: that array recorded 22 completed tasks against the current 29 targets, and
+the current worker does slightly more per fold than the 2026-08-24 build (EMA
+evaluation, subject-level predictions, five-file bundle sealing) — additional I/O
+and one extra forward pass, not additional training. Even a 3× slowdown stays inside
+the limit. This is **not** an operational blocker.
+
+Runtime evidence was taken from scheduler accounting only. The five E2E records now
+on disk are from the array cancelled at 20:13 today and were **not** inspected.

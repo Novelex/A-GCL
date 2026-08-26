@@ -94,9 +94,12 @@ check(bool((st.n_pairs>0).all()), f"every row rests on real pairs "
                                   f"(min {int(st.n_pairs.min())})")
 src=open(f"{HERE}/s16_report.py").read()
 check('SHIFT_EXCLUDE_ARMS = ("A3",)' in src, "A3 excluded explicitly, with the reason")
-keys=["arch","arm","mode","seed","fold_protocol","fold"]
-check(all(k in src for k in keys) and 'keys=["arch","arm","mode","seed","fold_protocol","fold"]' in src,
-      "pairing key is (arch, arm, mode, seed, fold_protocol, fold)")
+# Pass 4 (D57) added alff_mode: without it the ABLATION units (A1 alff-raw /
+# alff-joint) collide with the main A1 units and the merge goes many-to-one.
+keys=["arch","arm","mode","seed","alff_mode","fold_protocol","fold"]
+check(all(k in src for k in keys)
+      and 'PAIR_KEY = ["arch","arm","mode","seed","alff_mode","fold_protocol","fold"]' in src,
+      "pairing key is (arch, arm, mode, seed, alff_mode, fold_protocol, fold)")
 
 print("\n=== 4. P9: C-PERM is a HARD GATE ===")
 r2=run_report(synth_csv(cperm_auc=0.62))     # a leaking permutation control

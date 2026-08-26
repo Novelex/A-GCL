@@ -51,6 +51,25 @@ def refusals(df):
     if got != cells:
         r["incomplete_ledger"].append(f"{len(cells-got)} cells absent, "
                                       f"{len(got-cells)} unexpected")
+    # PER-CELL EVALUATION-POINT SET (defect D55). Presence of (unit, fold) SOMEWHERE
+    # in the CSV proved nothing: a cell missing three of its four evaluation rows,
+    # or carrying a duplicate or an unexpected one, satisfied the old check. The
+    # exact set is now verified independently of the collector.
+    mode_of = {uid: u["mode"] for uid, _, u in units}
+    if "eval_point" not in df.columns:
+        r["eval_points_missing_column"].append("results CSV has no eval_point column")
+    else:
+        for (uid, fold), g in df.groupby(["unit", "fold"]):
+            want = P.expected_eval_points(mode_of.get(uid, "plain"))
+            pts = list(g.eval_point)
+            have = set(pts)
+            dup = sorted({p_ for p_ in pts if pts.count(p_) > 1})
+            if dup:
+                r["duplicate_eval_point"].append(f"{uid}/{fold}: {dup}")
+            if have != want:
+                r["eval_point_set_wrong"].append(
+                    f"{uid}/{fold}: missing {sorted(want-have)}, "
+                    f"unexpected {sorted(have-want)}")
     for pr in glob.glob(P.jobs_dir(NS)+"*/fold_*.json"):
         uid=os.path.basename(os.path.dirname(pr))
         tag=os.path.basename(pr)[5:-5]
@@ -129,40 +148,64 @@ def summarise(df):
         blocks[proto]=agg.merge(fold_sd,on=["arm","E","mode"],how="left")
     return blocks
 
-def shift_vs_signed(df):
-    """PAIRED shift-vs-signed identity.
+# alff_mode is part of the key (found in Pass 4): without it the ABLATION units
+# (A1 with alff-raw / alff-joint) collide with the main A1 units on
+# (arch, arm, mode, seed, fold), producing a many-to-one merge — 351 "pairs" out of
+# 270 shift cells, and a negative unpaired count.
+PAIR_KEY = ["arch","arm","mode","seed","alff_mode","fold_protocol","fold"]
+UNIT_KEY = ["arch","arm","mode","seed","alff_mode"]
 
-    Defect D39: this averaged the signed cells and the shift cells separately and
-    subtracted the two means. Those two sets are not the same cells unless every
-    arm/mode/seed/fold is present on both sides, so the 'difference' mixed the
-    identity with whatever composition differed between them. The identity is a
-    within-cell claim and must be tested within the cell: pair on
-    (arch, arm, mode, seed, fold_protocol, fold) and difference each pair."""
-    keys=["arch","arm","mode","seed","fold_protocol","fold"]
+def shift_vs_signed(df):
+    """PAIRED shift-vs-signed identity, over the domain the GRID actually pairs.
+
+    D39: this once averaged the signed and shift sets separately and subtracted the
+    two means, which mixes the identity with whatever composition differed between
+    them. The identity is a within-cell claim and is tested within the cell.
+
+    D54 (refined here): `unpaired` must mean "a cell that SHOULD have had a partner
+    and does not" — never "the signed set is larger than the shift set". Only 30 of
+    the 69 signed unit-keys have a shift twin in the frozen grid: controls and
+    ablations exist at E=signed ONLY, by design. Counting those as unpaired would
+    make the gate fire on every correct run, which is the same over-strictness that
+    made the withdrawn +/-0.01 AUC gate unusable. The pairing DOMAIN is therefore the
+    set of unit-keys present at BOTH E levels; within that domain every fold must
+    pair, and a missing fold-level partner is a real defect."""
     s_=df[(df.eval_point=="probe_honest")&(df.control.isna())
           &(~df.arm.isin(SHIFT_EXCLUDE_ARMS))]
-    lhs=s_[s_.E=="signed"][keys+["auc"]].rename(columns={"auc":"signed"})
-    rhs=s_[s_.E=="shift" ][keys+["auc"]].rename(columns={"auc":"shift"})
-    m=lhs.merge(rhs,on=keys,how="inner")
-    if not len(m):
+    lhs=s_[s_.E=="signed"][PAIR_KEY+["auc"]].rename(columns={"auc":"signed"})
+    rhs=s_[s_.E=="shift" ][PAIR_KEY+["auc"]].rename(columns={"auc":"shift"})
+    if not len(lhs) or not len(rhs):
         return pd.DataFrame(), ["no shift/signed pairs exist — identity UNTESTED"]
+    # the domain: unit-keys observed at BOTH levels
+    lk=set(map(tuple, lhs[UNIT_KEY].drop_duplicates().values.tolist()))
+    rk=set(map(tuple, rhs[UNIT_KEY].drop_duplicates().values.tolist()))
+    domain=lk & rk
+    def in_domain(d):
+        return d[d[UNIT_KEY].apply(tuple, axis=1).isin(domain)]
+    L2, R2 = in_domain(lhs), in_domain(rhs)
+    m=L2.merge(R2, on=PAIR_KEY, how="inner")
+    unpaired=[]
+    only_signed = len(L2) - len(m)
+    only_shift  = len(R2) - len(m)
+    if only_signed or only_shift:
+        unpaired.append(f"inside the pairable domain ({len(domain)} unit-keys), "
+                        f"{only_signed} signed cell(s) and {only_shift} shift cell(s) "
+                        f"have no counterpart ({len(m)} complete pairs)")
+    if not len(m):
+        return pd.DataFrame(), unpaired or ["no complete shift/signed pairs"]
     m["diff"]=m["shift"]-m["signed"]
-    rows=[]; unpaired=[]
-    n_l, n_r = len(lhs), len(rhs)
-    if len(m)!=n_l or len(m)!=n_r:
-        unpaired.append(f"unpaired cells: {n_l} signed, {n_r} shift, {len(m)} paired "
-                        f"(the identity is only tested on the {len(m)} pairs)")
+    rows=[]
     for (arch,proto),g in m.groupby(["arch","fold_protocol"]):
         per_seed=g.groupby("seed")["diff"].mean()
-        md=float(per_seed.mean())
         rows.append(dict(arch=arch,protocol=proto,n_pairs=int(len(g)),
             mean_signed=float(g["signed"].mean()), mean_shift=float(g["shift"].mean()),
-            paired_diff=md, max_abs_pair=float(g["diff"].abs().max()),
+            paired_diff=float(per_seed.mean()),
+            max_abs_pair=float(g["diff"].abs().max()),
             expectation=("EXACT: Linear(D,H) can represent the affine map"
                 if arch=="BNT" else
                 "APPROXIMATE: per-subject constant not absorbed by LayerNorm"),
             interpretation="DESCRIPTIVE ONLY - independently trained models; see "
-                           "test_pass3.py for the deterministic affine-transport test"))
+                           "test_pass4.py for the deterministic affine-transport test"))
     return pd.DataFrame(rows), unpaired
 
 def cperm_gate(df):
@@ -192,13 +235,17 @@ def cperm_gate(df):
     return pd.DataFrame(rows), fails
 
 def shift_gate(tab, unpaired):
-    """PAIR-COMPLETENESS gate only (defect D49).
+    """PAIR-COMPLETENESS gate (defects D49, D54).
 
-    The AUC magnitude no longer decides headline validity. What is still mandatory is
-    that the comparison be well posed: the paired table must exist and rest on real
-    pairs. Whether two independently trained models land within any particular AUC
-    distance is a DESCRIPTIVE observation, not a semantics test — the semantics are
-    tested deterministically by affine transport in test_pass3.py."""
+    The AUC MAGNITUDE never decides headline validity — affine equivalence does not
+    require two independently trained models to match in AUC, and the deterministic
+    proof lives in test_pass4.py / test_pass3.py. What IS mandatory is that the
+    comparison be well posed.
+
+    D54: `unpaired` was accepted as a parameter and then ignored, so a table built
+    from a partly-unpaired set — signed cells with no shift counterpart, or the
+    reverse — reported a clean paired difference computed over whichever cells
+    happened to match, and nothing stopped the headline."""
     fails=[]
     if not len(tab):
         fails.append("shift-vs-signed produced no rows - the diagnostic is UNTESTED")
@@ -207,6 +254,10 @@ def shift_gate(tab, unpaired):
     if len(z):
         fails.append(f"{len(z)} arch x protocol group(s) have zero pairs - the "
                      f"shift/signed comparison is not well posed")
+    for u in (unpaired or []):
+        fails.append(f"unpaired shift/signed cells: {u}. The comparison is only "
+                     f"defined on complete pairs, so the headline is withheld until "
+                     f"every signed cell has its shift counterpart and vice versa")
     return fails
 
 def main():

@@ -9,7 +9,7 @@ NS = os.environ.get("S16_NS","prod")
 
 REJECTIONS = ("grid_shape","poison_marker","missing_unit","missing_fold",
               "duplicate_fold","unexpected_cell","failed_record","malformed_json",
-              "bundle_invalid","wrong_namespace","identity_mismatch",
+              "bundle_invalid","wrong_namespace","identity_mismatch","incomplete_eval",
               "fusion_invalid","plain_masquerade","nonfinite_field",
               "tally_missing","tally_duplicate","tally_disagreement",
               "unit_done_missing","status_not_terminal","accounting_mismatch")
@@ -94,6 +94,19 @@ def audit(ns=NS, data=None):
             P.feat_dir(ns)+f"{dir_uid}__{tag}.npz.prov.json", f,
             P.feat_dir(ns)+f"{dir_uid}__{tag}.pred.json")
         if not okb: prob["bundle_invalid"].append(f"{dir_uid}/{tag}: {why}"); continue
+        # PER-CELL EVALUATION CONTRACT (defect D55). Shared with the report so both
+        # agree on what a complete cell is. Runs BEFORE the row is accepted.
+        oke, whye = P.validate_eval_contract(rec, u["mode"])
+        if not oke:
+            for w in whye:
+                key = ("plain_masquerade" if "plain cell carries" in w else
+                       # fusion problems keep the pre-existing rejection key so the
+                       # established collector contract (test_final H31/H32) holds
+                       "fusion_invalid" if "fusion block" in w or "fused_auc" in w else
+                       "nonfinite_field" if ("finite" in w or "auc" in w) else
+                       "incomplete_eval")
+                prob[key].append(f"{dir_uid}/{tag}: {w}")
+            continue
         for k in REQUIRED_FINITE:
             v = rec.get(k)
             if v is None or not np.isfinite(v):

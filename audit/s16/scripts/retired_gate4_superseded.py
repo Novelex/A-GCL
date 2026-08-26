@@ -17,6 +17,8 @@ Its twelve cases are strictly subsumed by test_final.py, which uses a bundle-com
     tally disagreement / skipped         -> H18 missing TALLY, H19 missing UNIT.done
     wrong_namespace                      -> collector guard + H23 identity mismatch
 This file intentionally exits NONZERO so it can never be reported as a silent pass.
+Renamed out of the `test_*` namespace in Pass 4 (defect D56): a file that is expected
+to fail must not sit in the regression suite, where it trains reviewers to ignore red.
 """
 import sys
 sys.stderr.write("RETIRED: test_gate4.py is superseded by test_final.py (see docstring).\n")

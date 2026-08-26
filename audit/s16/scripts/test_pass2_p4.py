@@ -45,7 +45,15 @@ def build_fixture(root):
                        kh=u["kh"], svm_tr_enc=0.75, svm_tr_full=0.75,
                        size_delta_paired=0.0, policy_hash=POL.policy_hash(),
                        policy_name=POL.name, ocread_entropy=float("nan"),
-                       evaluated_state="raw", eval_point="te")
+                       # complete evaluation set + the frozen evaluated_state, so the
+                       # fixture satisfies the Pass-4 D55 per-cell contract exactly as
+                       # a real worker record does
+                       movement_max=0.5, clip_rate=0.05,
+                       head=dict(auc=0.60), head_ema=dict(auc=0.59),
+                       probe_honest=dict(auc=0.61), probe_old_full=dict(auc=0.62),
+                       evaluated_state=("raw=validation-best checkpoint; EMA(0.999) "
+                                        "reported alongside; selection by VALIDATION "
+                                        "only (S15 PROTOCOL.md:186)"))
             # deterministic, self-consistent predictions so validate_fusion can
             # RECOMPUTE the fused AUC rather than trust the record
             import s16_feat as FT

@@ -190,6 +190,63 @@ def atomic_json(o, p):
     json.load(open(p+".tmp")); os.replace(p+".tmp", p)
 
 
+EVAL_POINTS_PLAIN = ("head", "head_ema", "probe_honest", "probe_old_full")
+EVAL_POINTS_FUSED = EVAL_POINTS_PLAIN + ("fused",)
+
+def expected_eval_points(mode):
+    """The EXACT evaluation-point set a cell must carry — no more, no fewer."""
+    return set(EVAL_POINTS_FUSED if mode == "fused" else EVAL_POINTS_PLAIN)
+
+def _finite01(v):
+    try: f = float(v)
+    except (TypeError, ValueError): return False
+    return f == f and abs(f) != float("inf") and 0.0 <= f <= 1.0
+
+def _finite(v):
+    try: f = float(v)
+    except (TypeError, ValueError): return False
+    return f == f and abs(f) != float("inf")
+
+def validate_eval_contract(rec, mode):
+    """THE per-cell evaluation contract (defect D55), shared by the collector and the
+    post-C6 report so the two cannot disagree about what a complete cell looks like.
+
+    Previously the collector validated the sealed bundle and three scalar fields, and
+    the report only checked that (unit, fold) appeared SOMEWHERE in the CSV. A cell
+    missing three of its four evaluation points, or carrying a NaN AUC, or a plain
+    cell smuggling a fusion block, passed both.
+
+    Returns (ok, [reasons])."""
+    why = []
+    for pt in EVAL_POINTS_PLAIN:
+        m = rec.get(pt)
+        if not isinstance(m, dict):
+            why.append(f"evaluation point {pt!r} is absent or not a dict"); continue
+        if "auc" not in m:
+            why.append(f"{pt}: no 'auc' key"); continue
+        if not _finite01(m["auc"]):
+            why.append(f"{pt}: auc={m['auc']!r} is not finite within [0,1]")
+    for k in ("movement_max", "clip_rate"):
+        if k not in rec: why.append(f"{k} is absent")
+        elif not _finite(rec[k]): why.append(f"{k}={rec[k]!r} is not finite")
+    es = str(rec.get("evaluated_state", ""))
+    if not (es.startswith("raw=validation-best checkpoint") and "EMA(0.999)" in es
+            and "selection by VALIDATION only" in es):
+        why.append(f"evaluated_state does not match the frozen raw/EMA protocol: "
+                   f"{es[:90]!r}")
+    fu = rec.get("fusion")
+    if mode == "fused":
+        if not isinstance(fu, dict):
+            # wording keeps the pre-existing collector contract ("fusion is not a
+            # dict", test_final H32) while naming the cell-level problem
+            why.append("fused cell carries no fusion block (fusion is not a dict)")
+        elif not _finite01(fu.get("fused_auc")):
+            why.append(f"fused_auc={fu.get('fused_auc')!r} is not finite within [0,1]")
+    else:
+        if fu:
+            why.append("plain cell carries a fusion block (plain cells must not be fused)")
+    return (not why), why
+
 def validate_unit_completion(ns, uid, expected_folds):
     """THE unit-completion contract, shared by the collector and the E2E checker
     (defect D48) so the two definitions cannot drift apart.
@@ -214,25 +271,53 @@ def validate_unit_completion(ns, uid, expected_folds):
     else:
         try:
             t = _j.load(open(tp))
-            exp = t.get("expected")
-            reused = int(t.get("validated_reused", 0) or 0)
-            new = int(t.get("newly_successful", t.get("newly_succeeded", 0)) or 0)
-            failed = int(t.get("failed", 0) or 0)
-            rem = t.get("remaining")
+        except Exception as e:
+            t = None; why.append(f"TALLY.json unreadable: {e!r}")
+        if t is not None:
+            # STRICT TYPING (defect D53). `remaining` was permitted to be 0 OR None,
+            # so an ABSENT key passed: dict.get returned None and None was allowed.
+            # A unit that never recorded how much work was left was therefore
+            # indistinguishable from one that finished. bool is excluded explicitly
+            # because in Python False == 0 and True == 1, so a boolean would satisfy
+            # every numeric comparison below while meaning nothing.
+            def _int(key, *, alt=None):
+                """Require the key to be PRESENT and a real non-boolean integer."""
+                if key in t:            v = t[key]
+                elif alt and alt in t:  v = t[alt]; key = alt
+                else:
+                    why.append(f"TALLY field {key!r} is ABSENT (a unit that does not "
+                               f"record it cannot be called complete)"); return None
+                if isinstance(v, bool):
+                    why.append(f"TALLY {key}={v!r} is a boolean, not an integer"); return None
+                if not isinstance(v, int):
+                    why.append(f"TALLY {key}={v!r} is {type(v).__name__}, not an integer"); return None
+                if v < 0:
+                    why.append(f"TALLY {key}={v} is negative"); return None
+                return v
+            exp     = _int("expected")
+            reused  = _int("validated_reused")
+            new_ok  = _int("newly_successful", alt="newly_succeeded")
+            failed  = _int("failed")
+            rem     = _int("remaining")
             if t.get("unit") != uid: why.append(f"TALLY unit {t.get('unit')!r} != {uid!r}")
             if t.get("namespace") != ns: why.append(f"TALLY namespace {t.get('namespace')!r} != {ns!r}")
-            if exp != expected_folds: why.append(f"TALLY expected {exp} != {expected_folds}")
-            if failed != 0: why.append(f"TALLY failed={failed} (must be 0)")
-            if rem not in (0, None): why.append(f"TALLY remaining={rem} (must be 0)")
-            if reused + new != expected_folds:
-                # Wording preserves the pre-existing collector contract
-                # ("reused N + new M != expected K") so test_final's H49 expectation
-                # holds unchanged, while naming the identity explicitly.
-                why.append(f"accounting identity violated: reused {reused} + new {new} "
-                           f"!= expected {expected_folds} (validated_reused + "
-                           f"newly_succeeded must equal expected_folds)")
-        except Exception as e:
-            why.append(f"TALLY.json unreadable: {e!r}")
+            if exp is not None and exp != expected_folds:
+                why.append(f"TALLY expected {exp} != {expected_folds}")
+            if failed is not None and failed != 0:
+                why.append(f"TALLY failed={failed} (must be 0)")
+            if rem is not None and rem != 0:
+                why.append(f"TALLY remaining={rem} (must be exactly 0)")
+            if None not in (reused, new_ok):
+                if reused > expected_folds or new_ok > expected_folds:
+                    why.append(f"TALLY counts exceed expected_folds: reused {reused}, "
+                               f"new {new_ok}, expected {expected_folds}")
+                if reused + new_ok != expected_folds:
+                    # Wording preserves the pre-existing collector contract
+                    # ("reused N + new M != expected K") so test_final's H49
+                    # expectation holds unchanged, while naming the identity.
+                    why.append(f"accounting identity violated: reused {reused} + new {new_ok} "
+                               f"!= expected {expected_folds} (validated_reused + "
+                               f"newly_succeeded must equal expected_folds)")
     sp = jd + "/STATUS.json"
     if not os.path.exists(sp):
         why.append("STATUS.json absent")

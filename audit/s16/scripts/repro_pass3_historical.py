@@ -1,9 +1,15 @@
-"""S16 Pass 3, PHASE 1: reproduce every remaining defect BEFORE fixing it.
+"""S16 Pass 3 reproduction record — HISTORICAL ARTIFACT, NOT A REGRESSION TEST.
 
-HISTORICAL ARTIFACT. This file is the evidence that D47-D51 were real. It exits 0
-only while the defects are PRESENT. After the Phase-2 repairs it exits 1 and every
-line reads NOT REPRODUCED — that inversion is itself the proof the fixes landed.
-test_pass3.py then asserts the corrected behaviour positively.
+Renamed out of the `test_*` namespace in Pass 4 (defect D56): this file asserts that
+the D47-D51 defects are PRESENT, so on corrected code it exits 1 by design. Under
+standard `test_*` discovery that read as a failing test and would have trained
+reviewers to ignore a red result.
+
+It exits 0 only while the defects are present, and 1 once they are fixed. That
+inversion is itself the proof the repairs landed; `test_pass3.py` asserts the
+corrected behaviour positively, and is the file the regression suite runs.
+
+Run deliberately:  python repro_pass3_historical.py   (exit 1 == fixes are in place)
 
 Each check asserts the DEFECT IS PRESENT. Exit 0 means all five reproduced and the
 repairs in Phase 2 are justified. After the repairs this file is expected to FAIL —
