@@ -180,3 +180,17 @@ the limit. This is **not** an operational blocker.
 
 Runtime evidence was taken from scheduler accounting only. The five E2E records now
 on disk are from the array cancelled at 20:13 today and were **not** inspected.
+
+---
+
+## D58 — Gate 3 depended on ambient Git state (2026-08-26)
+
+Branch `s16-d58`, parent `fd3bf215d2419871e6af591896b6af9e89ab4c68`.
+
+| ID | file / function | symptom | severity | affected | scope | required test | disposition |
+|---|---|---|---|---|---|---|---|
+| D58 | `test_gate3.py::D3_dirty_tree_forces_recompute` | the assertion read `not P.worktree_clean()[0]` — it required the LIVE repository to be dirty. It therefore passed throughout Passes 2, 3 and 4 only because correction work was uncommitted at the time, and FAILED the moment the suite was first run against the clean committed tree that a production run demands. The guard under test is a property of the MANIFEST, not of the ambient checkout, so binding it to the working directory made a green suite conditional on the developer's editor state | **HIGH** | the credibility of Gate 3, and of every earlier "all tests pass" claim made from a dirty tree | INSIDE | D3 must pass identically whether the live repository is clean or dirty | **FIXED** — D3 now builds a hash-consistent manifest, stamps `worktree_clean=False` with synthetic `worktree_dirt`, keeps every contracted field matching, calls the REAL `P.validate_reuse()`, and requires both rejection and a reason naming the dirty-manifest guard (`"manifest was produced from a DIRTY worktree"`). Verified passing with the live tree dirty AND clean. No production code changed; `s16_prov.py` untouched; no validation rule weakened; the test is not inverted — it still asserts that a dirty-stamped artifact forces recomputation |
+
+This is the mirror image of D56. D56 was a file that could never pass on correct code;
+D58 was a check that could only pass on INCORRECT (uncommitted) repository state. Both
+made a red or green result mean something other than what a reviewer would assume.

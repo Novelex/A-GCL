@@ -123,9 +123,26 @@ e2 = {k: cm[k] for k in P.MATCH_KEYS}
 o,w = P.validate_reuse(cmf2, e2, fp, ckp)
 ck("D2_reuse_accepted_when_contract_matches", o, w)
 os.remove(cmf2)
-ck("D3_dirty_tree_forces_recompute", not P.worktree_clean()[0],
-   "live worktree is dirty, so production would recompute rather than reuse — "
-   "the intended behaviour for uncommitted code")
+# D58: this assertion used to read `not P.worktree_clean()[0]` — it required the
+# LIVE repository to be dirty, so it passed only while correction work was
+# uncommitted and FAILED on the clean committed tree that production demands. The
+# guard being tested is a property of the MANIFEST, not of the ambient checkout, so
+# it is now exercised synthetically: a hash-consistent manifest stamped
+# worktree_clean=False must be REFUSED by the real reuse validator, whatever state
+# the live repository happens to be in.
+dm = copy.deepcopy(man)
+dm["worktree_clean"] = False
+dm["worktree_dirt"] = " M audit/s16/scripts/s16_train.py\n M audit/s16/scripts/s16_prov.py"
+dmf = mfp + ".dirty"
+json.dump(dm, open(dmf, "w"), default=str)
+e3 = {k: dm[k] for k in P.MATCH_KEYS}          # contract matches exactly
+o3, w3 = P.validate_reuse(dmf, e3, fp, ckp)    # the REAL validator
+os.remove(dmf)
+ck("D3_dirty_tree_forces_recompute",
+   (not o3) and ("DIRTY worktree" in w3),
+   f"a manifest stamped worktree_clean=False is refused even though every "
+   f"contracted field matches -> {w3!r}; the artifact, not the live checkout, "
+   f"decides reuse (D58)")
 
 print(f"\n=== GATE 3 SUMMARY: {len(F)} failures ===")
 for f in F: print("  FAIL "+f)
