@@ -1,71 +1,92 @@
-# S16 C6 — PROVISIONAL SNAPSHOT (NOT collector-validated)
-Generated 2026-08-27T14:37:50Z from `audit/s16/runs/prod/jobs/*/fold_*.json`, read-only.
-Repo SHA `e2805c837992d43f1145c5ca5751378a4be5fb58`
-## STATUS: INCOMPLETE AND UNVALIDATED
-- **1338 of 1,431 cells** present. The WGIN array (`1875174`) was still running.
-- `s16_collect.py` and `s16_report.py` have **NOT** been run. None of the 20 collector
-  rejection classes, the sealed-bundle validator, the ledger check, the validity gate,
-  the C-PERM gate or the pair-completeness gate has been applied to these numbers.
-- **These figures are directional only and must not be quoted as results.**
-- Raw artifacts (32 GB, 30 GB of it `feat/*.npz`) are gitignored and NOT in this commit.
+# S16 C6 — COMPLETE WAVE, PROVISIONAL (NOT collector-validated)
 
-## Job IDs
-| job | id | state |
-|---|---|---|
-| C2 bounded | 1875173 | exit 5 — calibration gate halted the run |
-| WGIN | 1875174 | running at snapshot time |
-| BNT + EdgeMLP | 1875175 | all 72 tasks COMPLETED |
-| Controls | 1875176 | all 24 tasks COMPLETED |
+Generated 2026-08-27T20:21:51Z, read-only, from `audit/s16/runs/prod/jobs/*/fold_*.json`.
 
-## Frozen reference (never recomputed)
-- LinearSVC 4005 FC edges: **0.7565** ordinary / **0.7432** LOSO
-- `svm_tr_enc` observed in this run (80% encoder subset): **0.7144**
+## STATUS
 
-## Controls
+- **1431 / 1,431 cells**, all `status=OK`. 159/159 units. 0 POISON. 0 requeues.
+- `s16_collect.py` and `s16_report.py` have **NOT** been run. No rejection class,
+  sealed-bundle check, ledger validation, validity gate, C-PERM gate or
+  pair-completeness gate has been applied. **Directional only — do not quote.**
+- Raw artifacts (32 GB, 30 GB of it `feat/*.npz`) are gitignored, not in this commit.
 
-| control | probe_honest | n |
-|---|---|---|
-| C-PERM | 0.4755 | 54 |
-| C-RAND | 0.5108 | 54 |
-| C-SHUF | 0.4796 | 54 |
-| C-ROI | 0.4688 | 54 |
+| job | id | outcome | max elapsed |
+|---|---|---|---|
+| WGIN | 1875174 | 63/63 COMPLETED | 6:25:10 |
+| BNT + EdgeMLP | 1875175 | 72/72 COMPLETED | 1:14:19 |
+| Controls | 1875176 | 24/24 COMPLETED | 3:06:45 |
+| C2 bounded | 1875173 | exit 5 — calibration gate halted it | 0:11:39 |
 
-C-PERM sits inside the pre-registered operational band [0.45, 0.55].
+Total ~3,829 CPU-hours.
+
+## Frozen reference
+
+LinearSVC on 4005 FC edges: **0.7565** ordinary / **0.7432** LOSO.  
+In-run `svm_tr_enc` (matched 80% encoder subset): **0.7142**
+
+## Controls — probe_honest
+
+| control | mean | sd | n |
+|---|---|---|---|
+| C-PERM | 0.4755 | 0.0520 | 54 |
+| C-RAND | 0.5108 | 0.0945 | 54 |
+| C-SHUF | 0.4796 | 0.0917 | 54 |
+| C-ROI | 0.4688 | 0.0833 | 54 |
+
+C-PERM is inside the pre-registered operational band [0.45, 0.55]. No leakage.
 
 ## Learned arms — probe_honest
 
-| arm | arch | lab+site | n |
+| arm | arch | lab | site | loso |
+|---|---|---|---|---|
+| A1 | WGIN | 0.5270 | 0.5278 | 0.3875 |
+| A3 | WGIN | 0.5904 | 0.5299 | 0.5205 |
+| A4 | WGIN | 0.5758 | 0.5463 | 0.4954 |
+| A5 | BNT | 0.6343 | 0.5935 | 0.6188 |
+| A6 | BNT | 0.5938 | 0.5682 | 0.5072 |
+| A7 | EDGEMLP | 0.6978 | 0.6767 | 0.5995 |
+
+- pooled **lab**: 0.5998 ± 0.0738 (n=405)
+- pooled **site**: 0.5765 ± 0.0708 (n=405)
+- pooled **loso**: 0.5127 ± 0.1619 (n=405)
+
+## Fusion — primary endpoint
+
+| metric | value |
+|---|---|
+| fused folds | 567 |
+| fused AUC | 0.7192 ± 0.0825 |
+| **delta vs svm_tr_enc** | **-0.0027** (median +0.0000, sd 0.0142) |
+| delta vs svm_tr_full | -0.0140 |
+| folds beating FC | **85/567 = 15.0%** |
+| **alpha = 1.0 (pure FC chosen)** | **333/567 = 58.7%** |
+
+alpha=1 is the FC fallback ENDPOINT, not a floor. Deltas are unclamped.
+
+| arm | fused AUC | delta | beat-FC |
 |---|---|---|---|
-| A1 | WGIN | 0.5313 | 151 |
-| A3 | WGIN | 0.5601 | 36 |
-| A4 | WGIN | 0.5609 | 142 |
-| A5 | BNT | 0.6139 | 144 |
-| A6 | BNT | 0.5810 | 144 |
-| A7 | EDGEMLP | 0.6872 | 144 |
+| A1 | 0.7172 | -0.0046 | 14.8% |
+| A3 | 0.7181 | -0.0038 | 7.4% |
+| A4 | 0.7210 | -0.0009 | 16.7% |
+| A5 | 0.7217 | -0.0001 | 18.5% |
+| A6 | 0.7191 | -0.0028 | 13.9% |
+| A7 | 0.7171 | -0.0048 | 13.0% |
 
-| protocol | probe_honest | n |
-|---|---|---|
-| lab | 0.6046 | 384 |
-| site | 0.5807 | 377 |
-| loso | 0.5215 | 361 |
+## Edge treatment (E)
 
-## Fusion — the primary endpoint
-
-- fused folds: **556**
-- delta vs `svm_tr_enc`: mean **-0.0027**, median **+0.0000**, range -0.1615 to +0.0865
-- folds beating FC: **84/556 (15.1%)**
-- **alpha = 1.0 selected in 327/556 (58.8%)** — the inner selection chose PURE FC, discarding the learned representation
-
-alpha=1 is the FC fallback ENDPOINT, not a floor. Deltas are reported unclamped.
+- signed: 0.5447 (n=405)
+- abs: 0.5699 (n=270)
+- pos_zero: 0.5799 (n=270)
+- shift: 0.5666 (n=270)
 
 ## Training health — READ THIS
 
-- movement_max: median **0.063**, max 0.295
-- **984 of 1338 folds have movement_max <= 0.10**, the validity threshold. On these data most of the grid would be classified **UNTRAINED** by the validity gate.
-- clip_rate: median 0.079, max 0.110 (threshold 0.30 — not breached)
-- best_epoch: median 34, max 362 of a 400 budget; 33 folds at best_epoch==1
-- verdicts: {'OVERFIT': 965, 'UNDERFIT': 132, 'HEALTHY': 241}
+- movement_max median **0.065**, max 0.295
+- **1031 of 1431 folds at or below the 0.10 validity threshold** — most of the grid would be classified UNTRAINED by the validity gate.
+- clip_rate median 0.081, max 0.110 (threshold 0.30, never breached)
+- best_epoch median 34 of 400; 34 folds at 1
+- verdicts: {'OVERFIT': 1027, 'HEALTHY': 258, 'UNDERFIT': 146}
 
 ## C2
 
-Halted at its pre-registered calibration gate (exit 5). All seven sources validated, then the random encoder read **+0.02143 (MC se 0.00523, 3/20 sign flips)** where it must read 0, so no retrospective estimate was interpreted. C2 is scientifically independent of C6.
+Halted at its calibration gate. All seven sources validated; the random encoder read **+0.02143** (MC se 0.00523, 3/20 sign flips) where it must read 0, so no retrospective estimate was interpreted. Independent of C6.
