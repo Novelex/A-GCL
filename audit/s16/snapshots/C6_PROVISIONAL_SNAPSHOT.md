@@ -21,7 +21,7 @@ Total ~3,829 CPU-hours.
 
 ## Frozen reference
 
-LinearSVC on 4005 FC edges: **0.7565** ordinary / **0.7432** LOSO.  
+LinearSVC on 4005 FC edges: **0.7565** ordinary / **0.7432** LOSO.
 In-run `svm_tr_enc` (matched 80% encoder subset): **0.7142**
 
 ## Controls — probe_honest
