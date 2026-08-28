@@ -228,4 +228,9 @@ def build_model(arch, D, seed, kh, freeze_encoder=False, readout="roi", p=0.10,
                                  scaled=scaled_softmax, freeze_encoder=freeze_encoder)
     if arch=="WGIN": return WGINR(D, hidden=kh, seed=seed, p=p, readout=readout,
                                   freeze_encoder=freeze_encoder)
+    if arch=="ROWMLP":                                  # S17 Wave 1
+        import sys as _s
+        _s.path.insert(0, "/users/3171356m/A-GCL/audit/s17/scripts")
+        from s17_models import RowMLPR
+        return RowMLPR(D, hidden=kh, p=p, seed=seed, freeze_encoder=freeze_encoder)
     raise ValueError(arch)

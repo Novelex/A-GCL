@@ -1,8 +1,11 @@
 """S16 C6 unit table. Index order STABLE — never reorder."""
 SEEDS = [20260818, 20260819, 20260820]
 E_LEVELS = ["signed", "abs", "pos_zero", "shift"]
-KH = {"BNT": 32, "WGIN": 128, "EDGEMLP": 256}
-ARCH = {"A1":"WGIN","A3":"WGIN","A4":"WGIN","A5":"BNT","A6":"BNT","A7":"EDGEMLP"}
+KH = {"BNT": 32, "WGIN": 128, "EDGEMLP": 256, "ROWMLP": 64}
+ARCH = {"A1":"WGIN","A3":"WGIN","A4":"WGIN","A5":"BNT","A6":"BNT","A7":"EDGEMLP",
+        # S17 Wave 1. Present in ARCH/KH only -- deliberately NOT in CONFIGS, so
+        # main_units() and the frozen ledger hash 8587b1ca36553408 are untouched.
+        "R1s":"ROWMLP","R1a":"ROWMLP","R1p":"ROWMLP"}
 # 21 configs: A1,A4,A5,A6 x 4 E = 16, plus A3 at signed, plus A7 x 4 E
 # A7 = the edge MLP, architecturally identical to S12A5 arm C. It is an ORDINARY
 # ARM: the bridge interpretation is WITHDRAWN because the S12A5 and S16 training

@@ -11,7 +11,14 @@ ARMS = {"A1": ("WGIN","alff"), "A3": ("WGIN","fcrow"), "A4": ("WGIN","fcrow+alff
         # from the E-TRANSFORMED matrix so that E is meaningful for this arm too.
         # At E=signed the triangle is bitwise the frozen X_fc, giving parity with
         # S12A5 arm C.
-        "A7": ("EDGEMLP","edgetri")}
+        "A7": ("EDGEMLP","edgetri"),
+        # ---- S17 Wave 1 (audit/s17/scripts/s17_feat.py, s17_models.py).
+        # Registered here so the ARCH/ARMS consistency assert holds. These arms are
+        # NOT in s16_grid.CONFIGS, so main_units() and the frozen ledger hash
+        # 8587b1ca36553408 are unchanged.
+        "R1s": ("ROWMLP","fcrow_signed"),
+        "R1a": ("ROWMLP","fcrow_abs"),
+        "R1p": ("ROWMLP","fcrow_split")}
 
 def edge_triangle(FCt):
     """[954,4005] upper triangle (k=1) of the E-transformed FC, in K.IU order."""
@@ -92,6 +99,15 @@ def build_X(spec, FCt, ALFF, tr_enc, control=None, alff_mode="z"):
         if control == "C-ROI":
             Rp = np.stack([R[si][roi_perm(si)][:, roi_perm(si)] for si in range(len(R))])
         return edge_triangle(Rp), (Rp if control == "C-ROI" else FCt)
+    elif spec in ("fcrow_signed","fcrow_abs","fcrow_split"):
+        # S17 Wave 1. DELEGATED, never reimplemented here: s17_feat owns the
+        # diagonal-zeroing, the tr_enc-only column z-score and the per-spec
+        # n_profile that C-ROI needs. The worker calls FT.build_X, so without this
+        # dispatch the S17 specs would hit `raise ValueError(spec)` below.
+        import sys as _s
+        _s.path.insert(0, "/users/3171356m/A-GCL/audit/s17/scripts")
+        import s17_feat as _F17
+        return _F17.build_X(spec, FCt, tr_enc, control=control)
     else: raise ValueError(spec)
     if control == "C-ROI":
         X, FCu = apply_c_roi(X, FCt, n_profile)

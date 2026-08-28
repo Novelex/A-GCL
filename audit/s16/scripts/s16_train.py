@@ -25,7 +25,14 @@ GROUPS = {"BNT": {"inp": ("inp.",), "enc": ("blocks.", "norm_f."), "head": ("hea
           # Groups are NON-OVERLAPPING and exhaustive over trainable parameters;
           # net.1/net.2 hold none. Schema matches BNT/WGIN so the result columns
           # movement_inp / movement_enc / movement_head are populated identically.
-          "EDGEMLP": {"inp": ("net.0.",), "enc": ("net.3.",), "head": ("head.",)}}
+          "EDGEMLP": {"inp": ("net.0.",), "enc": ("net.3.",), "head": ("head.",)},
+          # ROWMLP (S17 Wave 1): roi_emb + mlp.0 Linear(D+16,64) | mlp.1 GELU
+          #   mlp.2 Dropout | mlp.3 Linear(64,32) | head Linear(2880,1)
+          # assert_groups_cover() requires EVERY parameter to map to exactly one
+          # group, so this entry is mandatory -- without it training raises
+          # KeyError('ROWMLP') on the first fold.
+          "ROWMLP": {"inp": ("roi_emb.", "mlp.0."), "enc": ("mlp.3.",),
+                     "head": ("head.",)}}
 
 def assert_groups_cover(model, arch, frozen_ok=("inp","enc"), head_group="head"):
     """Parameter-group contract.
