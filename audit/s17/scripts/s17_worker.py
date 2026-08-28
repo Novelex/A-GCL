@@ -34,11 +34,65 @@ def ensure(ns):
 
 def unit_id(u):
     c = f"_{u['control']}" if u.get("control") else ""
-    return f"s17_{u['arm']}{c}_{u['E']}_{u['mode']}_s{u['seed_idx']}"
+    # W1b writes under a DISTINCT id so the Wave-1 records are never overwritten.
+    pre = "s17b" if u.get("branch") == "s17w1b" else "s17"
+    return f"{pre}_{u['arm']}{c}_{u['E']}_{u['mode']}_s{u['seed_idx']}"
 
 def aj(o, p):
     json.dump(o, open(p + ".tmp", "w"), indent=1, default=str)
     json.load(open(p + ".tmp")); os.replace(p + ".tmp", p)
+
+PROBE_WIDTHS = (None, 32, 64)          # None = the encoder's native repr_dim
+
+def probe_at_widths(R, y, tr_enc, tr_prb, te, widths=PROBE_WIDTHS):
+    """probe_honest at several representation widths.
+
+    W1b measurement check. probe_honest fits on 153 tr_prb subjects, so a 2880-d
+    RowMLP representation and a 32-d EdgeMLP representation are not being probed on
+    equal terms: that is a 90x dimensionality asymmetry unrelated to representation
+    quality. Reducing with PCA puts them on comparable footing.
+
+    The PCA is fitted on tr_enc ONLY — the encoder has already seen those subjects,
+    so it adds no information the encoder did not have, and tr_prb and te stay
+    untouched. The probe still fits on tr_prb and scores te, both out-of-sample.
+
+    Returns {label: metrics_or_None}. A width wider than the representation is
+    recorded as None rather than silently falling back to the native width."""
+    from sklearn.decomposition import PCA
+    out = {}
+    for w in widths:
+        if w is None:
+            _, oof = FT.probe_honest(R, y, tr_prb, te)
+            out["native"] = dict(width=int(R.shape[1]),
+                                 metrics=W16.metrics(y[te], oof[te]))
+            continue
+        if R.shape[1] <= w:
+            out[f"pca{w}"] = None        # e.g. A7 at 32 dims has no PCA-64
+            continue
+        pca = PCA(n_components=w, random_state=0).fit(np.asarray(R, float)[tr_enc])
+        Rw = pca.transform(np.asarray(R, float))
+        _, oof = FT.probe_honest(Rw, y, tr_prb, te)
+        out[f"pca{w}"] = dict(width=int(w),
+                              evr=float(pca.explained_variance_ratio_.sum()),
+                              metrics=W16.metrics(y[te], oof[te]))
+    return out
+
+
+def wave1b_units():
+    """W1b: the SAME arms, seeds, folds and PROD policy as Wave 1. The ONLY change
+    is that probe_honest is reported at three widths. No new arms, no gate change."""
+    U = wave1_units()
+    for u in U: u["branch"] = "s17w1b"
+    return U
+
+
+def wave1b_tasks(ns="prod"):
+    pol = PL.get(ns)
+    tags = ([f"lab{i}"  for i in range(pol.n_lab)]
+            + [f"site{i}" for i in range(pol.n_site)]
+            + [f"loso{i}" for i in range(pol.n_loso)])
+    return [(u, t) for u in wave1b_units() for t in tags]
+
 
 def wave1_units():
     """Wave 1 production grid: 4 arms x 3 seeds = 12 units, 9 folds each = 108 folds.
@@ -143,6 +197,8 @@ def run_unit(u, ns="e2e", verbose=True, only_fold=None):
                    spec=spec, D_in=int(X.shape[-1]), repr_dim_used=int(R.shape[1]),
                    head=W16.metrics(y_use[te], S[te]),
                    probe_honest=W16.metrics(y_use[te], ph[te]),
+                   probe_widths=(probe_at_widths(R, y_use, tr_enc, tr_prb, te)
+                                 if u.get("branch") == "s17w1b" else None),
                    n_tr=int(len(tr)), n_tr_enc=int(len(tr_enc)), n_tr_probe=int(len(tr_prb)),
                    n_te=int(len(te)),
                    svm_tr_enc=svm_tr_enc, svm_tr_full=svm_tr_full,
