@@ -7,7 +7,7 @@ diagonal is ZEROED, never deleted: deleting it would shift every column index by
 past the diagonal and silently break both the column identity and the C-ROI control,
 which permutes profile columns by ROI.
 
-Column standardisation is fitted on tr_enc ONLY and applied unchanged to tr_prb and
+Per-edge standardisation is fitted on tr_enc ONLY and applied unchanged to tr_prb and
 te, so no cohort statistic ever sees held-out subjects (S16 defect D5).
 """
 import sys
@@ -30,17 +30,28 @@ def zero_diagonal(R):
     return Rz
 
 
-def zscore_columns(X, tr_enc, eps=1e-8):
-    """Z-score each column across subjects AND rows, fitted on tr_enc only.
+def zscore_edges(X, tr_enc, eps=1e-8):
+    """Z-score each EDGE — each (row, column) pair — across subjects, fitted on
+    tr_enc only.
 
-    X is [N, 90, C]. Statistics are taken over (subjects x rows) for each column c,
-    so column c keeps one mean and one sd — the ROI-identity semantics of the column
-    are preserved. Returns (Xz, mu, sd) with mu/sd shaped [C] for inspection."""
+    X is [N, 90, C]. Statistics are taken over the SUBJECT axis alone, giving one
+    mean and one sd per (row, column) entry: mu and sd are [1, 90, C].
+
+    An earlier version collapsed the row axis (`X[tr].reshape(-1, C)`), producing one
+    statistic per column. That is wrong twice over: it pools 90 structurally distinct
+    edges into a single statistic, and it breaks the symmetry of the transform, since
+    edge (i,j) and edge (j,i) would be standardised against different pooled means
+    even though FC is symmetric. Per-edge statistics keep FC[i,j] and FC[j,i] mapped
+    identically.
+
+    The zeroed diagonal has sd = 0 across subjects, so the eps guard leaves it at
+    exactly 0 rather than dividing by ~0.
+
+    Returns (Xz, mu, sd) with mu/sd shaped [1, 90, C]."""
     tr = np.asarray(tr_enc)
-    blk = X[tr].reshape(-1, X.shape[2])            # tr_enc rows only
-    mu = blk.mean(axis=0)
-    sd = blk.std(axis=0)
-    sd = np.where(sd < eps, 1.0, sd)               # constant column -> leave centred
+    mu = X[tr].mean(axis=0, keepdims=True)          # [1, 90, C]
+    sd = X[tr].std(axis=0, keepdims=True)           # [1, 90, C]
+    sd = np.where(sd < eps, 1.0, sd)
     Xz = ((X - mu) / sd).astype(np.float32)
     return Xz, mu.astype(np.float32), sd.astype(np.float32)
 
@@ -64,7 +75,7 @@ def build_X(spec, FCt, tr_enc, control=None, return_stats=False):
     else:                                          # fcrow_split
         X = np.concatenate([np.maximum(R, 0.0), np.maximum(-R, 0.0)], axis=2)
 
-    X, mu, sd = zscore_columns(X, tr_enc)
+    X, mu, sd = zscore_edges(X, tr_enc)
 
     FCu = FCt
     if control == "C-ROI":
