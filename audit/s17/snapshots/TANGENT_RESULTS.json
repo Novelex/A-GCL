@@ -1,0 +1,392 @@
+{
+ "implementation": "scipy log-Euclidean (nilearn not installed); reference mean = LOG-EUCLIDEAN mean expm(mean(logm(C_train))); projection logm(M^-1/2 C M^-1/2); strict upper triangle k=1",
+ "ridge": 1.0000000147120047e-06,
+ "min_eig_before": {
+  "fc": -1.4712004682061713e-14,
+  "fcamp": -1.1786682936643703e-14
+ },
+ "min_eig_after": {
+  "fc": 1.00000000152971e-06,
+  "fcamp": 9.999999982034037e-07
+ },
+ "results": {
+  "L0_FC_flat|cv": 0.756484397366161,
+  "L0_FC_flat|loso": 0.7431654517826862,
+  "L1_FCamp_flat|cv": 0.7261027549604704,
+  "L1_FCamp_flat|loso": 0.7129291550133234,
+  "T1_FC_tangent|cv": 0.6289546125217468,
+  "T1_FC_tangent|loso": 0.5944812702327733,
+  "T2_FCamp_tangent|cv": 0.6332268933471338,
+  "T2_FCamp_tangent|loso": 0.6167808143760047
+ },
+ "bootstrap": {
+  "T1-L0|cv": {
+   "delta": -0.12752978484441424,
+   "lo": -0.16813746935088403,
+   "hi": -0.09045468700873603,
+   "p_boot": 0.0
+  },
+  "T2-T1|cv": {
+   "delta": 0.004272280825386998,
+   "lo": -0.023615474681189665,
+   "hi": 0.03312375725583397,
+   "p_boot": 0.734
+  },
+  "T1-L0|loso": {
+   "delta": -0.14868418154991292,
+   "lo": -0.18939484344461227,
+   "hi": -0.1097625414429809,
+   "p_boot": 0.0
+  },
+  "T2-T1|loso": {
+   "delta": 0.02229954414323143,
+   "lo": -0.0033565871543181883,
+   "hi": 0.04694278012016689,
+   "p_boot": 0.085
+  }
+ },
+ "ref_mean_counts": {
+  "T1_FC_tangent|cv": [
+   {
+    "fold": 0,
+    "n_ref_mean": 763,
+    "n_test": 191,
+    "overlap": 0
+   },
+   {
+    "fold": 1,
+    "n_ref_mean": 763,
+    "n_test": 191,
+    "overlap": 0
+   },
+   {
+    "fold": 2,
+    "n_ref_mean": 763,
+    "n_test": 191,
+    "overlap": 0
+   },
+   {
+    "fold": 3,
+    "n_ref_mean": 763,
+    "n_test": 191,
+    "overlap": 0
+   },
+   {
+    "fold": 4,
+    "n_ref_mean": 764,
+    "n_test": 190,
+    "overlap": 0
+   }
+  ],
+  "T1_FC_tangent|loso": [
+   {
+    "fold": 0,
+    "n_ref_mean": 926,
+    "n_test": 28,
+    "overlap": 0
+   },
+   {
+    "fold": 1,
+    "n_ref_mean": 934,
+    "n_test": 20,
+    "overlap": 0
+   },
+   {
+    "fold": 2,
+    "n_ref_mean": 907,
+    "n_test": 47,
+    "overlap": 0
+   },
+   {
+    "fold": 3,
+    "n_ref_mean": 926,
+    "n_test": 28,
+    "overlap": 0
+   },
+   {
+    "fold": 4,
+    "n_ref_mean": 921,
+    "n_test": 33,
+    "overlap": 0
+   },
+   {
+    "fold": 5,
+    "n_ref_mean": 905,
+    "n_test": 49,
+    "overlap": 0
+   },
+   {
+    "fold": 6,
+    "n_ref_mean": 781,
+    "n_test": 173,
+    "overlap": 0
+   },
+   {
+    "fold": 7,
+    "n_ref_mean": 921,
+    "n_test": 33,
+    "overlap": 0
+   },
+   {
+    "fold": 8,
+    "n_ref_mean": 899,
+    "n_test": 55,
+    "overlap": 0
+   },
+   {
+    "fold": 9,
+    "n_ref_mean": 925,
+    "n_test": 29,
+    "overlap": 0
+   },
+   {
+    "fold": 10,
+    "n_ref_mean": 923,
+    "n_test": 31,
+    "overlap": 0
+   },
+   {
+    "fold": 11,
+    "n_ref_mean": 915,
+    "n_test": 39,
+    "overlap": 0
+   },
+   {
+    "fold": 12,
+    "n_ref_mean": 909,
+    "n_test": 45,
+    "overlap": 0
+   },
+   {
+    "fold": 13,
+    "n_ref_mean": 888,
+    "n_test": 66,
+    "overlap": 0
+   },
+   {
+    "fold": 14,
+    "n_ref_mean": 931,
+    "n_test": 23,
+    "overlap": 0
+   },
+   {
+    "fold": 15,
+    "n_ref_mean": 856,
+    "n_test": 98,
+    "overlap": 0
+   },
+   {
+    "fold": 16,
+    "n_ref_mean": 921,
+    "n_test": 33,
+    "overlap": 0
+   },
+   {
+    "fold": 17,
+    "n_ref_mean": 885,
+    "n_test": 69,
+    "overlap": 0
+   },
+   {
+    "fold": 18,
+    "n_ref_mean": 899,
+    "n_test": 55,
+    "overlap": 0
+   }
+  ],
+  "T2_FCamp_tangent|cv": [
+   {
+    "fold": 0,
+    "n_ref_mean": 763,
+    "n_test": 191,
+    "overlap": 0
+   },
+   {
+    "fold": 1,
+    "n_ref_mean": 763,
+    "n_test": 191,
+    "overlap": 0
+   },
+   {
+    "fold": 2,
+    "n_ref_mean": 763,
+    "n_test": 191,
+    "overlap": 0
+   },
+   {
+    "fold": 3,
+    "n_ref_mean": 763,
+    "n_test": 191,
+    "overlap": 0
+   },
+   {
+    "fold": 4,
+    "n_ref_mean": 764,
+    "n_test": 190,
+    "overlap": 0
+   }
+  ],
+  "T2_FCamp_tangent|loso": [
+   {
+    "fold": 0,
+    "n_ref_mean": 926,
+    "n_test": 28,
+    "overlap": 0
+   },
+   {
+    "fold": 1,
+    "n_ref_mean": 934,
+    "n_test": 20,
+    "overlap": 0
+   },
+   {
+    "fold": 2,
+    "n_ref_mean": 907,
+    "n_test": 47,
+    "overlap": 0
+   },
+   {
+    "fold": 3,
+    "n_ref_mean": 926,
+    "n_test": 28,
+    "overlap": 0
+   },
+   {
+    "fold": 4,
+    "n_ref_mean": 921,
+    "n_test": 33,
+    "overlap": 0
+   },
+   {
+    "fold": 5,
+    "n_ref_mean": 905,
+    "n_test": 49,
+    "overlap": 0
+   },
+   {
+    "fold": 6,
+    "n_ref_mean": 781,
+    "n_test": 173,
+    "overlap": 0
+   },
+   {
+    "fold": 7,
+    "n_ref_mean": 921,
+    "n_test": 33,
+    "overlap": 0
+   },
+   {
+    "fold": 8,
+    "n_ref_mean": 899,
+    "n_test": 55,
+    "overlap": 0
+   },
+   {
+    "fold": 9,
+    "n_ref_mean": 925,
+    "n_test": 29,
+    "overlap": 0
+   },
+   {
+    "fold": 10,
+    "n_ref_mean": 923,
+    "n_test": 31,
+    "overlap": 0
+   },
+   {
+    "fold": 11,
+    "n_ref_mean": 915,
+    "n_test": 39,
+    "overlap": 0
+   },
+   {
+    "fold": 12,
+    "n_ref_mean": 909,
+    "n_test": 45,
+    "overlap": 0
+   },
+   {
+    "fold": 13,
+    "n_ref_mean": 888,
+    "n_test": 66,
+    "overlap": 0
+   },
+   {
+    "fold": 14,
+    "n_ref_mean": 931,
+    "n_test": 23,
+    "overlap": 0
+   },
+   {
+    "fold": 15,
+    "n_ref_mean": 856,
+    "n_test": 98,
+    "overlap": 0
+   },
+   {
+    "fold": 16,
+    "n_ref_mean": 921,
+    "n_test": 33,
+    "overlap": 0
+   },
+   {
+    "fold": 17,
+    "n_ref_mean": 885,
+    "n_test": 69,
+    "overlap": 0
+   },
+   {
+    "fold": 18,
+    "n_ref_mean": 899,
+    "n_test": 55,
+    "overlap": 0
+   }
+  ]
+ },
+ "FC_stats": {
+  "min": -0.7600311808909164,
+  "max": 1.0,
+  "mean": 0.338744924963024,
+  "sd": 0.2499081809542145
+ },
+ "FCamp_stats": {
+  "min": -2.9800483282011303,
+  "max": 16.57294639148489,
+  "mean": 0.33899450754251337,
+  "sd": 0.3444888763021693
+ },
+ "tangent_stats": {
+  "T1_FC_tangent": {
+   "min": -4.704024737400254,
+   "max": 2.621149687678026,
+   "mean": -0.09160723061501982,
+   "sd": 0.5225299976398043
+  },
+  "T2_FCamp_tangent": {
+   "min": -5.0238184724482675,
+   "max": 2.8316867028190122,
+   "mean": -0.10143652068449154,
+   "sd": 0.5029503027289436
+  }
+ },
+ "log": [
+  "BUILD ok: raw M1 verified, A mean==1, FCamp symmetric 0.0, shapes (954, 90, 90)",
+  "PD: min eig FC -1.471200e-14 | FCamp -1.178668e-14 | global -1.471200e-14 (0s)",
+  "PD: ridge 1.000000e-06 applied IDENTICALLY to both arms; min eig after: FC 1.000000e-06 | FCamp 1.000000e-06",
+  "RUN L0_FC_flat     cv   AUC 0.7565 (67s)",
+  "RUN L0_FC_flat     loso AUC 0.7432 (336s)",
+  "RUN L1_FCamp_flat  cv   AUC 0.7261 (50s)",
+  "RUN L1_FCamp_flat  loso AUC 0.7129 (253s)",
+  "GATES: L0 reproduces 0.7565 and L1 reproduces 0.7261 \u2014 continuing",
+  "RUN T1_FC_tangent  cv   AUC 0.6290 (18s) ref-mean n per fold: [763, 763, 763, 763, 764]",
+  "RUN T1_FC_tangent  loso AUC 0.5945 (74s) ref-mean n per fold: [926, 934, 907, 926, 921, 905, 781, 921, 899, 925, 923, 915, 909, 888, 931, 856, 921, 885, 899]",
+  "DIST T1_FC_tangent: min -4.7040 max +2.6211 mean -0.091607 sd 0.5225",
+  "RUN T2_FCamp_tangent cv   AUC 0.6332 (18s) ref-mean n per fold: [763, 763, 763, 763, 764]",
+  "RUN T2_FCamp_tangent loso AUC 0.6168 (74s) ref-mean n per fold: [926, 934, 907, 926, 921, 905, 781, 921, 899, 925, 923, 915, 909, 888, 931, 856, 921, 885, 899]",
+  "DIST T2_FCamp_tangent: min -5.0238 max +2.8317 mean -0.101437 sd 0.5030",
+  "BOOT T1-L0|cv: -0.1275 [-0.1681,-0.0905] p=0.000",
+  "BOOT T2-T1|cv: +0.0043 [-0.0236,+0.0331] p=0.734",
+  "BOOT T1-L0|loso: -0.1487 [-0.1894,-0.1098] p=0.000",
+  "BOOT T2-T1|loso: +0.0223 [-0.0034,+0.0469] p=0.085"
+ ]
+}

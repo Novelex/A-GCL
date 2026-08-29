@@ -1,0 +1,372 @@
+{
+ "step1": {
+  "s_FC": 0.756484397366161,
+  "s_TAN": 0.7783302869475215,
+  "s_ALFF": 0.6486026999053051,
+  "tan_hp": [
+   [
+    0.4,
+    0.0001
+   ],
+   [
+    0.4,
+    0.0001
+   ],
+   [
+    0.4,
+    0.0001
+   ],
+   [
+    0.4,
+    0.0001
+   ],
+   [
+    0.2,
+    0.0001
+   ]
+  ],
+  "alff_C": [
+   0.0001,
+   0.0001,
+   0.0001,
+   0.0001,
+   0.0001
+  ]
+ },
+ "step2": {
+  "ALFF~s_FC": {
+   "pearson": 0.443614579081686,
+   "spearman": 0.4327353544408325
+  },
+  "ALFF~s_FC|y_removed": {
+   "pearson": 0.38268644351037423,
+   "spearman": 0.3725903945306242
+  },
+  "ALFF~s_TAN": {
+   "pearson": 0.45323591805008223,
+   "spearman": 0.44527795350487365
+  },
+  "ALFF~s_TAN|y_removed": {
+   "pearson": 0.39147151103492167,
+   "spearman": 0.3843488366958396
+  }
+ },
+ "step3": {
+  "thresholds": {
+   "s_FC": 0.0303208391539426,
+   "s_TAN": -0.030867800334896237,
+   "s_ALFF": -0.07221617840768658
+  },
+  "table": {
+   "both_right": 458,
+   "tan_right_alff_wrong": 225,
+   "tan_wrong_alff_right": 123,
+   "both_wrong": 148
+  },
+  "tan_wrong_subgroup": {
+   "n": 271,
+   "alff_auc": 0.39102202145680404,
+   "alff_acc": 0.45387453874538747
+  }
+ },
+ "step4": {
+  "s_FC~mean_fd": {
+   "pearson": 0.246750187026523,
+   "spearman": 0.25324901146209083
+  },
+  "s_FC~T": {
+   "pearson": 0.0398071435699499,
+   "spearman": 0.0256622901221367
+  },
+  "s_FC~TR": {
+   "pearson": 0.018707187951814863,
+   "spearman": 0.05473602277288681
+  },
+  "s_FC|site_bacc": 0.05631788166880082,
+  "s_TAN~mean_fd": {
+   "pearson": 0.29849558884303,
+   "spearman": 0.31783795350016747
+  },
+  "s_TAN~T": {
+   "pearson": -0.011045204004632726,
+   "spearman": -0.020963497427943678
+  },
+  "s_TAN~TR": {
+   "pearson": 0.05724431387673516,
+   "spearman": 0.06644444507895632
+  },
+  "s_TAN|site_bacc": 0.05812974255190628,
+  "s_ALFF~mean_fd": {
+   "pearson": 0.27560808199363346,
+   "spearman": 0.30373478029863593
+  },
+  "s_ALFF~T": {
+   "pearson": -0.16547307173124706,
+   "spearman": -0.13755464345054502
+  },
+  "s_ALFF~TR": {
+   "pearson": 0.1069209725178283,
+   "spearman": 0.12326076008107137
+  },
+  "s_ALFF|site_bacc": 0.0692748538637102
+ },
+ "step5": {
+  "fused_auc": 0.7771278821379022,
+  "w2_per_fold": [
+   0.1,
+   0.0,
+   0.0,
+   0.0,
+   0.1
+  ],
+  "boot_vs_tan": {
+   "delta": -0.0012024048096193063,
+   "lo": -0.00389413613469036,
+   "hi": 0.001591616539257099,
+   "p_boot": 0.394
+  }
+ },
+ "step6": {
+  "alff_top15": [
+   {
+    "roi": 24,
+    "name": "Frontal_Med_Orb_L",
+    "weight": 0.01832821669417332,
+    "in_top15_folds": 5
+   },
+   {
+    "roi": 9,
+    "name": "Frontal_Mid_Orb_R",
+    "weight": 0.017447780014764686,
+    "in_top15_folds": 5
+   },
+   {
+    "roi": 29,
+    "name": "Insula_R",
+    "weight": 0.01712740759736387,
+    "in_top15_folds": 5
+   },
+   {
+    "roi": 6,
+    "name": "Frontal_Mid_L",
+    "weight": 0.016798717134317718,
+    "in_top15_folds": 5
+   },
+   {
+    "roi": 34,
+    "name": "Cingulum_Post_L",
+    "weight": 0.016517552796307403,
+    "in_top15_folds": 5
+   },
+   {
+    "roi": 57,
+    "name": "Postcentral_R",
+    "weight": 0.015256932840183146,
+    "in_top15_folds": 5
+   },
+   {
+    "roi": 22,
+    "name": "Frontal_Sup_Medial_L",
+    "weight": 0.01429784078857837,
+    "in_top15_folds": 5
+   },
+   {
+    "roi": 87,
+    "name": "Temporal_Pole_Mid_R",
+    "weight": 0.014063552654373207,
+    "in_top15_folds": 5
+   },
+   {
+    "roi": 85,
+    "name": "Temporal_Mid_R",
+    "weight": 0.013512123821946925,
+    "in_top15_folds": 4
+   },
+   {
+    "roi": 21,
+    "name": "Olfactory_R",
+    "weight": 0.012690163418833066,
+    "in_top15_folds": 4
+   },
+   {
+    "roi": 53,
+    "name": "Occipital_Inf_R",
+    "weight": 0.012444570021569606,
+    "in_top15_folds": 3
+   },
+   {
+    "roi": 35,
+    "name": "Cingulum_Post_R",
+    "weight": 0.012298385920285742,
+    "in_top15_folds": 1
+   },
+   {
+    "roi": 7,
+    "name": "Frontal_Mid_R",
+    "weight": 0.012248403432498504,
+    "in_top15_folds": 5
+   },
+   {
+    "roi": 8,
+    "name": "Frontal_Mid_Orb_L",
+    "weight": 0.01142381074587089,
+    "in_top15_folds": 1
+   },
+   {
+    "roi": 65,
+    "name": "Angular_R",
+    "weight": 0.011315468084120093,
+    "in_top15_folds": 2
+   }
+  ],
+  "tan_top15": [
+   {
+    "roi": 84,
+    "name": "Temporal_Mid_L",
+    "weight": 0.25455924898730486,
+    "in_top15_folds": 5
+   },
+   {
+    "roi": 37,
+    "name": "Hippocampus_R",
+    "weight": 0.2482887146327894,
+    "in_top15_folds": 5
+   },
+   {
+    "roi": 85,
+    "name": "Temporal_Mid_R",
+    "weight": 0.2402301999309354,
+    "in_top15_folds": 5
+   },
+   {
+    "roi": 89,
+    "name": "Temporal_Inf_R",
+    "weight": 0.2379923746343673,
+    "in_top15_folds": 5
+   },
+   {
+    "roi": 27,
+    "name": "Rectus_R",
+    "weight": 0.221787885299593,
+    "in_top15_folds": 5
+   },
+   {
+    "roi": 87,
+    "name": "Temporal_Pole_Mid_R",
+    "weight": 0.22127229980388732,
+    "in_top15_folds": 5
+   },
+   {
+    "roi": 77,
+    "name": "Thalamus_R",
+    "weight": 0.22064345284682432,
+    "in_top15_folds": 5
+   },
+   {
+    "roi": 3,
+    "name": "Frontal_Sup_R",
+    "weight": 0.22061677190131027,
+    "in_top15_folds": 3
+   },
+   {
+    "roi": 67,
+    "name": "Precuneus_R",
+    "weight": 0.21910819459432185,
+    "in_top15_folds": 3
+   },
+   {
+    "roi": 2,
+    "name": "Frontal_Sup_L",
+    "weight": 0.215888182419567,
+    "in_top15_folds": 3
+   },
+   {
+    "roi": 23,
+    "name": "Frontal_Sup_Medial_R",
+    "weight": 0.2135450937798383,
+    "in_top15_folds": 3
+   },
+   {
+    "roi": 49,
+    "name": "Occipital_Sup_R",
+    "weight": 0.21062812368155956,
+    "in_top15_folds": 2
+   },
+   {
+    "roi": 6,
+    "name": "Frontal_Mid_L",
+    "weight": 0.2104170452144809,
+    "in_top15_folds": 2
+   },
+   {
+    "roi": 39,
+    "name": "ParaHippocampal_R",
+    "weight": 0.21027774554344258,
+    "in_top15_folds": 1
+   },
+   {
+    "roi": 64,
+    "name": "Angular_L",
+    "weight": 0.21011704119640778,
+    "in_top15_folds": 0
+   }
+  ],
+  "overlap": [
+   "Frontal_Mid_L",
+   "Temporal_Mid_R",
+   "Temporal_Pole_Mid_R"
+  ]
+ },
+ "log": [
+  "DATA ok: raw M1 verified; M1D bitwise == S5.5's M1D; meta/AAL aligned",
+  "STEP1 s_FC   AUC 0.7565 (C.nested 0.7565, bitwise same OOF) (246s)",
+  "STEP1 s_ALFF AUC 0.6486 (S5.5 M1D_only linsvm 0.6486) (10s)",
+  "STEP1 s_TAN  AUC 0.7783 (tangent2 0.7783) hp [(0.4, 0.0001), (0.4, 0.0001), (0.4, 0.0001), (0.4, 0.0001), (0.2, 0.0001)] (215s)",
+  "STEP1 GATES: all three scores reproduce",
+  "STEP2 ALFF~s_FC              pearson +0.4436  spearman +0.4327",
+  "STEP2 ALFF~s_FC|y_removed    pearson +0.3827  spearman +0.3726",
+  "STEP2 ALFF~s_TAN             pearson +0.4532  spearman +0.4453",
+  "STEP2 ALFF~s_TAN|y_removed   pearson +0.3915  spearman +0.3843",
+  "STEP3 Youden thresholds {'s_FC': 0.0303208391539426, 's_TAN': -0.030867800334896237, 's_ALFF': -0.07221617840768658}",
+  "STEP3 2x2 vs s_TAN: {'both_right': 458, 'tan_right_alff_wrong': 225, 'tan_wrong_alff_right': 123, 'both_wrong': 148}  (sum 954)",
+  "STEP3 subjects s_TAN gets WRONG: n=271 (ASD 110) -> ALFF AUC 0.39102202145680404  ALFF acc@Youden 0.4539",
+  "STEP4 s_FC: mean_fd r=+0.247  T r=+0.040  TR r=+0.019  | site bacc 0.0563 (chance 0.0526, 19 sites)",
+  "STEP4 s_TAN: mean_fd r=+0.298  T r=-0.011  TR r=+0.057  | site bacc 0.0581 (chance 0.0526, 19 sites)",
+  "STEP4 s_ALFF: mean_fd r=+0.276  T r=-0.165  TR r=+0.107  | site bacc 0.0693 (chance 0.0526, 19 sites)",
+  "STEP5 fused AUC 0.7771  w2 per fold [0.1, 0.0, 0.0, 0.0, 0.1]  nonzero-w2 folds 2/5",
+  "STEP5 fused - s_TAN: -0.0012 [-0.0039,+0.0016] p=0.394",
+  "STEP6 ALFF top-15 (fold-averaged |coef| norm over bands; stability = folds in top-15 of 5):",
+  "    24 Frontal_Med_Orb_L      0.0183  5/5",
+  "     9 Frontal_Mid_Orb_R      0.0174  5/5",
+  "    29 Insula_R               0.0171  5/5",
+  "     6 Frontal_Mid_L          0.0168  5/5",
+  "    34 Cingulum_Post_L        0.0165  5/5",
+  "    57 Postcentral_R          0.0153  5/5",
+  "    22 Frontal_Sup_Medial_L   0.0143  5/5",
+  "    87 Temporal_Pole_Mid_R    0.0141  5/5",
+  "    85 Temporal_Mid_R         0.0135  4/5",
+  "    21 Olfactory_R            0.0127  4/5",
+  "    53 Occipital_Inf_R        0.0124  3/5",
+  "    35 Cingulum_Post_R        0.0123  1/5",
+  "     7 Frontal_Mid_R          0.0122  5/5",
+  "     8 Frontal_Mid_Orb_L      0.0114  1/5",
+  "    65 Angular_R              0.0113  2/5",
+  "STEP6 TAN top-15 (fold-averaged |coef| summed over incident tangent edges):",
+  "    84 Temporal_Mid_L         0.2546  5/5",
+  "    37 Hippocampus_R          0.2483  5/5",
+  "    85 Temporal_Mid_R         0.2402  5/5",
+  "    89 Temporal_Inf_R         0.2380  5/5",
+  "    27 Rectus_R               0.2218  5/5",
+  "    87 Temporal_Pole_Mid_R    0.2213  5/5",
+  "    77 Thalamus_R             0.2206  5/5",
+  "     3 Frontal_Sup_R          0.2206  3/5",
+  "    67 Precuneus_R            0.2191  3/5",
+  "     2 Frontal_Sup_L          0.2159  3/5",
+  "    23 Frontal_Sup_Medial_R   0.2135  3/5",
+  "    49 Occipital_Sup_R        0.2106  2/5",
+  "     6 Frontal_Mid_L          0.2104  2/5",
+  "    39 ParaHippocampal_R      0.2103  1/5",
+  "    64 Angular_L              0.2101  0/5",
+  "STEP6 overlap between the two top-15 lists: 3 ROIs -> ['Frontal_Mid_L', 'Temporal_Mid_R', 'Temporal_Pole_Mid_R']"
+ ]
+}
