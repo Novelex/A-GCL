@@ -1,0 +1,631 @@
+{
+ "block_checks": [
+  {
+   "k": 3,
+   "min_block": 136,
+   "n_blocks": 6,
+   "total": 4005,
+   "unassigned": 0
+  },
+  {
+   "k": 5,
+   "min_block": 91,
+   "n_blocks": 15,
+   "total": 4005,
+   "unassigned": 0
+  },
+  {
+   "k": 3,
+   "min_block": 136,
+   "n_blocks": 6,
+   "total": 4005,
+   "unassigned": 0
+  },
+  {
+   "k": 5,
+   "min_block": 91,
+   "n_blocks": 15,
+   "total": 4005,
+   "unassigned": 0
+  },
+  {
+   "k": 3,
+   "min_block": 136,
+   "n_blocks": 6,
+   "total": 4005,
+   "unassigned": 0
+  },
+  {
+   "k": 5,
+   "min_block": 91,
+   "n_blocks": 15,
+   "total": 4005,
+   "unassigned": 0
+  },
+  {
+   "n_total_assignments": 75
+  }
+ ],
+ "cache_file": "s16_signed_4f01b0abc1b160bd.npz",
+ "complementarity": {
+  "n_errors_A": 205,
+  "n_errors_A_asd": 95,
+  "rescue_rate": {
+   "hi": 0.4444577352472087,
+   "lo": 0.31131285546628146,
+   "n_boot": 5000,
+   "point": 0.375609756097561
+  },
+  "subgroup_auc": {
+   "hi": 0.4191692869008068,
+   "lo": 0.2700179322509085,
+   "n_boot": 5000,
+   "point": 0.3419138755980861
+  }
+ },
+ "delta_auc": {
+  "B_minus_A": {
+   "hi": -0.07700183128503148,
+   "lo": -0.17100628314615426,
+   "n_boot": 5000,
+   "point": -0.12388370013681071
+  },
+  "fused_raw": {
+   "hi": 0.004009232300725457,
+   "lo": -0.012220099491646503,
+   "n_boot": 5000,
+   "point": -0.004492130691917451
+  },
+  "fused_standardised": {
+   "hi": 0.004232399254462101,
+   "lo": -0.011105750619208102,
+   "n_boot": 5000,
+   "point": -0.003684193517112022
+  }
+ },
+ "design": {
+  "C_grid": [
+   0.0001,
+   0.0003,
+   0.001,
+   0.003,
+   0.01,
+   0.03,
+   0.1,
+   0.3,
+   1.0,
+   3.0,
+   10.0,
+   30.0,
+   100.0
+  ],
+  "alphas": [
+   0.0,
+   0.25,
+   0.5,
+   0.75,
+   1.0
+  ],
+  "arms": [
+   "signed_mean",
+   "sd",
+   "abs_mean",
+   "all_three"
+  ],
+  "fusion_note": "both score streams standardised with mean/sd from INNER OOF TRAINING scores only; raw-scale variant reported as sensitivity check",
+  "gm": {
+   "approach": "dm",
+   "kernel": "normalized_angle",
+   "n_components": 6,
+   "random_state": 1,
+   "sparsity": null
+  },
+  "inner_folds": 5,
+  "inner_seed_base": 20260859,
+  "inner_stratum_warning": "smallest (site x dx) stratum is 5 in tr_enc, ~4 within outer-training; StratifiedKFold warns and proceeds, so a fold may miss the smallest stratum",
+  "kmeans_seeds": "reference 100000; inner 200000+10*outer+inner; outer 300000+outer",
+  "ks": [
+   3,
+   5
+  ],
+  "outer_folds": 5,
+  "outer_seed": 20260849,
+  "stratify": "diagnosis x site"
+ },
+ "fold": "lab0",
+ "folds": [
+  {
+   "A": {
+    "C": 0.0001,
+    "inner_auc": 0.7183876125557519
+   },
+   "B": {
+    "C": 0.3,
+    "arm": "all_three",
+    "inner_auc": 0.5531094841370024,
+    "k": 5
+   },
+   "B_per_arm": {
+    "abs_mean": {
+     "C": 30.0,
+     "inner_auc": 0.5175292434570395,
+     "k": 3
+    },
+    "all_three": {
+     "C": 0.3,
+     "inner_auc": 0.5531094841370024,
+     "k": 5
+    },
+    "sd": {
+     "C": 0.003,
+     "inner_auc": 0.5530253303037953,
+     "k": 3
+    },
+    "signed_mean": {
+     "C": 1.0,
+     "inner_auc": 0.5215013043844147,
+     "k": 3
+    }
+   },
+   "alpha_raw": 1.0,
+   "alpha_standardised": 1.0,
+   "ari_vs_step2_reference": {
+    "3": 0.9705790647334036,
+    "5": 1.0
+   },
+   "community_sizes_outer": {
+    "3": [
+     17,
+     35,
+     38
+    ],
+    "5": [
+     14,
+     14,
+     17,
+     18,
+     27
+    ]
+   },
+   "fold": 0,
+   "n_asd_val": 58,
+   "n_train": 488,
+   "n_val": 122,
+   "site_counts_val": {
+    "CALTECH": 4,
+    "CMU": 3,
+    "KKI": 6,
+    "LEUVEN_1": 4,
+    "LEUVEN_2": 5,
+    "MAX_MUN": 6,
+    "NYU": 20,
+    "OLIN": 4,
+    "PITT": 7,
+    "SBL": 4,
+    "SDSU": 4,
+    "STANFORD": 5,
+    "TRINITY": 8,
+    "UCLA_1": 7,
+    "UCLA_2": 3,
+    "UM_1": 12,
+    "UM_2": 4,
+    "USM": 9,
+    "YALE": 7
+   }
+  },
+  {
+   "A": {
+    "C": 0.0001,
+    "inner_auc": 0.6755501716131637
+   },
+   "B": {
+    "C": 10.0,
+    "arm": "all_three",
+    "inner_auc": 0.6080994683356888,
+    "k": 5
+   },
+   "B_per_arm": {
+    "abs_mean": {
+     "C": 100.0,
+     "inner_auc": 0.5752910693855575,
+     "k": 5
+    },
+    "all_three": {
+     "C": 10.0,
+     "inner_auc": 0.6080994683356888,
+     "k": 5
+    },
+    "sd": {
+     "C": 0.003,
+     "inner_auc": 0.57932902617942,
+     "k": 3
+    },
+    "signed_mean": {
+     "C": 1.0,
+     "inner_auc": 0.5660878928595464,
+     "k": 5
+    }
+   },
+   "alpha_raw": 0.75,
+   "alpha_standardised": 0.75,
+   "ari_vs_step2_reference": {
+    "3": 1.0,
+    "5": 0.9762417741771594
+   },
+   "community_sizes_outer": {
+    "3": [
+     18,
+     35,
+     37
+    ],
+    "5": [
+     14,
+     15,
+     17,
+     17,
+     27
+    ]
+   },
+   "fold": 1,
+   "n_asd_val": 57,
+   "n_train": 488,
+   "n_val": 122,
+   "site_counts_val": {
+    "CALTECH": 3,
+    "CMU": 3,
+    "KKI": 5,
+    "LEUVEN_1": 4,
+    "LEUVEN_2": 5,
+    "MAX_MUN": 5,
+    "NYU": 20,
+    "OLIN": 4,
+    "PITT": 7,
+    "SBL": 5,
+    "SDSU": 4,
+    "STANFORD": 6,
+    "TRINITY": 7,
+    "UCLA_1": 7,
+    "UCLA_2": 3,
+    "UM_1": 13,
+    "UM_2": 4,
+    "USM": 10,
+    "YALE": 7
+   }
+  },
+  {
+   "A": {
+    "C": 0.0001,
+    "inner_auc": 0.7366915674002288
+   },
+   "B": {
+    "C": 100.0,
+    "arm": "all_three",
+    "inner_auc": 0.6370213338717275,
+    "k": 5
+   },
+   "B_per_arm": {
+    "abs_mean": {
+     "C": 0.1,
+     "inner_auc": 0.6042297597415707,
+     "k": 5
+    },
+    "all_three": {
+     "C": 100.0,
+     "inner_auc": 0.6370213338717275,
+     "k": 5
+    },
+    "sd": {
+     "C": 0.001,
+     "inner_auc": 0.5796318729389596,
+     "k": 3
+    },
+    "signed_mean": {
+     "C": 0.1,
+     "inner_auc": 0.5922841375597281,
+     "k": 5
+    }
+   },
+   "alpha_raw": 1.0,
+   "alpha_standardised": 1.0,
+   "ari_vs_step2_reference": {
+    "3": 1.0,
+    "5": 0.9762417741771594
+   },
+   "community_sizes_outer": {
+    "3": [
+     18,
+     35,
+     37
+    ],
+    "5": [
+     14,
+     15,
+     17,
+     17,
+     27
+    ]
+   },
+   "fold": 2,
+   "n_asd_val": 57,
+   "n_train": 488,
+   "n_val": 122,
+   "site_counts_val": {
+    "CALTECH": 5,
+    "CMU": 3,
+    "KKI": 5,
+    "LEUVEN_1": 4,
+    "LEUVEN_2": 5,
+    "MAX_MUN": 5,
+    "NYU": 21,
+    "OLIN": 4,
+    "PITT": 6,
+    "SBL": 4,
+    "SDSU": 3,
+    "STANFORD": 5,
+    "TRINITY": 6,
+    "UCLA_1": 8,
+    "UCLA_2": 3,
+    "UM_1": 14,
+    "UM_2": 5,
+    "USM": 9,
+    "YALE": 7
+   }
+  },
+  {
+   "A": {
+    "C": 0.0001,
+    "inner_auc": 0.7048870913380519
+   },
+   "B": {
+    "C": 3.0,
+    "arm": "all_three",
+    "inner_auc": 0.5927030670711156,
+    "k": 3
+   },
+   "B_per_arm": {
+    "abs_mean": {
+     "C": 3.0,
+     "inner_auc": 0.5658746208291203,
+     "k": 3
+    },
+    "all_three": {
+     "C": 3.0,
+     "inner_auc": 0.5927030670711156,
+     "k": 3
+    },
+    "sd": {
+     "C": 3.0,
+     "inner_auc": 0.5594371418941693,
+     "k": 3
+    },
+    "signed_mean": {
+     "C": 0.1,
+     "inner_auc": 0.5483653522076171,
+     "k": 5
+    }
+   },
+   "alpha_raw": 0.75,
+   "alpha_standardised": 0.75,
+   "ari_vs_step2_reference": {
+    "3": 1.0,
+    "5": 0.9762417741771594
+   },
+   "community_sizes_outer": {
+    "3": [
+     18,
+     35,
+     37
+    ],
+    "5": [
+     14,
+     15,
+     17,
+     17,
+     27
+    ]
+   },
+   "fold": 3,
+   "n_asd_val": 61,
+   "n_train": 488,
+   "n_val": 122,
+   "site_counts_val": {
+    "CALTECH": 4,
+    "CMU": 3,
+    "KKI": 5,
+    "LEUVEN_1": 4,
+    "LEUVEN_2": 4,
+    "MAX_MUN": 6,
+    "NYU": 21,
+    "OLIN": 4,
+    "PITT": 7,
+    "SBL": 3,
+    "SDSU": 3,
+    "STANFORD": 5,
+    "TRINITY": 6,
+    "UCLA_1": 8,
+    "UCLA_2": 2,
+    "UM_1": 14,
+    "UM_2": 6,
+    "USM": 9,
+    "YALE": 8
+   }
+  },
+  {
+   "A": {
+    "C": 0.0001,
+    "inner_auc": 0.7274930573087605
+   },
+   "B": {
+    "C": 0.3,
+    "arm": "all_three",
+    "inner_auc": 0.6131279979803079,
+    "k": 5
+   },
+   "B_per_arm": {
+    "abs_mean": {
+     "C": 0.03,
+     "inner_auc": 0.571101573676681,
+     "k": 5
+    },
+    "all_three": {
+     "C": 0.3,
+     "inner_auc": 0.6131279979803079,
+     "k": 5
+    },
+    "sd": {
+     "C": 1.0,
+     "inner_auc": 0.5920727089118909,
+     "k": 5
+    },
+    "signed_mean": {
+     "C": 0.03,
+     "inner_auc": 0.5692670201127661,
+     "k": 5
+    }
+   },
+   "alpha_raw": 1.0,
+   "alpha_standardised": 1.0,
+   "ari_vs_step2_reference": {
+    "3": 1.0,
+    "5": 0.9762417741771594
+   },
+   "community_sizes_outer": {
+    "3": [
+     18,
+     35,
+     37
+    ],
+    "5": [
+     14,
+     15,
+     17,
+     17,
+     27
+    ]
+   },
+   "fold": 4,
+   "n_asd_val": 58,
+   "n_train": 488,
+   "n_val": 122,
+   "site_counts_val": {
+    "CALTECH": 4,
+    "CMU": 3,
+    "KKI": 5,
+    "LEUVEN_1": 4,
+    "LEUVEN_2": 5,
+    "MAX_MUN": 7,
+    "NYU": 21,
+    "OLIN": 4,
+    "PITT": 6,
+    "SBL": 4,
+    "SDSU": 4,
+    "STANFORD": 5,
+    "TRINITY": 7,
+    "UCLA_1": 7,
+    "UCLA_2": 2,
+    "UM_1": 13,
+    "UM_2": 4,
+    "USM": 9,
+    "YALE": 8
+   }
+  }
+ ],
+ "gates_failed": [],
+ "h_fc": "174183531a998da0",
+ "id_digests": {
+  "all_ids": "3b7c7993707e74a1",
+  "te": "8728a7f2d77670db",
+  "tr_enc": "9540dc9ba3cc5d8f",
+  "tr_prb": "fd2b73c3efae2c66"
+ },
+ "input": "RAW Pearson FC (E=signed identity)",
+ "n": 610,
+ "n_bootstrap": 5000,
+ "n_edges": 4005,
+ "n_roi": 90,
+ "performance": {
+  "A": {
+   "auc": 0.7228560040504584,
+   "balanced_accuracy": 0.6643559663467236,
+   "f1": 0.6566164154103853,
+   "sensitivity": 0.6735395189003437,
+   "specificity": 0.6551724137931034
+  },
+  "B": {
+   "auc": 0.5989723039136476,
+   "balanced_accuracy": 0.5544818968210365,
+   "f1": 0.5143884892086331,
+   "sensitivity": 0.49140893470790376,
+   "specificity": 0.6175548589341693
+  },
+  "B_abs_mean": {
+   "auc": 0.5604821769059238,
+   "balanced_accuracy": 0.5284986372792985,
+   "f1": 0.48928571428571427,
+   "sensitivity": 0.47079037800687284,
+   "specificity": 0.5862068965517241
+  },
+  "B_all_three": {
+   "auc": 0.5989723039136476,
+   "balanced_accuracy": 0.5544818968210365,
+   "f1": 0.5143884892086331,
+   "sensitivity": 0.49140893470790376,
+   "specificity": 0.6175548589341693
+  },
+  "B_sd": {
+   "auc": 0.5707591377694471,
+   "balanced_accuracy": 0.5423035904728049,
+   "f1": 0.4936014625228519,
+   "sensitivity": 0.4639175257731959,
+   "specificity": 0.6206896551724138
+  },
+  "B_signed_mean": {
+   "auc": 0.5647804026758879,
+   "balanced_accuracy": 0.5254230897672063,
+   "f1": 0.46950092421441775,
+   "sensitivity": 0.436426116838488,
+   "specificity": 0.6144200626959248
+  },
+  "fused_raw": {
+   "auc": 0.7183638733585409,
+   "balanced_accuracy": 0.6667366878884831,
+   "f1": 0.652991452991453,
+   "sensitivity": 0.6563573883161512,
+   "specificity": 0.677115987460815
+  },
+  "fused_standardised": {
+   "auc": 0.7191718105333463,
+   "balanced_accuracy": 0.667641577524265,
+   "f1": 0.6599664991624791,
+   "sensitivity": 0.6769759450171822,
+   "specificity": 0.658307210031348
+  }
+ },
+ "python": "3.12.13",
+ "reference_map_sizes": {
+  "3": [
+   18,
+   35,
+   37
+  ],
+  "5": [
+   14,
+   14,
+   17,
+   18,
+   27
+  ]
+ },
+ "score_correlation": {
+  "pearson_label_residualised": 0.41091868536241816,
+  "pearson_overall": 0.4438200622967992
+ },
+ "split": "tr_enc",
+ "step": "branchB_step3_blocks_raw",
+ "versions": {
+  "brainspace": "0.2.1",
+  "numpy": "2.5.2",
+  "scipy": "1.18.1",
+  "sklearn": "1.9.0"
+ }
+}

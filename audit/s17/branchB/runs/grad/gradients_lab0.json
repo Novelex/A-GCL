@@ -1,0 +1,108 @@
+{
+  "M_asymmetry": 0.0,
+  "M_offdiag": {
+    "max": 1.5092881369865574,
+    "mean": 0.37481925213280365,
+    "min": 0.006311434665526774,
+    "sd": 0.1784101961917784
+  },
+  "affinity": {
+    "connected_components": 1,
+    "kernel": "normalized_angle",
+    "max": 1.0,
+    "mean": 0.8252217247845284,
+    "min": 0.6900170197763895,
+    "sd": 0.0422626431817857,
+    "sparsity": null
+  },
+  "cache_file": "s16_signed_4f01b0abc1b160bd.npz",
+  "crosscheck": {
+    "abs_corr_matrix": [
+      [
+        0.9999801551119976,
+        0.0026253945730208136,
+        0.004804466458190544
+      ],
+      [
+        0.003111023081914375,
+        0.9999922213854792,
+        0.0027885027093412277
+      ],
+      [
+        0.005245789030527931,
+        0.002879820525383206,
+        0.9999769935243323
+      ]
+    ],
+    "hand_eigenvalues": [
+      0.03350137877868011,
+      0.020740346700279723,
+      0.014340751927760655,
+      0.007062010585526865
+    ],
+    "hungarian": [
+      {
+        "abs_corr": 0.9999801551119976,
+        "brainspace": 1,
+        "hand": 1
+      },
+      {
+        "abs_corr": 0.9999922213854792,
+        "brainspace": 2,
+        "hand": 2
+      },
+      {
+        "abs_corr": 0.9999769935243323,
+        "brainspace": 3,
+        "hand": 3
+      }
+    ],
+    "min_matched_abs_corr": 0.9999769935243323
+  },
+  "eigenvalues": [
+    0.03362356742397715,
+    0.02077156092734952,
+    0.014418814457837615,
+    0.007054096143873052
+  ],
+  "embedding": {
+    "alpha": 0.5,
+    "approach": "dm",
+    "diffusion_time": 0,
+    "n_components": 4,
+    "random_state": 1
+  },
+  "fold": "lab0",
+  "gates_failed": [],
+  "gradient_sd": [
+    0.03362338314455174,
+    0.02077174308110061,
+    0.014418851793892327
+  ],
+  "gradients_shape": [
+    90,
+    3
+  ],
+  "h_fc": "174183531a998da0",
+  "id_digests": {
+    "all_ids": "3b7c7993707e74a1",
+    "te": "8728a7f2d77670db",
+    "tr_enc": "9540dc9ba3cc5d8f",
+    "tr_prb": "fd2b73c3efae2c66"
+  },
+  "n_roi": 90,
+  "n_te": 191,
+  "n_tr_enc": 610,
+  "n_tr_prb": 153,
+  "python": "3.12.13",
+  "source": "raw signed Pearson FC",
+  "split": "tr_enc",
+  "step": "branchB_step1_gradients",
+  "transform": "F = arctanh(clip(R, -0.999, 0.999)); M = mean over tr_enc; diag(M) = 0",
+  "versions": {
+    "brainspace": "0.2.1",
+    "numpy": "2.5.2",
+    "scipy": "1.18.1",
+    "sklearn": "1.9.0"
+  }
+}

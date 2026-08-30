@@ -1,0 +1,34 @@
+[
+ {
+  "rep": "flat",
+  "alff": false
+ },
+ {
+  "rep": "flat",
+  "alff": true
+ },
+ {
+  "rep": "partial_tangent_a0.4_logeuclid",
+  "alff": false
+ },
+ {
+  "rep": "partial_tangent_a0.4_logeuclid",
+  "alff": true
+ },
+ {
+  "rep": "partial_tangent_a0.4_geometric",
+  "alff": false
+ },
+ {
+  "rep": "partial_tangent_a0.4_geometric",
+  "alff": true
+ },
+ {
+  "rep": "tangent_shrink_a0.5_logeuclid",
+  "alff": false
+ },
+ {
+  "rep": "tangent_shrink_a0.5_logeuclid",
+  "alff": true
+ }
+]
